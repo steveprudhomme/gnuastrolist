@@ -1,0 +1,3 @@
+# Installation standard du projet et de ses dépendances.
+-e .
+
