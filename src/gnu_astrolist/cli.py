@@ -44,22 +44,34 @@ def build_parser() -> argparse.ArgumentParser:
         "--elevation-m", type=float, default=0.0, help="altitude du site en mètres (défaut : 0)"
     )
     parser.add_argument(
-        "--fov-h", required=True, type=float, help="largeur horizontale en degrés (0 à 360)"
-    )
-    parser.add_argument(
-        "--fov-v", required=True, type=float, help="hauteur du champ en degrés (0 à 90)"
-    )
-    parser.add_argument(
-        "--az-center",
+        "--az-min",
+        required=True,
         type=float,
-        default=180.0,
-        help="azimut du centre, nord=0°, est=90° (défaut : 180, sud)",
+        help="limite azimutale de départ en degrés (0 à 360)",
     )
     parser.add_argument(
+        "--az-max",
+        required=True,
+        type=float,
+        help="limite azimutale de fin en degrés (0 à 360)",
+    )
+    parser.add_argument(
+        "--min-altitude",
+        "--fov-v",
+        dest="min_altitude",
+        required=True,
+        type=float,
+        help=(
+            "élévation minimale du champ en degrés (0 à 90); "
+            "--fov-v reste accepté comme ancien nom"
+        ),
+    )
+    advanced = parser.add_argument_group("réglages avancés du centre de visée")
+    advanced.add_argument(
         "--alt-center",
         type=float,
-        default=45.0,
-        help="hauteur du centre au-dessus de l'horizon (défaut : 45)",
+        default=None,
+        help="remplace le centre vertical calculé automatiquement",
     )
     parser.add_argument(
         "--objects",
@@ -115,11 +127,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         _validate_arguments(args)
         window = parse_observation_window(args.date, args.time_range, args.timezone)
-        field_of_view = FieldOfView(
-            azimuth_center_deg=args.az_center,
+        field_of_view = FieldOfView.from_automatic_center(
+            azimuth_min_deg=args.az_min,
+            azimuth_max_deg=args.az_max,
+            minimum_altitude_deg=args.min_altitude,
             altitude_center_deg=args.alt_center,
-            horizontal_deg=args.fov_h,
-            vertical_deg=args.fov_v,
         )
     except ValueError as exc:
         parser.error(str(exc))

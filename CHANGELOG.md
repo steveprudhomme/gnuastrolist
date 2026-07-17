@@ -5,6 +5,20 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+## [0.2.0] - 2026-07-17
+
+### Modifié
+
+- Remplacement de la largeur horizontale unique par deux limites azimutales
+  obligatoires : `--az-min` et `--az-max`.
+- Calcul automatique du centre horizontal entre les limites choisies, y compris
+  lorsque le champ traverse le nord.
+- Remplacement de la hauteur verticale par une élévation minimale; le champ
+  s'étend automatiquement jusqu'à 90° et son centre est calculé.
+- Conservation de `--fov-v` comme alias temporaire de `--min-altitude`.
+- Conservation de `--alt-center` comme remplacement vertical avancé facultatif.
+- Affichage des limites, des dimensions et du centre calculé dans le rapport.
+
 ## [0.1.0] - 2026-07-17
 
 ### Ajouté
@@ -15,4 +29,3 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 - Transformation vectorisée ICRS vers Alt/Az avec Astropy.
 - Champ de visée centré, sélection pendant la plage et tri par magnitude.
 - Validation des entrées, mode hors ligne, limite d'affichage et tests.
-

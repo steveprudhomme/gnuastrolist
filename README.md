@@ -43,10 +43,9 @@ gnu-astrolist \
   --timezone America/Toronto \
   --lat 45.57 \
   --lon -73.68 \
-  --fov-h 180 \
-  --fov-v 45 \
-  --az-center 180 \
-  --alt-center 45 \
+  --az-min 15 \
+  --az-max 180 \
+  --min-altitude 20 \
   --objects variable_stars \
   --max-magnitude 8 \
   --limit 50
@@ -58,16 +57,32 @@ civile, y compris lors des changements d'heure.
 
 ## Sens du champ de vision
 
-Les deux dimensions demandées dans le cahier des charges ne suffisent pas à
-indiquer où pointe l'instrument. GNU Astrolist ajoute donc deux paramètres :
+L'utilisateur choisit les deux limites horizontales du champ, mais n'a pas à
+calculer ni à préciser son point central. GNU Astrolist le détermine ainsi :
 
-- `--az-center` : direction horizontale, mesurée du nord vers l'est;
-- `--alt-center` : hauteur du centre au-dessus de l'horizon.
+- largeur horizontale : distance de `--az-min` à `--az-max`, dans le sens du
+  nord vers l'est;
+- centre horizontal : milieu exact entre ces deux limites;
+- centre vertical : `(élévation minimale + 90°) ÷ 2`;
+- hauteur verticale du champ : `90° - élévation minimale`.
 
-`--fov-h` et `--fov-v` sont les largeurs autour de ce centre. Par défaut, le
-centre pointe plein sud (`180°`) à `45°` de hauteur. Un objet est retenu s'il se
-trouve dans ce rectangle Alt/Az à au moins un des instants échantillonnés. Le pas
-est réglable avec `--sample-minutes`.
+Le champ vertical commence à `--min-altitude` et se termine au zénith (`90°`).
+Ainsi, avec `--az-min 15 --az-max 180 --min-altitude 20`, le centre calculé est
+situé à `97,5°` d'azimut et `55°` de hauteur. Le champ horizontal mesure `165°`
+et le champ vertical mesure `70°`.
+
+Les limites peuvent traverser le nord : `--az-min 350 --az-max 15` produit un
+champ de `25°` centré à `2,5°`. Pour demander tout l'horizon, utilisez
+`--az-min 0 --az-max 360`.
+
+Le centre horizontal reste toujours déterminé par les deux limites choisies.
+Un utilisateur qui veut réellement déplacer le centre vertical peut employer
+l'option avancée `--alt-center`. L'ancien nom `--fov-v` reste accepté comme alias
+de `--min-altitude` afin de préserver la compatibilité avec les premières
+commandes du prototype.
+
+Un objet est retenu s'il se trouve dans le champ Alt/Az à au moins un des
+instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 
 ## Principales options
 
@@ -77,8 +92,10 @@ est réglable avec `--sample-minutes`.
 --timezone ZONE              Fuseau IANA (défaut : UTC)
 --lat / --lon                Coordonnées géographiques en degrés
 --elevation-m M              Altitude du site
---fov-h / --fov-v            Dimensions du champ en degrés
---az-center / --alt-center   Centre de visée Alt/Az
+--az-min DEG                 Limite azimutale de départ
+--az-max DEG                 Limite azimutale de fin
+--min-altitude DEG           Élévation minimale; --fov-v est un alias
+--alt-center DEG             Remplacement avancé facultatif du centre vertical
 --max-magnitude MAG          Limite au maximum d'éclat (défaut : 8)
 --all-magnitudes             Utilise les 21 212 entrées visuelles
 --sample-minutes MIN         Pas de recherche (défaut : 10)

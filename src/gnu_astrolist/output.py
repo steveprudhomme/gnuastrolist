@@ -75,11 +75,14 @@ def render_report(
         ),
         (
             "Champ de vision      : "
-            f"horizontal {field_of_view.horizontal_deg:g}° / "
-            f"vertical {field_of_view.vertical_deg:g}° "
-            "(hauteurs "
+            "azimuts "
+            f"{field_of_view.azimuth_start_deg:g}° à "
+            f"{field_of_view.azimuth_end_deg:g}° "
+            f"({field_of_view.horizontal_deg:g}°) / "
+            "hauteurs "
             f"{field_of_view.altitude_lower_deg:g}° à "
-            f"{field_of_view.altitude_upper_deg:g}°)"
+            f"{field_of_view.altitude_upper_deg:g}° "
+            f"({field_of_view.vertical_deg:g}°)"
         ),
         f"Filtre photométrique : bande V; magnitude {magnitude_text}",
         (

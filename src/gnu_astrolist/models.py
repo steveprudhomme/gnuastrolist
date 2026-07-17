@@ -51,6 +51,61 @@ class FieldOfView:
     horizontal_deg: float
     vertical_deg: float
 
+    @classmethod
+    def from_automatic_center(
+        cls,
+        *,
+        azimuth_min_deg: float,
+        azimuth_max_deg: float,
+        minimum_altitude_deg: float,
+        altitude_center_deg: float | None = None,
+    ) -> "FieldOfView":
+        """Construit un champ centré automatiquement, sauf remplacement explicite.
+
+        Le champ horizontal suit le sens nord vers est entre les deux limites.
+        Le champ vertical s'étend de l'élévation minimale choisie jusqu'à 90°.
+        """
+
+        if not 0.0 <= azimuth_min_deg <= 360.0:
+            raise ValueError("l'azimut minimal doit être compris entre 0 et 360 degrés")
+        if not 0.0 <= azimuth_max_deg <= 360.0:
+            raise ValueError("l'azimut maximal doit être compris entre 0 et 360 degrés")
+        if not 0.0 <= minimum_altitude_deg <= 90.0:
+            raise ValueError("l'élévation minimale doit être comprise entre 0 et 90 degrés")
+
+        normalized_minimum = azimuth_min_deg % 360.0
+        normalized_maximum = azimuth_max_deg % 360.0
+        raw_span = azimuth_max_deg - azimuth_min_deg
+        horizontal_deg = (
+            360.0
+            if abs(raw_span) == 360.0
+            else (normalized_maximum - normalized_minimum) % 360.0
+        )
+        automatic_azimuth_center = (
+            normalized_minimum + horizontal_deg / 2.0
+        ) % 360.0
+        automatic_altitude_center = (minimum_altitude_deg + 90.0) / 2.0
+        return cls(
+            azimuth_center_deg=automatic_azimuth_center,
+            altitude_center_deg=(
+                automatic_altitude_center
+                if altitude_center_deg is None
+                else altitude_center_deg
+            ),
+            horizontal_deg=horizontal_deg,
+            vertical_deg=90.0 - minimum_altitude_deg,
+        )
+
+    @property
+    def azimuth_start_deg(self) -> float:
+        return (self.azimuth_center_deg - self.horizontal_deg / 2.0) % 360.0
+
+    @property
+    def azimuth_end_deg(self) -> float:
+        if self.horizontal_deg == 360.0:
+            return 360.0
+        return (self.azimuth_center_deg + self.horizontal_deg / 2.0) % 360.0
+
     def __post_init__(self) -> None:
         if not 0.0 <= self.azimuth_center_deg < 360.0:
             raise ValueError(

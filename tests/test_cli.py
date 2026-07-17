@@ -14,9 +14,11 @@ def test_cli_prints_header_and_empty_result(capsys) -> None:
             "45.57",
             "--lon",
             "-73.68",
-            "--fov-h",
-            "10",
-            "--fov-v",
+            "--az-min",
+            "15",
+            "--az-max",
+            "180",
+            "--min-altitude",
             "10",
             "--objects",
             "variable_stars",
@@ -31,4 +33,3 @@ def test_cli_prints_header_and_empty_result(capsys) -> None:
     assert "SOIRÉE D'OBSERVATION" in output
     assert "Aucun objet" in output
     assert "America/Toronto" in output
-
