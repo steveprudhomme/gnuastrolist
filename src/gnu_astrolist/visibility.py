@@ -10,7 +10,7 @@ import numpy as np
 from astropy.coordinates import AltAz, EarthLocation, SkyCoord
 from astropy.time import Time
 
-from .models import FieldOfView, ObservationWindow, VariableStar, VisibilityResult
+from .models import CatalogObject, FieldOfView, ObservationWindow, VisibilityResult
 
 MAX_TIME_SAMPLES = 2_000
 CATALOG_CHUNK_SIZE = 2_048
@@ -39,7 +39,7 @@ def _sample_datetimes(window: ObservationWindow, interval_minutes: float) -> lis
 
 
 def compute_visibility(
-    stars: Sequence[VariableStar],
+    stars: Sequence[CatalogObject],
     window: ObservationWindow,
     latitude_deg: float,
     longitude_deg: float,
@@ -98,5 +98,7 @@ def compute_visibility(
             )
             for index in selected_indices
         )
-    results.sort(key=lambda result: (result.star.mag_max, result.star.name.casefold()))
+    results.sort(
+        key=lambda result: (result.star.magnitude_v, result.star.name.casefold())
+    )
     return results

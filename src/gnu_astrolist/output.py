@@ -8,17 +8,18 @@ from .models import FieldOfView, ObservationWindow, VisibilityResult
 
 
 def _magnitude_label(result: VisibilityResult) -> str:
-    prefix = result.star.mag_max_limit or ""
-    return f"{prefix}{result.star.mag_max:.3f}".rstrip("0").rstrip(".")
+    prefix = result.star.magnitude_limit or ""
+    return f"{prefix}{result.star.magnitude_v:.3f}".rstrip("0").rstrip(".")
 
 
-def _format_table(results: Sequence[VisibilityResult]) -> str:
-    headers = ("Objet", "Mag. max V", "Type", "Hauteur début", "Hauteur fin")
+def _format_table(results: Sequence[VisibilityResult], object_kind: str) -> str:
+    magnitude_header = "Mag. max V" if object_kind == "variable_stars" else "Mag. V"
+    headers = ("Objet", magnitude_header, "Type", "Hauteur début", "Hauteur fin")
     rows = [
         (
             result.star.name,
             _magnitude_label(result),
-            result.star.variable_type or "—",
+            result.star.object_type or "—",
             f"{result.altitude_start_deg:+.1f}°",
             f"{result.altitude_end_deg:+.1f}°",
         )
@@ -47,20 +48,27 @@ def render_report(
     sample_minutes: float,
     results: Sequence[VisibilityResult],
     matched_count: int,
+    object_kind: str,
 ) -> str:
     """Produit une sortie lisible, déterministe et facile à copier."""
 
     start = window.start_local
     end = window.end_local
-    magnitude_text = (
-        "aucune"
-        if max_magnitude is None
-        else f"≤ {max_magnitude:g} au maximum d'éclat"
+    variable_stars = object_kind == "variable_stars"
+    catalog_text = (
+        "Étoiles variables (GCVS)" if variable_stars else "Objets Messier (OpenNGC)"
     )
+    if max_magnitude is None:
+        magnitude_text = "aucune limite"
+    elif variable_stars:
+        magnitude_text = f"≤ {max_magnitude:g} au maximum d'éclat"
+    else:
+        magnitude_text = f"apparente ≤ {max_magnitude:g}"
     lines = [
         "=" * 78,
         "SOIRÉE D'OBSERVATION — GNU ASTROLIST",
         "=" * 78,
+        f"Catalogue             : {catalog_text}",
         f"Date et heures       : {start:%Y-%m-%d %H:%M} → {end:%Y-%m-%d %H:%M}",
         f"Fuseau horaire       : {window.timezone_name} ({start.tzname()} → {end.tzname()})",
         (
@@ -92,7 +100,7 @@ def render_report(
         "-" * 78,
     ]
     if results:
-        lines.append(_format_table(results))
+        lines.append(_format_table(results, object_kind))
         if len(results) < matched_count:
             lines.append(f"\n{len(results)} objet(s) affiché(s) sur {matched_count} trouvé(s).")
         else:
@@ -100,12 +108,14 @@ def render_report(
     else:
         lines.append("Aucun objet du catalogue ne satisfait les critères.")
 
-    lines.extend(
-        [
-            "-" * 78,
-            "Note : hauteurs géométriques, sans réfraction atmosphérique. La magnitude",
-            "       est la magnitude au maximum d'éclat publiée, "
-            "pas une prévision instantanée.",
-        ]
-    )
+    lines.extend(["-" * 78, "Note : hauteurs géométriques, sans réfraction atmosphérique."])
+    if variable_stars:
+        lines.extend(
+            [
+                "       La magnitude est la magnitude au maximum d'éclat publiée,",
+                "       pas une prévision instantanée.",
+            ]
+        )
+    else:
+        lines.append("       Les magnitudes apparentes V proviennent d'OpenNGC.")
     return "\n".join(lines)

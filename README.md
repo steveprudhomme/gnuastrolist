@@ -1,13 +1,14 @@
 # GNU Astrolist
 
 GNU Astrolist est un prototype libre en ligne de commande qui prépare une soirée
-d'observation d'étoiles variables. Il calcule leur hauteur au début et à la fin
-d'une plage horaire, retient celles qui traversent le champ de visée et les trie
-par magnitude maximale en bande V.
+d'observation astronomique. Il calcule la hauteur des objets au début et à la
+fin d'une plage horaire, retient ceux qui traversent le champ de visée et les
+trie par magnitude en bande V.
 
 Le prototype est déjà fonctionnel : il contient 21 212 entrées visuelles du
-General Catalogue of Variable Stars (GCVS), calcule les coordonnées Alt/Az avec
-Astropy et fonctionne hors ligne grâce au catalogue embarqué.
+General Catalogue of Variable Stars (GCVS) ainsi que les 110 objets Messier. Il
+calcule les coordonnées Alt/Az avec Astropy et fonctionne hors ligne grâce aux
+catalogues embarqués.
 
 ## Installation
 
@@ -34,7 +35,9 @@ python -m pip install -e .
 L'installation crée la commande `gnu-astrolist`. Il est également possible
 d'utiliser `python -m gnu_astrolist`.
 
-## Exemple pour Laval
+## Exemples pour Laval
+
+### Étoiles variables
 
 ```bash
 gnu-astrolist \
@@ -54,6 +57,26 @@ gnu-astrolist \
 La fin `02:00`, antérieure au début `21:00`, est automatiquement placée au
 lendemain. Le fuseau IANA est indispensable pour convertir correctement l'heure
 civile, y compris lors des changements d'heure.
+
+### Objets Messier
+
+```bash
+gnu-astrolist \
+  --date 2026-08-15 \
+  --time-range 21:00-02:00 \
+  --timezone America/Toronto \
+  --lat 45.57 \
+  --lon -73.68 \
+  --az-min 15 \
+  --az-max 180 \
+  --min-altitude 20 \
+  --objects messier
+```
+
+Les 110 objets Messier sont considérés par défaut. Ajoutez par exemple
+`--max-magnitude 8` pour ne retenir que ceux dont la magnitude apparente V est
+inférieure ou égale à 8. La convention retenue pour l'objet historiquement
+ambigu M102 est NGC 5866.
 
 ## Sens du champ de vision
 
@@ -96,8 +119,9 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --az-max DEG                 Limite azimutale de fin
 --min-altitude DEG           Élévation minimale; --fov-v est un alias
 --alt-center DEG             Remplacement avancé facultatif du centre vertical
---max-magnitude MAG          Limite au maximum d'éclat (défaut : 8)
---all-magnitudes             Utilise les 21 212 entrées visuelles
+--objects CATALOGUE          variable_stars ou messier
+--max-magnitude MAG          Limite V; défaut 8 pour les variables, aucune pour Messier
+--all-magnitudes             Désactive la limite pour le catalogue choisi
 --sample-minutes MIN         Pas de recherche (défaut : 10)
 --limit N                    Tronque uniquement l'affichage après le tri
 --offline                    Empêche Astropy de mettre à jour les données IERS
@@ -111,11 +135,11 @@ configuration qui dépasserait 2 000 instants d'échantillonnage.
 ## Sur quoi repose l'architecture?
 
 L'architecture sépare volontairement cinq responsabilités : analyse des
-arguments, gestion du temps civil, chargement du catalogue, calcul astronomique
+arguments, gestion du temps civil, chargement des catalogues, calcul astronomique
 et rendu. Cette séparation rend chaque partie testable et permettra d'ajouter
 d'autres catalogues ou formats de sortie sans réécrire le moteur.
 
-Les positions partent des coordonnées ICRS/J2000 du GCVS. Astropy réalise la
+Les positions partent des coordonnées ICRS/J2000 des catalogues. Astropy réalise la
 [transformation vers le repère horizontal `AltAz`](https://docs.astropy.org/en/stable/coordinates/index.html)
 pour un lieu et un instant précis. Le calcul est vectorisé : toutes les étoiles
 présélectionnées sont transformées pour tous les instants d'échantillonnage en
@@ -127,8 +151,11 @@ d'entrée `console_scripts`, conformément au guide de la
 
 ## Limites connues du prototype
 
-- La magnitude affichée est le **maximum d'éclat historique publié** par le
-  GCVS. Ce n'est pas la magnitude prédite pour la date choisie.
+- Pour les étoiles variables, la magnitude affichée est le **maximum d'éclat
+  historique publié** par le GCVS. Ce n'est pas la magnitude prédite pour la
+  date choisie.
+- Pour les objets Messier, la magnitude affichée est la magnitude apparente V
+  publiée par OpenNGC; l'identification retenue pour M102 est NGC 5866.
 - Seules les entrées dont la bande principale est `V` sont incluses. Le GCVS
   regroupe sous ce code les mesures visuelles, photovisuelles ou Johnson V.
 - La sélection est discrète. Un objet qui traverse très rapidement un petit
@@ -153,9 +180,11 @@ ruff check .
 ## Données et licences
 
 Le code est distribué sous GNU GPL version 3 ou ultérieure. Les données du GCVS
-restent attribuées à leurs auteurs et au service VizieR; elles ne sont pas
+restent attribuées à leurs auteurs et au service VizieR. Le catalogue Messier
+dérivé d'OpenNGC demeure sous `CC BY-SA 4.0`. Ces données ne sont pas
 relicenciées par la GPL du logiciel. Consultez
-[`src/gnu_astrolist/data/CATALOG_SOURCE.md`](src/gnu_astrolist/data/CATALOG_SOURCE.md).
+[`CATALOG_SOURCE.md`](src/gnu_astrolist/data/CATALOG_SOURCE.md) et
+[`MESSIER_SOURCE.md`](src/gnu_astrolist/data/MESSIER_SOURCE.md).
 
 ## Contribuer
 

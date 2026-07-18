@@ -11,7 +11,7 @@
 ## Moyen terme
 
 - [ ] Intégrer VSX/AAVSO avec cache, provenance et gestion des pannes réseau.
-- [ ] Ajouter les catalogues Messier, NGC/IC et d'autres familles d'objets.
+- [ ] Ajouter les catalogues complets NGC/IC et d'autres familles d'objets.
 - [ ] Prendre en compte la réfraction et un masque d'horizon local.
 - [ ] Exporter des listes vers des télescopes intelligents.
 
@@ -21,4 +21,3 @@
 - [ ] Prédire les magnitudes lorsque des éphémérides fiables sont disponibles.
 - [ ] Modéliser la météo, la pollution lumineuse et les caractéristiques de
       l'instrument.
-

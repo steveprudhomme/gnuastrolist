@@ -1,4 +1,4 @@
-"""Chargement du sous-ensemble visuel du GCVS fourni avec le paquet."""
+"""Chargement des catalogues astronomiques fournis avec le paquet."""
 
 from __future__ import annotations
 
@@ -8,10 +8,11 @@ from functools import lru_cache
 from importlib import resources
 from typing import Iterable
 
-from .models import VariableStar
+from .models import CatalogObject, MessierObject, VariableStar
 
 
-CATALOG_RESOURCE = "gcvs_visual.csv.gz"
+VARIABLE_STAR_CATALOG_RESOURCE = "gcvs_visual.csv.gz"
+MESSIER_CATALOG_RESOURCE = "messier.csv.gz"
 
 
 def _optional_float(value: str) -> float | None:
@@ -20,9 +21,18 @@ def _optional_float(value: str) -> float | None:
 
 @lru_cache(maxsize=1)
 def load_catalog() -> tuple[VariableStar, ...]:
-    """Charge le catalogue embarqué une seule fois par processus."""
+    """Charge le catalogue GCVS; alias conservé pour compatibilité."""
 
-    resource = resources.files("gnu_astrolist.data").joinpath(CATALOG_RESOURCE)
+    return load_variable_star_catalog()
+
+
+@lru_cache(maxsize=1)
+def load_variable_star_catalog() -> tuple[VariableStar, ...]:
+    """Charge le sous-ensemble visuel du GCVS une fois par processus."""
+
+    resource = resources.files("gnu_astrolist.data").joinpath(
+        VARIABLE_STAR_CATALOG_RESOURCE
+    )
     with resource.open("rb") as raw, gzip.open(
         raw, mode="rt", encoding="utf-8", newline=""
     ) as stream:
@@ -41,15 +51,44 @@ def load_catalog() -> tuple[VariableStar, ...]:
             for row in rows
         )
     if not stars:
-        raise RuntimeError("le catalogue embarqué est vide")
+        raise RuntimeError("le catalogue GCVS embarqué est vide")
     return stars
 
 
+@lru_cache(maxsize=1)
+def load_messier_catalog() -> tuple[MessierObject, ...]:
+    """Charge les 110 objets Messier une fois par processus."""
+
+    resource = resources.files("gnu_astrolist.data").joinpath(
+        MESSIER_CATALOG_RESOURCE
+    )
+    with resource.open("rb") as raw, gzip.open(
+        raw, mode="rt", encoding="utf-8", newline=""
+    ) as stream:
+        rows = csv.DictReader(stream)
+        objects = tuple(
+            MessierObject(
+                name=row["name"],
+                ra_deg=float(row["ra_deg"]),
+                dec_deg=float(row["dec_deg"]),
+                object_type=row["object_type"],
+                magnitude_v=float(row["magnitude_v"]),
+                passband=row["passband"],
+                catalog_designation=row["catalog_designation"],
+                common_name=row["common_name"],
+            )
+            for row in rows
+        )
+    if not objects:
+        raise RuntimeError("le catalogue Messier embarqué est vide")
+    return objects
+
+
 def filter_by_magnitude(
-    stars: Iterable[VariableStar], max_magnitude: float | None
-) -> list[VariableStar]:
-    """Filtre sur la magnitude au maximum d'éclat publiée par le GCVS."""
+    objects: Iterable[CatalogObject], max_magnitude: float | None
+) -> list[CatalogObject]:
+    """Filtre les objets selon leur magnitude V de référence."""
 
     if max_magnitude is None:
-        return list(stars)
-    return [star for star in stars if star.mag_max <= max_magnitude]
+        return list(objects)
+    return [obj for obj in objects if obj.magnitude_v <= max_magnitude]

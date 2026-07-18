@@ -5,6 +5,24 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+## [0.3.0] - 2026-07-17
+
+### Ajouté
+
+- Catalogue embarqué des 110 objets Messier avec coordonnées ICRS/J2000,
+  type et magnitude apparente V provenant d'OpenNGC.
+- Sélection du catalogue avec `--objects messier`; `messier_objects` est aussi
+  accepté comme alias.
+- Script reproductible de génération, provenance, attribution `CC BY-SA 4.0`
+  et convention explicite M102 = NGC 5866.
+
+### Modifié
+
+- Adaptation du moteur de visibilité, du filtre photométrique et du rapport aux
+  étoiles variables comme aux objets Messier.
+- Absence de limite de magnitude par défaut pour Messier; la valeur par défaut
+  de 8 est conservée pour les étoiles variables.
+
 ## [0.2.0] - 2026-07-17
 
 ### Modifié

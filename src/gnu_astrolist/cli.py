@@ -8,7 +8,11 @@ from collections.abc import Sequence
 from astropy.utils import iers
 
 from . import __version__
-from .catalog import filter_by_magnitude, load_catalog
+from .catalog import (
+    filter_by_magnitude,
+    load_messier_catalog,
+    load_variable_star_catalog,
+)
 from .models import FieldOfView
 from .output import render_report
 from .time_utils import parse_observation_window
@@ -19,7 +23,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="gnu-astrolist",
         description=(
-            "Liste les étoiles variables qui traversent un champ Alt/Az pendant une soirée."
+            "Liste les objets astronomiques qui traversent un champ Alt/Az pendant une soirée."
         ),
     )
     parser.add_argument(
@@ -76,19 +80,23 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--objects",
         required=True,
-        choices=("variable_stars",),
-        help="type d'objets (prototype : variable_stars)",
+        choices=("variable_stars", "messier", "messier_objects"),
+        help="catalogue : variable_stars ou messier (messier_objects est un alias)",
     )
-    parser.add_argument(
+    magnitudes = parser.add_mutually_exclusive_group()
+    magnitudes.add_argument(
         "--max-magnitude",
         type=float,
-        default=8.0,
-        help="magnitude V maximale au maximum d'éclat (défaut : 8)",
+        default=None,
+        help=(
+            "magnitude V maximale (défaut : 8 pour variable_stars; "
+            "aucune limite pour messier)"
+        ),
     )
-    parser.add_argument(
+    magnitudes.add_argument(
         "--all-magnitudes",
         action="store_true",
-        help="désactive --max-magnitude et utilise tout le catalogue visuel",
+        help="désactive la limite de magnitude et utilise tout le catalogue choisi",
     )
     parser.add_argument(
         "--sample-minutes",
@@ -139,8 +147,20 @@ def main(argv: Sequence[str] | None = None) -> int:
     iers.conf.auto_download = not args.offline
     iers.conf.iers_degraded_accuracy = "warn"
 
-    max_magnitude = None if args.all_magnitudes else args.max_magnitude
-    stars = filter_by_magnitude(load_catalog(), max_magnitude)
+    object_kind = "messier" if args.objects in {"messier", "messier_objects"} else args.objects
+    if args.all_magnitudes:
+        max_magnitude = None
+    elif args.max_magnitude is not None:
+        max_magnitude = args.max_magnitude
+    else:
+        max_magnitude = 8.0 if object_kind == "variable_stars" else None
+
+    catalog = (
+        load_variable_star_catalog()
+        if object_kind == "variable_stars"
+        else load_messier_catalog()
+    )
+    stars = filter_by_magnitude(catalog, max_magnitude)
     try:
         results = compute_visibility(
             stars=stars,
@@ -166,6 +186,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             sample_minutes=args.sample_minutes,
             results=displayed_results,
             matched_count=matched_count,
+            object_kind=object_kind,
         )
     )
     return 0

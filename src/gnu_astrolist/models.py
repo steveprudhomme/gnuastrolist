@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from typing import TypeAlias
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
@@ -21,6 +22,39 @@ class VariableStar:
     mag_min: float | None
     passband: str
     mag_max_limit: str = ""
+
+    @property
+    def object_type(self) -> str:
+        return self.variable_type
+
+    @property
+    def magnitude_v(self) -> float:
+        return self.mag_max
+
+    @property
+    def magnitude_limit(self) -> str:
+        return self.mag_max_limit
+
+
+@dataclass(frozen=True, slots=True)
+class MessierObject:
+    """Un objet du catalogue Messier embarqué."""
+
+    name: str
+    ra_deg: float
+    dec_deg: float
+    object_type: str
+    magnitude_v: float
+    catalog_designation: str
+    common_name: str = ""
+    passband: str = "V"
+
+    @property
+    def magnitude_limit(self) -> str:
+        return ""
+
+
+CatalogObject: TypeAlias = VariableStar | MessierObject
 
 
 @dataclass(frozen=True, slots=True)
@@ -150,7 +184,7 @@ class FieldOfView:
 class VisibilityResult:
     """Position d'un objet au début et à la fin de la plage."""
 
-    star: VariableStar
+    star: CatalogObject
     altitude_start_deg: float
     altitude_end_deg: float
     azimuth_start_deg: float
