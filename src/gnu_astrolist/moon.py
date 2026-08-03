@@ -19,6 +19,8 @@ from astropy.time import Time
 from .models import MoonSummary, ObservationWindow
 
 MOON_EVENT_SAMPLE_MINUTES = 5.0
+STANDARD_HORIZON_REFRACTION_DEG = 34.0 / 60.0
+MOON_REFERENCE_RADIUS_KM = 1_737.4
 PHASE_NAMES = (
     "Nouvelle lune",
     "Premier croissant",
@@ -61,10 +63,10 @@ def _local_day_samples(window: ObservationWindow) -> list[datetime]:
 
 
 def _interpolate_horizon_crossing(
-    samples: Sequence[datetime], altitudes: np.ndarray, index: int
+    samples: Sequence[datetime], apparent_upper_limb_altitudes: np.ndarray, index: int
 ) -> datetime:
-    lower_altitude = float(altitudes[index])
-    upper_altitude = float(altitudes[index + 1])
+    lower_altitude = float(apparent_upper_limb_altitudes[index])
+    upper_altitude = float(apparent_upper_limb_altitudes[index + 1])
     difference = upper_altitude - lower_altitude
     fraction = 0.5 if difference == 0.0 else -lower_altitude / difference
     fraction = min(1.0, max(0.0, fraction))
@@ -74,6 +76,33 @@ def _interpolate_horizon_crossing(
 def _round_to_minute(instant: datetime) -> datetime:
     rounded = instant + timedelta(seconds=30)
     return rounded.replace(second=0, microsecond=0)
+
+
+def _apparent_upper_limb_altitudes(
+    geometric_center_altitudes_deg: np.ndarray, moon_distances_km: np.ndarray
+) -> np.ndarray:
+    """Applique le demi-diamètre variable et la réfraction standard de 34′."""
+
+    semidiameters_deg = np.degrees(
+        np.arcsin(MOON_REFERENCE_RADIUS_KM / moon_distances_km)
+    )
+    return (
+        geometric_center_altitudes_deg
+        + semidiameters_deg
+        + STANDARD_HORIZON_REFRACTION_DEG
+    )
+
+
+def _daily_illumination_reference(window: ObservationWindow) -> datetime:
+    """Retourne le midi local de la date de soirée associée à l'observation."""
+
+    timezone_info = window.start_local.tzinfo
+    if timezone_info is None:
+        raise ValueError("la plage d'observation doit avoir un fuseau horaire")
+    evening_date = window.start_local.date()
+    if window.start_local.hour < 12:
+        evening_date -= timedelta(days=1)
+    return datetime.combine(evening_date, time(hour=12), tzinfo=timezone_info)
 
 
 def _phase_and_illumination(reference: datetime) -> tuple[str, float]:
@@ -120,8 +149,12 @@ def compute_moon_summary(
     times = Time(samples)
     frame = AltAz(obstime=times, location=location, pressure=0.0 * u.hPa)
     moon = get_body("moon", times, location=location)
-    altitudes = np.asarray(moon.transform_to(frame).alt.deg)
-    above_horizon = altitudes >= 0.0
+    geometric_center_altitudes = np.asarray(moon.transform_to(frame).alt.deg)
+    moon_distances_km = np.asarray(moon.distance.to_value(u.km))
+    apparent_upper_limb_altitudes = _apparent_upper_limb_altitudes(
+        geometric_center_altitudes, moon_distances_km
+    )
+    above_horizon = apparent_upper_limb_altitudes >= 0.0
 
     rising_indices = np.flatnonzero((~above_horizon[:-1]) & above_horizon[1:])
     setting_indices = np.flatnonzero(above_horizon[:-1] & (~above_horizon[1:]))
@@ -131,22 +164,30 @@ def compute_moon_summary(
 
     moonrise = (
         _round_to_minute(
-            _interpolate_horizon_crossing(samples, altitudes, int(rising_indices[0]))
+            _interpolate_horizon_crossing(
+                samples, apparent_upper_limb_altitudes, int(rising_indices[0])
+            )
         ).astimezone(timezone_info)
         if rising_indices.size
         else None
     )
     moonset = (
         _round_to_minute(
-            _interpolate_horizon_crossing(samples, altitudes, int(setting_indices[0]))
+            _interpolate_horizon_crossing(
+                samples, apparent_upper_limb_altitudes, int(setting_indices[0])
+            )
         ).astimezone(timezone_info)
         if setting_indices.size
         else None
     )
     phase_name, illumination_percent = _phase_and_illumination(window.start_local)
+    daily_reference = _daily_illumination_reference(window)
+    _, daily_illumination_percent = _phase_and_illumination(daily_reference)
     return MoonSummary(
         phase_name=phase_name,
         illumination_percent=illumination_percent,
+        daily_illumination_percent=daily_illumination_percent,
+        daily_illumination_reference_local=daily_reference,
         moonrise_local=moonrise,
         moonset_local=moonset,
         always_above_horizon=bool(np.all(above_horizon)),

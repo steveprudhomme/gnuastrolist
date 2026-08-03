@@ -50,8 +50,12 @@ def test_report_contains_the_enriched_result_columns() -> None:
     moon_summary = MoonSummary(
         phase_name="Lune gibbeuse décroissante",
         illumination_percent=80.0,
-        moonrise_local=datetime(2026, 8, 3, 22, 23, tzinfo=timezone),
-        moonset_local=datetime(2026, 8, 3, 11, 1, tzinfo=timezone),
+        daily_illumination_percent=84.1,
+        daily_illumination_reference_local=datetime(
+            2026, 8, 2, 12, 0, tzinfo=timezone
+        ),
+        moonrise_local=datetime(2026, 8, 3, 22, 18, tzinfo=timezone),
+        moonset_local=datetime(2026, 8, 3, 11, 6, tzinfo=timezone),
     )
 
     report = render_report(
@@ -89,6 +93,7 @@ def test_report_contains_the_enriched_result_columns() -> None:
     assert "RÉSUMÉ DE LA LUNE" in report
     assert "Lune gibbeuse décroissante" in report
     assert "80.0 %" in report
-    assert "22:23" in report
-    assert "11:01" in report
+    assert "Illumination quotidienne (2026-08-02 12:00) : 84.1 %" in report
+    assert "22:18" in report
+    assert "11:06" in report
     assert report.index("RÉSUMÉ DE LA LUNE") < report.index("Objet | Type")

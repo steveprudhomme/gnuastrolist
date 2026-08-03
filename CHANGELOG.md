@@ -5,6 +5,32 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+## [0.8.0] - 2026-08-03
+
+### Ajouté
+
+- Illumination quotidienne à midi local de la date de soirée, affichée en plus
+  de l'illumination calculée au début de l'observation.
+- Tests de comparaison des levers et couchers lunaires avec les éphémérides
+  2026 du Griffith Observatory préparées à partir des données de l'US Naval
+  Observatory.
+- Test confirmant la variation du demi-diamètre apparent avec la distance de la
+  Lune.
+
+### Modifié
+
+- Calcul du lever et du coucher à partir du bord supérieur apparent du disque
+  lunaire, avec une réfraction horizontale standard de 34 minutes d'arc.
+- Prise en compte du demi-diamètre variable à partir d'un rayon lunaire de
+  référence de 1 737,4 km et de la distance topocentrique instantanée.
+- Affichage explicite de la date et de l'heure de référence de chaque valeur
+  d'illumination.
+
+### Documenté
+
+- Convention de l'Astronomical Almanac, méthode de calcul, références et limites
+  liées aux conditions atmosphériques et à l'horizon local.
+
 ## [0.7.0] - 2026-08-03
 
 ### Ajouté

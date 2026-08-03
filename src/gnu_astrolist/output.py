@@ -92,18 +92,30 @@ def _format_moon_summary(
     summary: MoonSummary, window: ObservationWindow
 ) -> list[str]:
     start = window.start_local
+    daily_reference = summary.daily_illumination_reference_local
+    entries = (
+        (f"Phase au début ({start:%Y-%m-%d %H:%M})", summary.phase_name),
+        (
+            f"Illumination au début ({start:%Y-%m-%d %H:%M})",
+            f"{summary.illumination_percent:.1f} %",
+        ),
+        (
+            f"Illumination quotidienne ({daily_reference:%Y-%m-%d %H:%M})",
+            f"{summary.daily_illumination_percent:.1f} %",
+        ),
+        (
+            f"Lever apparent le {start:%Y-%m-%d}",
+            _moon_event_label(summary.moonrise_local, summary),
+        ),
+        (
+            f"Coucher apparent le {start:%Y-%m-%d}",
+            _moon_event_label(summary.moonset_local, summary),
+        ),
+    )
+    label_width = max(len(label) for label, _ in entries)
     return [
         "RÉSUMÉ DE LA LUNE",
-        f"Phase à {start:%H:%M}        : {summary.phase_name}",
-        f"Illumination à {start:%H:%M} : {summary.illumination_percent:.1f} %",
-        (
-            f"Lever le {start:%Y-%m-%d}   : "
-            f"{_moon_event_label(summary.moonrise_local, summary)}"
-        ),
-        (
-            f"Coucher le {start:%Y-%m-%d} : "
-            f"{_moon_event_label(summary.moonset_local, summary)}"
-        ),
+        *(f"{label.ljust(label_width)} : {value}" for label, value in entries),
     ]
 
 
@@ -259,7 +271,12 @@ def render_report(
     else:
         lines.append("Aucun objet du catalogue ne satisfait les critères.")
 
-    lines.extend(["-" * 78, "Note : hauteurs géométriques, sans réfraction atmosphérique."])
+    lines.extend(
+        [
+            "-" * 78,
+            "Note : hauteurs du tableau géométriques, sans réfraction atmosphérique.",
+        ]
+    )
     if variable_stars:
         lines.extend(
             [
@@ -274,8 +291,9 @@ def render_report(
     lines.extend(
         [
             "       Les tailles apparentes sont exprimées en minutes d'arc (′).",
-            "       Lever et coucher lunaires : passage géométrique du centre de",
-            "       la Lune à l'horizon 0°, sans réfraction ni masque d'horizon.",
+            "       Lever et coucher lunaires : bord supérieur apparent, avec",
+            "       demi-diamètre variable et réfraction standard de 34′.",
+            "       Aucun relief, masque d'horizon ni météo locale n'est appliqué.",
             "       Séparation solaire maximale : maximum angulaire géométrique;",
             "       ce calcul ne constitue pas une opposition pour le ciel profond.",
             "       Meilleure visibilité saisonnière : culmination supérieure la",

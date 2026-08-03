@@ -96,6 +96,8 @@ class MoonSummary:
 
     phase_name: str
     illumination_percent: float
+    daily_illumination_percent: float
+    daily_illumination_reference_local: datetime
     moonrise_local: datetime | None
     moonset_local: datetime | None
     always_above_horizon: bool = False

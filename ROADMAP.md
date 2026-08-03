@@ -52,7 +52,7 @@
   - illumination (%);
   - heure du lever de la Lune;
   - heure du coucher de la Lune.
-- [ ] Harmoniser les conventions lunaires avec celles des éphémérides publiées :
+- [x] Harmoniser les conventions lunaires avec celles des éphémérides publiées :
   - calculer le lever et le coucher à partir du bord supérieur apparent du
     disque lunaire plutôt qu'au passage géométrique de son centre à 0°;
   - intégrer une réfraction atmosphérique standard afin d'obtenir un lever plus

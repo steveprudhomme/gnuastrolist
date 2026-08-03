@@ -89,6 +89,7 @@ Avant la liste d'observation, le rapport affiche un résumé lunaire comprenant 
 
 - la phase de la Lune au début de la plage demandée;
 - son pourcentage d'illumination à ce même instant;
+- son illumination quotidienne à midi local de la date de soirée;
 - l'heure locale de son lever pendant la date civile choisie;
 - l'heure locale de son coucher pendant cette date.
 
@@ -96,11 +97,33 @@ Les huit appellations utilisées sont : nouvelle lune, premier croissant,
 premier quartier, lune gibbeuse croissante, pleine lune, lune gibbeuse
 décroissante, dernier quartier et dernier croissant. La phase et l'illumination
 sont calculées avec les éphémérides lunaires et solaires intégrées à Astropy.
+Chaque pourcentage est accompagné de son instant de référence. La convention
+quotidienne à midi local suit celle du service de l'[US Naval
+Observatory](https://aa.usno.navy.mil/data/api). GNU Astrolist l'associe à la
+date de soirée : si l'observation commence avant midi, le midi de la veille est
+utilisé. Une observation commençant le 3 août à 00:00 affiche ainsi également
+la valeur quotidienne du 2 août à 12:00.
 
-Les heures de lever et de coucher correspondent au passage géométrique du
-centre de la Lune à un horizon de 0°. Elles ne tiennent pas compte de la
-réfraction atmosphérique, du relief ni d'un masque d'horizon local et peuvent
-donc différer légèrement des horaires publiés utilisant une autre convention.
+Les heures de lever et de coucher suivent la convention de l'[Astronomical
+Almanac](https://aa.usno.navy.mil/faq/asa_glossary) : le bord supérieur apparent
+de la Lune touche l'horizon astronomique. Le calcul additionne à la hauteur
+géométrique topocentrique du centre :
+
+- une réfraction horizontale standard fixe de 34 minutes d'arc;
+- le demi-diamètre lunaire instantané, calculé avec un rayon de référence de
+  1 737,4 km et la distance topocentrique fournie par Astropy.
+
+Le rayon retenu est celui du modèle de référence lunaire de la
+[NASA](https://svs.gsfc.nasa.gov/4720). La réfraction est appliquée sous forme de
+constante d'almanach plutôt qu'avec le modèle `AltAz` d'Astropy, car la
+[documentation d'Astropy](https://docs.astropy.org/en/stable/api/astropy.coordinates.AltAz.html)
+précise que son modèle devient imprécis sous environ 5° et potentiellement non
+physique près de l'horizon.
+
+Cette convention standard ne tient pas compte de la température, de la
+pression et de l'humidité réelles, du relief, de l'abaissement de l'horizon lié
+à la hauteur de l'observateur ni d'un masque d'horizon local. Les horaires
+peuvent donc encore différer de quelques minutes entre services publiés.
 Lorsqu'aucun passage ne survient pendant la date locale, le rapport le précise;
 il indique également si la Lune demeure levée ou couchée toute la journée.
 
@@ -231,9 +254,10 @@ d'entrée `console_scripts`, conformément au guide de la
   regroupe sous ce code les mesures visuelles, photovisuelles ou Johnson V.
 - La sélection est discrète. Un objet qui traverse très rapidement un petit
   champ entre deux échantillons peut être manqué; réduisez `--sample-minutes`.
-- La réfraction atmosphérique, les obstacles, la météo, la Lune, le crépuscule,
-  la pollution lumineuse et les limites réelles d'un instrument ne sont pas
-  encore modélisés.
+- La sélection des objets n'applique ni réfraction atmosphérique, ni obstacles,
+  météo, crépuscule, pollution lumineuse ou limites réelles d'un instrument.
+  Le résumé lunaire applique seulement la réfraction standard fixe décrite
+  ci-dessus; il ne modélise pas les conditions atmosphériques locales.
 - Les étoiles sont traitées comme des positions ICRS fixes. Le catalogue fournit
   des coordonnées J2000; le prototype n'applique pas les mouvements propres.
 - Les données GCVS distribuées datent de la version publiée par VizieR. VSX est
