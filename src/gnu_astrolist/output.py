@@ -93,7 +93,8 @@ def _format_table(
         "Constellation",
         "Taille apparente",
         magnitude_header,
-        "Opposition",
+        "Séparation solaire maximale",
+        "Meilleure visibilité saisonnière",
         f"Monte ≥ {minimum_altitude_deg:g}°",
         f"Descend < {minimum_altitude_deg:g}°",
         "Hauteur début",
@@ -107,8 +108,13 @@ def _format_table(
             _apparent_size_label(result),
             _magnitude_label(result),
             (
-                result.opposition_date.isoformat()
-                if result.opposition_date is not None
+                result.maximum_solar_separation_date.isoformat()
+                if result.maximum_solar_separation_date is not None
+                else "—"
+            ),
+            (
+                result.best_seasonal_visibility_date.isoformat()
+                if result.best_seasonal_visibility_date is not None
                 else "—"
             ),
             _crossing_time_label(
@@ -236,7 +242,12 @@ def render_report(
     lines.extend(
         [
             "       Les tailles apparentes sont exprimées en minutes d'arc (′).",
-            "       L'opposition est le jour de séparation maximale avec le Soleil.",
+            "       Séparation solaire maximale : maximum angulaire géométrique;",
+            "       ce calcul ne constitue pas une opposition pour le ciel profond.",
+            "       Meilleure visibilité saisonnière : culmination supérieure la",
+            "       plus proche de minuit civil local, sans Lune, météo ni crépuscule.",
+            "       Le terme opposition est réservé aux corps du Système solaire",
+            "       pour lesquels cette notion est physiquement applicable.",
             "       Les heures de franchissement sont des estimations à la minute",
             f"       dans le fuseau {window.timezone_name}; une date MM-JJ est ajoutée",
             "       lorsque le passage n'a pas lieu à la date de début.",

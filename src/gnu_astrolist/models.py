@@ -208,6 +208,10 @@ class VisibilityResult:
     azimuth_start_deg: float
     azimuth_end_deg: float
     constellation: str = ""
+    maximum_solar_separation_date: date | None = None
+    best_seasonal_visibility_date: date | None = None
+    # Réservé aux futurs corps du Système solaire pour lesquels l'opposition
+    # est physiquement applicable. Les objets du ciel profond laissent ce champ vide.
     opposition_date: date | None = None
     rises_above_minimum_local: datetime | None = None
     sets_below_minimum_local: datetime | None = None

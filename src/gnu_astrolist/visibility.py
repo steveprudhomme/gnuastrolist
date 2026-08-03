@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import replace
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone, tzinfo
 
 import astropy.units as u
 import numpy as np
@@ -54,7 +54,9 @@ def _datetime_range(
     return samples
 
 
-def _opposition_dates(stars: Sequence[CatalogObject], year: int) -> list[date]:
+def _maximum_solar_separation_dates(
+    stars: Sequence[CatalogObject], year: int
+) -> list[date]:
     """Estime le jour de séparation angulaire maximale avec le Soleil."""
 
     first_day = datetime(year, 1, 1, 12, tzinfo=timezone.utc)
@@ -75,11 +77,47 @@ def _opposition_dates(stars: Sequence[CatalogObject], year: int) -> list[date]:
     for chunk_start in range(0, len(stars), CATALOG_CHUNK_SIZE):
         chunk_stop = min(chunk_start + CATALOG_CHUNK_SIZE, len(stars))
         # Le produit scalaire minimal correspond à la séparation maximale.
-        opposition_indices = np.argmin(
+        maximum_separation_indices = np.argmin(
             target_vectors[chunk_start:chunk_stop] @ sun_vectors,
             axis=1,
         )
-        dates.extend(samples[int(index)].date() for index in opposition_indices)
+        dates.extend(
+            samples[int(index)].date() for index in maximum_separation_indices
+        )
+    return dates
+
+
+def _best_seasonal_visibility_dates(
+    stars: Sequence[CatalogObject],
+    year: int,
+    *,
+    location: EarthLocation,
+    timezone_info: tzinfo,
+) -> list[date]:
+    """Estime la date où chaque objet culmine le plus près de minuit local."""
+
+    first_midnight = datetime(year, 1, 1, tzinfo=timezone_info)
+    day_count = (date(year + 1, 1, 1) - date(year, 1, 1)).days
+    local_midnights = [
+        first_midnight + timedelta(days=offset) for offset in range(day_count)
+    ]
+    sidereal_degrees = np.asarray(
+        Time(local_midnights).sidereal_time("apparent", longitude=location.lon).deg
+    )
+    right_ascensions = np.fromiter((star.ra_deg for star in stars), dtype=float)
+
+    dates: list[date] = []
+    for chunk_start in range(0, len(stars), CATALOG_CHUNK_SIZE):
+        chunk_stop = min(chunk_start + CATALOG_CHUNK_SIZE, len(stars))
+        hour_angles = (
+            right_ascensions[chunk_start:chunk_stop, np.newaxis]
+            - sidereal_degrees[np.newaxis, :]
+            + 180.0
+        ) % 360.0 - 180.0
+        closest_transit_indices = np.argmin(np.abs(hour_angles), axis=1)
+        dates.extend(
+            local_midnights[int(index)].date() for index in closest_transit_indices
+        )
     return dates
 
 
@@ -189,7 +227,17 @@ def _enrich_results(
     computed_constellations = np.atleast_1d(
         coordinates.get_constellation(short_name=True)
     )
-    opposition_dates = _opposition_dates(stars, window.start_local.year)
+    maximum_solar_separation_dates = _maximum_solar_separation_dates(
+        stars, window.start_local.year
+    )
+    if window.start_local.tzinfo is None:
+        raise ValueError("la plage d'observation doit avoir un fuseau horaire")
+    best_seasonal_visibility_dates = _best_seasonal_visibility_dates(
+        stars,
+        window.start_local.year,
+        location=location,
+        timezone_info=window.start_local.tzinfo,
+    )
     rises, sets, always_above = _threshold_crossings(
         results,
         location=location,
@@ -203,7 +251,9 @@ def _enrich_results(
             constellation=(
                 result.star.constellation or str(computed_constellations[index])
             ),
-            opposition_date=opposition_dates[index],
+            maximum_solar_separation_date=maximum_solar_separation_dates[index],
+            best_seasonal_visibility_date=best_seasonal_visibility_dates[index],
+            opposition_date=None,
             rises_above_minimum_local=rises[index],
             sets_below_minimum_local=sets[index],
             always_above_minimum=always_above[index],

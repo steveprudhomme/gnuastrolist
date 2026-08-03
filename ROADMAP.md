@@ -8,7 +8,8 @@
 - [x] Enrichir le tableau des résultats avec les colonnes suivantes :
   - taille apparente de l'objet (dimensions angulaires);
   - magnitude apparente;
-  - date de l'opposition, lorsque cette donnée est applicable;
+  - dates distinctes de séparation solaire maximale et de meilleure visibilité
+    saisonnière;
   - constellation;
   - heure du passage au-dessus de l'élévation minimale choisie par
     l'utilisateur;
@@ -32,7 +33,7 @@
     explicitement la source dans les sorties détaillées;
   - ajouter des tests de comparaison sur des objets de référence, notamment
     M39, M15 et M52.
-- [ ] Clarifier et corriger la colonne actuellement appelée **Opposition** pour
+- [x] Clarifier et corriger la colonne actuellement appelée **Opposition** pour
       les objets du ciel profond :
   - renommer le calcul géométrique actuel **Séparation solaire maximale**;
   - ajouter séparément une date de **Meilleure visibilité saisonnière**, fondée

@@ -5,6 +5,24 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+## [0.6.0] - 2026-08-03
+
+### Ajouté
+
+- Colonne **Meilleure visibilité saisonnière**, calculée à partir de la date où
+  la culmination supérieure de l'objet est la plus proche de minuit civil
+  local.
+- Tests couvrant un objet éloigné de l'écliptique dont les deux dates
+  saisonnières diffèrent de plusieurs semaines.
+
+### Modifié
+
+- Renommage de l'ancienne colonne **Opposition** en **Séparation solaire
+  maximale**, sans fusion avec la meilleure période d'observation.
+- Réservation du terme **Opposition** aux corps du Système solaire pour lesquels
+  cette configuration est physiquement applicable.
+- Documentation des définitions, méthodes de calcul et limites des deux dates.
+
 ## [0.5.0] - 2026-08-03
 
 ### Ajouté

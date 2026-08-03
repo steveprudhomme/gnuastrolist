@@ -41,7 +41,8 @@ def test_report_contains_the_enriched_result_columns() -> None:
         azimuth_start_deg=48.0,
         azimuth_end_deg=60.0,
         constellation="And",
-        opposition_date=date(2026, 9, 28),
+        maximum_solar_separation_date=date(2026, 9, 28),
+        best_seasonal_visibility_date=date(2026, 10, 3),
         rises_above_minimum_local=datetime(2026, 8, 2, 23, 12, tzinfo=timezone),
         sets_below_minimum_local=datetime(2026, 8, 3, 7, 46, tzinfo=timezone),
     )
@@ -63,12 +64,15 @@ def test_report_contains_the_enriched_result_columns() -> None:
     assert "Taille apparente" in report
     assert "Mag. apparente V" in report
     assert "Constellation" in report
-    assert "Opposition" in report
+    assert "Séparation solaire maximale" in report
+    assert "Meilleure visibilité saisonnière" in report
+    assert "| Opposition |" not in report
     assert "Monte ≥ 50°" in report
     assert "Descend < 50°" in report
     assert "177.83′ × 69.66′ [SIMBAD]" in report
     assert "3.44 [SIMBAD]" in report
     assert "2026-09-28" in report
+    assert "2026-10-03" in report
     assert "08-02 23:12" in report
     assert "07:46" in report
     assert "PROVENANCE DÉTAILLÉE" in report

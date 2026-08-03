@@ -90,8 +90,8 @@ Le tableau indique désormais, pour chaque objet retenu :
 - son type et sa constellation;
 - sa taille apparente en minutes d'arc lorsqu'elle est publiée;
 - sa magnitude V de référence;
-- sa date d'opposition estimée pour l'année de l'observation, définie ici comme
-  le jour de séparation angulaire maximale avec le Soleil;
+- la date de séparation solaire maximale et, séparément, la date de meilleure
+  visibilité saisonnière;
 - l'heure où il monte au-dessus de `--min-altitude` et l'heure où il redescend
   sous ce seuil;
 - sa hauteur au début et à la fin de la plage demandée.
@@ -101,6 +101,29 @@ de cinq minutes, dans le fuseau fourni par `--timezone`. Si un passage survient
 un autre jour que la date de début, le tableau ajoute sa date au format
 `MM-JJ`. La valeur `Toujours` désigne un objet qui reste au-dessus du seuil
 pendant toute la période de recherche de 60 heures autour du début.
+
+### Dates saisonnières
+
+**Séparation solaire maximale** désigne le jour où la séparation angulaire
+géométrique entre l'objet et le Soleil est la plus grande. GNU Astrolist estime
+ce jour à partir d'un échantillon quotidien à 12 h UTC. Cette date est
+indépendante du site d'observation et ne constitue pas une opposition physique
+pour un objet du ciel profond.
+
+**Meilleure visibilité saisonnière** désigne la date où la culmination
+supérieure de l'objet est la plus proche de minuit civil local. Le calcul
+compare le temps sidéral local à l'ascension droite de l'objet à chaque minuit
+de l'année; il dépend donc de la longitude et du fuseau horaire fournis. Cette
+date est une indication saisonnière, pas une prévision complète : elle ne tient
+pas encore compte du crépuscule, de la Lune, de la météo, de la réfraction ni
+d'un horizon local. L'heure civile et ses changements saisonniers peuvent aussi
+décaler le résultat d'environ une journée.
+
+Ces deux dates ne sont jamais fusionnées. Elles peuvent différer de plusieurs
+semaines pour un objet éloigné de l'écliptique. Le terme **Opposition** est
+réservé aux corps du Système solaire pour lesquels cette configuration est
+physiquement applicable; aucun objet Messier ni aucune étoile variable ne
+reçoit actuellement une date d'opposition.
 
 ## Sens du champ de vision
 
