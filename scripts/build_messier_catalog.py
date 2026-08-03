@@ -17,7 +17,6 @@ import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
-
 NGC_SOURCE_URL = (
     "https://raw.githubusercontent.com/mattiaverga/OpenNGC/master/database_files/NGC.csv"
 )
@@ -32,6 +31,9 @@ FIELDNAMES = (
     "magnitude_v",
     "passband",
     "catalog_designation",
+    "constellation",
+    "major_axis_arcmin",
+    "minor_axis_arcmin",
     "common_name",
 )
 
@@ -44,6 +46,9 @@ class ParsedMessierObject:
     object_type: str
     magnitude_v: float
     catalog_designation: str
+    constellation: str
+    major_axis_arcmin: float | None
+    minor_axis_arcmin: float | None
     common_name: str
 
     def csv_row(self) -> dict[str, str]:
@@ -55,6 +60,13 @@ class ParsedMessierObject:
             "magnitude_v": f"{self.magnitude_v:.3f}",
             "passband": "V",
             "catalog_designation": self.catalog_designation,
+            "constellation": self.constellation,
+            "major_axis_arcmin": (
+                "" if self.major_axis_arcmin is None else f"{self.major_axis_arcmin:.2f}"
+            ),
+            "minor_axis_arcmin": (
+                "" if self.minor_axis_arcmin is None else f"{self.minor_axis_arcmin:.2f}"
+            ),
             "common_name": self.common_name,
         }
 
@@ -70,6 +82,10 @@ def _declination_degrees(value: str) -> float:
     return sign * (degrees + minutes / 60.0 + seconds / 3600.0)
 
 
+def _optional_float(value: str) -> float | None:
+    return float(value) if value.strip() else None
+
+
 def _parse_row(row: dict[str, str], number: int) -> ParsedMessierObject:
     return ParsedMessierObject(
         number=number,
@@ -78,6 +94,9 @@ def _parse_row(row: dict[str, str], number: int) -> ParsedMessierObject:
         object_type=row["Type"],
         magnitude_v=float(row["V-Mag"]),
         catalog_designation=row["Name"],
+        constellation={"Se1": "Ser", "Se2": "Ser"}.get(row["Const"], row["Const"]),
+        major_axis_arcmin=_optional_float(row["MajAx"]),
+        minor_axis_arcmin=_optional_float(row["MinAx"]),
         common_name=row["Common names"].replace(",", "; "),
     )
 
@@ -88,7 +107,7 @@ def obtain_source(source: str) -> bytes:
         return path.read_bytes()
     request = urllib.request.Request(
         source,
-        headers={"User-Agent": "gnu-astrolist-messier-builder/0.3"},
+        headers={"User-Agent": "gnu-astrolist-messier-builder/0.4"},
     )
     with urllib.request.urlopen(request, timeout=60) as response:
         return response.read()
@@ -131,12 +150,14 @@ def build(ngc_source: str, addendum_source: str, output: Path) -> tuple[int, str
         raise ValueError(f"liste Messier incomplète; absents={missing}, inattendus={unexpected}")
 
     output.parent.mkdir(parents=True, exist_ok=True)
-    with output.open("wb") as raw:
-        with gzip.GzipFile(filename="", fileobj=raw, mode="wb", mtime=0) as archive:
-            with io.TextIOWrapper(archive, encoding="utf-8", newline="") as text:
-                writer = csv.DictWriter(text, fieldnames=FIELDNAMES, lineterminator="\n")
-                writer.writeheader()
-                writer.writerows(objects[number].csv_row() for number in sorted(objects))
+    with (
+        output.open("wb") as raw,
+        gzip.GzipFile(filename="", fileobj=raw, mode="wb", mtime=0) as archive,
+        io.TextIOWrapper(archive, encoding="utf-8", newline="") as text,
+    ):
+        writer = csv.DictWriter(text, fieldnames=FIELDNAMES, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(objects[number].csv_row() for number in sorted(objects))
 
     return (
         len(objects),

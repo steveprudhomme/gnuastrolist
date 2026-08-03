@@ -5,6 +5,22 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+## [0.4.0] - 2026-08-03
+
+### Ajouté
+
+- Colonnes de taille apparente, magnitude apparente, constellation et date
+  annuelle d'opposition dans le tableau des résultats.
+- Heures estimées de montée au-dessus et de descente sous l'élévation minimale
+  choisie, dans le fuseau horaire de l'observation.
+- Dimensions angulaires et constellations OpenNGC dans le catalogue Messier
+  embarqué.
+
+### Corrigé
+
+- Le mode `--offline` accepte maintenant les données prédictives IERS
+  embarquées âgées de plus de 30 jours au lieu d'interrompre le calcul.
+
 ## [0.3.0] - 2026-07-17
 
 ### Ajouté

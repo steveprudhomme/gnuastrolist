@@ -145,6 +145,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         parser.error(str(exc))
 
     iers.conf.auto_download = not args.offline
+    # En mode hors ligne, accepter la table prédictive embarquée même si elle
+    # a plus de 30 jours; Astropy émettra au besoin l'avertissement configuré.
+    iers.conf.auto_max_age = None if args.offline else 30.0
     iers.conf.iers_degraded_accuracy = "warn"
 
     object_kind = "messier" if args.objects in {"messier", "messier_objects"} else args.objects

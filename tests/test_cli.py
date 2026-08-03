@@ -1,3 +1,5 @@
+from astropy.utils import iers
+
 from gnu_astrolist.cli import main
 
 
@@ -33,6 +35,8 @@ def test_cli_prints_header_and_empty_result(capsys) -> None:
     assert "SOIRÉE D'OBSERVATION" in output
     assert "Aucun objet" in output
     assert "America/Toronto" in output
+    assert iers.conf.auto_download is False
+    assert iers.conf.auto_max_age is None
 
 
 def test_cli_accepts_the_messier_catalog(capsys) -> None:

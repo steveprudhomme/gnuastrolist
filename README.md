@@ -78,6 +78,25 @@ Les 110 objets Messier sont considérés par défaut. Ajoutez par exemple
 inférieure ou égale à 8. La convention retenue pour l'objet historiquement
 ambigu M102 est NGC 5866.
 
+## Informations du tableau
+
+Le tableau indique désormais, pour chaque objet retenu :
+
+- son type et sa constellation;
+- sa taille apparente en minutes d'arc lorsqu'elle est publiée;
+- sa magnitude V de référence;
+- sa date d'opposition estimée pour l'année de l'observation, définie ici comme
+  le jour de séparation angulaire maximale avec le Soleil;
+- l'heure où il monte au-dessus de `--min-altitude` et l'heure où il redescend
+  sous ce seuil;
+- sa hauteur au début et à la fin de la plage demandée.
+
+Les heures de franchissement sont estimées à la minute avec un échantillonnage
+de cinq minutes, dans le fuseau fourni par `--timezone`. Si un passage survient
+un autre jour que la date de début, le tableau ajoute sa date au format
+`MM-JJ`. La valeur `Toujours` désigne un objet qui reste au-dessus du seuil
+pendant toute la période de recherche de 60 heures autour du début.
+
 ## Sens du champ de vision
 
 L'utilisateur choisit les deux limites horizontales du champ, mais n'a pas à
@@ -155,7 +174,9 @@ d'entrée `console_scripts`, conformément au guide de la
   historique publié** par le GCVS. Ce n'est pas la magnitude prédite pour la
   date choisie.
 - Pour les objets Messier, la magnitude affichée est la magnitude apparente V
-  publiée par OpenNGC; l'identification retenue pour M102 est NGC 5866.
+  publiée par OpenNGC. La taille apparente et la constellation viennent de la
+  même source; certaines dimensions ne sont pas disponibles. L'identification
+  retenue pour M102 est NGC 5866.
 - Seules les entrées dont la bande principale est `V` sont incluses. Le GCVS
   regroupe sous ce code les mesures visuelles, photovisuelles ou Johnson V.
 - La sélection est discrète. Un objet qui traverse très rapidement un petit

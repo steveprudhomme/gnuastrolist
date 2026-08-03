@@ -7,8 +7,8 @@ from gnu_astrolist.models import FieldOfView, VariableStar
 from gnu_astrolist.time_utils import parse_observation_window
 from gnu_astrolist.visibility import compute_visibility
 
-
 iers.conf.auto_download = False
+iers.conf.auto_max_age = None
 
 
 def test_star_at_field_center_is_selected() -> None:
@@ -42,10 +42,13 @@ def test_star_at_field_center_is_selected() -> None:
 
     assert len(results) == 1
     assert abs(results[0].altitude_start_deg - 45) < 1e-6
+    assert results[0].constellation
+    assert results[0].opposition_date is not None
+    assert results[0].rises_above_minimum_local is not None
+    assert results[0].sets_below_minimum_local is not None
 
 
 def test_empty_input_short_circuits() -> None:
     window = parse_observation_window("2026-01-15", "21:00-22:00", "UTC")
 
     assert compute_visibility([], window, 45, -73, 0, FieldOfView(180, 45, 10, 10)) == []
-

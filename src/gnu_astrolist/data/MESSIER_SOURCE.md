@@ -7,9 +7,9 @@
 - DOI : <https://doi.org/10.21938/y.1ejWUD_MQ6b_eDFoVbbw>
 - Licence des données : Creative Commons Attribution-Partage dans les mêmes
   conditions 4.0 International (`CC BY-SA 4.0`)
-- Date de récupération : 2026-07-17
+- Date de récupération : 2026-08-03
 - Empreinte SHA-256 de `NGC.csv` :
-  `840fe0c9ee1332e551b2e722a0e92726cd7b157914a3d2177602832aadd3aa9e`
+  `be150bdaa1997dacbcb39f303074403edec7a953b589b36d5f1c4522c0cc6fae`
 - Empreinte SHA-256 de `addendum.csv` :
   `1d8f0914e643ada325a5a94d88d8fefad6a4937a2f77cc34f21483af22b11983`
 
@@ -17,9 +17,10 @@
 
 Le script `scripts/build_messier_catalog.py` sélectionne les entrées portant un
 numéro Messier, convertit les coordonnées sexagésimales ICRS/J2000 en degrés et
-conserve le numéro Messier, la désignation OpenNGC, le type, le nom usuel
-éventuel et la magnitude apparente en bande V. Le fichier résultant contient
-les numéros M1 à M110, ordonnés numériquement.
+conserve le numéro Messier, la désignation OpenNGC, le type, la constellation,
+les dimensions angulaires disponibles, le nom usuel éventuel et la magnitude
+apparente en bande V. Le fichier résultant contient les numéros M1 à M110,
+ordonnés numériquement.
 
 Les codes de type (`G`, `GCl`, `OCl`, `PN`, `Neb`, etc.) sont ceux d'OpenNGC.
 Le guide du projet OpenNGC en donne la signification complète.

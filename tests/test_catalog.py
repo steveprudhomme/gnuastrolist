@@ -38,6 +38,17 @@ def test_m102_uses_the_documented_ngc_5866_convention() -> None:
     assert m102.magnitude_v == 9.89
 
 
+def test_messier_catalog_contains_constellations_and_apparent_sizes() -> None:
+    m31 = next(obj for obj in load_messier_catalog() if obj.name == "M31")
+    m40 = next(obj for obj in load_messier_catalog() if obj.name == "M40")
+
+    assert m31.constellation == "And"
+    assert m31.apparent_major_arcmin == 177.83
+    assert m31.apparent_minor_arcmin == 69.66
+    assert m40.apparent_major_arcmin is None
+    assert m40.apparent_minor_arcmin is None
+
+
 def test_magnitude_filter_also_accepts_messier_objects() -> None:
     objects = filter_by_magnitude(load_messier_catalog(), 2.0)
 

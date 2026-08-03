@@ -18,7 +18,6 @@ import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
-
 SOURCE_URL = "https://cdsarc.cds.unistra.fr/ftp/B/gcvs/gcvs_cat.dat.gz"
 FIELDNAMES = (
     "name",
@@ -177,12 +176,14 @@ def build(source: str, output: Path) -> tuple[int, str]:
     stars.sort(key=lambda star: (star.mag_max, star.name.casefold()))
 
     output.parent.mkdir(parents=True, exist_ok=True)
-    with output.open("wb") as raw:
-        with gzip.GzipFile(filename="", fileobj=raw, mode="wb", mtime=0) as archive:
-            with io.TextIOWrapper(archive, encoding="utf-8", newline="") as text:
-                writer = csv.DictWriter(text, fieldnames=FIELDNAMES, lineterminator="\n")
-                writer.writeheader()
-                writer.writerows(star.csv_row() for star in stars)
+    with (
+        output.open("wb") as raw,
+        gzip.GzipFile(filename="", fileobj=raw, mode="wb", mtime=0) as archive,
+        io.TextIOWrapper(archive, encoding="utf-8", newline="") as text,
+    ):
+        writer = csv.DictWriter(text, fieldnames=FIELDNAMES, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(star.csv_row() for star in stars)
     return len(stars), digest
 
 

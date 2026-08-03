@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from typing import TypeAlias
 
 import numpy as np
@@ -22,6 +22,9 @@ class VariableStar:
     mag_min: float | None
     passband: str
     mag_max_limit: str = ""
+    constellation: str = ""
+    apparent_major_arcmin: float | None = None
+    apparent_minor_arcmin: float | None = None
 
     @property
     def object_type(self) -> str:
@@ -46,6 +49,9 @@ class MessierObject:
     object_type: str
     magnitude_v: float
     catalog_designation: str
+    constellation: str
+    apparent_major_arcmin: float | None
+    apparent_minor_arcmin: float | None
     common_name: str = ""
     passband: str = "V"
 
@@ -93,7 +99,7 @@ class FieldOfView:
         azimuth_max_deg: float,
         minimum_altitude_deg: float,
         altitude_center_deg: float | None = None,
-    ) -> "FieldOfView":
+    ) -> FieldOfView:
         """Construit un champ centré automatiquement, sauf remplacement explicite.
 
         Le champ horizontal suit le sens nord vers est entre les deux limites.
@@ -189,3 +195,8 @@ class VisibilityResult:
     altitude_end_deg: float
     azimuth_start_deg: float
     azimuth_end_deg: float
+    constellation: str = ""
+    opposition_date: date | None = None
+    rises_above_minimum_local: datetime | None = None
+    sets_below_minimum_local: datetime | None = None
+    always_above_minimum: bool = False

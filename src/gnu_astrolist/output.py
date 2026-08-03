@@ -12,14 +12,75 @@ def _magnitude_label(result: VisibilityResult) -> str:
     return f"{prefix}{result.star.magnitude_v:.3f}".rstrip("0").rstrip(".")
 
 
-def _format_table(results: Sequence[VisibilityResult], object_kind: str) -> str:
-    magnitude_header = "Mag. max V" if object_kind == "variable_stars" else "Mag. V"
-    headers = ("Objet", magnitude_header, "Type", "Hauteur début", "Hauteur fin")
+def _number(value: float) -> str:
+    return f"{value:.2f}".rstrip("0").rstrip(".")
+
+
+def _apparent_size_label(result: VisibilityResult) -> str:
+    major = result.star.apparent_major_arcmin
+    minor = result.star.apparent_minor_arcmin
+    if major is None:
+        return "—"
+    if minor is None:
+        return f"{_number(major)}′"
+    return f"{_number(major)}′ × {_number(minor)}′"
+
+
+def _crossing_time_label(
+    instant, *, reference_date, always_above: bool
+) -> str:
+    if always_above:
+        return "Toujours"
+    if instant is None:
+        return "—"
+    if instant.date() == reference_date:
+        return f"{instant:%H:%M}"
+    return f"{instant:%m-%d %H:%M}"
+
+
+def _format_table(
+    results: Sequence[VisibilityResult],
+    object_kind: str,
+    window: ObservationWindow,
+    minimum_altitude_deg: float,
+) -> str:
+    magnitude_header = (
+        "Mag. max V" if object_kind == "variable_stars" else "Mag. apparente V"
+    )
+    headers = (
+        "Objet",
+        "Type",
+        "Constellation",
+        "Taille apparente",
+        magnitude_header,
+        "Opposition",
+        f"Monte ≥ {minimum_altitude_deg:g}°",
+        f"Descend < {minimum_altitude_deg:g}°",
+        "Hauteur début",
+        "Hauteur fin",
+    )
     rows = [
         (
             result.star.name,
-            _magnitude_label(result),
             result.star.object_type or "—",
+            result.constellation or "—",
+            _apparent_size_label(result),
+            _magnitude_label(result),
+            (
+                result.opposition_date.isoformat()
+                if result.opposition_date is not None
+                else "—"
+            ),
+            _crossing_time_label(
+                result.rises_above_minimum_local,
+                reference_date=window.start_local.date(),
+                always_above=result.always_above_minimum,
+            ),
+            _crossing_time_label(
+                result.sets_below_minimum_local,
+                reference_date=window.start_local.date(),
+                always_above=result.always_above_minimum,
+            ),
             f"{result.altitude_start_deg:+.1f}°",
             f"{result.altitude_end_deg:+.1f}°",
         )
@@ -100,7 +161,14 @@ def render_report(
         "-" * 78,
     ]
     if results:
-        lines.append(_format_table(results, object_kind))
+        lines.append(
+            _format_table(
+                results,
+                object_kind,
+                window,
+                field_of_view.altitude_lower_deg,
+            )
+        )
         if len(results) < matched_count:
             lines.append(f"\n{len(results)} objet(s) affiché(s) sur {matched_count} trouvé(s).")
         else:
@@ -118,4 +186,13 @@ def render_report(
         )
     else:
         lines.append("       Les magnitudes apparentes V proviennent d'OpenNGC.")
+    lines.extend(
+        [
+            "       Les tailles apparentes sont exprimées en minutes d'arc (′).",
+            "       L'opposition est le jour de séparation maximale avec le Soleil.",
+            "       Les heures de franchissement sont des estimations à la minute",
+            f"       dans le fuseau {window.timezone_name}; une date MM-JJ est ajoutée",
+            "       lorsque le passage n'a pas lieu à la date de début.",
+        ]
+    )
     return "\n".join(lines)

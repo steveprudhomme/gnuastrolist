@@ -4,12 +4,11 @@ from __future__ import annotations
 
 import csv
 import gzip
+from collections.abc import Iterable
 from functools import lru_cache
 from importlib import resources
-from typing import Iterable
 
 from .models import CatalogObject, MessierObject, VariableStar
-
 
 VARIABLE_STAR_CATALOG_RESOURCE = "gcvs_visual.csv.gz"
 MESSIER_CATALOG_RESOURCE = "messier.csv.gz"
@@ -75,6 +74,9 @@ def load_messier_catalog() -> tuple[MessierObject, ...]:
                 magnitude_v=float(row["magnitude_v"]),
                 passband=row["passband"],
                 catalog_designation=row["catalog_designation"],
+                constellation=row["constellation"],
+                apparent_major_arcmin=_optional_float(row["major_axis_arcmin"]),
+                apparent_minor_arcmin=_optional_float(row["minor_axis_arcmin"]),
                 common_name=row["common_name"],
             )
             for row in rows
