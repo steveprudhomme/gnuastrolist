@@ -14,6 +14,7 @@ from .catalog import (
     load_variable_star_catalog,
 )
 from .models import FieldOfView
+from .moon import compute_moon_summary
 from .output import render_report
 from .time_utils import parse_observation_window
 from .visibility import compute_visibility
@@ -170,6 +171,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     stars = filter_by_magnitude(catalog, max_magnitude)
     try:
+        moon_summary = compute_moon_summary(
+            window=window,
+            latitude_deg=args.lat,
+            longitude_deg=args.lon,
+            elevation_m=args.elevation_m,
+        )
         results = compute_visibility(
             stars=stars,
             window=window,
@@ -192,6 +199,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             field_of_view=field_of_view,
             max_magnitude=max_magnitude,
             sample_minutes=args.sample_minutes,
+            moon_summary=moon_summary,
             results=displayed_results,
             matched_count=matched_count,
             object_kind=object_kind,

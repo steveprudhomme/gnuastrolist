@@ -46,12 +46,26 @@
     la meilleure période d'observation;
   - ajouter des tests pour les objets éloignés de l'écliptique, pour lesquels
     les deux dates peuvent différer de plusieurs semaines.
-- [ ] Ajouter, au début du rapport et avant la liste d'observation, un résumé
+- [x] Ajouter, au début du rapport et avant la liste d'observation, un résumé
       de la Lune comprenant :
   - phase de la Lune;
   - illumination (%);
   - heure du lever de la Lune;
   - heure du coucher de la Lune.
+- [ ] Harmoniser les conventions lunaires avec celles des éphémérides publiées :
+  - calculer le lever et le coucher à partir du bord supérieur apparent du
+    disque lunaire plutôt qu'au passage géométrique de son centre à 0°;
+  - intégrer une réfraction atmosphérique standard afin d'obtenir un lever plus
+    tôt et un coucher plus tard, tout en documentant les paramètres retenus et
+    leurs limites;
+  - tenir compte du diamètre apparent variable de la Lune et ajouter des tests
+    de comparaison avec des éphémérides de référence;
+  - afficher explicitement l'instant auquel le pourcentage d'illumination est
+    calculé et permettre une convention quotidienne comparable aux
+    planificateurs, par exemple midi local, en plus du début de l'observation;
+  - conserver l'illumination comme une grandeur géométrique indépendante de la
+    réfraction : la convention du bord supérieur apparent s'applique uniquement
+    aux heures de lever et de coucher.
 - [ ] Ajouter, au début du rapport, deux résumés des conditions météo, l'un pour
       la soirée et l'autre pour la période précédant l'aube, comprenant chacun :
   - couverture nuageuse (%);

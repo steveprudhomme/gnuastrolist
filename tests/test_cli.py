@@ -35,6 +35,10 @@ def test_cli_prints_header_and_empty_result(capsys) -> None:
     assert "SOIRÉE D'OBSERVATION" in output
     assert "Aucun objet" in output
     assert "America/Toronto" in output
+    assert "RÉSUMÉ DE LA LUNE" in output
+    assert "Illumination" in output
+    assert "Lever le 2026-08-15" in output
+    assert "Coucher le 2026-08-15" in output
     assert iers.conf.auto_download is False
     assert iers.conf.auto_max_age is None
 

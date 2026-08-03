@@ -5,6 +5,21 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+## [0.7.0] - 2026-08-03
+
+### Ajouté
+
+- Résumé de la Lune placé avant la liste d'observation, avec phase en français,
+  illumination, lever et coucher dans le fuseau horaire demandé.
+- Gestion explicite des dates locales sans lever ou sans coucher, y compris les
+  cas où la Lune demeure au-dessus ou au-dessous de l'horizon toute la journée.
+- Tests des huit phases lunaires et d'un calcul complet pour Laval.
+
+### Documenté
+
+- Instant de référence de la phase et de l'illumination, méthode géométrique de
+  calcul des passages à l'horizon et limites liées à la réfraction et au relief.
+
 ## [0.6.0] - 2026-08-03
 
 ### Ajouté

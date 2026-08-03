@@ -91,6 +91,18 @@ class ObservationWindow:
 
 
 @dataclass(frozen=True, slots=True)
+class MoonSummary:
+    """État de la Lune et passages à l'horizon pour la date locale."""
+
+    phase_name: str
+    illumination_percent: float
+    moonrise_local: datetime | None
+    moonset_local: datetime | None
+    always_above_horizon: bool = False
+    always_below_horizon: bool = False
+
+
+@dataclass(frozen=True, slots=True)
 class FieldOfView:
     """Champ rectangulaire en coordonnées horizontales Alt/Az.
 

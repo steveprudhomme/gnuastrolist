@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from .models import FieldOfView, ObservationWindow, VisibilityResult
+from .models import FieldOfView, MoonSummary, ObservationWindow, VisibilityResult
 
 
 def _magnitude_label(result: VisibilityResult) -> str:
@@ -76,6 +76,35 @@ def _crossing_time_label(
     if instant.date() == reference_date:
         return f"{instant:%H:%M}"
     return f"{instant:%m-%d %H:%M}"
+
+
+def _moon_event_label(instant, summary: MoonSummary) -> str:
+    if instant is not None:
+        return f"{instant:%H:%M}"
+    if summary.always_above_horizon:
+        return "aucun — Lune levée toute la journée"
+    if summary.always_below_horizon:
+        return "aucun — Lune couchée toute la journée"
+    return "aucun passage ce jour"
+
+
+def _format_moon_summary(
+    summary: MoonSummary, window: ObservationWindow
+) -> list[str]:
+    start = window.start_local
+    return [
+        "RÉSUMÉ DE LA LUNE",
+        f"Phase à {start:%H:%M}        : {summary.phase_name}",
+        f"Illumination à {start:%H:%M} : {summary.illumination_percent:.1f} %",
+        (
+            f"Lever le {start:%Y-%m-%d}   : "
+            f"{_moon_event_label(summary.moonrise_local, summary)}"
+        ),
+        (
+            f"Coucher le {start:%Y-%m-%d} : "
+            f"{_moon_event_label(summary.moonset_local, summary)}"
+        ),
+    ]
 
 
 def _format_table(
@@ -153,6 +182,7 @@ def render_report(
     field_of_view: FieldOfView,
     max_magnitude: float | None,
     sample_minutes: float,
+    moon_summary: MoonSummary,
     results: Sequence[VisibilityResult],
     matched_count: int,
     object_kind: str,
@@ -209,6 +239,8 @@ def render_report(
         ),
         "-" * 78,
     ]
+    lines.extend(_format_moon_summary(moon_summary, window))
+    lines.append("-" * 78)
     if results:
         lines.append(
             _format_table(
@@ -242,6 +274,8 @@ def render_report(
     lines.extend(
         [
             "       Les tailles apparentes sont exprimées en minutes d'arc (′).",
+            "       Lever et coucher lunaires : passage géométrique du centre de",
+            "       la Lune à l'horizon 0°, sans réfraction ni masque d'horizon.",
             "       Séparation solaire maximale : maximum angulaire géométrique;",
             "       ce calcul ne constitue pas une opposition pour le ciel profond.",
             "       Meilleure visibilité saisonnière : culmination supérieure la",

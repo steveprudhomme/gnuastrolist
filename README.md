@@ -83,6 +83,27 @@ utilisent OpenNGC comme repli hors ligne. Le catalogue choisi est indiqué entre
 crochets à côté de chaque valeur. Ajoutez `--details` pour afficher également
 le bibcode ou la référence et la date de récupération.
 
+## Résumé de la Lune
+
+Avant la liste d'observation, le rapport affiche un résumé lunaire comprenant :
+
+- la phase de la Lune au début de la plage demandée;
+- son pourcentage d'illumination à ce même instant;
+- l'heure locale de son lever pendant la date civile choisie;
+- l'heure locale de son coucher pendant cette date.
+
+Les huit appellations utilisées sont : nouvelle lune, premier croissant,
+premier quartier, lune gibbeuse croissante, pleine lune, lune gibbeuse
+décroissante, dernier quartier et dernier croissant. La phase et l'illumination
+sont calculées avec les éphémérides lunaires et solaires intégrées à Astropy.
+
+Les heures de lever et de coucher correspondent au passage géométrique du
+centre de la Lune à un horizon de 0°. Elles ne tiennent pas compte de la
+réfraction atmosphérique, du relief ni d'un masque d'horizon local et peuvent
+donc différer légèrement des horaires publiés utilisant une autre convention.
+Lorsqu'aucun passage ne survient pendant la date locale, le rapport le précise;
+il indique également si la Lune demeure levée ou couchée toute la journée.
+
 ## Informations du tableau
 
 Le tableau indique désormais, pour chaque objet retenu :

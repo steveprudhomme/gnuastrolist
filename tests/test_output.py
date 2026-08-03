@@ -4,6 +4,7 @@ from zoneinfo import ZoneInfo
 from gnu_astrolist.models import (
     FieldOfView,
     MessierObject,
+    MoonSummary,
     ObservationWindow,
     VisibilityResult,
 )
@@ -46,6 +47,12 @@ def test_report_contains_the_enriched_result_columns() -> None:
         rises_above_minimum_local=datetime(2026, 8, 2, 23, 12, tzinfo=timezone),
         sets_below_minimum_local=datetime(2026, 8, 3, 7, 46, tzinfo=timezone),
     )
+    moon_summary = MoonSummary(
+        phase_name="Lune gibbeuse décroissante",
+        illumination_percent=80.0,
+        moonrise_local=datetime(2026, 8, 3, 22, 23, tzinfo=timezone),
+        moonset_local=datetime(2026, 8, 3, 11, 1, tzinfo=timezone),
+    )
 
     report = render_report(
         window=window,
@@ -55,6 +62,7 @@ def test_report_contains_the_enriched_result_columns() -> None:
         field_of_view=FieldOfView(90, 70, 90, 40),
         max_magnitude=None,
         sample_minutes=10,
+        moon_summary=moon_summary,
         results=[result],
         matched_count=1,
         object_kind="messier",
@@ -78,3 +86,9 @@ def test_report_contains_the_enriched_result_columns() -> None:
     assert "PROVENANCE DÉTAILLÉE" in report
     assert "bibcode 2003A&A...412...45P" in report
     assert "récupéré le 2026-08-03" in report
+    assert "RÉSUMÉ DE LA LUNE" in report
+    assert "Lune gibbeuse décroissante" in report
+    assert "80.0 %" in report
+    assert "22:23" in report
+    assert "11:01" in report
+    assert report.index("RÉSUMÉ DE LA LUNE") < report.index("Objet | Type")
