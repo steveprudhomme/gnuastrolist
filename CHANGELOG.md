@@ -5,6 +5,19 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+## [0.10.0] - 2026-08-03
+
+### Ajouté
+
+- Option `--output-txt FICHIER` enregistrant le rapport complet de la soirée
+  d'observation dans un fichier texte UTF-8.
+- Test confirmant que le fichier exporté est identique au rapport affiché dans
+  le terminal et qu'il conserve correctement les caractères français.
+
+### Modifié
+
+- La feuille de route indique maintenant que l'export TXT est terminé.
+
 ## [0.9.0] - 2026-08-03
 
 ### Ajouté

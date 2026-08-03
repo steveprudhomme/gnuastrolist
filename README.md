@@ -83,6 +83,16 @@ utilisent OpenNGC comme repli hors ligne. Le catalogue choisi est indiqué entre
 crochets à côté de chaque valeur. Ajoutez `--details` pour afficher également
 le bibcode ou la référence et la date de récupération.
 
+## Export du rapport en fichier texte
+
+Ajoutez `--output-txt` et le chemin du fichier voulu pour enregistrer une copie
+UTF-8 du rapport complet. Le rapport demeure également affiché dans le terminal.
+Le dossier parent doit déjà exister.
+
+```powershell
+gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects messier --output-txt soiree-2026-08-15.txt
+```
+
 ## Conditions météo
 
 Au début du rapport, GNU Astrolist affiche deux résumés prévisionnels :
@@ -248,6 +258,7 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --limit N                    Tronque uniquement l'affichage après le tri
 --offline                    Désactive la météo et les mises à jour réseau IERS
 --details                    Affiche la provenance complète des tailles et magnitudes
+--output-txt FICHIER         Enregistre le rapport complet en texte UTF-8
 ```
 
 La commande `gnu-astrolist --help` donne la liste à jour.

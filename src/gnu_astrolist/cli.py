@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from collections.abc import Sequence
+from pathlib import Path
 
 from astropy.utils import iers
 
@@ -121,6 +122,12 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="affiche la provenance détaillée des tailles et magnitudes",
     )
+    parser.add_argument(
+        "--output-txt",
+        type=Path,
+        metavar="FICHIER",
+        help="enregistre une copie UTF-8 du rapport complet dans un fichier texte",
+    )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     return parser
 
@@ -198,21 +205,27 @@ def main(argv: Sequence[str] | None = None) -> int:
         parser.error(str(exc))
     matched_count = len(results)
     displayed_results = results[: args.limit] if args.limit is not None else results
-    print(
-        render_report(
-            window=window,
-            latitude_deg=args.lat,
-            longitude_deg=args.lon,
-            elevation_m=args.elevation_m,
-            field_of_view=field_of_view,
-            max_magnitude=max_magnitude,
-            sample_minutes=args.sample_minutes,
-            weather_summary=weather_summary,
-            moon_summary=moon_summary,
-            results=displayed_results,
-            matched_count=matched_count,
-            object_kind=object_kind,
-            show_details=args.details,
-        )
+    report = render_report(
+        window=window,
+        latitude_deg=args.lat,
+        longitude_deg=args.lon,
+        elevation_m=args.elevation_m,
+        field_of_view=field_of_view,
+        max_magnitude=max_magnitude,
+        sample_minutes=args.sample_minutes,
+        weather_summary=weather_summary,
+        moon_summary=moon_summary,
+        results=displayed_results,
+        matched_count=matched_count,
+        object_kind=object_kind,
+        show_details=args.details,
     )
+    if args.output_txt is not None:
+        try:
+            args.output_txt.write_text(f"{report}\n", encoding="utf-8")
+        except OSError as exc:
+            parser.error(
+                f"impossible d'écrire le rapport dans {args.output_txt}: {exc}"
+            )
+    print(report)
     return 0
