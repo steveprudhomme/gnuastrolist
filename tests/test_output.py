@@ -7,6 +7,8 @@ from gnu_astrolist.models import (
     MoonSummary,
     ObservationWindow,
     VisibilityResult,
+    WeatherPeriodSummary,
+    WeatherSummary,
 )
 from gnu_astrolist.output import render_report
 
@@ -57,6 +59,31 @@ def test_report_contains_the_enriched_result_columns() -> None:
         moonrise_local=datetime(2026, 8, 3, 22, 18, tzinfo=timezone),
         moonset_local=datetime(2026, 8, 3, 11, 6, tzinfo=timezone),
     )
+    weather_summary = WeatherSummary(
+        evening=WeatherPeriodSummary(
+            name="SOIRÉE",
+            start_local=datetime(2026, 8, 2, 20, 20, tzinfo=timezone),
+            end_local=datetime(2026, 8, 2, 23, 20, tzinfo=timezone),
+            cloud_cover_percent=25,
+            seeing_quality_percent=71,
+            seeing_description="0.75–1″",
+            transparency_quality_percent=57,
+            transparency_description="0.5–0.6 mag/masse d'air",
+            stability_quality_percent=43,
+            temperature_c=21.4,
+            humidity_percent=77,
+            wind_kmh=8.5,
+            dew_risk="modéré",
+            precipitation_probability_percent=15,
+        ),
+        predawn=WeatherPeriodSummary(
+            name="AVANT L'AUBE",
+            start_local=datetime(2026, 8, 3, 2, 41, tzinfo=timezone),
+            end_local=datetime(2026, 8, 3, 5, 41, tzinfo=timezone),
+            cloud_cover_percent=40,
+        ),
+        sources="Open-Meteo + 7Timer! ASTRO",
+    )
 
     report = render_report(
         window=window,
@@ -66,6 +93,7 @@ def test_report_contains_the_enriched_result_columns() -> None:
         field_of_view=FieldOfView(90, 70, 90, 40),
         max_magnitude=None,
         sample_minutes=10,
+        weather_summary=weather_summary,
         moon_summary=moon_summary,
         results=[result],
         matched_count=1,
@@ -91,9 +119,19 @@ def test_report_contains_the_enriched_result_columns() -> None:
     assert "bibcode 2003A&A...412...45P" in report
     assert "récupéré le 2026-08-03" in report
     assert "RÉSUMÉ DE LA LUNE" in report
+    assert "CONDITIONS MÉTÉO" in report
+    assert "SOIRÉE (2026-08-02 20:20 → 23:20)" in report
+    assert "AVANT L'AUBE (2026-08-03 02:41 → 05:41)" in report
+    assert "Couverture nuageuse" in report
+    assert "Seeing — qualité" in report
+    assert "Transparence — qualité" in report
+    assert "Stabilité — qualité" in report
+    assert "Risque de rosée" in report
+    assert "Risque de précipitation" in report
     assert "Lune gibbeuse décroissante" in report
     assert "80.0 %" in report
     assert "Illumination quotidienne (2026-08-02 12:00) : 84.1 %" in report
     assert "22:18" in report
     assert "11:06" in report
+    assert report.index("CONDITIONS MÉTÉO") < report.index("RÉSUMÉ DE LA LUNE")
     assert report.index("RÉSUMÉ DE LA LUNE") < report.index("Objet | Type")

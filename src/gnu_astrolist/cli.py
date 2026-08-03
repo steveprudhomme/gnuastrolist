@@ -18,6 +18,7 @@ from .moon import compute_moon_summary
 from .output import render_report
 from .time_utils import parse_observation_window
 from .visibility import compute_visibility
+from .weather import compute_weather_summary
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -113,7 +114,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--offline",
         action="store_true",
-        help="interdit la mise à jour réseau des données IERS par Astropy",
+        help="désactive les prévisions météo et la mise à jour réseau des données IERS",
     )
     parser.add_argument(
         "--details",
@@ -155,6 +156,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     # a plus de 30 jours; Astropy émettra au besoin l'avertissement configuré.
     iers.conf.auto_max_age = None if args.offline else 30.0
     iers.conf.iers_degraded_accuracy = "warn"
+
+    weather_summary = compute_weather_summary(
+        window=window,
+        latitude_deg=args.lat,
+        longitude_deg=args.lon,
+        offline=args.offline,
+    )
 
     object_kind = "messier" if args.objects in {"messier", "messier_objects"} else args.objects
     if args.all_magnitudes:
@@ -199,6 +207,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             field_of_view=field_of_view,
             max_magnitude=max_magnitude,
             sample_minutes=args.sample_minutes,
+            weather_summary=weather_summary,
             moon_summary=moon_summary,
             results=displayed_results,
             matched_count=matched_count,

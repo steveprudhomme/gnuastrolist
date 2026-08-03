@@ -4,7 +4,14 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from .models import FieldOfView, MoonSummary, ObservationWindow, VisibilityResult
+from .models import (
+    FieldOfView,
+    MoonSummary,
+    ObservationWindow,
+    VisibilityResult,
+    WeatherPeriodSummary,
+    WeatherSummary,
+)
 
 
 def _magnitude_label(result: VisibilityResult) -> str:
@@ -119,6 +126,67 @@ def _format_moon_summary(
     ]
 
 
+def _weather_number(value: float | None, unit: str, decimals: int = 0) -> str:
+    if value is None:
+        return "—"
+    return f"{value:.{decimals}f} {unit}".rstrip()
+
+
+def _quality_label(value: float | None, description: str = "") -> str:
+    label = _weather_number(value, "%")
+    return f"{label} ({description})" if value is not None and description else label
+
+
+def _format_weather_period(period: WeatherPeriodSummary) -> list[str]:
+    entries = (
+        ("Couverture nuageuse", _weather_number(period.cloud_cover_percent, "%")),
+        (
+            "Seeing — qualité",
+            _quality_label(period.seeing_quality_percent, period.seeing_description),
+        ),
+        (
+            "Transparence — qualité",
+            _quality_label(
+                period.transparency_quality_percent,
+                period.transparency_description,
+            ),
+        ),
+        ("Stabilité — qualité", _quality_label(period.stability_quality_percent)),
+        ("Température", _weather_number(period.temperature_c, "°C", 1)),
+        ("Humidité", _weather_number(period.humidity_percent, "%")),
+        ("Vent", _weather_number(period.wind_kmh, "km/h", 1)),
+        ("Risque de rosée", period.dew_risk or "—"),
+        (
+            "Risque de précipitation",
+            _weather_number(period.precipitation_probability_percent, "%"),
+        ),
+    )
+    label_width = max(len(label) for label, _ in entries)
+    return [
+        (
+            f"{period.name} "
+            f"({period.start_local:%Y-%m-%d %H:%M} → {period.end_local:%H:%M})"
+        ),
+        *(f"  {label.ljust(label_width)} : {value}" for label, value in entries),
+    ]
+
+
+def _format_weather_summary(summary: WeatherSummary) -> list[str]:
+    lines = ["CONDITIONS MÉTÉO"]
+    if summary.offline:
+        lines.append("Prévisions indisponibles : mode --offline.")
+    elif not summary.available:
+        lines.append("Prévisions indisponibles pour les périodes demandées.")
+    else:
+        lines.extend(_format_weather_period(summary.evening))
+        lines.extend(["", *_format_weather_period(summary.predawn)])
+    if summary.sources:
+        lines.append(f"Sources : {summary.sources}")
+    if not summary.offline:
+        lines.extend(f"Avertissement : {warning}." for warning in summary.warnings)
+    return lines
+
+
 def _format_table(
     results: Sequence[VisibilityResult],
     object_kind: str,
@@ -194,6 +262,7 @@ def render_report(
     field_of_view: FieldOfView,
     max_magnitude: float | None,
     sample_minutes: float,
+    weather_summary: WeatherSummary,
     moon_summary: MoonSummary,
     results: Sequence[VisibilityResult],
     matched_count: int,
@@ -251,6 +320,8 @@ def render_report(
         ),
         "-" * 78,
     ]
+    lines.extend(_format_weather_summary(weather_summary))
+    lines.append("-" * 78)
     lines.extend(_format_moon_summary(moon_summary, window))
     lines.append("-" * 78)
     if results:
@@ -293,7 +364,13 @@ def render_report(
             "       Les tailles apparentes sont exprimées en minutes d'arc (′).",
             "       Lever et coucher lunaires : bord supérieur apparent, avec",
             "       demi-diamètre variable et réfraction standard de 34′.",
-            "       Aucun relief, masque d'horizon ni météo locale n'est appliqué.",
+            "       Aucun relief, masque d'horizon ni météo locale n'est appliqué",
+            "       au calcul lunaire.",
+            "       Seeing, transparence et stabilité : indices de qualité",
+            "       normalisés de 0 à 100 à partir des catégories 7Timer!;",
+            "       une valeur élevée est favorable et ne représente pas une probabilité.",
+            "       Risque de rosée : estimation fondée sur l'écart température-point",
+            "       de rosée et l'humidité relative prévus par Open-Meteo.",
             "       Séparation solaire maximale : maximum angulaire géométrique;",
             "       ce calcul ne constitue pas une opposition pour le ciel profond.",
             "       Meilleure visibilité saisonnière : culmination supérieure la",

@@ -5,6 +5,31 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+## [0.9.0] - 2026-08-03
+
+### Ajouté
+
+- Deux résumés météo au début du rapport : les trois heures suivant le coucher
+  du Soleil et les trois heures précédant le lever suivant.
+- Couverture nuageuse, température, humidité, vent, risque de précipitation et
+  estimation du risque de rosée à partir des prévisions Open-Meteo.
+- Indices normalisés de qualité du seeing, de la transparence et de la
+  stabilité atmosphérique à partir de 7Timer! ASTRO.
+- Tolérance aux pannes partielles des fournisseurs : les données encore
+  disponibles sont conservées et accompagnées d'un avertissement.
+- Tests déterministes des périodes, agrégations, conversions d'indices et du
+  fonctionnement hors ligne.
+
+### Modifié
+
+- L'option `--offline` désactive aussi les requêtes météo, sans interrompre le
+  rapport.
+
+### Documenté
+
+- Sources, périodes d'agrégation, convention des indices de qualité, méthode
+  d'estimation de la rosée et limites des prévisions.
+
 ## [0.8.0] - 2026-08-03
 
 ### Ajouté

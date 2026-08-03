@@ -3,8 +3,37 @@
 ## Prochaine version
 
 - [ ] Exporter les résultats en CSV et JSON.
+- [ ] Ajouter un paramètre en ligne de commande permettant d'exporter le rapport
+      complet de la soirée d'observation dans un fichier texte (`.txt`).
+- [ ] Ajouter un paramètre en ligne de commande permettant d'exporter le rapport
+      complet de la soirée d'observation dans un document PDF (`.pdf`).
+- [ ] Ajouter la possibilité de fournir une liste d'objets dans un fichier afin
+      de limiter strictement la recherche aux objets présents dans cette liste :
+  - rechercher les formats normalisés ou couramment utilisés dans le monde pour
+    échanger des listes d'objets ou des listes d'observation astronomiques;
+  - étudier notamment VOTable, OpenAstronomyLog, ECSV, les formats CSV enrichis
+    et les formats employés par les principaux logiciels d'astronomie;
+  - comparer les formats selon leur statut normatif, leur interopérabilité, leur
+    lisibilité, leur extensibilité, leur facilité de validation, leur prise en
+    charge par Astropy et leur aptitude au fonctionnement hors ligne;
+  - documenter les avantages, les limites et la compatibilité de chaque
+    proposition sans retenir prématurément une solution;
+  - choisir le format existant le mieux adapté après cette analyse ou, si aucun
+    ne répond adéquatement au besoin, concevoir et versionner un format propre à
+    GNU Astrolist;
+  - définir seulement après ce choix le schéma des identifiants, alias, types
+    d'objets et coordonnées facultatives;
+  - ajouter ensuite un paramètre en ligne de commande pour charger ce fichier et
+    appliquer la liste comme filtre aux catalogues sélectionnés;
+  - prévoir la détection des doublons, des entrées invalides et des objets
+    introuvables, ainsi que des exemples et des tests d'interopérabilité.
 - [ ] Ajouter un mode « visible au début », « visible à la fin » ou « visible
       pendant toute la plage ».
+- [ ] Ajouter les astéroïdes comme type d'objet, avec des éphémérides adaptées
+      à leur déplacement et à leur magnitude variable.
+- [ ] Ajouter les objets du catalogue Caldwell comme type d'objet.
+- [ ] Ajouter les nébuleuses planétaires comme type d'objet.
+- [ ] Ajouter les amas ouverts comme type d'objet.
 - [x] Enrichir le tableau des résultats avec les colonnes suivantes :
   - taille apparente de l'objet (dimensions angulaires);
   - magnitude apparente;
@@ -66,7 +95,7 @@
   - conserver l'illumination comme une grandeur géométrique indépendante de la
     réfraction : la convention du bord supérieur apparent s'applique uniquement
     aux heures de lever et de coucher.
-- [ ] Ajouter, au début du rapport, deux résumés des conditions météo, l'un pour
+- [x] Ajouter, au début du rapport, deux résumés des conditions météo, l'un pour
       la soirée et l'autre pour la période précédant l'aube, comprenant chacun :
   - couverture nuageuse (%);
   - seeing (%);

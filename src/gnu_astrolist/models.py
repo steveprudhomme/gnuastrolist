@@ -105,6 +105,47 @@ class MoonSummary:
 
 
 @dataclass(frozen=True, slots=True)
+class WeatherPeriodSummary:
+    """Conditions moyennes prévues pendant une période de la nuit."""
+
+    name: str
+    start_local: datetime
+    end_local: datetime
+    cloud_cover_percent: float | None = None
+    seeing_quality_percent: float | None = None
+    seeing_description: str = ""
+    transparency_quality_percent: float | None = None
+    transparency_description: str = ""
+    stability_quality_percent: float | None = None
+    temperature_c: float | None = None
+    humidity_percent: float | None = None
+    wind_kmh: float | None = None
+    dew_risk: str = ""
+    precipitation_probability_percent: float | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class WeatherSummary:
+    """Prévisions de soirée et d'avant l'aube, avec état des sources."""
+
+    evening: WeatherPeriodSummary
+    predawn: WeatherPeriodSummary
+    sources: str = ""
+    warnings: tuple[str, ...] = ()
+    offline: bool = False
+
+    @property
+    def available(self) -> bool:
+        fields = (
+            self.evening.cloud_cover_percent,
+            self.evening.seeing_quality_percent,
+            self.predawn.cloud_cover_percent,
+            self.predawn.seeing_quality_percent,
+        )
+        return any(value is not None for value in fields)
+
+
+@dataclass(frozen=True, slots=True)
 class FieldOfView:
     """Champ rectangulaire en coordonnées horizontales Alt/Az.
 

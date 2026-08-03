@@ -83,6 +83,37 @@ utilisent OpenNGC comme repli hors ligne. Le catalogue choisi est indiqué entre
 crochets à côté de chaque valeur. Ajoutez `--details` pour afficher également
 le bibcode ou la référence et la date de récupération.
 
+## Conditions météo
+
+Au début du rapport, GNU Astrolist affiche deux résumés prévisionnels :
+
+- **Soirée** : les trois premières heures suivant le coucher du Soleil;
+- **Avant l'aube** : les trois dernières heures précédant le lever du Soleil
+  suivant.
+
+Les valeurs civiles proviennent d'[Open-Meteo](https://open-meteo.com/en/docs).
+La couverture nuageuse, la température, l'humidité et le vent sont moyennés sur
+chaque période. Le risque de précipitation est le pourcentage maximal prévu
+pendant la période. Le risque de rosée est une estimation en quatre niveaux,
+fondée sur l'écart minimal entre la température et le point de rosée ainsi que
+sur l'humidité maximale : faible au-delà de 4 °C et sous 80 %, modéré à 4 °C ou
+80 %, élevé à 2 °C ou 90 %, et très élevé à 1 °C ou 95 %.
+
+Le seeing et la transparence viennent du produit astronomique de
+[7Timer! ASTRO](https://www.7timer.info/doc.php?lang=en), dérivé du modèle GFS.
+Ses catégories 1 à 8 sont converties en un **indice de qualité** de 100 à 0 % :
+une valeur élevée est donc favorable. La stabilité atmosphérique est convertie
+de la même façon à partir des catégories de l'indice de soulèvement (*Lifted
+Index*). Ces trois pourcentages sont des indices normalisés pour faciliter la
+lecture; ils ne sont ni des probabilités ni des mesures faites au site.
+
+La disponibilité dépend de l'horizon de prévision des services, notamment
+environ trois jours pour 7Timer! ASTRO. Chaque source peut être indisponible
+indépendamment et le rapport affiche alors les valeurs restantes avec un
+avertissement. Les prévisions peuvent évoluer entre deux exécutions. L'option
+`--offline` désactive tout accès météo et affiche clairement leur
+indisponibilité sans empêcher les calculs astronomiques.
+
 ## Résumé de la Lune
 
 Avant la liste d'observation, le rapport affiche un résumé lunaire comprenant :
@@ -215,7 +246,7 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --all-magnitudes             Désactive la limite pour le catalogue choisi
 --sample-minutes MIN         Pas de recherche (défaut : 10)
 --limit N                    Tronque uniquement l'affichage après le tri
---offline                    Empêche Astropy de mettre à jour les données IERS
+--offline                    Désactive la météo et les mises à jour réseau IERS
 --details                    Affiche la provenance complète des tailles et magnitudes
 ```
 
@@ -255,7 +286,8 @@ d'entrée `console_scripts`, conformément au guide de la
 - La sélection est discrète. Un objet qui traverse très rapidement un petit
   champ entre deux échantillons peut être manqué; réduisez `--sample-minutes`.
 - La sélection des objets n'applique ni réfraction atmosphérique, ni obstacles,
-  météo, crépuscule, pollution lumineuse ou limites réelles d'un instrument.
+  crépuscule, pollution lumineuse ou limites réelles d'un instrument. Le résumé
+  météo est informatif et ne modifie pas la sélection.
   Le résumé lunaire applique seulement la réfraction standard fixe décrite
   ci-dessus; il ne modélise pas les conditions atmosphériques locales.
 - Les étoiles sont traitées comme des positions ICRS fixes. Le catalogue fournit
@@ -282,6 +314,9 @@ n'est pas placé sous GPL. Consultez
 [`CATALOG_SOURCE.md`](src/gnu_astrolist/data/CATALOG_SOURCE.md) et
 [`MESSIER_SOURCE.md`](src/gnu_astrolist/data/MESSIER_SOURCE.md), ainsi que
 [`SIMBAD_SOURCE.md`](src/gnu_astrolist/data/SIMBAD_SOURCE.md).
+Les prévisions en ligne restent attribuées à Open-Meteo et à 7Timer!; consultez
+leurs documentations liées plus haut pour connaître leurs sources et conditions
+d'utilisation.
 
 ## Contribuer
 

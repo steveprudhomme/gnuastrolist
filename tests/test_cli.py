@@ -36,6 +36,8 @@ def test_cli_prints_header_and_empty_result(capsys) -> None:
     assert "Aucun objet" in output
     assert "America/Toronto" in output
     assert "RÉSUMÉ DE LA LUNE" in output
+    assert "CONDITIONS MÉTÉO" in output
+    assert "Prévisions indisponibles : mode --offline" in output
     assert "Illumination quotidienne" in output
     assert "Lever apparent le 2026-08-15" in output
     assert "Coucher apparent le 2026-08-15" in output
