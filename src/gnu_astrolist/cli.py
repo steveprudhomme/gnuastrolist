@@ -17,6 +17,7 @@ from .catalog import (
 from .models import FieldOfView
 from .moon import compute_moon_summary
 from .output import render_report
+from .pdf_output import PdfExportError, export_pdf_report
 from .time_utils import parse_observation_window
 from .visibility import compute_visibility
 from .weather import compute_weather_summary
@@ -128,6 +129,12 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="FICHIER",
         help="enregistre une copie UTF-8 du rapport complet dans un fichier texte",
     )
+    parser.add_argument(
+        "--output-pdf",
+        type=Path,
+        metavar="FICHIER",
+        help="crée un rapport PDF mis en page au format lettre 8,5 x 11 po",
+    )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     return parser
 
@@ -227,5 +234,25 @@ def main(argv: Sequence[str] | None = None) -> int:
             parser.error(
                 f"impossible d'écrire le rapport dans {args.output_txt}: {exc}"
             )
+    if args.output_pdf is not None:
+        try:
+            export_pdf_report(
+                args.output_pdf,
+                window=window,
+                latitude_deg=args.lat,
+                longitude_deg=args.lon,
+                elevation_m=args.elevation_m,
+                field_of_view=field_of_view,
+                max_magnitude=max_magnitude,
+                sample_minutes=args.sample_minutes,
+                weather_summary=weather_summary,
+                moon_summary=moon_summary,
+                results=displayed_results,
+                matched_count=matched_count,
+                object_kind=object_kind,
+                show_details=args.details,
+            )
+        except PdfExportError as exc:
+            parser.error(str(exc))
     print(report)
     return 0

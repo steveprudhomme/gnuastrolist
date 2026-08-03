@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gnu-astrolist"
-version = "0.10.0"
+version = "0.11.0"
 description = "Planificateur CLI de soirées d'observation astronomique"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -22,12 +22,14 @@ classifiers = [
 ]
 dependencies = [
   "astropy>=6.0,<9",
+  "reportlab>=4.0,<5",
   "tzdata>=2024.1; platform_system == 'Windows'",
 ]
 
 [project.optional-dependencies]
 dev = [
   "pytest>=8.0",
+  "pypdf>=5.0,<7",
   "ruff>=0.5",
 ]
 

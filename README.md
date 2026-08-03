@@ -93,6 +93,23 @@ Le dossier parent doit déjà exister.
 gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects messier --output-txt soiree-2026-08-15.txt
 ```
 
+## Export du rapport en PDF
+
+L'option `--output-pdf` produit un document PDF au format lettre nord-américain
+de 8,5 x 11 pouces. La mise en page comprend les paramètres d'observation, les
+deux résumés météo, le résumé de la Lune, une fiche lisible par objet, les notes
+méthodologiques ainsi qu'un pied de page numéroté. Les polices sont incorporées
+au document pour conserver les accents et les symboles astronomiques.
+
+```powershell
+gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects messier --output-pdf soiree-2026-08-15.pdf
+```
+
+Le rapport demeure affiché dans le terminal. `--output-txt` et `--output-pdf`
+peuvent être employés simultanément. Pour les très longues listes, utilisez
+`--limit` afin de contrôler le nombre de fiches incluses dans les deux sorties.
+Le dossier parent de chaque fichier doit déjà exister.
+
 ## Conditions météo
 
 Au début du rapport, GNU Astrolist affiche deux résumés prévisionnels :
@@ -259,6 +276,7 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --offline                    Désactive la météo et les mises à jour réseau IERS
 --details                    Affiche la provenance complète des tailles et magnitudes
 --output-txt FICHIER         Enregistre le rapport complet en texte UTF-8
+--output-pdf FICHIER         Crée un PDF lettre 8,5 x 11 po mis en page
 ```
 
 La commande `gnu-astrolist --help` donne la liste à jour.

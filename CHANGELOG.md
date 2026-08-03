@@ -5,6 +5,26 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+## [0.11.0] - 2026-08-03
+
+### Ajouté
+
+- Option `--output-pdf FICHIER` produisant un rapport au format lettre
+  8,5 x 11 pouces.
+- Mise en page PDF structurée avec renseignements généraux, panneaux météo,
+  résumé lunaire, fiches d'objets, notes méthodologiques et pagination.
+- Polices Unicode intégrées à ReportLab afin de préserver les accents et les
+  symboles astronomiques sur toutes les plateformes.
+- Écriture atomique du PDF afin de ne pas laisser un rapport incomplet lorsque
+  la génération échoue.
+- Test du contenu textuel et des dimensions physiques de la page PDF.
+
+### Modifié
+
+- Ajout de ReportLab aux dépendances d'exécution et de pypdf aux dépendances de
+  développement.
+- La feuille de route indique maintenant que l'export PDF est terminé.
+
 ## [0.10.0] - 2026-08-03
 
 ### Ajouté

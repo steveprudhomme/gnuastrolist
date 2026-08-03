@@ -5,7 +5,7 @@
 - [ ] Exporter les résultats en CSV et JSON.
 - [x] Ajouter un paramètre en ligne de commande permettant d'exporter le rapport
       complet de la soirée d'observation dans un fichier texte (`.txt`).
-- [ ] Ajouter un paramètre en ligne de commande permettant d'exporter le rapport
+- [x] Ajouter un paramètre en ligne de commande permettant d'exporter le rapport
       complet de la soirée d'observation dans un document PDF (`.pdf`).
 - [ ] Ajouter la possibilité de fournir une liste d'objets dans un fichier afin
       de limiter strictement la recherche aux objets présents dans cette liste :

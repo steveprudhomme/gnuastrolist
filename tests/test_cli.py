@@ -1,4 +1,5 @@
 from astropy.utils import iers
+from pypdf import PdfReader
 
 from gnu_astrolist.cli import main
 
@@ -118,3 +119,48 @@ def test_cli_exports_the_complete_report_as_utf8_text(tmp_path, capsys) -> None:
     assert "CONDITIONS MÉTÉO" in exported_report
     assert "RÉSUMÉ DE LA LUNE" in exported_report
     assert "Aucun objet" in exported_report
+
+
+def test_cli_exports_a_letter_size_pdf_report(tmp_path, capsys) -> None:
+    output_path = tmp_path / "soirée-observation.pdf"
+
+    exit_code = main(
+        [
+            "--date",
+            "2026-08-15",
+            "--time-range",
+            "21:00-22:00",
+            "--timezone",
+            "America/Toronto",
+            "--lat",
+            "45.57",
+            "--lon",
+            "-73.68",
+            "--az-min",
+            "15",
+            "--az-max",
+            "180",
+            "--min-altitude",
+            "10",
+            "--objects",
+            "messier",
+            "--max-magnitude",
+            "-20",
+            "--offline",
+            "--output-pdf",
+            str(output_path),
+        ]
+    )
+
+    terminal_report = capsys.readouterr().out
+    reader = PdfReader(output_path)
+    first_page = reader.pages[0]
+    extracted_text = "\n".join(page.extract_text() or "" for page in reader.pages)
+    assert exit_code == 0
+    assert "SOIRÉE D'OBSERVATION" in terminal_report
+    assert float(first_page.mediabox.width) == 612
+    assert float(first_page.mediabox.height) == 792
+    assert "SOIRÉE D'OBSERVATION" in extracted_text
+    assert "CONDITIONS MÉTÉO" in extracted_text
+    assert "RÉSUMÉ DE LA LUNE" in extracted_text
+    assert "Aucun objet du catalogue ne satisfait les critères" in extracted_text
