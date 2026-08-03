@@ -1,3 +1,5 @@
+import pytest
+
 from gnu_astrolist.catalog import (
     filter_by_magnitude,
     load_catalog,
@@ -43,10 +45,40 @@ def test_messier_catalog_contains_constellations_and_apparent_sizes() -> None:
     m40 = next(obj for obj in load_messier_catalog() if obj.name == "M40")
 
     assert m31.constellation == "And"
-    assert m31.apparent_major_arcmin == 177.83
-    assert m31.apparent_minor_arcmin == 69.66
+    assert m31.apparent_major_arcmin == 199.53
+    assert m31.apparent_minor_arcmin == 70.79
+    assert m31.size_source == "SIMBAD"
+    assert m31.size_reference == "2003A&A...412...45P"
     assert m40.apparent_major_arcmin is None
     assert m40.apparent_minor_arcmin is None
+
+
+@pytest.mark.parametrize(
+    "name,major,minor,size_bibcode,magnitude,magnitude_source",
+    [
+        ("M39", 120.4, 120.4, "2020A&A...633A..99C", 4.6, "OpenNGC"),
+        ("M15", 12.3, 12.3, "1989Sci...246.1066D", 6.3, "OpenNGC"),
+        ("M52", 16.0, 16.0, "2020A&A...633A..99C", 6.9, "OpenNGC"),
+    ],
+)
+def test_simbad_priority_and_openngc_fallback_for_reference_objects(
+    name: str,
+    major: float,
+    minor: float,
+    size_bibcode: str,
+    magnitude: float,
+    magnitude_source: str,
+) -> None:
+    obj = next(item for item in load_messier_catalog() if item.name == name)
+
+    assert obj.apparent_major_arcmin == major
+    assert obj.apparent_minor_arcmin == minor
+    assert obj.size_source == "SIMBAD"
+    assert obj.size_reference == size_bibcode
+    assert obj.size_retrieved_on == "2026-08-03"
+    assert obj.magnitude_v == magnitude
+    assert obj.magnitude_source == magnitude_source
+    assert obj.magnitude_reference == "doi:10.21938/y.1ejWUD_MQ6b_eDFoVbbw"
 
 
 def test_magnitude_filter_also_accepts_messier_objects() -> None:

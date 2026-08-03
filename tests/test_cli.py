@@ -68,6 +68,6 @@ def test_cli_accepts_the_messier_catalog(capsys) -> None:
 
     output = capsys.readouterr().out
     assert exit_code == 0
-    assert "Objets Messier (OpenNGC)" in output
+    assert "Objets Messier (SIMBAD, repli OpenNGC)" in output
     assert "magnitude apparente ≤ -20" in output
     assert "Aucun objet" in output

@@ -77,6 +77,12 @@ def load_messier_catalog() -> tuple[MessierObject, ...]:
                 constellation=row["constellation"],
                 apparent_major_arcmin=_optional_float(row["major_axis_arcmin"]),
                 apparent_minor_arcmin=_optional_float(row["minor_axis_arcmin"]),
+                size_source=row["size_source"],
+                size_reference=row["size_reference"],
+                size_retrieved_on=row["size_retrieved_on"],
+                magnitude_source=row["magnitude_source"],
+                magnitude_reference=row["magnitude_reference"],
+                magnitude_retrieved_on=row["magnitude_retrieved_on"],
                 common_name=row["common_name"],
             )
             for row in rows

@@ -27,6 +27,12 @@ def test_report_contains_the_enriched_result_columns() -> None:
         constellation="And",
         apparent_major_arcmin=177.83,
         apparent_minor_arcmin=69.66,
+        size_source="SIMBAD",
+        size_reference="2003A&A...412...45P",
+        size_retrieved_on="2026-08-03",
+        magnitude_source="SIMBAD",
+        magnitude_reference="2007ApJS..173..185G",
+        magnitude_retrieved_on="2026-08-03",
     )
     result = VisibilityResult(
         star=messier,
@@ -51,6 +57,7 @@ def test_report_contains_the_enriched_result_columns() -> None:
         results=[result],
         matched_count=1,
         object_kind="messier",
+        show_details=True,
     )
 
     assert "Taille apparente" in report
@@ -59,7 +66,11 @@ def test_report_contains_the_enriched_result_columns() -> None:
     assert "Opposition" in report
     assert "Monte ≥ 50°" in report
     assert "Descend < 50°" in report
-    assert "177.83′ × 69.66′" in report
+    assert "177.83′ × 69.66′ [SIMBAD]" in report
+    assert "3.44 [SIMBAD]" in report
     assert "2026-09-28" in report
     assert "08-02 23:12" in report
     assert "07:46" in report
+    assert "PROVENANCE DÉTAILLÉE" in report
+    assert "bibcode 2003A&A...412...45P" in report
+    assert "récupéré le 2026-08-03" in report

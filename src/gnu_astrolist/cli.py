@@ -114,6 +114,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="interdit la mise à jour réseau des données IERS par Astropy",
     )
+    parser.add_argument(
+        "--details",
+        action="store_true",
+        help="affiche la provenance détaillée des tailles et magnitudes",
+    )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     return parser
 
@@ -190,6 +195,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             results=displayed_results,
             matched_count=matched_count,
             object_kind=object_kind,
+            show_details=args.details,
         )
     )
     return 0

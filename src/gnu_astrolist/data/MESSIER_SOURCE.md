@@ -22,6 +22,13 @@ les dimensions angulaires disponibles, le nom usuel éventuel et la magnitude
 apparente en bande V. Le fichier résultant contient les numéros M1 à M110,
 ordonnés numériquement.
 
+Depuis la version 0.5.0, les dimensions et magnitudes V sont enrichies avec un
+cache SIMBAD. Une valeur SIMBAD valide est prioritaire; OpenNGC demeure la
+source principale des autres champs et le repli hors ligne pour les valeurs
+absentes. La provenance est enregistrée séparément pour chaque taille et chaque
+magnitude. Consultez `SIMBAD_SOURCE.md` pour la requête, le cache et les règles
+de sélection.
+
 Les codes de type (`G`, `GCl`, `OCl`, `PN`, `Neb`, etc.) sont ceux d'OpenNGC.
 Le guide du projet OpenNGC en donne la signification complète.
 

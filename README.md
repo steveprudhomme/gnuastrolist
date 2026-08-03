@@ -78,6 +78,11 @@ Les 110 objets Messier sont considérés par défaut. Ajoutez par exemple
 inférieure ou égale à 8. La convention retenue pour l'objet historiquement
 ambigu M102 est NGC 5866.
 
+Les tailles et magnitudes Messier privilégient les valeurs valides de SIMBAD et
+utilisent OpenNGC comme repli hors ligne. Le catalogue choisi est indiqué entre
+crochets à côté de chaque valeur. Ajoutez `--details` pour afficher également
+le bibcode ou la référence et la date de récupération.
+
 ## Informations du tableau
 
 Le tableau indique désormais, pour chaque objet retenu :
@@ -144,6 +149,7 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --sample-minutes MIN         Pas de recherche (défaut : 10)
 --limit N                    Tronque uniquement l'affichage après le tri
 --offline                    Empêche Astropy de mettre à jour les données IERS
+--details                    Affiche la provenance complète des tailles et magnitudes
 ```
 
 La commande `gnu-astrolist --help` donne la liste à jour.
@@ -173,10 +179,10 @@ d'entrée `console_scripts`, conformément au guide de la
 - Pour les étoiles variables, la magnitude affichée est le **maximum d'éclat
   historique publié** par le GCVS. Ce n'est pas la magnitude prédite pour la
   date choisie.
-- Pour les objets Messier, la magnitude affichée est la magnitude apparente V
-  publiée par OpenNGC. La taille apparente et la constellation viennent de la
-  même source; certaines dimensions ne sont pas disponibles. L'identification
-  retenue pour M102 est NGC 5866.
+- Pour les objets Messier, les dimensions et magnitudes V valides de SIMBAD
+  sont prioritaires, puis OpenNGC sert de repli. Certaines dimensions ne sont
+  disponibles dans aucune des deux sources. L'identification retenue pour M102
+  est NGC 5866.
 - Seules les entrées dont la bande principale est `V` sont incluses. Le GCVS
   regroupe sous ce code les mesures visuelles, photovisuelles ou Johnson V.
 - La sélection est discrète. Un objet qui traverse très rapidement un petit
@@ -203,9 +209,11 @@ ruff check .
 Le code est distribué sous GNU GPL version 3 ou ultérieure. Les données du GCVS
 restent attribuées à leurs auteurs et au service VizieR. Le catalogue Messier
 dérivé d'OpenNGC demeure sous `CC BY-SA 4.0`. Ces données ne sont pas
-relicenciées par la GPL du logiciel. Consultez
+relicenciées par la GPL du logiciel. Le cache SIMBAD reste attribué au CDS et
+n'est pas placé sous GPL. Consultez
 [`CATALOG_SOURCE.md`](src/gnu_astrolist/data/CATALOG_SOURCE.md) et
-[`MESSIER_SOURCE.md`](src/gnu_astrolist/data/MESSIER_SOURCE.md).
+[`MESSIER_SOURCE.md`](src/gnu_astrolist/data/MESSIER_SOURCE.md), ainsi que
+[`SIMBAD_SOURCE.md`](src/gnu_astrolist/data/SIMBAD_SOURCE.md).
 
 ## Contribuer
 

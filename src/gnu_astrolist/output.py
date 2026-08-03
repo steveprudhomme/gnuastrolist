@@ -9,7 +9,9 @@ from .models import FieldOfView, ObservationWindow, VisibilityResult
 
 def _magnitude_label(result: VisibilityResult) -> str:
     prefix = result.star.magnitude_limit or ""
-    return f"{prefix}{result.star.magnitude_v:.3f}".rstrip("0").rstrip(".")
+    value = f"{prefix}{result.star.magnitude_v:.3f}".rstrip("0").rstrip(".")
+    source = result.star.magnitude_source
+    return f"{value} [{source}]" if source else value
 
 
 def _number(value: float) -> str:
@@ -22,8 +24,46 @@ def _apparent_size_label(result: VisibilityResult) -> str:
     if major is None:
         return "—"
     if minor is None:
-        return f"{_number(major)}′"
-    return f"{_number(major)}′ × {_number(minor)}′"
+        value = f"{_number(major)}′"
+    else:
+        value = f"{_number(major)}′ × {_number(minor)}′"
+    source = result.star.size_source
+    return f"{value} [{source}]" if source else value
+
+
+def _reference_label(reference: str) -> str:
+    if not reference:
+        return "référence non disponible"
+    if reference.startswith("doi:"):
+        return f"référence {reference}"
+    if len(reference) == 19 and reference[:4].isdigit():
+        return f"bibcode {reference}"
+    return f"référence {reference}"
+
+
+def _format_provenance_details(results: Sequence[VisibilityResult]) -> str:
+    lines = ["PROVENANCE DÉTAILLÉE"]
+    for result in results:
+        star = result.star
+        size = _apparent_size_label(result).rsplit(" [", maxsplit=1)[0]
+        magnitude = _magnitude_label(result).rsplit(" [", maxsplit=1)[0]
+        lines.append(f"{star.name} :")
+        if star.size_source:
+            lines.append(
+                "  Taille      : "
+                f"{size}; catalogue {star.size_source}; "
+                f"{_reference_label(star.size_reference)}; "
+                f"récupéré le {star.size_retrieved_on}."
+            )
+        else:
+            lines.append("  Taille      : non disponible.")
+        lines.append(
+            "  Magnitude V : "
+            f"{magnitude}; catalogue {star.magnitude_source or 'inconnu'}; "
+            f"{_reference_label(star.magnitude_reference)}; "
+            f"récupéré le {star.magnitude_retrieved_on or 'date inconnue'}."
+        )
+    return "\n".join(lines)
 
 
 def _crossing_time_label(
@@ -110,6 +150,7 @@ def render_report(
     results: Sequence[VisibilityResult],
     matched_count: int,
     object_kind: str,
+    show_details: bool = False,
 ) -> str:
     """Produit une sortie lisible, déterministe et facile à copier."""
 
@@ -117,7 +158,9 @@ def render_report(
     end = window.end_local
     variable_stars = object_kind == "variable_stars"
     catalog_text = (
-        "Étoiles variables (GCVS)" if variable_stars else "Objets Messier (OpenNGC)"
+        "Étoiles variables (GCVS)"
+        if variable_stars
+        else "Objets Messier (SIMBAD, repli OpenNGC)"
     )
     if max_magnitude is None:
         magnitude_text = "aucune limite"
@@ -173,6 +216,8 @@ def render_report(
             lines.append(f"\n{len(results)} objet(s) affiché(s) sur {matched_count} trouvé(s).")
         else:
             lines.append(f"\n{matched_count} objet(s) trouvé(s).")
+        if show_details:
+            lines.extend(["", _format_provenance_details(results)])
     else:
         lines.append("Aucun objet du catalogue ne satisfait les critères.")
 
@@ -185,7 +230,9 @@ def render_report(
             ]
         )
     else:
-        lines.append("       Les magnitudes apparentes V proviennent d'OpenNGC.")
+        lines.append(
+            "       Dimensions et magnitudes : priorité SIMBAD, repli OpenNGC."
+        )
     lines.extend(
         [
             "       Les tailles apparentes sont exprimées en minutes d'arc (′).",

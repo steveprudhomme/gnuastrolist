@@ -5,6 +5,24 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+## [0.5.0] - 2026-08-03
+
+### Ajouté
+
+- Cache local reproductible des 110 objets Messier obtenu par une seule requête
+  TAP vers SIMBAD.
+- Priorité aux dimensions et magnitudes V valides de SIMBAD, avec repli
+  automatique vers OpenNGC pour chaque valeur manquante.
+- Provenance indépendante des tailles et magnitudes : catalogue, bibcode ou
+  référence et date de récupération.
+- Option `--details` affichant la provenance complète de chaque valeur.
+- Tests de comparaison explicites pour M39, M15 et M52.
+
+### Modifié
+
+- Affichage de la source directement à côté des tailles et magnitudes dans le
+  tableau principal.
+
 ## [0.4.0] - 2026-08-03
 
 ### Ajouté

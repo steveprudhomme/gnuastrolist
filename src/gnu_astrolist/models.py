@@ -25,6 +25,12 @@ class VariableStar:
     constellation: str = ""
     apparent_major_arcmin: float | None = None
     apparent_minor_arcmin: float | None = None
+    size_source: str = ""
+    size_reference: str = ""
+    size_retrieved_on: str = ""
+    magnitude_source: str = "GCVS"
+    magnitude_reference: str = "2017ARep...61...80S"
+    magnitude_retrieved_on: str = "2026-07-17"
 
     @property
     def object_type(self) -> str:
@@ -52,6 +58,12 @@ class MessierObject:
     constellation: str
     apparent_major_arcmin: float | None
     apparent_minor_arcmin: float | None
+    size_source: str = ""
+    size_reference: str = ""
+    size_retrieved_on: str = ""
+    magnitude_source: str = ""
+    magnitude_reference: str = ""
+    magnitude_retrieved_on: str = ""
     common_name: str = ""
     passband: str = "V"
 

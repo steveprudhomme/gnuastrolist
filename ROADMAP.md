@@ -13,7 +13,7 @@
   - heure du passage au-dessus de l'élévation minimale choisie par
     l'utilisateur;
   - heure du passage sous cette élévation minimale.
-- [ ] Corriger et documenter la provenance des tailles et magnitudes des objets
+- [x] Corriger et documenter la provenance des tailles et magnitudes des objets
       du ciel profond en enrichissant le catalogue local avec SIMBAD :
   - conserver OpenNGC comme catalogue local principal et comme solution de
     repli hors ligne;
