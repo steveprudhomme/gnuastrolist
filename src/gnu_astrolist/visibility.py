@@ -20,6 +20,7 @@ from .models import (
     SatelliteTarget,
     VisibilityResult,
 )
+from .validation import sample_datetimes, sampling_plan, validate_observer
 
 MAX_TIME_SAMPLES = 2_000
 CATALOG_CHUNK_SIZE = 2_048
@@ -28,25 +29,7 @@ CROSSING_SEARCH_HOURS = 30.0
 
 
 def _sample_datetimes(window: ObservationWindow, interval_minutes: float) -> list[datetime]:
-    if interval_minutes <= 0.0:
-        raise ValueError("l'intervalle d'échantillonnage doit être supérieur à zéro")
-
-    start_utc = window.start_local.astimezone(timezone.utc)
-    end_utc = window.end_local.astimezone(timezone.utc)
-    step = timedelta(minutes=interval_minutes)
-    estimated_samples = int((end_utc - start_utc) / step) + 2
-    if estimated_samples > MAX_TIME_SAMPLES:
-        raise ValueError(
-            "le pas demandé produirait plus de "
-            f"{MAX_TIME_SAMPLES} instants; augmentez --sample-minutes"
-        )
-    samples = [start_utc]
-    current = start_utc + step
-    while current < end_utc:
-        samples.append(current)
-        current += step
-    samples.append(end_utc)
-    return samples
+    return sample_datetimes(window, interval_minutes, MAX_TIME_SAMPLES, "--sample-minutes", 60)
 
 
 def _datetime_range(
@@ -285,14 +268,12 @@ def compute_visibility(
     appliquée, car Astropy utilise ici une pression nulle.
     """
 
+    validate_observer(latitude_deg, longitude_deg, elevation_m)
+    sampling_plan(window, sample_minutes, MAX_TIME_SAMPLES, "--sample-minutes", 60)
     if not stars:
         return []
     if any(isinstance(star, (AsteroidTarget, CometTarget, SatelliteTarget)) for star in stars):
         raise ValueError("Les corps mobiles exigent le moteur orbital, pas des coordonnées fixes")
-    if not -90.0 <= latitude_deg <= 90.0:
-        raise ValueError("la latitude doit être comprise entre -90 et 90 degrés")
-    if not -180.0 <= longitude_deg <= 180.0:
-        raise ValueError("la longitude doit être comprise entre -180 et 180 degrés")
 
     location = EarthLocation.from_geodetic(
         lon=longitude_deg * u.deg,

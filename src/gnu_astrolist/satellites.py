@@ -16,7 +16,7 @@ import math
 import re
 import zlib
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 from pathlib import Path
 
 import astropy.units as u
@@ -35,6 +35,14 @@ from sgp4.api import SGP4_ERRORS, WGS72, Satrec
 
 from .catalog_resources import catalog_resource
 from .models import FieldOfView, ObservationWindow, SatelliteTarget, VisibilityResult
+from .validation import (
+    MAX_AGE_HOURS,
+    finite_number,
+    sample_datetimes,
+    sampling_plan,
+    validate_magnitude,
+    validate_observer,
+)
 
 _REQUIRED = {
     'OBJECT_NAME', 'OBJECT_ID', 'EPOCH', 'MEAN_MOTION', 'ECCENTRICITY',
@@ -185,7 +193,8 @@ def load_satellite_elements(path=None) -> tuple[SatelliteElements, ...]:
 
 def eligible_elements(elements, times, max_epoch_hours=168):
     """Sépare les éléments selon leur âge absolu sur toute la fenêtre UTC."""
-    if not math.isfinite(max_epoch_hours) or max_epoch_hours <= 0:
+    max_epoch_hours = finite_number(max_epoch_hours, 'âge maximal GP', 0, MAX_AGE_HOURS)
+    if max_epoch_hours <= 0:
         raise ValueError('max_epoch_hours doit être fini et positif')
     dates = np.atleast_1d(Time(times).utc.jd)
     if not dates.size or not np.all(np.isfinite(dates)):
@@ -257,27 +266,14 @@ def compute_satellite_visibility(
     Les premiers/derniers instants rapportés sont des échantillons, pas les
     bornes d'un passage continu. Le contrôle d'âge appartient à l'appelant.
     """
-    if (not all(math.isfinite(x) for x in (lat, lon, elevation_m, sample_seconds,
-                                         max_sun_altitude))
-            or not -90 <= lat <= 90 or not -180 <= lon <= 180
-            or not -90 <= max_sun_altitude <= 90 or sample_seconds <= 0):
-        raise ValueError('Site, pas ou hauteur solaire invalide')
-    if max_magnitude is not None and not math.isfinite(max_magnitude):
-        raise ValueError('Magnitude limite non finie')
-    start, end = window.start_local, window.end_local
-    if start.utcoffset() is None or end.utcoffset() is None:
-        raise ValueError('La fenêtre doit avoir un fuseau horaire')
-    start_utc, end_utc = start.astimezone(timezone.utc), end.astimezone(timezone.utc)
-    duration = (end_utc - start_utc).total_seconds()
-    if duration <= 0:
-        raise ValueError('La fin doit suivre le début')
-    if duration > sample_seconds * (MAX_SAMPLES - 1):
-        raise ValueError(f'Fenêtre limitée à {MAX_SAMPLES} échantillons')
-    intervals = math.ceil(duration / sample_seconds)
-    if max_magnitude is not None:
+    validate_observer(lat, lon, elevation_m)
+    validate_magnitude(max_magnitude)
+    finite_number(max_sun_altitude, 'hauteur solaire', -90, 90)
+    sampling_plan(window, sample_seconds, MAX_SAMPLES, '--satellite-step-seconds')
+    start = window.start_local
+    if max_magnitude is not None or not elements:
         return []
-    dates = [start_utc + timedelta(seconds=min(i * sample_seconds, duration))
-             for i in range(intervals + 1)]
+    dates = sample_datetimes(window, sample_seconds, MAX_SAMPLES, '--satellite-step-seconds')
     times = Time(dates)
     location = EarthLocation.from_geodetic(lon * u.deg, lat * u.deg, elevation_m * u.m)
     results = []

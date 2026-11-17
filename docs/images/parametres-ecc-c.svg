@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="390" viewBox="0 0 960 390" role="img" aria-labelledby="title desc">
+  <title id="title">ECC-C : vérifier les réglages avant le rapport</title>
+  <desc id="desc">Une heure avec un calcul chaque minute donne 61 instants. Le logiciel vérifie les nombres, les heures et le nombre de calculs avant de télécharger ou d'écrire un rapport. Un réglage invalide est refusé.</desc>
+  <rect width="960" height="390" rx="16" fill="#f2f6f8"/>
+  <g font-family="sans-serif" fill="#18344a">
+    <text x="32" y="43" font-size="25" font-weight="bold">ECC-C : vérifier les réglages avant le rapport</text>
+    <text x="32" y="77" font-size="18">De 21 h à 22 h, un calcul chaque minute : 61 instants, début et fin compris.</text>
+    <rect x="32" y="109" width="430" height="143" rx="12" fill="#e7f1f3" stroke="#2b7282"/>
+    <rect x="490" y="109" width="438" height="143" rx="12" fill="#fae9e6" stroke="#a44b3c"/>
+    <text x="52" y="144" font-size="21" font-weight="bold">Réglages valides</text>
+    <text x="52" y="181" font-size="18">Le logiciel peut préparer la liste.</text>
+    <text x="52" y="216" font-size="18">Les rapports restent sur l'ordinateur.</text>
+    <text x="510" y="144" font-size="21" font-weight="bold">Réglage invalide</text>
+    <text x="510" y="181" font-size="18">Arrêt avant téléchargement et export.</text>
+    <text x="510" y="216" font-size="18">Corriger la commande et recommencer.</text>
+    <rect x="32" y="276" width="896" height="70" rx="12" fill="#fff6df" stroke="#ac7c14"/>
+    <text x="52" y="305" font-size="18">Trop d'instants ? Augmenter le pas ou raccourcir la plage.</text>
+    <text x="52" y="331" font-size="17">Afficher moins de lignes ne réduit pas le nombre de calculs.</text>
+    <text x="32" y="375" font-size="15">Schéma explicatif. Les photos Seestar restent en lecture seule.</text>
+  </g>
+</svg>

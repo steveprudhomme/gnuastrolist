@@ -9,6 +9,8 @@ from typing import TypeAlias
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 
+from .validation import finite_number
+
 
 @dataclass(frozen=True, slots=True)
 class VariableStar:
@@ -238,12 +240,11 @@ class FieldOfView:
         Le champ vertical s'étend de l'élévation minimale choisie jusqu'à 90°.
         """
 
-        if not 0.0 <= azimuth_min_deg <= 360.0:
-            raise ValueError("l'azimut minimal doit être compris entre 0 et 360 degrés")
-        if not 0.0 <= azimuth_max_deg <= 360.0:
-            raise ValueError("l'azimut maximal doit être compris entre 0 et 360 degrés")
-        if not 0.0 <= minimum_altitude_deg <= 90.0:
-            raise ValueError("l'élévation minimale doit être comprise entre 0 et 90 degrés")
+        finite_number(azimuth_min_deg, "azimut minimal", 0, 360)
+        finite_number(azimuth_max_deg, "azimut maximal", 0, 360)
+        finite_number(minimum_altitude_deg, "élévation minimale", 0, 90)
+        if altitude_center_deg is not None:
+            finite_number(altitude_center_deg, "centre vertical", 0, 90)
 
         normalized_minimum = azimuth_min_deg % 360.0
         normalized_maximum = azimuth_max_deg % 360.0
@@ -279,6 +280,8 @@ class FieldOfView:
         return (self.azimuth_center_deg + self.horizontal_deg / 2.0) % 360.0
 
     def __post_init__(self) -> None:
+        for name in ('azimuth_center_deg', 'altitude_center_deg', 'horizontal_deg', 'vertical_deg'):
+            finite_number(getattr(self, name), name)
         if not 0.0 <= self.azimuth_center_deg < 360.0:
             raise ValueError(
                 "le centre azimutal doit être compris entre 0 (inclus) et 360 (exclus)"

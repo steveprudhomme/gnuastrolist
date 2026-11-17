@@ -12,8 +12,9 @@ Ce dessin est un schéma explicatif, pas une capture de l'application.
 
 1. Demande « Quelle est la prochaine étape ? ».
 2. La réponse indique **utiliser ECC** et la première étiquette encore ouverte.
-3. **ECC-A** protège les fichiers. **ECC-B** vérifie les données météo.
-   Le groupe suivant, **ECC-C**, vérifiera les réglages que tu tapes dans la commande.
+3. **ECC-A** protège les fichiers, **ECC-B** vérifie la météo et **ECC-C**
+   vérifie les réglages de la commande. Le groupe suivant, **ECC-D**, préparera
+   une installation du logiciel facile à reproduire.
 4. Après les changements, on vérifie les tests et on explique le résultat.
    On coche une étape seulement quand elle est terminée.
 
@@ -23,6 +24,29 @@ version principale. Les détails pour les personnes qui
 développent sont dans le [guide ECC](DEVELOPPEMENT_ECC.md).
 
 ## Commencer ici : préparer sa soirée, pas à pas
+
+### Vérifier ses réglages avec ECC-C
+
+Les **réglages** disent au logiciel où et quand regarder. Le **pas** est le
+temps entre deux calculs. Un pas de dix minutes veut dire : calculer une position
+toutes les dix minutes, puis vérifier aussi la fin de la plage.
+
+![Vérifier les réglages avant de préparer le rapport](images/parametres-ecc-c.svg)
+
+Ce dessin est un schéma inventé pour expliquer. Ce n'est pas une capture d'écran.
+
+1. Commence avec le pas habituel : `--sample-minutes 10`.
+2. Si le programme dit qu'il y a trop d'instants, augmente ce nombre ou choisis
+   une plage plus courte. Un pas plus petit demande plus de calculs.
+3. Si un réglage est invalide, corrige la commande. Le logiciel refuse avant
+   de télécharger des catalogues ou d'écrire un rapport. Il garde l'ancien rapport.
+4. Utilise des nombres ordinaires : `45`, `-73.68`, `10`. N'utilise pas `nan`
+   ou `inf` : ils ne donnent pas une valeur utilisable pour ton observation.
+
+Sur une heure, un pas d'une minute donne 61 instants, avec le début et la fin.
+Les limites sont de 2 000 instants pour les objets lents et 20 000 pour les
+satellites rapides. Afficher seulement trois lignes ne réduit pas ces calculs.
+Les [détails pour les développeurs](PARAMETRES.md) expliquent les limites.
 
 ### Comprendre une météo incomplète avec ECC-B
 

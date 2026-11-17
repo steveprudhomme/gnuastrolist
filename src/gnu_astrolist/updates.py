@@ -37,6 +37,7 @@ from .data_builders import build_ngc_catalog as ngc
 from .data_builders import build_stellar_catalogs as stellar
 from .data_builders import update_simbad_cache as simbad
 from .seestar import protect_outputs
+from .validation import MAX_AGE_HOURS
 
 MAX_DOWNLOAD_BYTES = 50 * 1024 * 1024
 TIMEOUT_SECONDS = 30
@@ -68,12 +69,28 @@ SOURCE_REGISTRY = {
 def parse_max_age_hours(value: str | float) -> float:
     """Analyse une durée strictement positive et finie, utilisable avec argparse."""
     try:
+        if isinstance(value, bool):
+            raise ValueError('Booléen interdit pour une durée')
         age = float(value)
-    except (TypeError, ValueError) as exc:
+    except (TypeError, ValueError, OverflowError) as exc:
         raise argparse.ArgumentTypeError('Durée en heures attendue') from exc
-    if not math.isfinite(age) or age <= 0:
+    if not math.isfinite(age) or not 0 < age <= MAX_AGE_HOURS:
         raise argparse.ArgumentTypeError('Durée strictement positive et finie requise')
     return age
+
+
+def validate_max_ages(values: Mapping[str, float]) -> dict[str, float]:
+    if not isinstance(values, Mapping):
+        raise ValueError('Les âges doivent associer une source à un nombre d’heures')
+    result = {}
+    for key, value in values.items():
+        if key not in {*CATALOG_REGISTRY, *SOURCE_REGISTRY, 'satcat', 'gp'}:
+            raise ValueError(f'Âge de source inconnu : {key}')
+        try:
+            result[key] = parse_max_age_hours(value)
+        except argparse.ArgumentTypeError as exc:
+            raise ValueError(str(exc)) from exc
+    return result
 
 
 @dataclass(frozen=True)
@@ -308,14 +325,7 @@ def refresh_catalogs(
     selected = tuple(dict.fromkeys(kinds))
     if any(kind not in CATALOG_REGISTRY for kind in selected):
         raise ValueError('Catalogue non enregistré')
-    ages = dict(max_age_hours or {})
-    for key, value in ages.items():
-        if key not in {*CATALOG_REGISTRY, *SOURCE_REGISTRY, 'satcat', 'gp'}:
-            raise ValueError(f'Âge de source inconnu : {key}')
-        try:
-            ages[key] = parse_max_age_hours(value)
-        except argparse.ArgumentTypeError as exc:
-            raise ValueError(str(exc)) from exc
+    ages = validate_max_ages(max_age_hours if max_age_hours is not None else {})
     # Aucun mkdir, fichier temporaire ou téléchargement avant cette protection.
     _guard(cache_dir, seestar_root)
     cache_dir = cache_dir.resolve()

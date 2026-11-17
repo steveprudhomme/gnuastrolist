@@ -37,8 +37,15 @@ from .satellites import (
 from .seestar import annotate_results, protect_outputs, scan_seestar, validate_root
 from .selection import load_catalog_selection, normalize_catalogs
 from .time_utils import parse_observation_window
-from .updates import DEFAULT_MAX_AGE_HOURS, parse_max_age_hours, refresh_catalogs
-from .visibility import compute_visibility
+from .updates import DEFAULT_MAX_AGE_HOURS, parse_max_age_hours, refresh_catalogs, validate_max_ages
+from .validation import (
+    finite_number,
+    sampling_plan,
+    sampling_step,
+    validate_magnitude,
+    validate_observer,
+)
+from .visibility import MAX_TIME_SAMPLES, compute_visibility
 from .weather import compute_weather_summary
 
 
@@ -152,7 +159,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     artificial.add_argument(
         "--satellite-step-seconds",
-        type=parse_max_age_hours,
+        type=float,
         default=5.0,
         help="pas des passages en secondes (défaut : 5)",
     )
@@ -262,7 +269,22 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _validate_numeric_arguments(args: argparse.Namespace) -> None:
+    validate_observer(args.lat, args.lon, args.elevation_m)
+    validate_magnitude(args.max_magnitude)
+    sampling_step(args.sample_minutes, '--sample-minutes', 60)
+    sampling_step(args.satellite_step_seconds, '--satellite-step-seconds')
+    finite_number(args.satellite_max_sun_altitude, '--satellite-max-sun-altitude', -90, 90)
+    FieldOfView.from_automatic_center(
+        azimuth_min_deg=args.az_min, azimuth_max_deg=args.az_max,
+        minimum_altitude_deg=args.min_altitude, altitude_center_deg=args.alt_center,
+    )
+    if args.limit is not None and args.limit <= 0:
+        raise ValueError('--limit doit être un entier supérieur à zéro')
+
+
 def _validate_arguments(args: argparse.Namespace) -> None:
+    _validate_numeric_arguments(args)
     if (
         args.satellite_elements_file
         or args.satcat_file
@@ -270,22 +292,12 @@ def _validate_arguments(args: argparse.Namespace) -> None:
         or args.satellite_optical_only
     ) and not {"satellites", "debris"}.intersection(args.objects):
         raise ValueError("Les options satellitaires exigent --objects satellites ou debris")
-    if not -90 <= args.satellite_max_sun_altitude <= 90:
-        raise ValueError("--satellite-max-sun-altitude doit être entre -90 et 90")
     if (
         args.comets_file is not None or args.cbat_file is not None
     ) and "comets" not in args.objects:
         raise ValueError("--comets-file et --cbat-file exigent --objects comets")
     if args.asteroids_file is not None and "asteroids" not in args.objects:
         raise ValueError("--asteroids-file exige --objects asteroids")
-    if not -90.0 <= args.lat <= 90.0:
-        raise ValueError("--lat doit être compris entre -90 et 90")
-    if not -180.0 <= args.lon <= 180.0:
-        raise ValueError("--lon doit être compris entre -180 et 180")
-    if args.sample_minutes <= 0.0:
-        raise ValueError("--sample-minutes doit être supérieur à zéro")
-    if args.limit is not None and args.limit <= 0:
-        raise ValueError("--limit doit être un entier supérieur à zéro")
 
 
 def _export_policy(args, seestar_root, cache_dir=None):
@@ -409,7 +421,7 @@ def _run(args, parser, update_result, seestar_root, cache_dir) -> int:
             elevation_m=args.elevation_m,
             field_of_view=field_of_view,
             sample_minutes=args.sample_minutes,
-        )
+        ) if stars else []
         if orbits:
             results.extend(
                 compute_asteroid_visibility(
@@ -563,23 +575,26 @@ def _update_settings(args):
     mode = args.update_catalogs or config.get("mode", "never")
     if not isinstance(mode, str) or mode not in {"never", "if-stale", "force"}:
         raise ValueError("Mode de mise à jour inconnu : never, if-stale ou force requis")
-    return mode, Path(directory), ages
+    if not str(directory).strip() or '\0' in str(directory):
+        raise ValueError('cache_dir doit désigner un chemin non vide sans caractère nul')
+    return mode, Path(directory), validate_max_ages(ages)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
-    # Priorité absolue au mode hors ligne avant conversions et import des sources.
-    iers.conf.auto_download = not args.offline
-    iers.conf.auto_max_age = None if args.offline else 30.0
-    iers.conf.iers_degraded_accuracy = "warn"
     try:
+        _validate_numeric_arguments(args)
         root = validate_root(args.seestar_path) if args.seestar_path is not None else None
         validate_report_paths((args.output_txt, args.output_pdf), **_export_policy(args, root))
         _validate_arguments(args)
         checked_window = parse_observation_window(args.date, args.time_range, args.timezone)
-        if {'satellites','debris'}.intersection(args.objects) and checked_window.duration_seconds > args.satellite_step_seconds*(MAX_SAMPLES-1):
-            raise ValueError(f'Fenêtre satellitaire limitée à {MAX_SAMPLES} échantillons; augmentez le pas ou réduisez la plage')
+        selected = normalize_catalogs(args.objects)
+        if set(selected) - {'satellites', 'debris'}:
+            sampling_plan(checked_window, args.sample_minutes, MAX_TIME_SAMPLES, '--sample-minutes', 60)
+        if {'satellites', 'debris'}.intersection(selected):
+            sampling_plan(checked_window, args.satellite_step_seconds, MAX_SAMPLES,
+                          '--satellite-step-seconds')
         FieldOfView.from_automatic_center(
             azimuth_min_deg=args.az_min,
             azimuth_max_deg=args.az_max,
@@ -599,6 +614,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                 and (args.satellite_elements_file or args.satcat_file)
             )
         )
+        # Activer la politique réseau seulement après le précontrôle complet,
+        # avant toute conversion Astropy ou actualisation susceptible d'en utiliser.
+        iers.conf.auto_download = not args.offline
+        iers.conf.auto_max_age = None if args.offline else 30.0
+        iers.conf.iers_degraded_accuracy = 'warn'
         result = refresh_catalogs(
             kinds,
             mode=mode,

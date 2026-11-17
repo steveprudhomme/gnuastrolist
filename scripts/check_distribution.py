@@ -58,6 +58,7 @@ def main() -> None:
         assert any(k.endswith('gnu_astrolist/selection.py') for k in files), path
         assert any(k.endswith('gnu_astrolist/seestar.py') for k in files), path
         assert any(k.endswith('gnu_astrolist/report_files.py') for k in files), path
+        assert any(k.endswith('gnu_astrolist/validation.py') for k in files), path
         assert any(k.endswith("/LICENSE") or k == "LICENSE" for k in files), path
         assert not any("/local/" in k or k.endswith(("rapport.pdf", "rapport.txt")) for k in files)
         if path.name.endswith('.tar.gz'):
@@ -72,6 +73,8 @@ def main() -> None:
             assert any(k.endswith('/docs/EXPORTS.md') for k in files), path
             assert any(k.endswith('/docs/images/meteo-fiable-ecc-b.svg') for k in files), path
             assert any(k.endswith('/docs/METEO.md') for k in files), path
+            assert any(k.endswith('/docs/PARAMETRES.md') for k in files), path
+            assert any(k.endswith('/docs/images/parametres-ecc-c.svg') for k in files), path
         print(f"{path.name} : catalogues, notice, licence et exclusions OK")
 
 

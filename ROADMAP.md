@@ -7,11 +7,14 @@ approuvées par le propriétaire. Leurs identifiants permanents sont **ECC-A à
 ECC-I**. Ce plan est enregistré avant toute implémentation; les cases restent
 ouvertes tant que leurs critères ne sont pas vérifiés.
 
-**Prochaine étape de développement : utiliser ECC pour réaliser ECC-C —
-valider les paramètres avant traitement.** ECC-A est fusionné dans `main` par la
+**Prochaine étape de développement : utiliser ECC pour réaliser ECC-D —
+environnement et livraison reproductibles.** ECC-A est fusionné dans `main` par la
 [PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9), commit `1d75522`.
 ECC-B est publié dans la [PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10),
 avec cinq contrôles réussis sur le correctif; sa fusion reste distincte.
+ECC-C est publié dans la [PR nº 11](https://github.com/steveprudhomme/gnuastrolist/pull/11),
+basée sur ECC-B. Ses cinq contrôles ont réussi sur le correctif; intégrer ECC-B
+avant de revoir la base et de fusionner ECC-C dans `main`.
 Choisir le premier lot incomplet
 dans l'ordre ECC-A, ECC-B, ECC-C, ECC-D, ECC-E, ECC-F, ECC-G, ECC-H, ECC-I.
 À chaque demande de prochaine étape, préciser explicitement l'usage d'ECC et
@@ -22,8 +25,8 @@ les contrôles communs et les limites de cet accord. Les lots ECC-D à ECC-I
 prolongent certaines tâches existantes : conserver les renvois et éviter de
 compter deux fois le même travail. Les lots ci-dessous concernent le
 développement local; ils n'autorisent pas, à eux seuls, une publication ou une
-modification GitHub. Les instructions particulières de publication ECC-A et
-ECC-B sont consignées ci-dessous; toute fusion reste distincte.
+modification GitHub. Les instructions particulières de publication ECC-A,
+ECC-B et ECC-C sont consignées ci-dessous; toute fusion reste distincte.
 
 ### ECC-A — Préserver les entrées et fiabiliser les exports — priorité haute
 
@@ -143,11 +146,62 @@ les nouveaux catalogues et les réglages GitHub restent hors de ce lot.
 
 ### ECC-C — Valider les paramètres avant traitement — priorité haute
 
-- [ ] ECC-C.1 — Définir les domaines des flottants par paramètre et refuser
+Suivi : plan `d9545c5` publié avant code, correctif `3eb2da9`,
+[PR nº 11](https://github.com/steveprudhomme/gnuastrolist/pull/11) dépendante
+de la PR nº 10. Validation locale : 564 tests réussis, trois ignorés,
+27 avertissements IERS/ERFA; Ruff, liens, archives et essais installés réussis.
+Les cinq contrôles GitHub du correctif ont réussi; voir
+[VALIDATION.md](docs/VALIDATION.md). Aucune fusion n'a été effectuée pour ce lot.
+
+Plan détaillé du 17 novembre 2026, à committer et publier avant les nouveaux
+tests et le code. ECC-B (PR nº 10) n'étant pas encore fusionné, ECC-C part de
+sa branche publiée; sa PR visera cette branche tant que la dépendance reste
+ouverte. Aucune fusion d'ECC-B ou ECC-C n'est autorisée par ce lot.
+
+- [x] ECC-C.0 — Publier le commit du plan et vérifier son empreinte distante
+      avant toute implémentation; utiliser les méthodes ECC `python-testing`,
+      `python-patterns`, `security-review` et `verification-loop`.
+- [x] ECC-C.1a — Centraliser les nombres finis et domaines : latitude ±90°,
+      longitude ±180°, azimuts 0–360°, hauteurs de champ 0–90°, Soleil ±90°,
+      site terrestre de −1 000 à 10 000 m et magnitude finie sans borne imposée.
+      Refuser aussi booléens et types non numériques dans les API numériques.
+- [x] ECC-C.1b — Définir un pas représentable de 1 microseconde à 24 heures,
+      partagé par les moteurs, et compter exactement les instants en UTC,
+      bornes incluses : 2 000 au maximum pour les objets fixes/petits corps,
+      20 000 pour les satellites. Refuser avant allocation les budgets dépassés;
+      respecter les durées réelles lors des changements d'heure.
+- [x] ECC-C.1c — Valider les âges positifs et finis, bornés par les jours
+      représentables de `timedelta`, ainsi que clés, types et priorité des réglages
+      CLI/JSON. Refuser les booléens JSON, chemins de cache vides et valeurs invalides
+      avant d'appeler l'actualisation des catalogues.
+- [x] ECC-C.2a — Effectuer le précontrôle CLI des nombres, du calendrier, du champ,
+      des budgets et de la configuration avant mise à jour IERS, actualisation,
+      météo, calculs et exports. Conserver les protections de destinations ECC-A.
+- [x] ECC-C.2b — Réutiliser les contrôles dans les API des objets fixes, petits
+      corps, satellites et Lune, même sur une liste d'objets vide. Conserver les
+      messages utilisateur en français et ne pas masquer les erreurs inattendues.
+- [x] ECC-C.3a — Écrire d'abord les régressions : NaN/infini, pas 1e-20 minute,
+      valeurs extrêmes, limites exactes et dépassements, fenêtres invalides/DST,
+      configuration invalide et preuve d'absence d'appel aux opérations à effets.
+- [x] ECC-C.3b — Vérifier commandes valides, terminal/TXT/PDF, préservation des
+      rapports/archives synthétiques, tests complets, Ruff, liens, distributions
+      et installation hors des sources. Aucun essai sur le disque USB réel.
+- [x] ECC-C.3c — Actualiser README, CHANGELOG, architecture, validation et guide
+      ECC; ajouter un guide des paramètres et un schéma dans le tutoriel dès
+      10 ans. Publier le code et les MD, ouvrir la PR dépendante d'ECC-B et vérifier
+      ses cinq contrôles; consigner la dépendance avant toute fusion éventuelle.
+
+Ce précontrôle porte sur les paramètres et la configuration. La validité
+scientifique et le contenu des fichiers de catalogues restent contrôlés par
+leurs lecteurs/moteurs. L'instruction du propriétaire autorise la publication
+du plan et du lot ECC-C développés localement, sans installation de service
+externe, réglage GitHub ni fusion distante.
+
+- [x] ECC-C.1 — Définir les domaines des flottants par paramètre et refuser
       NaN/infini, pas nul après conversion et budgets d'échantillonnage dépassés.
-- [ ] ECC-C.2 — Effectuer ces contrôles avant réseau, cache et export;
+- [x] ECC-C.2 — Effectuer ces contrôles avant réseau, cache et export;
       vérifier chaque famille de moteur et les entrées de configuration.
-- [ ] ECC-C.3 — Tester notamment les pas infini et 1e-20 minute; produire des
+- [x] ECC-C.3 — Tester notamment les pas infini et 1e-20 minute; produire des
       erreurs utilisateur lisibles et documenter les limites dans le tutoriel.
 
 ### ECC-D — Environnement et livraison reproductibles — priorité haute

@@ -23,6 +23,14 @@ produisent des avertissements et les erreurs de programmation restent visibles.
 nuages/seeing. Les rendus partagent ces états sans nouveau format de rapport.
 Voir les [contrôles, unités et périodes de repli](METEO.md).
 
+`validation.py` fournit les domaines numériques, la validation du site et des
+fenêtres, ainsi que le comptage entier des grilles temporelles UTC. La CLI appelle
+le précontrôle avant la configuration IERS et l'actualisation; les moteurs
+réutilisent ces fonctions avant Astropy. Les âges CLI/JSON sont normalisés par
+`updates.validate_max_ages()` avant toute actualisation. Les lecteurs gardent la
+validation scientifique des données, distincte de ce précontrôle ECC-C.
+Voir [PARAMETRES.md](PARAMETRES.md).
+
 Les générateurs de catalogues dans `scripts/` ne sont pas appelés au démarrage.
 `build_ngc_catalog.py` exige un fichier source local et contrôle son empreinte;
 `load_ngc_catalog()` réutilise le modèle du ciel profond et le chargeur commun.
