@@ -33,8 +33,10 @@ Aucun disque USB réel n'a été parcouru ni modifié.
 L'atomicité est par fichier, pas pour la paire TXT/PDF. Les limites de panne
 matérielle, d'arrêt brutal et de changement malveillant de chemin sont explicites
 dans [EXPORTS.md](EXPORTS.md). Couverture et typage statique supplémentaires
-restent au lot ECC-E; leur réussite n'est pas revendiquée ici. La CI de la PR
-ECC-A reste à vérifier après publication du code.
+restent au lot ECC-E; leur réussite n'est pas revendiquée ici. Le correctif
+`f37c3c0` et ses documents sont publiés dans la
+[PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9). Les cinq contrôles
+distants doivent encore être vérifiés avant une éventuelle fusion.
 
 ## Publication GitHub — compatibilité des époques GP
 

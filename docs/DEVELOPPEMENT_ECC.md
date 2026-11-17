@@ -14,8 +14,10 @@ retrouver lors des prochaines étapes. Le plan détaillé est dans
 4. Si le lot est commencé, nommer sa première sous-étape incomplète,
    par exemple **ECC-A.1**, sans recommencer le travail terminé.
 
-Au moment de la planification, la première étape est **ECC-A.1** : recenser
-les fichiers d'entrée et de sortie pour empêcher leur écrasement accidentel.
+ECC-A est implémenté et publié dans la
+[PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9); sa fusion reste
+distincte. La prochaine étape de développement est **utiliser ECC pour réaliser
+ECC-B — fiabiliser les données météo**, selon les cases du roadmap.
 Une demande d'information sur la prochaine étape ne déclenche pas sa réalisation.
 
 ## Périmètre des lots

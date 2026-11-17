@@ -12,13 +12,15 @@ Ce dessin est un schéma explicatif, pas une capture de l'application.
 
 1. Demande « Quelle est la prochaine étape ? ».
 2. La réponse indique **utiliser ECC** et la première étiquette encore ouverte.
-3. Pour commencer, ce sera **ECC-A** : protéger les fichiers pour qu'un rapport
-   ne remplace pas un fichier utilisé par le logiciel.
+3. Le premier groupe, **ECC-A**, protège les fichiers pour qu'un rapport
+   ne remplace pas une entrée. Il est réalisé sur la branche proposée à
+   l'intégration. Le groupe suivant, **ECC-B**, concerne les données météo.
 4. Après les changements, on vérifie les tests et on explique le résultat.
    On coche une étape seulement quand elle est terminée.
 
-Les neuf groupes sont approuvés. Leur présence dans la liste ne veut pas dire
-que les changements sont déjà faits. Les détails pour les personnes qui
+Les neuf groupes sont approuvés. Les cases de la liste indiquent les changements
+réalisés; une branche doit encore être intégrée pour les retrouver dans la
+version principale. Les détails pour les personnes qui
 développent sont dans le [guide ECC](DEVELOPPEMENT_ECC.md).
 
 ## Commencer ici : préparer sa soirée, pas à pas

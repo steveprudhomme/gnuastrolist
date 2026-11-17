@@ -7,8 +7,10 @@ approuvées par le propriétaire. Leurs identifiants permanents sont **ECC-A à
 ECC-I**. Ce plan est enregistré avant toute implémentation; les cases restent
 ouvertes tant que leurs critères ne sont pas vérifiés.
 
-**Prochaine étape : utiliser ECC pour réaliser ECC-A — protéger les fichiers
-d'entrée et fiabiliser les exports.** Ensuite, choisir le premier lot incomplet
+**Prochaine étape de développement : utiliser ECC pour réaliser ECC-B —
+fiabiliser les données météo.** ECC-A est implémenté sur la branche dédiée et
+publié dans la [PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9);
+sa fusion dans `main` reste une étape distincte. Choisir le premier lot incomplet
 dans l'ordre ECC-A, ECC-B, ECC-C, ECC-D, ECC-E, ECC-F, ECC-G, ECC-H, ECC-I.
 À chaque demande de prochaine étape, préciser explicitement l'usage d'ECC et
 l'identifiant du lot, en tenant compte des cases réellement terminées.
@@ -48,10 +50,15 @@ et le code**, selon l'instruction du propriétaire du 17 novembre 2026 :
 - [x] ECC-A.3b — Vérifier terminal/TXT/PDF, protections USB simulées, tests complets,
       Ruff, liens, contenu des distributions et installation hors des sources;
       inspecter le schéma et un rapport PDF de démonstration.
-- [ ] ECC-A.3c — Mettre à jour README, CHANGELOG, architecture, guides Seestar,
+- [x] ECC-A.3c — Mettre à jour README, CHANGELOG, architecture, guides Seestar,
       développement ECC et validation; expliquer le remplacement dans le tutoriel
       dès 10 ans avec une image SVG versionnée. Publier code et documents sur la
       branche dédiée et ouvrir une PR; la fusion de cette PR reste une étape distincte.
+
+Suivi ECC-A : plan `8276bb4` publié avant code, correctif `f37c3c0`, PR nº 9.
+Validation locale : 385 tests réussis, trois ignorés, 26 avertissements connus;
+Ruff, liens, distributions et installation hors des sources réussis. Les
+résultats distants sont consignés séparément dans [VALIDATION.md](docs/VALIDATION.md).
 
 Méthodes ECC : `python-testing` (régression avant correctif), `python-patterns`
 (contrôles partagés), `security-review` (destinations/entrées/USB) et
@@ -64,7 +71,7 @@ du plan et des changements ECC-A, en conservant le développement sur la copie l
 - [x] ECC-A.2 — Rendre le TXT atomique, définir une politique explicite de
       remplacement des rapports et préserver les entrées et anciens rapports
       en cas d'erreur. Préserver toutes les protections Seestar.
-- [ ] ECC-A.3 — Ajouter les régressions du cas configuration=export et des
+- [x] ECC-A.3 — Ajouter les régressions du cas configuration=export et des
       collisions/échecs d'écriture avec sources synthétiques; vérifier les
       résultats terminal, TXT et PDF, puis documenter dans le tutoriel illustré.
 
