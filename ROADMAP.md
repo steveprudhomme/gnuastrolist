@@ -1,5 +1,18 @@
 # Feuille de route
 
+## Finalisation PR nº 6 — tests Windows et tutoriel accessible
+
+- [x] Identifier le refus d'export Windows : code sur D:, fausses archives
+      pytest sur C:, donc protection correcte de tout le volume C:.
+- [ ] Enregistrer ce plan avant le correctif.
+- [ ] Placer les fichiers temporaires de la CI dans le dossier de travail
+      pour tester les copies locales sur le même volume, sans affaiblir la protection.
+- [ ] Ajouter un test explicite de protection d'un volume Windows distinct.
+- [ ] Ajouter un parcours débutant lisible à 10 ans, une image simple et les
+      consignes persistantes de documentation; actualiser les MD concernés.
+- [ ] Vérifier les tests locaux puis les cinq contrôles GitHub et fusionner
+      la PR autorisée lorsque les contrôles réussissent.
+
 ## Lot Seestar S50 — présence dans les archives en lecture seule
 
 - [x] Examiner le code et la racine MyWorks autorisée, sans écriture externe.
