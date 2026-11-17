@@ -19,7 +19,9 @@ La [méthode de développement ECC](docs/DEVELOPPEMENT_ECC.md) décrit le contex
 les contrôles communs et les limites de cet accord. Les lots ECC-D à ECC-I
 prolongent certaines tâches existantes : conserver les renvois et éviter de
 compter deux fois le même travail. Les lots ci-dessous concernent le
-développement local; ils n'autorisent aucune publication ou modification GitHub.
+développement local; ils n'autorisent pas, à eux seuls, une publication ou une
+modification GitHub. L'instruction particulière de publication ECC-A est
+consignée ci-dessous; toute fusion reste distincte.
 
 ### ECC-A — Préserver les entrées et fiabiliser les exports — priorité haute
 

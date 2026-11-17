@@ -35,8 +35,12 @@ matérielle, d'arrêt brutal et de changement malveillant de chemin sont explici
 dans [EXPORTS.md](EXPORTS.md). Couverture et typage statique supplémentaires
 restent au lot ECC-E; leur réussite n'est pas revendiquée ici. Le correctif
 `f37c3c0` et ses documents sont publiés dans la
-[PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9). Les cinq contrôles
-distants doivent encore être vérifiés avant une éventuelle fusion.
+[PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9). Pour le commit
+`97b7671`, les cinq contrôles distants ont réussi : Windows/Linux en Python
+3.10 et 3.13, puis distributions et essais installés hors des sources. Voir
+l'[exécution vérifiée](https://github.com/steveprudhomme/gnuastrolist/actions/runs/44057483487).
+Avant toute fusion, vérifier également les contrôles du dernier commit de la PR;
+la réussite d'un commit précédent ne remplace pas cette vérification.
 
 ## Publication GitHub — compatibilité des époques GP
 
