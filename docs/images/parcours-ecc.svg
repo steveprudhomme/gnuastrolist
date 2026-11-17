@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="330" viewBox="0 0 960 330" role="img" aria-labelledby="title desc">
+  <title id="title">Les étapes pour améliorer GNU Astrolist avec ECC</title>
+  <desc id="desc">Choisir le premier lot incomplet ECC-A à ECC-I, utiliser ECC pour le réaliser localement, puis vérifier les tests et expliquer le résultat avant de cocher la tâche.</desc>
+  <rect width="960" height="330" rx="16" fill="#f2f6f8"/>
+  <g font-family="sans-serif" fill="#18344a">
+    <text x="35" y="43" font-size="25" font-weight="bold">Une étiquette ECC pour chaque amélioration</text>
+    <text x="35" y="74" font-size="17">Commencer par ECC-A. Passer à la suite quand le travail est vérifié.</text>
+    <rect x="35" y="105" width="265" height="140" rx="12" fill="#e7f1f3" stroke="#2b7282"/>
+    <rect x="347" y="105" width="265" height="140" rx="12" fill="#e7f1f3" stroke="#2b7282"/>
+    <rect x="659" y="105" width="265" height="140" rx="12" fill="#e7f1f3" stroke="#2b7282"/>
+    <g font-size="21" font-weight="bold">
+      <text x="54" y="140">1. Choisir</text>
+      <text x="366" y="140">2. Utiliser ECC</text>
+      <text x="678" y="140">3. Vérifier</text>
+    </g>
+    <g font-size="17">
+      <text x="54" y="178">Lire la liste des travaux.</text>
+      <text x="54" y="205">Prendre le premier lot</text>
+      <text x="54" y="228">encore incomplet.</text>
+      <text x="366" y="178">Suivre le plan approuvé.</text>
+      <text x="366" y="205">Faire les changements</text>
+      <text x="366" y="228">sur la copie locale.</text>
+      <text x="678" y="178">Tester et expliquer.</text>
+      <text x="678" y="205">Cocher seulement</text>
+      <text x="678" y="228">quand tout est terminé.</text>
+    </g>
+    <path d="M310 175h26m-9-8 9 8-9 8 M622 175h26m-9-8 9 8-9 8" fill="none" stroke="#2b7282" stroke-width="3"/>
+    <text x="35" y="285" font-size="17">ECC-A → ECC-B → ECC-C → ECC-D → ECC-E → ECC-F → ECC-G → ECC-H → ECC-I</text>
+    <text x="35" y="312" font-size="14">Schéma explicatif. Les archives de photos Seestar restent en lecture seule.</text>
+  </g>
+</svg>

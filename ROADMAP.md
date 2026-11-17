@@ -1,5 +1,129 @@
 # Feuille de route
 
+## Améliorations approuvées après l'audit ECC — 17 novembre 2026
+
+Les neuf suggestions de l'audit local de `main` au commit `db2f48b` sont
+approuvées par le propriétaire. Leurs identifiants permanents sont **ECC-A à
+ECC-I**. Ce plan est enregistré avant toute implémentation; les cases restent
+ouvertes tant que leurs critères ne sont pas vérifiés.
+
+**Prochaine étape : utiliser ECC pour réaliser ECC-A — protéger les fichiers
+d'entrée et fiabiliser les exports.** Ensuite, choisir le premier lot incomplet
+dans l'ordre ECC-A, ECC-B, ECC-C, ECC-D, ECC-E, ECC-F, ECC-G, ECC-H, ECC-I.
+À chaque demande de prochaine étape, préciser explicitement l'usage d'ECC et
+l'identifiant du lot, en tenant compte des cases réellement terminées.
+
+La [méthode de développement ECC](docs/DEVELOPPEMENT_ECC.md) décrit le contexte,
+les contrôles communs et les limites de cet accord. Les lots ECC-D à ECC-I
+prolongent certaines tâches existantes : conserver les renvois et éviter de
+compter deux fois le même travail. Les lots ci-dessous concernent le
+développement local; ils n'autorisent aucune publication ou modification GitHub.
+
+### ECC-A — Préserver les entrées et fiabiliser les exports — priorité haute
+
+- [ ] ECC-A.1 — Recenser tous les fichiers d'entrée et de sortie; refuser
+      entrée=sortie et TXT=PDF avant tout effet, avec chemins relatifs, chemins
+      résolus et identités de fichiers/liens applicables.
+- [ ] ECC-A.2 — Rendre le TXT atomique, définir une politique explicite de
+      remplacement des rapports et préserver les entrées et anciens rapports
+      en cas d'erreur. Préserver toutes les protections Seestar.
+- [ ] ECC-A.3 — Ajouter les régressions du cas configuration=export et des
+      collisions/échecs d'écriture avec sources synthétiques; vérifier les
+      résultats terminal, TXT et PDF, puis documenter dans le tutoriel illustré.
+
+### ECC-B — Fiabiliser les données météo — priorité haute
+
+- [ ] ECC-B.1 — Valider structures, types, nombres finis et domaines des
+      réponses Open-Meteo/7Timer; borner leur taille et gérer les erreurs de
+      données sans masquer les erreurs de programmation.
+- [ ] ECC-B.2 — Aligner température, point de rosée et humidité par instant;
+      calculer la rosée sur les mesures compatibles et signaler les données
+      partielles, sans associer des heures différentes.
+- [ ] ECC-B.3 — Tester au moins quatre cas dégradés : seeing nul, valeurs
+      manquantes décalées, structure invalide et réponse trop grande; conserver
+      la liste astronomique lorsqu'un fournisseur échoue. Documenter les
+      avertissements et le tutoriel. L'archive météo reste un lot distinct.
+
+### ECC-C — Valider les paramètres avant traitement — priorité haute
+
+- [ ] ECC-C.1 — Définir les domaines des flottants par paramètre et refuser
+      NaN/infini, pas nul après conversion et budgets d'échantillonnage dépassés.
+- [ ] ECC-C.2 — Effectuer ces contrôles avant réseau, cache et export;
+      vérifier chaque famille de moteur et les entrées de configuration.
+- [ ] ECC-C.3 — Tester notamment les pas infini et 1e-20 minute; produire des
+      erreurs utilisateur lisibles et documenter les limites dans le tutoriel.
+
+### ECC-D — Environnement et livraison reproductibles — priorité haute
+
+- [ ] ECC-D.1 — Créer un environnement neuf sans paquets système et obtenir
+      un contrôle des dépendances réussi, indépendant des autres logiciels.
+- [ ] ECC-D.2 — Déclarer NumPy comme dépendance directe et définir des
+      contraintes/verrous adaptés aux plateformes et versions Python prises
+      en charge, avec procédure de mise à jour documentée.
+- [ ] ECC-D.3 — Construire et contrôler les archives; installer la wheel
+      hors des sources et exercer les dix sélections et exports hors ligne.
+      Actualiser les guides; prolonger la tâche de verrouillage et de SBOM
+      conditionnel déjà prévue, sans créer de doublon.
+
+### ECC-E — Renforcer les vérifications automatiques — priorité moyenne
+
+- [ ] ECC-E.1 — Mesurer couverture et branches, puis fixer des objectifs
+      justifiés sur les chemins critiques et les régressions de l'audit.
+- [ ] ECC-E.2 — Introduire progressivement contrôle des types et règles Ruff
+      pertinentes, sans réécriture générale ni tests miroirs de l'implémentation.
+- [ ] ECC-E.3 — Préparer contrôles de dépendances/secrets, durées CI bornées
+      et matrice cohérente avec le support Python annoncé; documenter les
+      commandes et distinguer contrôles locaux et résultats distants exécutés.
+
+### ECC-F — Coordonner et maîtriser les caches — priorité moyenne
+
+- [ ] ECC-F.1 — Protéger par verrou interprocessus la transaction de lecture,
+      autorisation, requête et écriture de l'état fournisseur partagé.
+- [ ] ECC-F.2 — Tester deux commandes simultanées et une interruption avec
+      fournisseur simulé; vérifier délais, blocages et repli sans requête réelle.
+- [ ] ECC-F.3 — Définir une rétention configurable avec simulation de purge,
+      conservation du dernier cache valide et protections Seestar; documenter
+      son usage dans le tutoriel illustré et le guide des actualisations.
+
+### ECC-G — Séparer orchestration, rapport et contexte — priorité moyenne
+
+- [ ] ECC-G.1 — Définir un service d'application testable et un modèle de
+      rapport partagé; documenter la décision avant une refactorisation ciblée.
+- [ ] ECC-G.2 — Réduire les dépendances aux fonctions privées entre rendus
+      et restaurer le contexte IERS après succès ou erreur.
+- [ ] ECC-G.3 — Préserver CLI, TXT et PDF par les tests existants et les
+      régressions nécessaires; mettre à jour le schéma d'architecture et les
+      guides concernés sans surcharger le parcours débutant.
+
+### ECC-H — Validation scientifique et performances — priorité moyenne
+
+- [ ] ECC-H.1 — Étendre les références externes, notamment des passages
+      satellitaires complets, avec site, époque, conventions, empreintes et
+      tolérances; conserver les références Horizons, USNO et Vallado existantes.
+- [ ] ECC-H.2 — Vérifier limites temporelles et d'échantillonnage; mesurer
+      temps/mémoire des catalogues combinés, satellites, rapports volumineux
+      et grands inventaires Seestar synthétiques, puis fixer des budgets mesurés.
+- [ ] ECC-H.3 — Documenter précision, avertissements et limites, avec exemples
+      illustrés; ne pas présenter les tests comme une garantie de détection
+      ou une validation observationnelle exhaustive.
+
+### ECC-I — Documentation et pratiques open source — priorité moyenne
+
+- [ ] ECC-I.1 — Réconcilier les tâches déjà réalisées (astéroïdes et mises à
+      jour contrôlées notamment), conserver l'historique et relier les dettes
+      de SPDX, dépendances et livraison aux lots ECC correspondants.
+- [ ] ECC-I.2 — Étendre la checklist de livraison aux dix sélections, maintenir
+      un parcours débutant court avec images versionnées et séparer le journal
+      technique des instructions utilisateur.
+- [ ] ECC-I.3 — Actualiser la confidentialité pour les fournisseurs de
+      catalogues et harmoniser le User-Agent avec la version du paquet.
+- [ ] ECC-I.4 — Vérifier les avis SPDX avec titulaires réels, attributions
+      et conditions des données; examiner les anciens rapports suivis et la
+      portée d'une revue de secrets/historique sans publier de données privées.
+- [ ] ECC-I.5 — Consigner les contrôles de gouvernance et sécurité restant
+      à vérifier sur GitHub; différer les opérations distantes jusqu'à instruction
+      explicite et ne jamais fabriquer d'attestation ou de signature.
+
 ## Correctif de publication — dates GP sous Python 3.10, PR nº 7
 
 - [x] Identifier dans la CI l'échec de validation des fractions de seconde longues.

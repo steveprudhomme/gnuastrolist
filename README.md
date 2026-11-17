@@ -522,6 +522,10 @@ d'utilisation.
 Les contributions sont bienvenues. Consultez [CONTRIBUTING.md](CONTRIBUTING.md),
 [ROADMAP.md](ROADMAP.md) et [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
+Les améliorations approuvées après l'audit sont identifiées **ECC-A à ECC-I**
+dans le roadmap et se réalisent avec ECC. La prochaine étape est le premier
+lot incomplet de cette liste; voir la [méthode ECC](docs/DEVELOPPEMENT_ECC.md).
+
 Le cadre de développement est décrit dans [AGENTS.md](AGENTS.md),
 [INSTALL.md](INSTALL.md) et l'[index documentaire](docs/README.md).
 Consultez aussi [GOVERNANCE.md](GOVERNANCE.md), [DCO.md](DCO.md),

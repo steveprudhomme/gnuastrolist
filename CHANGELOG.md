@@ -5,6 +5,15 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Planifié — améliorations approuvées avec ECC
+
+- Lots ECC-A à ECC-I inscrits au roadmap après approbation du propriétaire,
+  avec priorités, sous-étapes et critères de validation avant implémentation.
+- Consigne persistante : annoncer explicitement l'usage d'ECC et le premier
+  lot incomplet lorsqu'une prochaine étape est demandée.
+- Guide de développement ECC et explication illustrée dans le tutoriel;
+  aucun correctif applicatif ni changement GitHub dans ce lot de planification.
+
 ### Corrigé — compatibilité Python 3.10
 
 - Validation des époques GP indépendante des restrictions de `datetime` sur
