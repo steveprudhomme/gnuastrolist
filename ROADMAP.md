@@ -1,5 +1,16 @@
 # Feuille de route
 
+## Correctif avant fusion — autonomie du test de tri Caldwell
+
+- [x] Identifier l'échec Python 3.10 dans la CI : le test de tri utilise une
+      date hors couverture IERS sans définir sa propre politique hors ligne.
+- [ ] Enregistrer ce plan avant le correctif.
+- [ ] Configurer temporairement IERS dans ce test, sans dépendre des tests CLI
+      précédents ni modifier durablement les paramètres astronomiques.
+- [ ] Documenter le correctif dans le tutoriel, la validation et le journal.
+- [ ] Exécuter le test isolé puis les contrôles locaux et la CI Windows/Linux.
+- [ ] Fusionner la PR nº 1 lorsque tous les contrôles réussissent.
+
 ## Lot en cours — finalisation locale Caldwell et cadre open source
 
 Périmètre : travailler exclusivement sur la copie locale. Aucun push, aucune
