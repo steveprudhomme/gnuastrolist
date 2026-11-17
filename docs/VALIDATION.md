@@ -1,5 +1,14 @@
 # Validation
 
+## Publication GitHub — compatibilité des époques GP
+
+La première CI de la PR nº 7 a détecté trois échecs sous Python 3.10 pour les
+fractions de neuf chiffres, alors que Python 3.13 et les paquets réussissaient.
+Le calendrier est désormais validé sans la fraction dans une copie temporaire;
+la chaîne originale complète reste transmise à Astropy. Les tests couvrent
+également les fractions de 1, 3, 5 et 6 chiffres. Aucune valeur orbitale de la
+source n'est modifiée. Le plan du correctif a été commité avant le code.
+
 ## Satellites artificiels, SATCAT et registre ONU
 
 Validation Windows/Python 3.13.6 : **338 tests réussis, un ignoré**, avec

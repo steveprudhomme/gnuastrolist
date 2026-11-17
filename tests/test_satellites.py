@@ -69,7 +69,7 @@ def test_csv_and_json_normalization(record):
 
 
 @pytest.mark.parametrize('suffix', ['', 'Z', '+00:00'])
-@pytest.mark.parametrize('fraction', ['', '.123456789'])
+@pytest.mark.parametrize('fraction', ['', '.1', '.123', '.12345', '.123456', '.123456789'])
 def test_epoch_formats(record, suffix, fraction):
     record['EPOCH'] = '2026-11-17T00:00:00' + fraction + suffix
     element, = parse_gp([record])

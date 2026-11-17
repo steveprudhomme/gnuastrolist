@@ -5,6 +5,11 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Corrigé — compatibilité Python 3.10
+
+- Validation des époques GP indépendante des restrictions de `datetime` sur
+  les fractions de seconde; Astropy reçoit toujours la chaîne complète.
+
 ### Ajouté — satellites artificiels et débris
 
 - Sélections `satellites` et `debris`, éléments GP/OMM, propagation SGP4 TEME

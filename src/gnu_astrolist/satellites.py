@@ -116,8 +116,10 @@ def parse_gp(payload) -> tuple[SatelliteElements, ...]:
             raise ValueError('EPOCH UTC invalide')
         epoch = re.sub(r'(Z|\+00:00)$', '', epoch)
         try:
-            # datetime vérifie le calendrier; Time conserve les fractions longues.
-            datetime.fromisoformat(epoch)
+            # Python 3.10 limite les fractions acceptées par datetime. La regex
+            # les a validées; ne vérifier ici que le calendrier, puis laisser
+            # Astropy lire la chaîne complète sans perte de chiffres.
+            datetime.fromisoformat(epoch.partition('.')[0])
             instant = Time(epoch, format='isot', scale='utc')
             values = {key: float(record[key]) for key in _FLOATS}
         except (ValueError, TypeError, OverflowError) as exc:

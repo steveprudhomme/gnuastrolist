@@ -3,7 +3,7 @@
 ## Correctif de publication — dates GP sous Python 3.10, PR nº 7
 
 - [x] Identifier dans la CI l'échec de validation des fractions de seconde longues.
-- [ ] Valider le calendrier sans imposer les limites de fractions de `datetime`
+- [x] Valider le calendrier sans imposer les limites de fractions de `datetime`
       3.10; transmettre l'époque complète à Astropy sans altérer les données.
 - [ ] Vérifier les différentes longueurs de fraction et les quatre plateformes
       Python/OS avant de fusionner la PR; documenter le résultat de publication.
