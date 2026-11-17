@@ -5,6 +5,19 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Corrigé — ECC-A, entrées et exports protégés
+
+- Refus des collisions entre les sept fichiers d'entrée et les sorties TXT/PDF,
+  des sorties identiques, des liens/jonctions et des destinations dans les
+  ressources, le cache ou les archives Seestar protégées, avant traitement.
+- Rapports existants conservés par défaut; `--overwrite` autorise explicitement
+  leur remplacement sans contourner les autres protections.
+- TXT et PDF publiés atomiquement par fichier, avec nouvelle validation avant
+  publication, refus des créations concurrentes sans remplacement autorisé et
+  nettoyage des temporaires en cas d'erreur. Les exports restent indépendants.
+- Tests de régression hors réseau, guide des exports et tutoriel illustré dès
+  10 ans. Le plan ECC-A a été commité et publié avant les tests nouveaux et le code.
+
 ### Planifié — améliorations approuvées avec ECC
 
 - Lots ECC-A à ECC-I inscrits au roadmap après approbation du propriétaire,

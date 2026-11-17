@@ -64,7 +64,10 @@ L'audit local a constaté 350 tests réussis, un ignoré et 26 avertissements
 IERS/ERFA; Ruff, liens et contenu des distributions réussissaient. Quatre défauts
 ont été reproduits avec des données synthétiques : collision configuration/export,
 seeing nul non géré, séries météo désalignées et pas numérique extrême.
-Ces constats motivent ECC-A, ECC-B et ECC-C; ils ne sont pas encore corrigés.
+Ces constats motivent ECC-A, ECC-B et ECC-C. ECC-A apporte maintenant les
+contrôles de fichiers et les exports décrits dans [EXPORTS.md](EXPORTS.md);
+voir les résultats et limites dans [VALIDATION.md](VALIDATION.md). Les défauts
+météo et numériques restent à traiter dans ECC-B et ECC-C.
 
 L'environnement local héritait de paquets système et présentait deux conflits
 extérieurs au projet, ce qui motive ECC-D. Les risques de concurrence des caches

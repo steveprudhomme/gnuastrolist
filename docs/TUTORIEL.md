@@ -23,6 +23,35 @@ développent sont dans le [guide ECC](DEVELOPPEMENT_ECC.md).
 
 ## Commencer ici : préparer sa soirée, pas à pas
 
+### Protéger ses fichiers avec ECC-A
+
+Un **rapport** est le fichier qui contient ta liste du ciel. Une **entrée**
+est un fichier que le logiciel lit pour travailler. Il ne faut pas ranger le
+rapport à la place d'une entrée.
+
+![Créer un nouveau rapport ou remplacer un ancien sans toucher aux photos](images/exports-proteges-ecc-a.svg)
+
+Ce dessin explique les choix. Il ne montre aucune vraie photo ni capture d'écran.
+
+1. Range tes rapports dans `local` sur l'ordinateur, comme dans l'exemple plus bas.
+2. Donne deux noms différents au TXT et au PDF, par exemple `soiree.txt` et
+   `soiree.pdf`. N'utilise pas le nom d'un fichier de catalogue ou de réglages.
+3. Si le programme dit que le rapport existe déjà, choisis un nouveau nom pour
+   garder les deux soirées, par exemple `soiree-2.txt` et `soiree-2.pdf`.
+4. Pour remplacer exprès les anciens rapports, vérifie leurs noms avec une
+   personne qui connaît les fichiers, puis ajoute `--overwrite` à la commande.
+   Ce mot autorise le remplacement; il ne protège pas un document personnel
+   choisi par erreur comme rapport.
+
+Le logiciel prépare chaque rapport à côté de sa destination avant de le ranger.
+Si sa préparation échoue, il garde l'ancien fichier. Le TXT et le PDF sont
+rangés séparément : l'un peut réussir et l'autre échouer.
+
+Même avec `--overwrite`, on ne remplace jamais les entrées déclarées ni les
+photos dans le dossier Seestar protégé. Garde toujours les sorties sur
+l'ordinateur, hors du disque USB. Les [règles complètes](EXPORTS.md) sont
+destinées aux personnes qui souhaitent comprendre les détails.
+
 GNU Astrolist prépare une liste d'objets à regarder dans le ciel. Un **catalogue**
 est une liste de noms et de positions. Messier, Caldwell et NGC sont trois listes.
 Un même objet peut avoir deux noms, comme M31 et NGC224 : le programme les réunit

@@ -26,6 +26,7 @@ from .models import FieldOfView, apparent_magnitude
 from .moon import compute_moon_summary
 from .output import render_report
 from .pdf_output import PdfExportError, export_pdf_report
+from .report_files import staged_report, validate_report_paths
 from .satcat import annotate_space_catalog, load_satcat, load_unoosa_records, select_space_elements
 from .satellites import (
     MAX_SAMPLES,
@@ -249,6 +250,10 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     parser.add_argument(
+        "--overwrite", action="store_true",
+        help="autorise le remplacement des rapports existants; les entrées restent protégées",
+    )
+    parser.add_argument(
         "--seestar-path",
         type=Path,
         metavar="DOSSIER",
@@ -283,7 +288,16 @@ def _validate_arguments(args: argparse.Namespace) -> None:
         raise ValueError("--limit doit être un entier supérieur à zéro")
 
 
-def _run(args, parser, update_result, seestar_root) -> int:
+def _export_policy(args, seestar_root, cache_dir=None):
+    inputs = tuple(path for path in (
+        args.catalog_config, args.asteroids_file, args.comets_file, args.cbat_file,
+        args.satellite_elements_file, args.satcat_file, args.unoosa_file,
+    ) if path is not None)
+    return dict(inputs=inputs, overwrite=args.overwrite, seestar_root=seestar_root,
+                protected_roots=(cache_dir,) if cache_dir is not None else ())
+
+
+def _run(args, parser, update_result, seestar_root, cache_dir) -> int:
     try:
         _validate_arguments(args)
         orbits = load_asteroid_catalog(args.asteroids_file) if "asteroids" in args.objects else ()
@@ -481,9 +495,10 @@ def _run(args, parser, update_result, seestar_root) -> int:
     )
     if args.output_txt is not None:
         try:
-            if seestar_root is not None:
-                protect_outputs(seestar_root, (args.output_txt,))
-            args.output_txt.write_text(f"{report}\n", encoding="utf-8")
+            policy = _export_policy(args, seestar_root, cache_dir)
+            policy["inputs"] += (args.output_pdf,) if args.output_pdf is not None else ()
+            with staged_report(args.output_txt, **policy) as temporary:
+                temporary.write_text(f"{report}\n", encoding="utf-8")
         except (OSError, ValueError) as exc:
             parser.error(f"impossible d'écrire le rapport dans {args.output_txt}: {exc}")
     if args.output_pdf is not None:
@@ -504,6 +519,10 @@ def _run(args, parser, update_result, seestar_root) -> int:
                 object_kind=object_kind,
                 show_details=args.details,
                 seestar_inventory=inventory,
+                overwrite=args.overwrite,
+                input_paths=(*_export_policy(args, seestar_root)["inputs"],
+                             *((args.output_txt,) if args.output_txt is not None else ())),
+                protected_roots=(cache_dir,),
             )
         except PdfExportError as exc:
             parser.error(str(exc))
@@ -555,10 +574,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     iers.conf.auto_max_age = None if args.offline else 30.0
     iers.conf.iers_degraded_accuracy = "warn"
     try:
-        _validate_arguments(args)
         root = validate_root(args.seestar_path) if args.seestar_path is not None else None
-        if root is not None:
-            protect_outputs(root, (args.output_txt, args.output_pdf))
+        validate_report_paths((args.output_txt, args.output_pdf), **_export_policy(args, root))
+        _validate_arguments(args)
         checked_window = parse_observation_window(args.date, args.time_range, args.timezone)
         if {'satellites','debris'}.intersection(args.objects) and checked_window.duration_seconds > args.satellite_step_seconds*(MAX_SAMPLES-1):
             raise ValueError(f'Fenêtre satellitaire limitée à {MAX_SAMPLES} échantillons; augmentez le pas ou réduisez la plage')
@@ -569,6 +587,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             altitude_center_deg=args.alt_center,
         )
         mode, directory, ages = _update_settings(args)
+        validate_report_paths((args.output_txt, args.output_pdf),
+                              **_export_policy(args, root, directory))
         kinds = tuple(
             kind
             for kind in normalize_catalogs(args.objects)
@@ -597,6 +617,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         if not configured and not result.resources:
             result = replace(result, notes=())
         with use_catalog_resources(result.resources):
-            return _run(args, parser, result, root)
+            return _run(args, parser, result, root, directory)
     except ValueError as exc:
         parser.error(str(exc))

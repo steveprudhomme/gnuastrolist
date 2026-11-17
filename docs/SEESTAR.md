@@ -22,6 +22,13 @@ le volume source entier est protégé contre les exports. Les fichiers de sortie
 existants possédant plusieurs liens physiques sont refusés. L'API PDF applique
 aussi cette protection avant de créer son fichier temporaire.
 
+Depuis ECC-A, `--overwrite` permet de remplacer volontairement un rapport
+ordinaire existant, jamais une acquisition dans les archives protégées. Les
+entrées, le cache et les ressources du logiciel restent aussi protégés. Les
+liens/jonctions dans une destination d'export sont refusés même hors des archives.
+Le TXT utilise maintenant la même préparation atomique par fichier que le PDF;
+voir le [guide des exports](EXPORTS.md). Les deux exports restent indépendants.
+
 Il s'agit d'une politique applicative : le logiciel ne remonte pas le disque
 en lecture seule et ne change pas ses permissions. Une redirection de sortie
 réalisée par le shell est extérieure à cette protection; ne pas rediriger le

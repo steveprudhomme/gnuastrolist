@@ -24,28 +24,28 @@ développement local; ils n'autorisent aucune publication ou modification GitHub
 Plan d'exécution détaillé, à committer et publier **avant les tests nouveaux
 et le code**, selon l'instruction du propriétaire du 17 novembre 2026 :
 
-- [ ] ECC-A.0 — Publier le commit de ce plan sur la branche dédiée et vérifier
+- [x] ECC-A.0 — Publier le commit de ce plan sur la branche dédiée et vérifier
       son empreinte distante avant toute implémentation.
-- [ ] ECC-A.1a — Centraliser le contrôle des sept entrées locales : configuration,
+- [x] ECC-A.1a — Centraliser le contrôle des sept entrées locales : configuration,
       orbites astéroïdes/comètes, observations CBAT, éléments GP, SATCAT et UNOOSA.
       Contrôler les destinations TXT/PDF entre elles, les ressources du logiciel
       et le cache utilisé; refuser collisions résolues et identités physiques.
-- [ ] ECC-A.1b — Effectuer ces contrôles avant actualisation, météo et calculs,
+- [x] ECC-A.1b — Effectuer ces contrôles avant actualisation, météo et calculs,
       puis avant publication de chaque rapport. Refuser sorties liées/jonctions,
       fichiers spéciaux et parents invalides; conserver la protection Seestar.
-- [ ] ECC-A.2a — Refuser par défaut un rapport existant. Ajouter `--overwrite`
+- [x] ECC-A.2a — Refuser par défaut un rapport existant. Ajouter `--overwrite`
       pour autoriser explicitement le remplacement des seuls rapports ordinaires;
       cette option ne contourne ni les entrées, ni le cache, ni les archives.
-- [ ] ECC-A.2b — Écrire TXT et PDF dans un fichier temporaire du dossier de
+- [x] ECC-A.2b — Écrire TXT et PDF dans un fichier temporaire du dossier de
       destination, puis publier chaque fichier atomiquement après validation.
       En cas d'échec d'écriture ou de publication, préserver son ancien rapport
       et nettoyer le temporaire. Empêcher l'écrasement concurrent sans autorisation.
       L'atomicité porte sur chaque fichier, pas sur la paire TXT/PDF.
-- [ ] ECC-A.3a — Écrire d'abord les régressions ECC : sept entrées × deux sorties,
+- [x] ECC-A.3a — Écrire d'abord les régressions ECC : sept entrées × deux sorties,
       collisions TXT/PDF, chemins relatifs et alias, liens physiques et jonctions,
       refus avant effets, remplacement explicite et pannes d'écriture/publication.
       Utiliser uniquement des fichiers et archives synthétiques sur le disque local.
-- [ ] ECC-A.3b — Vérifier terminal/TXT/PDF, protections USB simulées, tests complets,
+- [x] ECC-A.3b — Vérifier terminal/TXT/PDF, protections USB simulées, tests complets,
       Ruff, liens, contenu des distributions et installation hors des sources;
       inspecter le schéma et un rapport PDF de démonstration.
 - [ ] ECC-A.3c — Mettre à jour README, CHANGELOG, architecture, guides Seestar,
@@ -58,10 +58,10 @@ Méthodes ECC : `python-testing` (régression avant correctif), `python-patterns
 `verification-loop` (validation finale). Cette instruction autorise la publication
 du plan et des changements ECC-A, en conservant le développement sur la copie locale.
 
-- [ ] ECC-A.1 — Recenser tous les fichiers d'entrée et de sortie; refuser
+- [x] ECC-A.1 — Recenser tous les fichiers d'entrée et de sortie; refuser
       entrée=sortie et TXT=PDF avant tout effet, avec chemins relatifs, chemins
       résolus et identités de fichiers/liens applicables.
-- [ ] ECC-A.2 — Rendre le TXT atomique, définir une politique explicite de
+- [x] ECC-A.2 — Rendre le TXT atomique, définir une politique explicite de
       remplacement des rapports et préserver les entrées et anciens rapports
       en cas d'erreur. Préserver toutes les protections Seestar.
 - [ ] ECC-A.3 — Ajouter les régressions du cas configuration=export et des

@@ -57,6 +57,7 @@ def main() -> None:
             assert any(k.endswith(f'/data/{resource}') for k in files), (path, resource)
         assert any(k.endswith('gnu_astrolist/selection.py') for k in files), path
         assert any(k.endswith('gnu_astrolist/seestar.py') for k in files), path
+        assert any(k.endswith('gnu_astrolist/report_files.py') for k in files), path
         assert any(k.endswith("/LICENSE") or k == "LICENSE" for k in files), path
         assert not any("/local/" in k or k.endswith(("rapport.pdf", "rapport.txt")) for k in files)
         if path.name.endswith('.tar.gz'):
@@ -67,6 +68,8 @@ def main() -> None:
                           'premiers-pas.svg', 'bayer-flamsteed.svg', 'asteroides.svg',
                           'cometes-sources.svg','catalogues-mise-a-jour.svg','satellites-identites.svg'):
                 assert any(k.endswith(f'/docs/images/{image}') for k in files), (path, image)
+            assert any(k.endswith('/docs/images/exports-proteges-ecc-a.svg') for k in files), path
+            assert any(k.endswith('/docs/EXPORTS.md') for k in files), path
         print(f"{path.name} : catalogues, notice, licence et exclusions OK")
 
 
