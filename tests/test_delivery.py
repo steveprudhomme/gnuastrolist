@@ -21,7 +21,8 @@ def test_four_target_locks_pin_every_dependency_with_hashes():
             assert not any(word in text for word in ("file:///", "git+", "C:\\Users\\"))
 
 
-def test_runtime_inventory_includes_direct_numpy_but_not_development_tools():
+def test_runtime_inventory_includes_direct_numpy_but_not_development_tools(monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
     script = runpy.run_path(str(ROOT / "scripts" / "environment_manifest.py"))
     components = script["runtime_components"]()
     names = {item["name"] for item in components}

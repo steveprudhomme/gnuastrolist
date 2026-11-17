@@ -561,8 +561,9 @@ Consultez aussi [GOVERNANCE.md](GOVERNANCE.md), [DCO.md](DCO.md),
 [LICENSE-NOTICE.md](LICENSE-NOTICE.md).
 
 Le [tutoriel illustré](docs/TUTORIEL.md) décrit le parcours Caldwell et les
-contrôles locaux. La finalisation en cours reste exclusivement locale : commits,
-tests et archives sur la copie de travail, opérations GitHub différées.
+contrôles locaux. Le propriétaire a autorisé la publication du plan et des
+lots ECC-D à ECC-I sur leur branche. Le travail reste dans les copies locales;
+aucune fusion ni modification de réglage GitHub n'est incluse.
 
 Les [contrôles ECC-E](docs/QUALITE.md) mesurent lignes et branches, vérifient
 progressivement les types et recherchent secrets et dépendances vulnérables.

@@ -36,3 +36,11 @@ l'inventaire des dépendances d'exécution, licences déclarées et empreintes d
 archives et verrous. Les licences inconnues restent inconnues. Cet inventaire
 n'est pas une attestation signée ni un SBOM normalisé validé; un SBOM approprié
 reste requis avant une distribution incluant des dépendances/exécutables embarqués.
+
+
+### Avis de sécurité au 17 novembre 2026
+
+Les verrous 3.10 sont conservés pour les tests de compatibilité. L'audit échoue
+sur Pillow/filelock, dont les versions corrigées exigent Python 3.11. Ils ne
+valident pas une livraison sûre. Utiliser Python 3.13 pour la livraison actuelle;
+la décision de relever la version minimale a été soumise au propriétaire.

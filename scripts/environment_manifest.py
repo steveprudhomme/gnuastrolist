@@ -9,6 +9,7 @@ import platform
 from importlib import metadata
 from pathlib import Path
 
+from _local_output import publish_json, validate_output
 from packaging.requirements import Requirement
 from packaging.utils import canonicalize_name
 
@@ -38,12 +39,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dist", type=Path, default=Path("dist"))
     parser.add_argument("--output", type=Path, default=Path("local/environment-manifest.json"))
+    parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
-    output = args.output.resolve()
-    if not output.is_relative_to(root / "local"):
-        parser.error("L'inventaire local doit rester sous local/ dans le projet")
     artifacts = [path for path in args.dist.glob("*") if path.suffix in {".whl", ".gz"}]
+    try:
+        output = validate_output(root, args.output, overwrite=args.overwrite, sources=artifacts)
+    except (OSError, ValueError) as exc:
+        parser.error(str(exc))
     if not artifacts:
         parser.error("Construire les distributions avant de créer l'inventaire")
     payload = {
@@ -61,8 +64,8 @@ def main():
             for path in sorted((root / "requirements").glob("*.txt"))
         ],
     }
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    publish_json(root, output, json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+                 overwrite=args.overwrite, sources=artifacts)
     print(
         f"Inventaire : {len(payload['runtime_components'])} composants; {len(artifacts)} archives"
     )

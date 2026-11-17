@@ -426,3 +426,6 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 Revue ECC-G : verrou de contexte commun, précontrôle strict de la limite/âge GP
 du service direct et erreur CLI lisible en cas de délai du cache dépassé.
+
+Revue finale ECC-H/D : sorties des outils scientifiques et du manifeste locales,
+atomiques et protégées; contexte IERS corrigé pour le benchmark Python 3.10.

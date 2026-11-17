@@ -499,3 +499,25 @@ manquante, inventaire concurrent et validation avant création du verrou.
 Ruff, typage de deux modules, liens, wheel/sdist et six schémas sont contrôlés.
 La rétention ne vise que les générations reconnues d'un cache local explicite;
 aucune archive Seestar réelle n'a été parcourue. Voir [CACHE.md](CACHE.md).
+
+
+## État final du brouillon ECC-D à ECC-I — PR nº 12
+
+Après les corrections de revue : **714 tests réussis, huit ignorés** dans les
+copies Windows isolées Python 3.13.6 et 3.10.16. Les avertissements restent
+visibles : 13/88 selon Astropy et les tables. Couverture combinée 90,33 %, avec
+planchers séparés lignes/branches vérifiés, Ruff, typage progressif et liens OK.
+Les nouveaux cas de protection des outils scientifiques passent aussi; les
+38 positions régénérées sont inchangées. Six schémas et les pages d'un PDF avec
+objets/statuts Seestar synthétiques ont été inspectés.
+Les dix sélections, TXT/PDF et `gnu-astrolist-cache --help` fonctionnent depuis
+la wheel installée; les archives incluent les notices des références et guides.
+Le manifeste utilise également la publication atomique locale protégée.
+
+La première CI du brouillon a réussi les quatre jobs de tests Windows/Linux
+3.10/3.13. Le job distribution échoue à l'audit Python 3.10 (59 avis sur deux
+paquets), avant la construction; ce n'est pas un défaut d'archive démontré.
+Les audits 3.13 Windows/Linux ne trouvent aucun avis connu. Aucun avis ignoré.
+La PR reste en brouillon, dépendant d'ECC-C puis ECC-B; aucune fusion effectuée.
+La décision de passer à Python 3.11 minimum est requise pour terminer ECC-E.
+Les résultats de cette première CI ne prouvent pas ceux d'un commit ultérieur.

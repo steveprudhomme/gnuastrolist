@@ -23,7 +23,7 @@ sous `local/`. Aucun outil n'est installé globalement.
 5. Produire l'inventaire local :
 
 ```powershell
-local/ecc-dev/Scripts/python scripts/environment_manifest.py --dist local/ecc-d-dist --output local/ecc-d-environment.json
+local/ecc-dev/Scripts/python scripts/environment_manifest.py --dist dist --output local/environment-manifest.json
 ```
 
 Cet inventaire contient les dépendances d'exécution, leurs licences déclarées
@@ -44,3 +44,15 @@ L'ancien interpréteur 3.10.0 de cette machine échoue au démarrage de pytest
 de livraison validé. Le verrou de dépendances ne fige pas l'interpréteur lui-même :
 sa version exacte est consignée dans l'inventaire. Les résultats Linux et les
 derniers commits se vérifient dans la CI, pas par extrapolation des essais Windows.
+
+
+## État de sécurité après ECC-E
+
+Le verrou Python 3.13 Windows/Linux ne présente aucun avis connu lors de l'audit
+du 17 novembre 2026. Python 3.10 reste testé pour compatibilité, mais son audit
+échoue sur Pillow 12.3.0 et filelock 4.1.0 : les correctifs exigent Python 3.11.
+Ce verrou ne constitue donc pas une livraison de sécurité validée. La décision
+sur la version minimale est en attente; ne pas ignorer les avis pour publier.
+L'inventaire exige un dossier parent existant sous `local/`, refuse liens et
+collisions et publie atomiquement. Ajouter `--overwrite` pour remplacer un
+inventaire existant, jamais pour autoriser l'écrasement d'une source.

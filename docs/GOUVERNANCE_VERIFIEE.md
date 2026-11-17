@@ -30,6 +30,9 @@ La recherche ciblée de secrets a porté sur les fichiers suivis courants et les
 blobs historiques textuels avec les mêmes règles. Les diagnostics ne publient
 aucune valeur. Ce détecteur ne couvre pas tous les formats de secret, les images,
 les pièces binaires ou les données personnelles; il ne certifie pas l'historique.
+Le contrôle historique sélectionne les extensions `.py`, `.md`, `.txt`, `.toml`,
+`.yml`, `.yaml`, `.json` et `.csv`. Il ignore notamment `.env`, `.ini`, `.sh`
+et les fichiers sans extension; le décompte ne couvre donc pas tout texte Git.
 Les exemples futurs sont produits par les tests à partir de données synthétiques,
 et les rapports restent sous `local/`.
 

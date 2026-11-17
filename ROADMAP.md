@@ -216,7 +216,7 @@ Aucune fusion distante ni modification des protections GitHub n'est incluse.
 
 - [x] ECC-DI.0 — Publier ce plan détaillé et vérifier son empreinte distante
       avant tests nouveaux, dépendances de développement et code.
-- [ ] ECC-DI.1 — Employer les méthodes ECC de tests Python, revue de sécurité,
+- [x] ECC-DI.1 — Employer les méthodes ECC de tests Python, revue de sécurité,
       architecture et vérification. Répartir exploration/implémentation/revue
       indépendantes en copies locales distinctes lorsque cela réduit les angles
       morts; conserver au pilote les décisions et l'intégration.
@@ -268,7 +268,7 @@ Aucune fusion distante ni modification des protections GitHub n'est incluse.
       les anciens rapports suivis sans publier leur contenu; remplacer leur
       rôle d'exemple par des fichiers synthétiques documentés. Ne pas réécrire
       l'historique, fabriquer de signature ou prétendre qu'un canal privé est actif.
-- [ ] ECC-DI.2 — À chaque lot : mettre à jour README, CHANGELOG, ROADMAP et
+- [x] ECC-DI.2 — À chaque lot : mettre à jour README, CHANGELOG, ROADMAP et
       guides concernés, ajouter un schéma au tutoriel dès 10 ans, exécuter les
       contrôles pertinents, consigner les résultats, committer et publier la branche.
 - [ ] ECC-DI.3 — Terminer par revue indépendante, suite complète, typage,
@@ -820,3 +820,17 @@ les commits de planification décrits dans AGENTS.md.
 
 Revue finale ECC-G : trois défauts reproduits puis corrigés (ordre des verrous,
 limite non entière, domaine âge GP); 40 tests du service réussis.
+
+
+## Bilan autonome ECC-D à ECC-I — 17 novembre 2026
+
+Plan `a814a49` publié avant code. ECC-D/F/G/H/I réalisés et publiés dans
+la PR nº 12 en brouillon, sans fusion. ECC-E implémenté mais incomplet :
+audit Python 3.10 en échec, choix Python 3.11 minimum soumis au propriétaire.
+Les contrôles restent actifs. Dernière suite locale : 714 tests réussis,
+huit ignorés sous 3.10.16 et 3.13.6; couverture combinée 90,33 %.
+Revue indépendante, six images inspectées, TXT/PDF et archives vérifiés.
+Le premier passage distant réussit les quatre jobs de tests; distribution
+échoue à l'audit connu. La branche publiée reste distincte de main.
+La prochaine étape ouverte est **Utiliser ECC pour réaliser ECC-E — terminer
+l'audit des dépendances après décision sur la version minimale de Python**.
