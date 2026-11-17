@@ -16,6 +16,9 @@
 - [ ] Afficher les désignations et la provenance dans les rapports écran/TXT/PDF;
       gérer le nom Bayer/Flamsteed et ses variantes explicites dans Seestar,
       sans modifier les archives ni déduire une correspondance par position.
+- [ ] Remplacer les polices PDF sans alphabet grec par DejaVu Sans régulier/gras
+      redistribués sans modification avec leurs notices; vérifier les glyphes,
+      la conservation des lettres grecques et leur présence dans les paquets.
 - [ ] Tester données réelles de référence, génération synthétique, doublons,
       filtres, rapports, lecture seule et distribution hors ligne.
 - [ ] Mettre à jour les MD et le tutoriel accessible dès 10 ans avec une image,
