@@ -1,5 +1,31 @@
 # Feuille de route
 
+## Lot plafond de hauteur — télescopes intelligents (ALTMAX)
+
+Demande du propriétaire : choisir une hauteur maximale, par exemple 80°, pour
+éviter la zone proche du zénith. Plan local enregistré avant tests nouveaux et
+code; aucune publication ni fusion distante incluse dans ce lot.
+
+- [ ] ALTMAX.1 — Ajouter `--max-altitude`, plafond effectif de 90° par défaut;
+      conserver les anciennes commandes, l'alias `--fov-v` et les appels Python.
+- [ ] ALTMAX.2 — Construire le champ entre minimum et maximum sans déplacer
+      la limite basse; accepter 0 ≤ minimum ≤ maximum ≤ 90 et refuser NaN,
+      infinis et types invalides avant réseau, cache, calcul ou export.
+- [ ] ALTMAX.3 — Préserver le réglage historique `--alt-center` sans nouveau
+      plafond; refuser l'association explicite `--alt-center`/`--max-altitude`
+      pour éviter un plafond ambigu. Ajouter le champ à la requête du service
+      sans casser ses arguments positionnels existants.
+- [ ] ALTMAX.4 — Vérifier les objets fixes, petits corps, satellites et débris
+      via le champ partagé. Conserver l'inclusion lorsqu'au moins un instant
+      échantillonné est dans le champ : ce lot ne garantit pas une exposition
+      entière sous le plafond et ne pilote pas le télescope.
+- [ ] ALTMAX.5 — Tester les bornes, les refus avant effets, la compatibilité,
+      le service et les sorties écran/TXT/PDF, avec données synthétiques et
+      sans accès au disque Seestar réel. Exécuter pytest, Ruff et contrôles adaptés.
+- [ ] ALTMAX.6 — Mettre à jour README, CHANGELOG, PARAMETRES, validation,
+      livraison et tutoriel compréhensible dès 10 ans avec un schéma versionné;
+      vérifier les archives, committer localement le résultat et ses preuves.
+
 ## Améliorations approuvées après l'audit ECC — 17 novembre 2026
 
 Les neuf suggestions de l'audit local de `main` au commit `db2f48b` sont
