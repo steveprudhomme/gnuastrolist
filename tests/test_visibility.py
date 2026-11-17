@@ -1,4 +1,5 @@
 import astropy.units as u
+import pytest
 from astropy.coordinates import AltAz, EarthLocation, SkyCoord
 from astropy.time import Time
 from astropy.utils import iers
@@ -8,8 +9,16 @@ from gnu_astrolist.models import FieldOfView, VariableStar
 from gnu_astrolist.time_utils import parse_observation_window
 from gnu_astrolist.visibility import compute_visibility
 
-iers.conf.auto_download = False
-iers.conf.auto_max_age = None
+
+@pytest.fixture(autouse=True)
+def offline_iers_context():
+    """ECC-G : rendre les tests indépendants des réglages laissés par la CLI."""
+    with (
+        iers.conf.set_temp('auto_download', False),
+        iers.conf.set_temp('auto_max_age', None),
+        iers.conf.set_temp('iers_degraded_accuracy', 'warn'),
+    ):
+        yield
 
 
 def test_star_at_field_center_is_selected() -> None:

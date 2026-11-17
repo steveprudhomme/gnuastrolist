@@ -90,15 +90,46 @@ une validation scientifique externe.
 Dans le worktree `local/ecc-g-work`, avec le Python du `.venv` parent et
 `PYTHONPATH` pointant explicitement vers le `src` de ce worktree :
 
-- Suite complète : **597 réussis, 3 ignorés**, 27 avertissements IERS/ERFA.
+- Suite complète dans le `.venv` initial : **597 réussis, 3 ignorés**,
+  27 avertissements IERS/ERFA.
 - Ruff : réussi sur le dépôt.
 - Contrôle des documents, liens locaux et versions : réussi.
 - `git diff --check` et analyse XML du SVG : réussis.
 
 Le fichier dédié ECC-G ajoute 33 cas déterministes (paramétrages compris).
 L’ancien test CLI qui attendait une fuite de configuration IERS vérifie
-maintenant la restauration de l’état reçu. Les autres tests restent inchangés.
+maintenant la restauration de l’état reçu. Les tests de visibilité disposent
+désormais d’une fixture IERS temporaire explicite : sous Astropy 6.1, deux cas
+annuels dépendaient auparavant du mode dégradé laissé par une CLI précédente.
+Le moteur astronomique reste inchangé.
 Sous Windows, l’exécution restreinte a refusé les dossiers temporaires pytest;
 les contrôles réussis ont utilisé l’autorisation d’exécution locale, toujours
 avec `--basetemp` sous `.pytest_cache` du worktree et le blocage réseau des tests.
 Aucun contrôle distant ni validation scientifique externe n’est revendiqué.
+
+
+### Matrice finale fournie par le pilote
+
+Les deux environnements ont été utilisés en lecture seule. Dans chaque cas,
+`PYTHONPATH` désigne le `src` du worktree ECC-G, ce qui a été vérifié en affichant
+le chemin d’import de `gnu_astrolist`. Aucun paquet n’a été installé ou modifié.
+
+| Environnement | Résultat complet | Avertissements |
+| --- | --- | --- |
+| Python 3.13.6 / Astropy 8 (`local/ecc-dev`) | 597 réussis, 3 ignorés | 12 ERFA |
+| Python 3.10.16 / Astropy 6.1 (`local/ecc-dev310-supported`) | 597 réussis, 3 ignorés | 87 IERS/ERFA |
+
+Depuis `local/ecc-g-work`, commandes PowerShell de reproduction :
+
+```powershell
+$env:PYTHONPATH = (Join-Path $PWD 'src')
+& ../ecc-dev/Scripts/python.exe -m pytest --basetemp=.pytest_cache/ecc-g-313-final -o cache_dir=.pytest_cache/ecc-g-cache313
+& ../ecc-dev310-supported/Scripts/python.exe -m pytest --basetemp=.pytest_cache/ecc-g-310-final -o cache_dir=.pytest_cache/ecc-g-cache310
+& ../ecc-dev/Scripts/python.exe -m ruff check .
+& ../ecc-dev/Scripts/python.exe scripts/check_repository.py
+git diff --check
+```
+
+Les avertissements proviennent des tables embarquées et des dates utilisées;
+les tests n’ont téléchargé aucune table. Les 33 cas ECC-G et les deux corrections
+ciblées des tests existants sont inclus dans les 597 réussites de chaque version.
