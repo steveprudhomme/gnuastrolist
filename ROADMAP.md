@@ -1,5 +1,24 @@
 # Feuille de route
 
+## Lot multicatalogue — ligne de commande locale
+
+- [x] Définir les conventions et le périmètre, sans publication distante.
+- [ ] Enregistrer le plan avant le développement.
+- [ ] Accepter plusieurs noms après `--objects` et plusieurs occurrences de
+      cette option, en normalisant les alias et répétitions de catalogues.
+- [ ] Combiner les catalogues et dédoublonner les objets du ciel profond par
+      désignation de catalogue explicite, jamais par simple proximité angulaire.
+      Priorité stable : Messier, Caldwell, NGC; conserver les noms secondaires.
+- [ ] Préserver le filtre par défaut des variables (V max 8), même en sélection
+      mixte; les catalogues du ciel profond restent sans limite par défaut.
+      Une limite explicite ou `--all-magnitudes` s'applique à tous.
+- [ ] Adapter les rapports terminal/TXT/PDF : catalogues, alias, conventions
+      photométriques et provenance par valeur, sans modifier les commandes simples.
+- [ ] Tester répétitions, alias, recouvrements réels, composants distincts,
+      filtres mixtes et exports hors ligne; exécuter les contrôles locaux.
+- [ ] Mettre à jour les MD et le tutoriel avec un schéma et un exemple réel;
+      vérifier les archives et enregistrer les commits locaux.
+
 ## Lot NGC — intégration locale
 
 - [x] Examiner le chargement des catalogues et définir le périmètre.
