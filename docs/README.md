@@ -21,6 +21,7 @@
 - [Paramètres, budgets et plafond de hauteur — ECC-C / ALTMAX](PARAMETRES.md).
 - [Décision : précontrôle et grilles temporelles partagés](architecture/decisions/0006-precontrole-parametres.md).
 - [Préparer une version](RELEASE.md).
+- [Versionnage SemVer par bug, amélioration et fonctionnalité](VERSIONNAGE.md).
 - [Décision : catalogues du ciel profond](architecture/decisions/0001-catalogues.md).
 - [Décision : sélection de plusieurs catalogues](architecture/decisions/0002-selection-multiple.md).
 - [Provenance Caldwell](../src/gnu_astrolist/data/CALDWELL_SOURCE.md).

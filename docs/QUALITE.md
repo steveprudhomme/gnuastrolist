@@ -44,5 +44,11 @@ La CI exécute les quatre combinaisons Python/OS, installe avec empreintes,
 borne chaque job à 15 minutes et vérifie types, secrets et dépendances.
 Les actions GitHub sont épinglées à des révisions officielles vérifiées.
 
+Le contrôle de versionnage compare aussi la PR à son commit de base : fragment
+requis pour le code, les dépendances, la politique et les workflows; préparation
+de livraison cohérente avec les fragments de la base. L'historique Git est
+récupéré en lecture seule pour ce contrôle. La couverture de `scripts/versioning.py`
+fait partie du rapport commun, avec seuils de 90 % des lignes et 85 % des branches.
+
 Après accord du propriétaire, la matrice cible Python 3.11/3.13. Les verrous
 3.10 vulnérables sont retirés; aucun avis n’est ignoré pour faire réussir le contrôle.

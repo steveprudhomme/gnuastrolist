@@ -1,0 +1,3 @@
+type = "feature"
+summary = "Ajouter --max-altitude pour choisir un plafond de recherche sans déplacer la limite basse."
+breaking = false

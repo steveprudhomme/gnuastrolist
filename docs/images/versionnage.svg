@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="350" viewBox="0 0 960 350" role="img" aria-labelledby="title desc">
+<title id="title">Une version selon les changements livrés</title>
+<desc id="desc">Schéma explicatif : un bug augmente le correctif; une amélioration ou fonctionnalité compatible augmente le mineur; une rupture augmente le majeur. La préparation est vérifiée avant publication.</desc>
+<rect width="960" height="350" rx="16" fill="#f2f6f8"/>
+<g font-family="sans-serif" fill="#18344a">
+<text x="28" y="42" font-size="25" font-weight="bold">Choisir le numéro de la prochaine version</text>
+<rect x="28" y="75" width="280" height="130" rx="12" fill="#e1edf2"/>
+<rect x="338" y="75" width="280" height="130" rx="12" fill="#d7eade"/>
+<rect x="648" y="75" width="280" height="130" rx="12" fill="#f3e6ce"/>
+<g font-size="19"><text x="45" y="108">Bug corrigé</text><text x="355" y="108">Amélioration ou fonction</text><text x="665" y="108">Rupture de compatibilité</text></g>
+<g font-size="24" font-weight="bold"><text x="45" y="151">0.11.0 → 0.11.1</text><text x="355" y="151">0.11.0 → 0.12.0</text><text x="665" y="151">0.11.0 → 1.0.0</text></g>
+<g font-size="16"><text x="45" y="183">Augmenter le correctif</text><text x="355" y="183">Augmenter le mineur</text><text x="665" y="183">Augmenter le majeur</text></g>
+<text x="28" y="250" font-size="19">Décrire → voir le numéro proposé → préparer → vérifier → publier</text>
+<text x="28" y="286" font-size="17">Le niveau le plus élevé compte une seule fois par livraison.</text>
+<text x="28" y="321" font-size="16">Schéma explicatif. Voir une proposition ne change pas encore la version.</text>
+</g></svg>

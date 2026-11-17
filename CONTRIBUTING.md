@@ -23,8 +23,11 @@ laisser le temps à la revue puis corriger à partir des retours.
 
 1. Créez une branche courte à partir de `main`.
 2. Installez un environnement isolé avec le [verrou adapté](requirements/README.md).
-3. Ajoutez ou adaptez les tests en même temps que le code.
-4. Exécutez `pytest` et `ruff check .`.
+3. Ajoutez ou adaptez les tests et un [fragment de changement](changes/README.md)
+   de type `bug`, `improvement` ou `feature`. Signalez toute rupture avec
+   `breaking = true`.
+4. Exécutez `pytest`, `ruff check .`, `python -B scripts/versioning.py check`
+   et `python -B scripts/versioning.py preview`.
 5. Soumettez une demande d'intégration qui décrit le problème, la solution et
    les limites restantes.
 
@@ -48,6 +51,10 @@ Respecter [PRIVACY.md](PRIVACY.md) et [SECURITY.md](SECURITY.md).
 Une modification de méthode scientifique demande des références et des cas
 de comparaison; un changement d'architecture demande une décision documentée.
 Voir [GOVERNANCE.md](GOVERNANCE.md) et [docs/VALIDATION.md](docs/VALIDATION.md).
+
+Le [processus SemVer](docs/VERSIONNAGE.md) calcule la prochaine livraison depuis
+les fragments. Un ticket sans correction ne prépare pas de version. Le numéro,
+le tag et la Release ne sont pas modifiés automatiquement à chaque PR.
 
 Le code doit rester lisible sous Python 3.11 et plus récent. Les nouvelles
 données astronomiques doivent avoir une provenance, une version et des

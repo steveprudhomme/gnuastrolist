@@ -1,5 +1,60 @@
 # Feuille de route
 
+## Lot versionnage par type de changement — VERSION
+
+Le propriétaire demande un système basé sur bugs, améliorations et nouvelles
+fonctionnalités, puis choisit explicitement le standard SemVer. Le système est
+préparé dans une branche distincte issue d'ALTMAX; son intégration dépend de la
+PR nº 14. Le plan est commité avant code. Aucun tag, Release, fusion ou réglage
+GitHub n'est créé automatiquement par l'outil.
+
+- [x] VERSION.1 — Versionner la politique : bug → PATCH, amélioration et
+      fonctionnalité compatibles → MINOR, rupture explicite → MAJOR; conserver
+      séparément les trois catégories dans les notes de version.
+- [x] VERSION.2 — Ajouter des fragments TOML publics par changement, validés
+      sans dépendance nouvelle, avec description et marqueur de rupture.
+      Initialiser ceux du plafond ALTMAX et du système de versionnage.
+- [x] VERSION.3 — Fournir un outil local : validation, aperçu du prochain numéro,
+      préparation explicite d'une livraison datée. Synchroniser pyproject.toml,
+      __version__, CHANGELOG et fragments traités; défaut sans écriture.
+- [x] VERSION.4 — Protéger liens, collisions et modifications concurrentes;
+      refuser une préparation sur une copie sale et préserver les fichiers
+      existants si validation ou préparation échoue. Ne pas toucher aux archives.
+- [x] VERSION.5 — Faire contrôler la politique et les fragments par la CI,
+      dont présence d'un fragment pour une PR de code et cohérence d'une PR
+      préparant une version; conserver les cinq jobs qualité et les verrous.
+- [x] VERSION.6 — Tester catégories, priorité, ruptures, refus, préparation et
+      garde CI dans des copies synthétiques hors réseau. Exécuter pytest, Ruff,
+      typage progressif, liens, archives et installation.
+- [x] VERSION.7 — Actualiser contribution, modèles de PR, README, CHANGELOG,
+      RELEASE, validation, roadmap et tutoriel dès 10 ans avec schéma versionné.
+      Conserver une branche distincte sur la base ALTMAX. Après la réalisation
+      locale, le propriétaire autorise la publication GitHub de ce lot;
+      la fusion reste une opération distincte.
+
+Le numéro du projet ne change pas pendant l'installation de ce mécanisme.
+Une future préparation de livraison doit être demandée explicitement; les
+commits de développement restent regroupés dans « Non publié » jusque-là.
+
+Preuves locales VERSION : plan `b508c05` avant code; 795 tests réussis sur
+Python 3.11.9 et 3.13.6, huit ignorés et 15 avertissements chacun. Couverture
+combinée 90,49 %; outil de versionnage : 93,99 % des lignes et 87,04 % des
+branches. Ruff, typage progressif, liens, recherche ciblée de secrets,
+archives et installation hors réseau réussis. L'archive source permet la
+validation et l'aperçu sans installation du programme. Les 46 tests nouveaux
+utilisent des copies synthétiques; aucun support Seestar réel n'est utilisé.
+La configuration CI est prête mais n'a pas été exécutée sur GitHub pour ce lot.
+La publication initialement différée est ensuite autorisée explicitement par
+le propriétaire le 17 novembre 2026. Une PR distincte cible la branche ALTMAX
+tant que la PR nº 14 reste ouverte. Ses contrôles distants sont à vérifier
+après publication. Aucun tag, Release ou changement du numéro courant.
+
+Intégration autorisée le 17 novembre 2026 : les cinq contrôles de la PR nº 14
+sont verts sur `ae13c05`, puis elle est fusionnée dans main par `cc6c670`.
+La PR nº 15, initialement validée par cinq contrôles sur `e25c041`, est
+replacée sur main et actualisée avec cette fusion. Ses nouveaux contrôles
+doivent passer avant sa propre fusion; ceux de main seront vérifiés ensuite.
+
 ## Lot plafond de hauteur — télescopes intelligents (ALTMAX)
 
 Demande du propriétaire : choisir une hauteur maximale, par exemple 80°, pour

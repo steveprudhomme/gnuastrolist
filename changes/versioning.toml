@@ -1,0 +1,3 @@
+type = "feature"
+summary = "Préparer les versions SemVer à partir des bugs, améliorations et fonctionnalités documentés."
+breaking = false

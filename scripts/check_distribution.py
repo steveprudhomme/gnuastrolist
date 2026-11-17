@@ -69,6 +69,11 @@ def main() -> None:
         assert any(k.endswith("/LICENSE") or k == "LICENSE" for k in files), path
         assert not any("/local/" in k or k.endswith(("rapport.pdf", "rapport.txt")) for k in files)
         if path.name.endswith('.tar.gz'):
+            for resource in ('versioning.toml', 'changes/README.md', 'changes/altmax.toml',
+                             'changes/versioning.toml', 'scripts/versioning.py',
+                             'tests/test_versioning.py', 'docs/VERSIONNAGE.md',
+                             'docs/images/versionnage.svg'):
+                assert any(k.endswith('/' + resource) for k in files), (path, resource)
             assert any(k.endswith('/tests/data/asteroid_horizons.json') for k in files), path
             assert any(k.endswith('/tests/data/comet_horizons.json') for k in files), path
             for image in ('caldwell-parcours.svg', 'validation-locale.svg', 'ngc-selection.svg',

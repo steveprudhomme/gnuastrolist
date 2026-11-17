@@ -5,6 +5,17 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté — Versionnage par type de changement
+
+- Politique SemVer approuvée : bugs en PATCH, améliorations/fonctionnalités
+  compatibles en MINOR, ruptures explicites en MAJOR.
+- Fragments TOML publics, aperçu du prochain numéro et préparation locale
+  synchronisant métadonnées, module, CHANGELOG et fragments traités.
+- Contrôles CI des fragments de PR et des préparations de livraison, avec
+  protections des fichiers, restauration et sauvegardes en cas d'interruption.
+- Guide, modèle de PR et tutoriel illustré; aucune version ou Release créée
+  automatiquement pendant l'installation du système.
+
 ### Ajouté — Plafond de hauteur configurable (ALTMAX)
 
 - `--max-altitude` limite le champ, par exemple 20° à 80°, sans déplacer le

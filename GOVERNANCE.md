@@ -19,6 +19,11 @@ vulnérabilités sont des réglages GitHub à vérifier séparément avant publi
 leur présence n'est pas garantie par ces fichiers. Les tags `vMAJOR.MINOR.PATCH`
 désignent uniquement les versions réellement publiées.
 
+Les numéros suivent la [politique SemVer versionnée](docs/VERSIONNAGE.md).
+La CI contrôle les fragments et la cohérence des préparations de livraison.
+Le calcul et la préparation locale n'autorisent ni fusion, ni tag, ni Release;
+ces actions restent des instructions distinctes du mainteneur.
+
 Le [relevé ECC-I du 17 novembre 2026](docs/GOUVERNANCE_VERIFIEE.md) indique
 les réglages réellement observés, leurs limites et les décisions du propriétaire
 encore nécessaires. La publication du lot autonome n’autorise aucune fusion.

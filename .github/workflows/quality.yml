@@ -17,6 +17,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python }}
@@ -29,6 +31,11 @@ jobs:
           python -m pip install --require-hashes -r "requirements/py${version/./}-${platform}.txt"
           python -m pip install --no-deps --no-build-isolation -e .
       - run: python scripts/check_repository.py
+      - name: Vérifier la politique et les changements de version
+        env:
+          VERSION_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        shell: bash
+        run: python scripts/versioning.py check --base "$VERSION_BASE"
       - run: python -m ruff check .
       # Les copies synthétiques Seestar doivent être sur le volume du logiciel.
       - run: python -c "from pathlib import Path; Path('.pytest_cache').mkdir(exist_ok=True)"
@@ -39,12 +46,15 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.13'
       - run: python -m pip install --require-hashes -r requirements/py313-linux.txt
       - run: python -m pip install --no-deps --no-build-isolation -e .
       - run: python -m mypy
+      - run: python scripts/versioning.py check
       - run: python scripts/check_secrets.py
       - name: Auditer toutes les versions verrouillées
         run: |
