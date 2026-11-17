@@ -1,5 +1,23 @@
 # Feuille de route
 
+## Lot NGC — intégration locale
+
+- [x] Examiner le chargement des catalogues et définir le périmètre.
+- [ ] Enregistrer le plan dans un commit avant le développement.
+- [ ] Examiner la copie OpenNGC locale déjà utilisée pour Caldwell : empreinte,
+      types, entrées composées, doublons, objets inexistants et valeurs absentes.
+- [ ] Construire un catalogue NGC reproductible depuis ce fichier, en excluant
+      IC, doublons et objets inexistants; conserver les composants identifiés
+      distinctement et les coordonnées exploitables, sans inventer de magnitude V.
+- [ ] Ajouter `--objects ngc`, le chargement local, les libellés et notes TXT/PDF,
+      sans limite de magnitude par défaut.
+- [ ] Tester le générateur, des identifications de référence, les filtres et
+      les exports hors ligne; vérifier le contenu des distributions.
+- [ ] Documenter source, licence, conventions et limites; mettre à jour les MD
+      et ajouter un schéma NGC dans le tutoriel.
+- [ ] Exécuter les contrôles locaux, reconstruire les archives et enregistrer
+      le lot dans des commits locaux; aucune publication distante dans ce lot.
+
 ## Correctif avant fusion — autonomie du test de tri Caldwell
 
 - [x] Identifier l'échec Python 3.10 dans la CI : le test de tri utilise une
