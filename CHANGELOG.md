@@ -5,6 +5,14 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté — ECC-D, livraison reproductible
+
+- NumPy déclaré directement; quatre verrous Windows/Linux Python 3.10/3.13
+  avec versions et empreintes, outil de reconstruction uv épinglé.
+- Environnements locaux sans paquets système, contrôles de dépendances et
+  inventaire de livraison avec licences déclarées et empreintes, sans faux SBOM.
+- Guide et tutoriel illustré; versions et limites des essais consignées.
+
 ### Corrigé — ECC-C, précontrôle des paramètres
 
 - Validation partagée des nombres finis, du site terrestre, du champ, des

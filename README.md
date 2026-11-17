@@ -513,6 +513,11 @@ d'entrée `console_scripts`, conformément au guide de la
 
 ## Tests et qualité
 
+Pour reproduire les versions de développement/livraison, utiliser les
+[quatre verrous avec empreintes](requirements/README.md) dans un environnement
+sans paquets système. Voir [ECC-D](docs/LIVRAISON_REPRODUCTIBLE.md) pour les
+versions testées, la reconstruction et l'inventaire de livraison.
+
 Les réglages sont vérifiés avant les actualisations, la météo et les exports.
 NaN/infini, les pas non représentables et les budgets dépassés sont refusés par
 une erreur de commande. Les limites sont de 2 000 instants pour les objets

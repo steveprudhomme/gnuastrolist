@@ -439,3 +439,18 @@ La revue locale a confirmé la séparation du plan (`f737e4d`), de la fonctionna
 (`8015cc8`) et du cadre/documentation (`f308106`), puis un arbre de travail propre.
 Les 31 magnitudes V absentes, les avertissements IERS et la CI distante non
 exécutée restent des limites explicites. L'archive météo n'est pas implémentée.
+
+
+## ECC-D — Environnements isolés et livraison
+
+Le plan `a814a49` a été publié avant le code. Windows Python 3.13.6 :
+566 tests réussis, trois ignorés, 12 avertissements ERFA. Sous Python 3.10.16,
+la suite initiale de 564 tests passe (trois ignorés, 87 avertissements IERS/ERFA);
+les deux nouveaux contrats de livraison passent également.
+Ruff, structure, verrous avec empreintes et contrôle des dépendances passent.
+La wheel et la sdist contiennent les données, notices et quatre verrous.
+La wheel installée dans un environnement distinct exécute les dix sélections
+ensemble et produit TXT/PDF hors des sources. L'inventaire local enregistre
+12 composants d'exécution et les empreintes des deux archives.
+Voir [la procédure reproductible](LIVRAISON_REPRODUCTIBLE.md).
+Ces essais Windows ne remplacent pas les contrôles Linux distants.

@@ -25,6 +25,21 @@ développent sont dans le [guide ECC](DEVELOPPEMENT_ECC.md).
 
 ## Commencer ici : préparer sa soirée, pas à pas
 
+### Retrouver les mêmes outils avec ECC-D
+
+Un **environnement** est une boîte qui contient les outils du logiciel.
+Un **verrou** est la liste de leurs versions exactes. Cela évite qu'un outil
+d'un autre logiciel change notre résultat.
+
+![Créer une boîte isolée avec la bonne liste d'outils](images/environnement-ecc-d.svg)
+
+1. Avec une personne qui connaît Python, choisis la liste Windows ou Linux.
+2. Crée une nouvelle boîte dans `local`, sur l'ordinateur, pas sur le disque des photos.
+3. Installe la liste choisie, puis vérifie les tests avant de préparer ta soirée.
+
+Le dessin est explicatif. Les [commandes d'installation](../requirements/README.md)
+sont dans le guide pour les personnes qui développent.
+
 ### Vérifier ses réglages avec ECC-C
 
 Les **réglages** disent au logiciel où et quand regarder. Le **pas** est le

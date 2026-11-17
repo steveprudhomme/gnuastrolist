@@ -3,6 +3,11 @@
 Python 3.10 ou plus récent est requis. Depuis la racine du dépôt, créer un
 environnement isolé; les catalogues sont inclus dans le paquet.
 
+Pour un développement ou une livraison reproductible, utiliser les
+[verrous avec empreintes](requirements/README.md) de la plateforme et version
+Python choisies. Les commandes ci-dessous restent une installation libre
+dans les plages compatibles, sans verrouillage de toutes les versions.
+
 ```powershell
 py -m venv .venv
 .venv\Scripts\python -m pip install -e ".[dev]"

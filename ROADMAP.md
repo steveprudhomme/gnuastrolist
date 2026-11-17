@@ -214,17 +214,17 @@ part d'ECC-C (`bd53ad3`), dont la PR nº 11 dépend encore d'ECC-B (PR nº 10).
 La nouvelle PR visera ECC-C tant que ces dépendances ne sont pas intégrées.
 Aucune fusion distante ni modification des protections GitHub n'est incluse.
 
-- [ ] ECC-DI.0 — Publier ce plan détaillé et vérifier son empreinte distante
+- [x] ECC-DI.0 — Publier ce plan détaillé et vérifier son empreinte distante
       avant tests nouveaux, dépendances de développement et code.
 - [ ] ECC-DI.1 — Employer les méthodes ECC de tests Python, revue de sécurité,
       architecture et vérification. Répartir exploration/implémentation/revue
       indépendantes en copies locales distinctes lorsque cela réduit les angles
       morts; conserver au pilote les décisions et l'intégration.
-- [ ] ECC-D.4 — Ajouter NumPy directement, un environnement de développement
+- [x] ECC-D.4 — Ajouter NumPy directement, un environnement de développement
       isolé sans paquets système et des verrous avec versions/empreintes pour
       Windows/Linux, Python 3.10/3.13. Installer seulement les outils et dépendances
       nécessaires dans les environnements locaux du projet, jamais globalement.
-- [ ] ECC-D.5 — Ajouter une reconstruction des verrous avec outil de résolution
+- [x] ECC-D.5 — Ajouter une reconstruction des verrous avec outil de résolution
       versionné, contrôler l'environnement installé, les archives et les dix
       sélections hors ligne; produire un inventaire de dépendances avec licences
       et empreintes des distributions sans prétendre signer une livraison.
@@ -284,15 +284,22 @@ Le disque USB réel ne sera ni parcouru ni modifié.
 
 ### ECC-D — Critères initiaux conservés
 
-- [ ] ECC-D.1 — Créer un environnement neuf sans paquets système et obtenir
+- [x] ECC-D.1 — Créer un environnement neuf sans paquets système et obtenir
       un contrôle des dépendances réussi, indépendant des autres logiciels.
-- [ ] ECC-D.2 — Déclarer NumPy comme dépendance directe et définir des
+- [x] ECC-D.2 — Déclarer NumPy comme dépendance directe et définir des
       contraintes/verrous adaptés aux plateformes et versions Python prises
       en charge, avec procédure de mise à jour documentée.
-- [ ] ECC-D.3 — Construire et contrôler les archives; installer la wheel
+- [x] ECC-D.3 — Construire et contrôler les archives; installer la wheel
       hors des sources et exercer les dix sélections et exports hors ligne.
       Actualiser les guides; prolonger la tâche de verrouillage et de SBOM
       conditionnel déjà prévue, sans créer de doublon.
+
+Preuves ECC-D (17 novembre 2026) : plan publié `a814a49` avant code;
+566 tests réussis, trois ignorés sous Python 3.13.6 isolé; suite de base
+564 réussis et deux contrats de livraison supplémentaires sous 3.10.16.
+Quatre verrous avec empreintes, contrôle des dépendances, wheel/sdist et
+inventaire de 12 composants vérifiés. Dix sélections et TXT/PDF hors ligne
+depuis la wheel, hors des sources; schéma ECC-D inspecté.
 
 ### ECC-E — Renforcer les vérifications automatiques — priorité moyenne
 

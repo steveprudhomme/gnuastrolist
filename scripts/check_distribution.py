@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Vérifie les catalogues et notices réellement inclus dans la wheel et la sdist."""
 
+import argparse
 import csv
 import gzip
 import io
@@ -12,7 +13,10 @@ from pathlib import Path
 
 
 def main() -> None:
-    dist = Path(__file__).resolve().parents[1] / "dist"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--dist', type=Path,
+                        default=Path(__file__).resolve().parents[1] / 'dist')
+    dist = parser.parse_args().dist
     wheels, sources = sorted(dist.glob("*.whl")), sorted(dist.glob("*.tar.gz"))
     if not wheels or not sources:
         raise SystemExit("Construire wheel et sdist avec python -m build avant ce contrôle")
@@ -75,6 +79,12 @@ def main() -> None:
             assert any(k.endswith('/docs/METEO.md') for k in files), path
             assert any(k.endswith('/docs/PARAMETRES.md') for k in files), path
             assert any(k.endswith('/docs/images/parametres-ecc-c.svg') for k in files), path
+            assert any(k.endswith('/docs/LIVRAISON_REPRODUCTIBLE.md') for k in files), path
+            assert any(k.endswith('/docs/images/environnement-ecc-d.svg') for k in files), path
+            for python in ('310', '313'):
+                for platform in ('windows', 'linux'):
+                    assert any(k.endswith(f'/requirements/py{python}-{platform}.txt')
+                               for k in files), (path, python, platform)
         print(f"{path.name} : catalogues, notice, licence et exclusions OK")
 
 

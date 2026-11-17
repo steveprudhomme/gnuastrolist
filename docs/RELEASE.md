@@ -19,6 +19,9 @@
 - [ ] Établir les empreintes SHA-256 des fichiers réellement distribués.
 - [ ] Vérifier les dépendances distribuées et leurs notices; produire un SBOM
       si la distribution inclut des dépendances ou exécutables embarqués.
+- [ ] Installer le verrou avec empreintes correspondant à Python/OS, puis le
+      projet sans résolution implicite; exécuter `uv pip check` et générer
+      `scripts/environment_manifest.py`. Voir [LIVRAISON_REPRODUCTIBLE.md](LIVRAISON_REPRODUCTIBLE.md).
 - [ ] Effectuer une revue de secrets et des données personnelles, y compris
       l'historique avant toute première publication d'une archive complète.
 - [ ] Faire relire la demande d'intégration et vérifier la CI distante.
