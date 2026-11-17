@@ -3,20 +3,25 @@
 ## Lot NGC — intégration locale
 
 - [x] Examiner le chargement des catalogues et définir le périmètre.
-- [ ] Enregistrer le plan dans un commit avant le développement.
-- [ ] Examiner la copie OpenNGC locale déjà utilisée pour Caldwell : empreinte,
+- [x] Enregistrer le plan dans un commit avant le développement.
+- [x] Examiner la copie OpenNGC locale déjà utilisée pour Caldwell : empreinte,
       types, entrées composées, doublons, objets inexistants et valeurs absentes.
-- [ ] Construire un catalogue NGC reproductible depuis ce fichier, en excluant
+- [x] Construire un catalogue NGC reproductible depuis ce fichier, en excluant
       IC, doublons et objets inexistants; conserver les composants identifiés
       distinctement et les coordonnées exploitables, sans inventer de magnitude V.
-- [ ] Ajouter `--objects ngc`, le chargement local, les libellés et notes TXT/PDF,
+- [x] Ajouter `--objects ngc`, le chargement local, les libellés et notes TXT/PDF,
       sans limite de magnitude par défaut.
-- [ ] Tester le générateur, des identifications de référence, les filtres et
+- [x] Tester le générateur, des identifications de référence, les filtres et
       les exports hors ligne; vérifier le contenu des distributions.
-- [ ] Documenter source, licence, conventions et limites; mettre à jour les MD
+- [x] Documenter source, licence, conventions et limites; mettre à jour les MD
       et ajouter un schéma NGC dans le tutoriel.
-- [ ] Exécuter les contrôles locaux, reconstruire les archives et enregistrer
+- [x] Exécuter les contrôles locaux, reconstruire les archives et enregistrer
       le lot dans des commits locaux; aucune publication distante dans ce lot.
+
+Plan préalable : `3651c6e`. Résultats : 65 tests réussis, Ruff et contrôles de
+structure/distribution réussis, essai de la wheel hors des sources réussi.
+Les 4 592 magnitudes V absentes restent explicites. La validation CI distante
+du lot NGC reste à effectuer lors d'une publication ultérieure autorisée.
 
 ## Correctif avant fusion — autonomie du test de tri Caldwell
 
@@ -27,7 +32,10 @@
       précédents ni modifier durablement les paramètres astronomiques.
 - [x] Documenter le correctif dans le tutoriel, la validation et le journal.
 - [x] Exécuter le test isolé et les contrôles locaux : 61 tests réussis.
-- [ ] Confirmer la nouvelle CI Windows/Linux et la distribution sur GitHub.
+- [x] Confirmer la nouvelle CI Windows/Linux et la distribution sur GitHub.
+
+Le correctif IERS a passé les cinq contrôles et la PR nº 1 a été fusionnée
+dans main au commit `79724f3`, avant le démarrage du lot NGC.
 
 La fusion de la PR nº 1 est autorisée par l'utilisateur et doit suivre la
 réussite des cinq contrôles. Son état final est consultable dans GitHub.
@@ -205,7 +213,8 @@ les commits de planification décrits dans AGENTS.md.
 ## Évolutions des données
 
 - [ ] Intégrer VSX/AAVSO avec cache, provenance et gestion des pannes réseau.
-- [ ] Ajouter les catalogues complets NGC/IC et d'autres familles d'objets.
+- [x] Ajouter les entrées NGC exploitables d'OpenNGC, composants distincts inclus.
+- [ ] Ajouter le catalogue IC et d'autres familles d'objets.
 - [ ] Prendre en compte la réfraction et un masque d'horizon local.
 - [ ] Exporter des listes vers des télescopes intelligents.
 

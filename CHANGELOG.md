@@ -5,6 +5,15 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté — NGC
+
+- Catalogue NGC local avec 8 098 entrées OpenNGC : `--objects ngc`, rapports
+  terminal/TXT/PDF, provenance et reconstruction déterministe sans réseau.
+- Conservation des composants identifiés distinctement et des magnitudes V
+  absentes; exclusion des doublons, entrées inexistantes et entrées IC.
+- Tests du générateur, identifications de référence et exports, contrôle des
+  distributions et tutoriel illustré pour le périmètre NGC.
+
 ### Corrigé
 
 - Configuration IERS temporaire et explicite du test de tri Caldwell pour le

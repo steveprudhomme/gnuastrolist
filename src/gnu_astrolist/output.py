@@ -284,6 +284,8 @@ def render_report(
             else "Objets Messier (SIMBAD, repli OpenNGC)"
         )
     )
+    if object_kind == "ngc":
+        catalog_text = "Objets NGC (OpenNGC)"
     if max_magnitude is None:
         magnitude_text = "aucune limite"
     elif variable_stars:
@@ -360,6 +362,8 @@ def render_report(
                 "       pas une prévision instantanée.",
             ]
         )
+    elif object_kind == "ngc":
+        lines.append("       Données NGC : OpenNGC; composants distincts inclus, hors doublons.")
     elif object_kind == "caldwell":
         lines.append("       Données OpenNGC; complément de magnitude V SIMBAD si exploitable.")
     else:

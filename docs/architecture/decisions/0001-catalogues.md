@@ -2,6 +2,12 @@
 
 Statut : implémenté localement, soumis à revue.
 
+Extension NGC : le modèle commun et les conventions de magnitude absente sont
+réutilisés pour 8 098 entrées OpenNGC exploitables. Les composants conservent leur
+identifiant distinct; IC, les doublons déclarés et les entrées inexistantes sont
+exclus. Le générateur NGC travaille uniquement depuis un fichier local dont
+l'empreinte est contrôlée. Aucun enrichissement SIMBAD NGC n'est ajouté.
+
 ## Contexte
 
 L'ajout Caldwell réutilise la sélection et les sorties Messier, mais plusieurs

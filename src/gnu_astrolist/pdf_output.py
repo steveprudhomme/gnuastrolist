@@ -202,6 +202,8 @@ def _metadata_rows(
             else "Objets Messier (SIMBAD, repli OpenNGC)"
         )
     )
+    if object_kind == "ngc":
+        catalog = "Objets NGC (OpenNGC)"
     if max_magnitude is None:
         magnitude = "Aucune limite"
     elif variable_stars:
@@ -544,6 +546,8 @@ def _notes(object_kind: str) -> tuple[str, ...]:
             "La magnitude des étoiles variables est le maximum d'éclat publié, "
             "et non une prévision instantanée."
         )
+    elif object_kind == "ngc":
+        notes.append("Données NGC : OpenNGC; composants distincts inclus, hors doublons.")
     else:
         notes.append(
             "Données OpenNGC; complément de magnitude V SIMBAD si exploitable."

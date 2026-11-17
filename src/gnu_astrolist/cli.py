@@ -14,6 +14,7 @@ from .catalog import (
     filter_by_magnitude,
     load_caldwell_catalog,
     load_messier_catalog,
+    load_ngc_catalog,
     load_variable_star_catalog,
 )
 from .models import FieldOfView
@@ -86,8 +87,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--objects",
         required=True,
-        choices=("variable_stars", "messier", "messier_objects", "caldwell"),
-        help="catalogue : variable_stars, messier ou caldwell (alias : messier_objects)",
+        choices=("variable_stars", "messier", "messier_objects", "caldwell", "ngc"),
+        help="catalogue : variable_stars, messier, caldwell ou ngc (alias : messier_objects)",
     )
     magnitudes = parser.add_mutually_exclusive_group()
     magnitudes.add_argument(
@@ -96,7 +97,7 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help=(
             "magnitude V maximale (défaut : 8 pour variable_stars; "
-            "aucune limite pour messier et caldwell)"
+            "aucune limite pour messier, caldwell et ngc)"
         ),
     )
     magnitudes.add_argument(
@@ -192,6 +193,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         "variable_stars": load_variable_star_catalog,
         "messier": load_messier_catalog,
         "caldwell": load_caldwell_catalog,
+        "ngc": load_ngc_catalog,
     }[object_kind]()
     stars = filter_by_magnitude(catalog, max_magnitude)
     try:

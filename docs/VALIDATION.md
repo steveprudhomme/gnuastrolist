@@ -1,5 +1,23 @@
 # Validation
 
+## Lot NGC
+
+Le générateur local exige l'empreinte de la copie OpenNGC documentée. Les tests
+vérifient 8 098 identifiants uniques, 4 592 magnitudes absentes, NGC224 et
+NGC1976, les composants NGC61A/B, le filtre de magnitude, l'ordre numérique,
+les exclusions, la reproductibilité et le rejet des doublons et sources altérées.
+Les tests d'intégration vérifient les rapports TXT/PDF non vides et vides hors ligne.
+Le contrôle des distributions exige le catalogue, sa notice et le schéma NGC
+dans l'archive source. Les résultats CI du précédent lot Caldwell ne valent pas
+validation distante du nouveau lot NGC.
+
+Résultats locaux NGC : 65 tests réussis, cinq avertissements IERS, Ruff et
+contrôles des liens/structure/distributions réussis. Construction sans isolation
+ni téléchargement avec les outils présents. La wheel installée hors des sources
+charge 8 098 entrées et exécute la commande NGC hors ligne. Le tutoriel consigne
+un essai complet sans filtre V (1 975 entrées sélectionnées pour l'exemple de
+Laval). Aucun nouveau résultat CI distant n'est revendiqué pour ce lot.
+
 ## Correctif de la première CI
 
 Python 3.10 sur Windows et Linux a révélé une dépendance du test de tri Caldwell

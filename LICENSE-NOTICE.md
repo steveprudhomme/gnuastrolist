@@ -11,6 +11,7 @@ Les catalogues ont leurs propres conditions :
 | GCVS | Auteurs GCVS et VizieR; voir CATALOG_SOURCE.md |
 | Messier dérivé d'OpenNGC | Mattia Verga et contributeurs; CC BY-SA 4.0 |
 | Caldwell dérivé d'OpenNGC | Mattia Verga et contributeurs; CC BY-SA 4.0 |
+| NGC dérivé d'OpenNGC | Mattia Verga et contributeurs; CC BY-SA 4.0; voir NGC_SOURCE.md |
 | Compléments SIMBAD | CDS, Observatoire astronomique de Strasbourg; attribution conservée |
 
 Les notices détaillées sont dans `src/gnu_astrolist/data/`, notamment

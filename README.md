@@ -7,7 +7,7 @@ trie par magnitude en bande V.
 
 Le prototype est déjà fonctionnel : il contient 21 212 entrées visuelles du
 General Catalogue of Variable Stars (GCVS), les 110 objets Messier et les
-109 objets Caldwell. Il
+109 objets Caldwell et 8 098 entrées NGC. Il
 calcule les coordonnées Alt/Az avec Astropy et fonctionne hors ligne grâce aux
 catalogues embarqués.
 
@@ -83,6 +83,23 @@ Les tailles et magnitudes Messier privilégient les valeurs valides de SIMBAD et
 utilisent OpenNGC comme repli hors ligne. Le catalogue choisi est indiqué entre
 crochets à côté de chaque valeur. Ajoutez `--details` pour afficher également
 le bibcode ou la référence et la date de récupération.
+
+## Nouveau Catalogue Général (NGC)
+
+L'option `--objects ngc` charge **8 098 entrées NGC** issues de la copie OpenNGC
+locale, dont les composants identifiés séparément. Les doublons et objets
+marqués inexistants sont exclus. IC n'est pas inclus dans cette option.
+
+```powershell
+gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects ngc --offline --max-magnitude 8 --limit 20
+```
+
+Sans `--max-magnitude`, aucune limite n'est appliquée; les 4 592 entrées sans V
+restent disponibles et s'affichent « non disponible ». Une limite numérique les
+exclut. `--limit` tronque l'affichage après la sélection et le tri, sans réduire
+les calculs. Les exports TXT/PDF et `--details` sont pris en charge.
+Voir la [notice NGC](src/gnu_astrolist/data/NGC_SOURCE.md) et le
+[tutoriel illustré](docs/TUTORIEL.md) pour les conventions et limites.
 
 ## Objets Caldwell
 
@@ -285,7 +302,7 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --az-max DEG                 Limite azimutale de fin
 --min-altitude DEG           Élévation minimale; --fov-v est un alias
 --alt-center DEG             Remplacement avancé facultatif du centre vertical
---objects CATALOGUE          variable_stars, messier ou caldwell
+--objects CATALOGUE          variable_stars, messier, caldwell ou ngc
 --max-magnitude MAG          Limite V; défaut 8 pour les variables, aucune pour Messier
 --all-magnitudes             Désactive la limite pour le catalogue choisi
 --sample-minutes MIN         Pas de recherche (défaut : 10)

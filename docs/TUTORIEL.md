@@ -1,4 +1,49 @@
-# Préparer une liste Caldwell hors ligne
+# Tutoriel : catalogues astronomiques et validation
+
+## Utiliser le Nouveau Catalogue Général
+
+![Schéma de sélection du catalogue NGC local](images/ngc-selection.svg)
+
+Ce schéma explique le dénombrement réel de la copie OpenNGC épinglée; il ne
+représente pas une capture d'écran ni une observation du ciel. Le commit
+`3651c6e` a enregistré le plan NGC avant le développement.
+
+```powershell
+gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects ngc --offline --limit 3
+```
+
+Pour une sélection limitée aux V connues ≤ 8, ajouter `--max-magnitude 8`.
+Pour obtenir les sources et un rapport exporté, ajouter `--details` et
+`--output-txt local/ngc.txt --output-pdf local/ngc.pdf` après avoir créé `local/`.
+Le catalogue NGC est plus volumineux que Messier : `--limit` réduit la sortie,
+mais tous les candidats sont calculés avant ce dernier filtre d'affichage.
+
+Les 8 098 entrées comprennent des sous-composants et ne correspondent pas à
+8 098 numéros historiques ou objets physiques indépendants. Le groupe et ses
+membres peuvent coexister. La [notice NGC](../src/gnu_astrolist/data/NGC_SOURCE.md)
+documente ces conventions. La reconstruction utilise uniquement le fichier
+OpenNGC local déjà disponible, avec son empreinte attendue.
+
+Résultat réel de la commande NGC ci-dessus, sans limite de magnitude :
+**1 975 entrées trouvées**, dont trois affichées.
+
+| Objet | Type OpenNGC | Constellation | Magnitude V OpenNGC |
+| --- | --- | --- | --- |
+| NGC224 | G | And | 3,44 |
+| NGC869 | OCl | Per | 3,7 |
+| NGC884 | OCl | Per | 3,8 |
+
+Ces lignes proviennent d'une exécution locale réelle avec le catalogue embarqué;
+elles ne sont pas des observations ni une validation photométrique indépendante.
+La table est précédée d'un avertissement IERS lorsque les tables disponibles
+ne couvrent pas les dates calculées avec toute la précision souhaitée.
+
+Validation du lot NGC : **65 tests réussis** sous Windows/Python 3.13.6, Ruff
+et contrôles de structure/distribution réussis. Les cinq avertissements IERS
+restent visibles. Le paquet a été installé sans téléchargement avec
+`pip install --no-index --no-deps` dans l'environnement de vérification existant;
+ses 8 098 entrées et sa commande NGC ont été vérifiées hors du dossier source.
+Ce lot n'est pas publié sur GitHub; sa CI distante n'a pas été exécutée.
 
 ## Correctif avant fusion : un test indépendant de l'ordre d'exécution
 

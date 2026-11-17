@@ -7,6 +7,7 @@
 - [Préparer une version](RELEASE.md).
 - [Décision : catalogues du ciel profond](architecture/decisions/0001-catalogues.md).
 - [Provenance Caldwell](../src/gnu_astrolist/data/CALDWELL_SOURCE.md).
+- [Provenance NGC](../src/gnu_astrolist/data/NGC_SOURCE.md).
 
 Le cadre de contribution adapte les pratiques consultées dans
 [gnu-astrophotography-recycle](https://github.com/steveprudhomme/gnu-astrophotography-recycle)
