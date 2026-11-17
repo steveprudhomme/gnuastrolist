@@ -79,6 +79,49 @@ du plan et des changements ECC-A, en conservant le développement sur la copie l
 
 ### ECC-B — Fiabiliser les données météo — priorité haute
 
+Plan détaillé demandé le 17 novembre 2026, à committer et publier avant les
+nouveaux tests et le code. Méthodes ECC : `python-testing`, `python-patterns`,
+`security-review` et `verification-loop`, adaptées à Python/Windows.
+
+- [ ] ECC-B.0 — Publier ce plan sur une branche dédiée et vérifier l'empreinte
+      distante avant toute implémentation. ECC-A est désormais fusionné dans
+      `main` par la PR nº 9; conserver ses protections d'export.
+- [ ] ECC-B.1a — Borner les réponses HTTP météo à 2 Mio et les séries à
+      1 000 échantillons; valider JSON, structures, types numériques, valeurs
+      finies, domaines et unités lorsqu'elles sont fournies. Normaliser les
+      erreurs de transport/données attendues sans capturer toutes les exceptions.
+- [ ] ECC-B.1b — Valider les horodatages, les instants distincts et les longueurs
+      de séries. Conserver les décalages UTC explicites; refuser les heures civiles
+      impossibles ou ambiguës plutôt que leur inventer un instant. Garder des
+      périodes de repli signalées si les horaires solaires manquent.
+- [ ] ECC-B.2a — Conserver les mesures par instant et calculer la rosée seulement
+      sur les triplets température/point de rosée/humidité complets. Ne plus
+      rapprocher les listes après suppression indépendante de leurs valeurs nulles.
+- [ ] ECC-B.2b — Conserver les variables valides indépendantes, signaler les
+      données partielles et ne pas fabriquer de moyenne ni risque faible en
+      l'absence de mesures. Une série de longueur incohérente est écartée,
+      jamais tronquée silencieusement; les valeurs invalides isolées sont omises.
+- [ ] ECC-B.2c — Isoler les deux fournisseurs et les deux périodes; une panne
+      météo ne doit pas supprimer la liste astronomique ni les données valides
+      de l'autre source. Reconnaître la disponibilité de toute variable affichable,
+      même sans nuages ni seeing. Préserver l'interdiction réseau de `--offline`.
+- [ ] ECC-B.3a — Écrire d'abord les régressions : seeing nul, rosée désalignée,
+      JSON/structures invalides, valeurs non finies ou hors domaine, unités,
+      séries incohérentes, dates/décalages/DST, doublons, tailles limites et pannes.
+      Vérifier aussi qu'une erreur de programmation inattendue reste visible.
+- [ ] ECC-B.3b — Tester terminal/TXT/PDF avec prévisions synthétiques partielles
+      et indisponibles, vérifier les catalogues et protections ECC-A, puis exécuter
+      suite complète, Ruff, liens, construction et installation hors des sources.
+- [ ] ECC-B.3c — Actualiser README, CHANGELOG, architecture, guides de validation
+      et développement ECC. Ajouter un guide météo et un tutoriel illustré dès
+      10 ans expliquant mesures manquantes, avertissements et périodes de repli.
+      Publier code et MD, ouvrir une PR et vérifier ses cinq contrôles; la fusion
+      dans `main` reste une opération distincte. Aucun essai sur le disque USB réel.
+
+L'instruction du propriétaire autorise la publication du plan et des changements
+ECC-B développés dans la copie locale. L'archive météo, les nouveaux fournisseurs,
+les nouveaux catalogues et les réglages GitHub restent hors de ce lot.
+
 - [ ] ECC-B.1 — Valider structures, types, nombres finis et domaines des
       réponses Open-Meteo/7Timer; borner leur taille et gérer les erreurs de
       données sans masquer les erreurs de programmation.
