@@ -5,6 +5,19 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Corrigé — ECC-C, précontrôle des paramètres
+
+- Validation partagée des nombres finis, du site terrestre, du champ, des
+  magnitudes, des pas et des réglages d'actualisation avant les opérations à effets.
+- Refus contrôlé de NaN/infini, pas infime ou trop grand, booléens JSON utilisés
+  comme âges et chemins de cache vides, sans modifier les réglages IERS.
+- Comptage exact des instants en UTC avant allocation, bornes incluses, limité
+  à 2 000 pour les objets fixes/petits corps et 20 000 pour les satellites;
+  correction de la borne exacte de 2 000 instants précédemment trop restrictive.
+- Contrôles réutilisés par les API, même sans objet; modèles, calculs et
+  protections ECC-A/ECC-B préservés. Guide et tutoriel illustré dès 10 ans.
+- Plan ECC-C publié avant code sur une branche dépendante d'ECC-B encore ouvert.
+
 ### Corrigé — ECC-B, météo partielle et calcul de rosée
 
 - Calcul de rosée sur les trios température/point de rosée/humidité du même

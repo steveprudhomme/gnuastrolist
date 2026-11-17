@@ -17,6 +17,7 @@ from astropy.coordinates import (
 from astropy.time import Time
 
 from .models import MoonSummary, ObservationWindow
+from .validation import validate_observer, window_bounds
 
 MOON_EVENT_SAMPLE_MINUTES = 5.0
 STANDARD_HORIZON_REFRACTION_DEG = 34.0 / 60.0
@@ -135,10 +136,8 @@ def compute_moon_summary(
 ) -> MoonSummary:
     """Calcule la phase, l'illumination et les passages lunaires du jour local."""
 
-    if not -90.0 <= latitude_deg <= 90.0:
-        raise ValueError("la latitude doit être comprise entre -90 et 90 degrés")
-    if not -180.0 <= longitude_deg <= 180.0:
-        raise ValueError("la longitude doit être comprise entre -180 et 180 degrés")
+    validate_observer(latitude_deg, longitude_deg, elevation_m)
+    window_bounds(window)
 
     location = EarthLocation.from_geodetic(
         lon=longitude_deg * u.deg,

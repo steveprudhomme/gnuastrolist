@@ -513,6 +513,13 @@ d'entrée `console_scripts`, conformément au guide de la
 
 ## Tests et qualité
 
+Les réglages sont vérifiés avant les actualisations, la météo et les exports.
+NaN/infini, les pas non représentables et les budgets dépassés sont refusés par
+une erreur de commande. Les limites sont de 2 000 instants pour les objets
+fixes/petits corps et 20 000 pour les satellites; `--limit` ne les réduit pas.
+L'altitude du site terrestre doit être comprise entre −1 000 et 10 000 m.
+Voir le [guide des paramètres ECC-C](docs/PARAMETRES.md) et le tutoriel illustré.
+
 ```bash
 python -m pip install -e .[dev]
 pytest

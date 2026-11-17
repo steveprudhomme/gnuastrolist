@@ -148,32 +148,32 @@ tests et le code. ECC-B (PR nº 10) n'étant pas encore fusionné, ECC-C part de
 sa branche publiée; sa PR visera cette branche tant que la dépendance reste
 ouverte. Aucune fusion d'ECC-B ou ECC-C n'est autorisée par ce lot.
 
-- [ ] ECC-C.0 — Publier le commit du plan et vérifier son empreinte distante
+- [x] ECC-C.0 — Publier le commit du plan et vérifier son empreinte distante
       avant toute implémentation; utiliser les méthodes ECC `python-testing`,
       `python-patterns`, `security-review` et `verification-loop`.
-- [ ] ECC-C.1a — Centraliser les nombres finis et domaines : latitude ±90°,
+- [x] ECC-C.1a — Centraliser les nombres finis et domaines : latitude ±90°,
       longitude ±180°, azimuts 0–360°, hauteurs de champ 0–90°, Soleil ±90°,
       site terrestre de −1 000 à 10 000 m et magnitude finie sans borne imposée.
       Refuser aussi booléens et types non numériques dans les API numériques.
-- [ ] ECC-C.1b — Définir un pas représentable de 1 microseconde à 24 heures,
+- [x] ECC-C.1b — Définir un pas représentable de 1 microseconde à 24 heures,
       partagé par les moteurs, et compter exactement les instants en UTC,
       bornes incluses : 2 000 au maximum pour les objets fixes/petits corps,
       20 000 pour les satellites. Refuser avant allocation les budgets dépassés;
       respecter les durées réelles lors des changements d'heure.
-- [ ] ECC-C.1c — Valider les âges positifs et finis, bornés par les jours
+- [x] ECC-C.1c — Valider les âges positifs et finis, bornés par les jours
       représentables de `timedelta`, ainsi que clés, types et priorité des réglages
       CLI/JSON. Refuser les booléens JSON, chemins de cache vides et valeurs invalides
       avant d'appeler l'actualisation des catalogues.
-- [ ] ECC-C.2a — Effectuer le précontrôle CLI des nombres, du calendrier, du champ,
+- [x] ECC-C.2a — Effectuer le précontrôle CLI des nombres, du calendrier, du champ,
       des budgets et de la configuration avant mise à jour IERS, actualisation,
       météo, calculs et exports. Conserver les protections de destinations ECC-A.
-- [ ] ECC-C.2b — Réutiliser les contrôles dans les API des objets fixes, petits
+- [x] ECC-C.2b — Réutiliser les contrôles dans les API des objets fixes, petits
       corps, satellites et Lune, même sur une liste d'objets vide. Conserver les
       messages utilisateur en français et ne pas masquer les erreurs inattendues.
-- [ ] ECC-C.3a — Écrire d'abord les régressions : NaN/infini, pas 1e-20 minute,
+- [x] ECC-C.3a — Écrire d'abord les régressions : NaN/infini, pas 1e-20 minute,
       valeurs extrêmes, limites exactes et dépassements, fenêtres invalides/DST,
       configuration invalide et preuve d'absence d'appel aux opérations à effets.
-- [ ] ECC-C.3b — Vérifier commandes valides, terminal/TXT/PDF, préservation des
+- [x] ECC-C.3b — Vérifier commandes valides, terminal/TXT/PDF, préservation des
       rapports/archives synthétiques, tests complets, Ruff, liens, distributions
       et installation hors des sources. Aucun essai sur le disque USB réel.
 - [ ] ECC-C.3c — Actualiser README, CHANGELOG, architecture, validation et guide
@@ -187,9 +187,9 @@ leurs lecteurs/moteurs. L'instruction du propriétaire autorise la publication
 du plan et du lot ECC-C développés localement, sans installation de service
 externe, réglage GitHub ni fusion distante.
 
-- [ ] ECC-C.1 — Définir les domaines des flottants par paramètre et refuser
+- [x] ECC-C.1 — Définir les domaines des flottants par paramètre et refuser
       NaN/infini, pas nul après conversion et budgets d'échantillonnage dépassés.
-- [ ] ECC-C.2 — Effectuer ces contrôles avant réseau, cache et export;
+- [x] ECC-C.2 — Effectuer ces contrôles avant réseau, cache et export;
       vérifier chaque famille de moteur et les entrées de configuration.
 - [ ] ECC-C.3 — Tester notamment les pas infini et 1e-20 minute; produire des
       erreurs utilisateur lisibles et documenter les limites dans le tutoriel.

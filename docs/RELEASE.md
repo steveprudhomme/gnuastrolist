@@ -13,6 +13,9 @@
 - [ ] Vérifier les états météo ECC-B avec réponses synthétiques : valeurs
       partielles, panne des fournisseurs et mode hors ligne; vérifier la
       conservation des objets et des avertissements dans le TXT/PDF.
+- [ ] Vérifier ECC-C : un paramètre invalide avec mise à jour forcée est refusé
+      sans réseau, cache ni remplacement d'un rapport; vérifier une commande
+      valide et les budgets depuis la wheel installée hors des sources.
 - [ ] Établir les empreintes SHA-256 des fichiers réellement distribués.
 - [ ] Vérifier les dépendances distribuées et leurs notices; produire un SBOM
       si la distribution inclut des dépendances ou exécutables embarqués.

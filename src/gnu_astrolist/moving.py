@@ -17,6 +17,7 @@ from astropy.coordinates import (
 from astropy.time import Time
 
 from .models import FieldOfView, ObservationWindow, VisibilityResult, apparent_magnitude
+from .validation import validate_magnitude, validate_observer
 from .visibility import _interpolate_crossing, _sample_datetimes
 
 MU = GM_sun.to_value(u.au**3 / u.day**2)
@@ -68,7 +69,11 @@ def compute_moving_visibility(
     calculate,
     make_target,
 ) -> list[VisibilityResult]:
+    validate_observer(latitude_deg, longitude_deg, elevation_m)
+    validate_magnitude(max_magnitude)
     dates = _sample_datetimes(window, sample_minutes)
+    if not orbits:
+        return []
     times = Time(dates)
     location = EarthLocation.from_geodetic(
         longitude_deg * u.deg, latitude_deg * u.deg, elevation_m * u.m

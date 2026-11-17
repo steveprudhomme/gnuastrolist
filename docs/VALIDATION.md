@@ -1,5 +1,42 @@
 # Validation
 
+## ECC-C — Paramètres et budgets avant traitement
+
+Plan commité et publié avant les tests nouveaux et le code : `d9545c5`, avec
+empreinte distante vérifiée. ECC-C part de la branche ECC-B encore ouverte
+(PR nº 10), sans fusion implicite. Méthodes ECC : `python-testing`,
+`python-patterns`, `security-review`, `verification-loop`; schéma inspecté
+avec Chrome DevTools du plugin ECC dans un contexte isolé et refermé après usage.
+
+Windows/Python 3.13.6 : **564 tests réussis, trois ignorés, 27 avertissements**,
+dont **108 nouveaux tests réussis**. Les cas ignorés et avertissements IERS/ERFA
+restent ceux documentés pour ECC-B; aucun avertissement n'a été masqué.
+Les régressions initiales ont prouvé que altitude et magnitude NaN atteignaient
+l'actualisation avant contrôle. Le correctif vérifie aussi les pas infimes ou
+extrêmes, les budgets exacts 2 000/20 000 et leur dépassement, les fenêtres et
+changements d'heure, les types et priorités de configuration ainsi que les API
+vides des objets fixes, petits corps, satellites et Lune.
+
+Les tests interdisent l'appel aux actualisations, météo et calculs lorsqu'un
+réglage est invalide. Ils vérifient la préservation du réglage IERS, des rapports
+existants et des archives Seestar synthétiques, sans création de cache.
+Ruff, liens/structure/versions, XML SVG et différences sans erreurs d'espacement
+réussissent. Wheel/sdist construites sans téléchargement et contenu contrôlé;
+wheel installée sans dépendances dans `.wheel-check`, environnement distinct
+sans paquets système, avec `pip check` réussi.
+
+Exécutée hors des sources, la version installée refuse cinq commandes invalides
+avec demande d'actualisation forcée sans réseau réel, sans cache, sans changement
+IERS et avec empreintes des fichiers témoins inchangées. Une commande valide
+produit un TXT/PDF et les dix catalogues combinés fonctionnent hors ligne. Le
+schéma du tutoriel et la page du PDF de démonstration sont rendus et inspectés.
+Aucun disque USB réel n'a été lu ni modifié.
+
+Les limites de ce précontrôle et la distinction avec la validité scientifique
+des données sont dans [PARAMETRES.md](PARAMETRES.md). Couverture supplémentaire
+et typage restent au lot ECC-E. Les contrôles distants de la PR du dernier
+commit doivent être vérifiés avant toute fusion, après intégration d'ECC-B.
+
 ## ECC-B — Réponses météo et rosée alignée
 
 Plan commité et publié avant les nouveaux tests et le code : `af9a639`, avec
