@@ -206,6 +206,84 @@ externe, réglage GitHub ni fusion distante.
 
 ### ECC-D — Environnement et livraison reproductibles — priorité haute
 
+## Exécution autonome approuvée ECC-D à ECC-I — 17 novembre 2026
+
+Le propriétaire demande de réaliser les six lots, avec plan commité et publié
+avant code, puis tests, tutoriel illustré et publication à chaque lot. Le travail
+part d'ECC-C (`bd53ad3`), dont la PR nº 11 dépend encore d'ECC-B (PR nº 10).
+La nouvelle PR visera ECC-C tant que ces dépendances ne sont pas intégrées.
+Aucune fusion distante ni modification des protections GitHub n'est incluse.
+
+- [ ] ECC-DI.0 — Publier ce plan détaillé et vérifier son empreinte distante
+      avant tests nouveaux, dépendances de développement et code.
+- [ ] ECC-DI.1 — Employer les méthodes ECC de tests Python, revue de sécurité,
+      architecture et vérification. Répartir exploration/implémentation/revue
+      indépendantes en copies locales distinctes lorsque cela réduit les angles
+      morts; conserver au pilote les décisions et l'intégration.
+- [ ] ECC-D.4 — Ajouter NumPy directement, un environnement de développement
+      isolé sans paquets système et des verrous avec versions/empreintes pour
+      Windows/Linux, Python 3.10/3.13. Installer seulement les outils et dépendances
+      nécessaires dans les environnements locaux du projet, jamais globalement.
+- [ ] ECC-D.5 — Ajouter une reconstruction des verrous avec outil de résolution
+      versionné, contrôler l'environnement installé, les archives et les dix
+      sélections hors ligne; produire un inventaire de dépendances avec licences
+      et empreintes des distributions sans prétendre signer une livraison.
+- [ ] ECC-E.4 — Mesurer la couverture des lignes et branches; choisir un plancher
+      initial démontré et des objectifs renforcés sur les chemins critiques.
+      Compléter des régressions utiles si nécessaire, pas des tests miroirs.
+- [ ] ECC-E.5 — Ajouter typage progressif sur les composants contrôlables,
+      contrôles Ruff pertinents, vérification des dépendances et recherche de
+      secrets sans afficher leur contenu. Borner la durée des jobs et utiliser
+      les verrous dans la CI Windows/Linux 3.10/3.13. Distinguer examen local et
+      audit en ligne actualisé; ne pas désactiver un contrôle pour obtenir du vert.
+- [ ] ECC-F.4 — Ajouter un verrou interprocessus du cache couvrant lecture,
+      autorisation, requête et activation; réentrance et libération après panne.
+      Les modes never/offline ne créent ni état ni verrou; les règles CelesTrak
+      restent applicables sous deux processus concurrents.
+- [ ] ECC-F.5 — Ajouter une commande locale de rétention du cache, simulation
+      par défaut, application explicite, conservation d'au moins une génération
+      valide par famille, refus des chemins liés, inconnus ou protégés Seestar.
+      Tester concurrence, arrêt brutal et rétention uniquement sur copies synthétiques.
+- [ ] ECC-G.4 — Introduire un service d'application et un objet de rapport
+      partagé sans casser CLI/TXT/PDF; déplacer les formats communs derrière
+      une API publique plutôt que les imports de fonctions privées entre rendus.
+- [ ] ECC-G.5 — Restaurer le contexte IERS après succès et erreur, avec tests
+      d'appels successifs, erreurs et ressources. Documenter une décision
+      d'architecture avant intégration du changement et conserver les contrôles
+      numériques et de destinations ECC-A/C.
+- [ ] ECC-H.4 — Ajouter des références gelées de positions satellitaires
+      topocentriques calculées par une chaîne indépendante de la transformation
+      Astropy actuelle (ex. Skyfield), à partir de sources publiques licenciées.
+      Fournir générateur, versions, dates, conventions, empreintes et tolérances;
+      ne pas présenter ces calculs comme des observations réelles.
+- [ ] ECC-H.5 — Ajouter des mesures reproductibles temps/mémoire des catalogues
+      combinés, satellites, rapports et inventaires Seestar synthétiques, avec
+      budgets raisonnés d'après la mesure et contrôles non instables en CI.
+      Les tests ordinaires restent entièrement hors réseau.
+- [ ] ECC-I.6 — Réconcilier les tâches réalisées et leurs renvois ECC; compléter
+      les avis SPDX des fichiers originaux vérifiés sans inventer de titulaires.
+      Vérifier les notices des données sans leur attribuer de nouvelle licence.
+- [ ] ECC-I.7 — Actualiser confidentialité (fournisseurs/cache/rapports), User-Agent
+      issu de la version, gouvernance et livraison des dix catalogues. Examiner
+      les anciens rapports suivis sans publier leur contenu; remplacer leur
+      rôle d'exemple par des fichiers synthétiques documentés. Ne pas réécrire
+      l'historique, fabriquer de signature ou prétendre qu'un canal privé est actif.
+- [ ] ECC-DI.2 — À chaque lot : mettre à jour README, CHANGELOG, ROADMAP et
+      guides concernés, ajouter un schéma au tutoriel dès 10 ans, exécuter les
+      contrôles pertinents, consigner les résultats, committer et publier la branche.
+- [ ] ECC-DI.3 — Terminer par revue indépendante, suite complète, typage,
+      couverture, audits, archives et installation hors des sources; inspecter
+      les schémas et un PDF. Publier une PR détaillée ciblant ECC-C et vérifier
+      tous les contrôles distants du dernier commit avant de conclure.
+
+L'instruction autorise ces installations locales nécessaires et la publication
+des six lots, mais aucun service externe permanent, réglage GitHub ou fusion.
+Les accès en ligne servent uniquement aux dépendances, références publiques,
+audits de versions et publication autorisée; aucun inventaire Seestar n'est transmis.
+Le disque USB réel ne sera ni parcouru ni modifié.
+
+### ECC-D — Critères initiaux conservés
+
 - [ ] ECC-D.1 — Créer un environnement neuf sans paquets système et obtenir
       un contrôle des dépendances réussi, indépendant des autres logiciels.
 - [ ] ECC-D.2 — Déclarer NumPy comme dépendance directe et définir des
