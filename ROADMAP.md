@@ -9,13 +9,14 @@ ouvertes tant que leurs critères ne sont pas vérifiés.
 
 **ECC-D à ECC-I sont réalisés dans la [PR nº 12](https://github.com/steveprudhomme/gnuastrolist/pull/12).**
 716 tests locaux réussis sous Python 3.11/3.13, cinq contrôles distants verts
-sur `a3804fe`; aucune fusion incluse. ECC-A est fusionné dans `main` par la
+sur `a3804fe`; voir ci-dessous la nouvelle intégration autorisée. ECC-A est fusionné dans `main` par la
 [PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9), commit `1d75522`.
-ECC-B est publié dans la [PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10),
-avec cinq contrôles réussis sur le correctif; sa fusion reste distincte.
-ECC-C est publié dans la [PR nº 11](https://github.com/steveprudhomme/gnuastrolist/pull/11),
-basée sur ECC-B. Ses cinq contrôles ont réussi sur le correctif; intégrer ECC-B
-avant de revoir la base et de fusionner ECC-C dans `main`.
+ECC-B est fusionné dans `main` par la [PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10),
+commit `7f3b4d0`. ECC-C est fusionné par la
+[PR nº 11](https://github.com/steveprudhomme/gnuastrolist/pull/11), commit `b75f5d7`.
+La PR nº 12 regroupe ECC-D à ECC-I sur cette base `main`, avec nouvelle
+vérification des cinq contrôles avant fusion. Après son intégration, tous les
+lots ECC-A à ECC-I sont réunis dans `main`.
 Choisir le premier lot incomplet
 dans l'ordre ECC-A, ECC-B, ECC-C, ECC-D, ECC-E, ECC-F, ECC-G, ECC-H, ECC-I.
 À chaque demande de prochaine étape, préciser explicitement l'usage d'ECC et
@@ -882,3 +883,21 @@ La PR nº 12 est proposée à la revue après ECC-B nº 10 et ECC-C nº 11.
 Aucune fusion, modification de réglage GitHub ni utilisation d'archives Seestar
 réelles. La publication du présent bilan est suivie d'une dernière vérification
 de ses contrôles avant le compte rendu utilisateur.
+
+
+## Intégration autorisée dans main — 17 novembre 2026
+
+Le propriétaire demande explicitement les fusions nº 10, nº 11 et nº 12 dans
+cet ordre, après vérification de tous les contrôles. Cette demande complète
+l'autorisation de publication précédente, qui n'incluait pas les fusions.
+
+- PR nº 10 : cinq contrôles verts avant fusion; commit `7f3b4d0`, puis CI main réussie.
+- PR nº 11 : base replacée sur main, fusion préparée localement sans modification
+  de fichiers, cinq nouveaux contrôles verts au commit `332276c`, puis fusion `b75f5d7`.
+- PR nº 12 : base replacée sur main après nº 11; historique conservé et documents
+  réconciliés dans une copie locale. Les cinq contrôles de cette nouvelle tête
+  doivent être verts avant sa fusion; la CI main est vérifiée ensuite.
+
+Les anciens bilans « aucune fusion » décrivent les étapes antérieures à cette
+autorisation. Aucun réglage GitHub n'est modifié; les archives Seestar réelles
+ne sont ni parcourues ni modifiées. Les branches de travail sont conservées.

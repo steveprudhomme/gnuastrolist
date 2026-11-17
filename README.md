@@ -562,8 +562,9 @@ Consultez aussi [GOVERNANCE.md](GOVERNANCE.md), [DCO.md](DCO.md),
 
 Le [tutoriel illustré](docs/TUTORIEL.md) décrit le parcours Caldwell et les
 contrôles locaux. Le propriétaire a autorisé la publication du plan et des
-lots ECC-D à ECC-I sur leur branche. Le travail reste dans les copies locales;
-aucune fusion ni modification de réglage GitHub n'est incluse.
+lots ECC-D à ECC-I sur leur branche. Le travail reste dans les copies locales.
+Les fusions nº 10 → nº 11 → nº 12 ont ensuite été explicitement autorisées,
+avec contrôles verts avant chaque fusion; aucun réglage GitHub ne change.
 
 Les [contrôles ECC-E](docs/QUALITE.md) mesurent lignes et branches, vérifient
 progressivement les types et recherchent secrets et dépendances vulnérables.
@@ -584,3 +585,8 @@ l’option `--apply` applique explicitement le retrait. Les archives Seestar son
 Validation ECC-D à ECC-I : 716 tests locaux réussis, couverture 90,34 % et
 cinq contrôles GitHub verts sur `a3804fe`; [PR nº 12](https://github.com/steveprudhomme/gnuastrolist/pull/12).
 Python 3.11 minimum, quatre verrous audités, aucune archive Seestar réelle utilisée.
+
+
+Le parcours d'intégration dans `main` suit les PR nº 9 (ECC-A), nº 10 (ECC-B),
+nº 11 (ECC-C), puis nº 12 (ECC-D à ECC-I). Les contrôles sont vérifiés sur
+chaque nouvelle base et sur main après intégration. Voir [la feuille de route](ROADMAP.md).

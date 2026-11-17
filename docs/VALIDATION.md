@@ -10,8 +10,9 @@ synthétiques inspecté, simulation du cache sans création de verrou vérifiée
 
 Les cinq contrôles GitHub de `a3804fe` passent sur Windows/Linux 3.11/3.13
 et la livraison. Plans publiés avant code : `a814a49`, puis `1f2745c` pour
-Python 3.11 minimum. La PR nº 12 vise ECC-C nº 11, dépendant d’ECC-B nº 10;
-aucune fusion effectuée. Les sections suivantes conservent le journal technique
+Python 3.11 minimum. La PR nº 12 est replacée sur main après ECC-B nº 10 et ECC-C nº 11;
+le cycle de fusion nº 10 → nº 11 → nº 12 est ensuite autorisé explicitement.
+Les sections suivantes conservent le journal technique
 et ses mesures intermédiaires; elles ne remplacent pas cet état courant.
 
 ## ECC-C — Paramètres et budgets avant traitement
@@ -547,3 +548,15 @@ NumPy 2.4.6; Python 3.13 emploie NumPy 2.5.5. Pillow 13.0.0/filelock 4.2.11.
 Les quatre verrous complets passent pip-audit sans avis connu au 17 novembre
 2026. Les verrous 3.10 sont retirés; aucun avis n'est ignoré. Le dernier passage
 GitHub confirme ensuite les cinq contrôles au commit `a3804fe` (voir état courant).
+
+
+## Cycle de fusion autorisé — 17 novembre 2026
+
+La PR nº 10 est fusionnée après ses cinq contrôles verts; la CI main réussit
+au commit `7f3b4d0`. La PR nº 11 est replacée sur main, actualisée localement
+sans changement de fichiers, puis vérifiée par cinq nouveaux contrôles verts
+sur `332276c` avant fusion `b75f5d7`.
+La PR nº 12 reprend ce main dans une copie locale; les seules modifications
+supplémentaires sont documentaires. Les cinq contrôles de sa nouvelle tête
+sont exigés avant fusion, puis les contrôles de main sont vérifiés. Les bilans
+antérieurs sans fusion restent des relevés historiques, pas l'état du cycle actuel.

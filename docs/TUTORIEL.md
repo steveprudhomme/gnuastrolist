@@ -19,9 +19,9 @@ Ce dessin est un schéma explicatif, pas une capture de l'application.
    On coche une étape seulement quand elle est terminée.
 
 Les neuf groupes sont approuvés. Les cases de la liste indiquent les changements
-réalisés; une branche doit encore être intégrée pour les retrouver dans la
-version principale. Les détails pour les personnes qui
-développent sont dans le [guide ECC](DEVELOPPEMENT_ECC.md).
+réalisés. La feuille de route indique leur intégration dans la version principale.
+Les détails pour les personnes qui développent sont dans le
+[guide ECC](DEVELOPPEMENT_ECC.md).
 
 ## Commencer ici : préparer sa soirée, pas à pas
 
@@ -790,3 +790,16 @@ Le programme garde au moins une copie valide. Voir le [guide du cache](CACHE.md)
 
 Ce changement permet d'utiliser les corrections de sécurité des outils.
 Tes photos Seestar ne changent pas.
+
+
+## Réunir les versions vérifiées
+
+![Schéma explicatif du parcours de vérification ECC](images/parcours-ecc.svg)
+
+Une fusion réunit deux versions du logiciel. Elle ne change pas tes photos.
+
+1. Vérifier les tests. Tous les contrôles doivent être verts.
+2. Réunir les versions dans l'ordre : nº 10, puis nº 11, puis nº 12.
+3. Vérifier encore les tests de `main`. C'est la version principale du projet.
+
+Les détails des fusions restent dans le journal technique de la feuille de route.

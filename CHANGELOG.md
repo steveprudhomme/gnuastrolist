@@ -444,3 +444,12 @@ directes et la rétention; deux régressions concurrentes supplémentaires.
 Clôture ECC-D à ECC-I : 716 tests locaux réussis sur Python 3.11/3.13,
 couverture 90,34 %, quatre audits sans avis connu et cinq contrôles GitHub
 verts sur `a3804fe`. PR nº 12 proposée à la revue; aucune fusion effectuée.
+
+
+### Intégration des PR nº 10, nº 11 et nº 12
+
+- Fusions autorisées dans cet ordre, avec conservation de l'historique;
+  les PR dépendantes sont replacées sur main et actualisées dans des copies locales.
+- Cinq contrôles vérifiés avant chaque fusion; contrôle final de main.
+- Documentation et tutoriel réconciliés; aucune modification du code, des
+  réglages GitHub ou des archives Seestar réelles pendant cette intégration.
