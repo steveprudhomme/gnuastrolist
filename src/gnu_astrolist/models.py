@@ -105,7 +105,16 @@ class NamedStar:
     size_retrieved_on: str = ''
 
 
-CatalogObject: TypeAlias = VariableStar | DeepSkyObject | NamedStar
+@dataclass(frozen=True, slots=True)
+class AsteroidTarget(DeepSkyObject):
+    """Fiche d'affichage issue d'une éphéméride, jamais une position fixe à propager."""
+
+    number: int = 0
+    asteroid_name: str = ''
+    epoch_jd_tdb: float = 0.0
+
+
+CatalogObject: TypeAlias = VariableStar | DeepSkyObject | NamedStar | AsteroidTarget
 
 
 @dataclass(frozen=True, slots=True)
@@ -305,3 +314,5 @@ class VisibilityResult:
     sets_below_minimum_local: datetime | None = None
     always_above_minimum: bool = False
     seestar_status: str | None = None
+    magnitude_estimated: bool = False
+    magnitude_reference_time: datetime | None = None

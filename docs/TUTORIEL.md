@@ -85,6 +85,58 @@ image rangée ailleurs peut échapper à la recherche. « Fait » ne veut pas di
 que l'image est réussie : il faut encore la regarder. Les exemples détaillés
 ci-dessous sont inventés pour les tests ou clairement signalés comme des essais.
 
+## Chercher des astéroïdes : une liste qui bouge
+
+Un **astéroïde** est un petit monde qui tourne autour du Soleil. Il change de
+place parmi les étoiles. On doit donc recalculer sa place pendant la soirée.
+
+![Les astéroïdes bougent dans le champ choisi](images/asteroides.svg)
+
+C'est un dessin pour expliquer, pas une vraie carte du ciel.
+
+### 1. Choisir la liste
+
+Le programme contient les 1 000 premiers astéroïdes numérotés. Par exemple,
+le numéro 1 s'appelle Ceres et le numéro 4 s'appelle Vesta. Ce ne sont pas tous
+les astéroïdes connus. Ouvre le dossier du projet sur l'ordinateur et crée
+`local` comme au début du tutoriel. Copie ensuite :
+
+```powershell
+.venv\Scripts\python -m gnu_astrolist --date 2026-11-17 --time-range 21:00-22:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 10 --objects asteroids --max-magnitude 10 --offline --limit 20 --output-txt local/asteroides.txt --output-pdf local/asteroides.pdf
+```
+
+Cette soirée est un exemple pour Laval. Les directions `0` à `360` veulent dire
+« tout autour de nous ». Pour retrouver ton champ habituel, remets tes directions.
+Pour ajouter les objets Messier, écris `--objects asteroids messier`.
+
+### 2. Lire la lumière et l'heure
+
+La **magnitude** est un nombre qui décrit la lumière. Un petit nombre veut dire
+plus brillant. Le signe **≈** veut dire « environ » : la lumière est estimée.
+La colonne **Instant V estimée (local)** dit à quelle heure cette estimation
+correspond. Le programme garde un objet seulement s'il est assez brillant
+pendant qu'il est dans le morceau de ciel choisi.
+
+Les cases des dates saisonnières restent vides pour ces objets. Ce calcul
+n'est pas encore proposé pour les astéroïdes. Une case vide de lever ou de
+coucher veut dire qu'aucun passage n'a été trouvé dans les heures demandées.
+
+### 3. Garder les éléments à jour
+
+Les éléments orbitaux sont les nombres qui décrivent le trajet. Ils vieillissent.
+Avec la copie fournie, choisis une soirée entre juin 2025 et début juin 2027,
+en évitant les jours limites. Si le programme demande des éléments plus récents,
+une personne qui connaît les catalogues peut préparer un fichier JPL local et
+ajouter `--asteroids-file local/orbites-sbdb.json`. Le
+[guide détaillé](ASTEROIDS.md) explique le format et les dates exactes.
+
+Les calculs restent approximatifs. Pour pointer très précisément le télescope,
+vérifie aussi la position dans JPL Horizons avec une personne qui sait l'utiliser.
+Pour chercher tes anciennes photos, ajoute `--seestar-path "E:\MyWorks"`.
+Un nom comme **MPC4** veut dire Vesta. **M4** est un autre objet, du catalogue
+Messier ! Le disque des photos reste en lecture seule; les rapports restent
+dans `local` sur l'ordinateur.
+
 ## Choisir les noms Bayer et Flamsteed
 
 ![Véga avec ses deux étiquettes](images/bayer-flamsteed.svg)

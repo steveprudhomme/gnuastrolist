@@ -5,11 +5,13 @@ from __future__ import annotations
 import argparse
 import sys
 from collections.abc import Sequence
+from dataclasses import replace
 from pathlib import Path
 
 from astropy.utils import iers
 
 from . import __version__
+from .asteroids import compute_asteroid_visibility, load_asteroid_catalog
 from .models import FieldOfView
 from .moon import compute_moon_summary
 from .output import render_report
@@ -84,8 +86,12 @@ def build_parser() -> argparse.ArgumentParser:
         required=True,
         nargs="+",
         action="extend",
-        choices=("variable_stars", "messier", "messier_objects", "caldwell", "ngc", 'bayer', 'flamsteed'),
+        choices=("variable_stars", "messier", "messier_objects", "caldwell", "ngc", 'bayer', 'flamsteed', 'asteroids'),
         help="un ou plusieurs catalogues; option répétable (messier_objects : alias de messier)",
+    )
+    parser.add_argument(
+        "--asteroids-file", type=Path, metavar="FICHIER_JSON",
+        help="réponse JPL SBDB Query locale pour actualiser ou étendre les orbites embarquées",
     )
     magnitudes = parser.add_mutually_exclusive_group()
     magnitudes.add_argument(
@@ -144,6 +150,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def _validate_arguments(args: argparse.Namespace) -> None:
+    if args.asteroids_file is not None and "asteroids" not in args.objects:
+        raise ValueError("--asteroids-file exige --objects asteroids")
     if not -90.0 <= args.lat <= 90.0:
         raise ValueError("--lat doit être compris entre -90 et 90")
     if not -180.0 <= args.lon <= 180.0:
@@ -159,6 +167,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         _validate_arguments(args)
+        orbits = load_asteroid_catalog(args.asteroids_file) if "asteroids" in args.objects else ()
         seestar_root = validate_root(args.seestar_path) if args.seestar_path is not None else None
         if seestar_root is not None:
             protect_outputs(seestar_root, (args.output_txt, args.output_pdf))
@@ -188,7 +197,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     stars, selection = load_catalog_selection(
         args.objects, args.max_magnitude, args.all_magnitudes
     )
-    object_kind = selection.kinds[0] if len(selection.kinds) == 1 else selection
+    if orbits:
+        origin = "Fichier orbital fourni" if args.asteroids_file else "Copie orbitale embarquée"
+        selection = replace(selection, source_notes=(
+            f"{origin} : {len(orbits)} astéroïdes; époques JD TDB "
+            f"{min(o.epoch for o in orbits):.6f} à {max(o.epoch for o in orbits):.6f}.",
+        ))
+    object_kind = selection.kinds[0] if len(selection.kinds) == 1 and not orbits else selection
     max_magnitude = selection.limits[0] if len(selection.kinds) == 1 else args.max_magnitude
     try:
         moon_summary = compute_moon_summary(
@@ -206,6 +221,16 @@ def main(argv: Sequence[str] | None = None) -> int:
             field_of_view=field_of_view,
             sample_minutes=args.sample_minutes,
         )
+        if orbits:
+            results.extend(compute_asteroid_visibility(
+                orbits, window, args.lat, args.lon, args.elevation_m,
+                field_of_view, args.sample_minutes,
+                selection.limits[selection.kinds.index("asteroids")],
+            ))
+            results.sort(key=lambda result: (
+                result.star.magnitude_v if result.star.magnitude_v is not None else float("inf"),
+                result.star.name.casefold(),
+            ))
     except ValueError as exc:
         parser.error(str(exc))
     matched_count = len(results)

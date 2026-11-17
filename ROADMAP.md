@@ -3,25 +3,30 @@
 ## Lot astéroïdes — catalogue orbital et positions variables
 
 - [x] Examiner le moteur actuel et identifier les calculs réservés aux objets fixes.
-- [ ] Enregistrer ce plan avant le développement.
-- [ ] Vérifier les sources orbitales publiques, leurs unités, leurs conditions
+- [x] Enregistrer ce plan avant le développement.
+- [x] Vérifier les sources orbitales publiques, leurs unités, leurs conditions
       d'utilisation et leur actualité; versionner une sélection numérotée utile
       avec empreinte et proposer l'import d'une copie locale pour l'étendre.
-- [ ] Ajouter `--objects asteroids` avec propagation orbitale hors ligne,
+- [x] Ajouter `--objects asteroids` avec propagation orbitale hors ligne,
       correction du temps de lumière, position topocentrique par instant et
       magnitude estimée à partir des paramètres H/G disponibles.
-- [ ] Définir et afficher la validité du modèle, refuser les dates trop éloignées
+- [x] Définir et afficher la validité du modèle, refuser les dates trop éloignées
       des éléments et ne jamais présenter des coordonnées fixes ou une magnitude H
       comme la position ou la luminosité apparente de l'astéroïde observé.
-- [ ] Filtrer les échantillons où champ et magnitude sont simultanément satisfaits;
+- [x] Filtrer les échantillons où champ et magnitude sont simultanément satisfaits;
       trier par luminosité estimée dans le champ, garder la date de référence et
       ne pas réutiliser les dates saisonnières/oppositions des objets fixes.
-- [ ] Permettre les sélections mixtes et les rapports terminal/TXT/PDF, avec
+- [x] Permettre les sélections mixtes et les rapports terminal/TXT/PDF, avec
       identifiants mineurs distincts pour Seestar, toujours en lecture seule.
-- [ ] Comparer des positions calculées à une référence indépendante, puis tester
+- [x] Comparer des positions calculées à une référence indépendante, puis tester
       orbites synthétiques, filtres, limites temporelles, import et exports hors ligne.
-- [ ] Documenter les limites dans les MD et le tutoriel illustré accessible à
+- [x] Documenter les limites dans les MD et le tutoriel illustré accessible à
       10 ans, vérifier les paquets et enregistrer les commits locaux sans push.
+
+Plan préalable : `02cd97d`. Première sélection : 1 000 numéros JPL, extensible
+par JSON local. Validation et limites dans [docs/ASTEROIDS.md](docs/ASTEROIDS.md).
+La propagation perturbée, les comètes, les objets non numérotés et la mise à jour
+automatique des orbites restent hors de ce lot.
 
 ## Lot Bayer et Flamsteed — sélections stellaires locales
 

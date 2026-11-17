@@ -28,6 +28,14 @@ inventaire n'est pas lancé et les sorties gardent leur format précédent.
 `NamedStar` représente les fiches HYG, indépendamment des maxima GCVS et des
 objets du ciel profond. `stellar_names.py` normalise les désignations explicites.
 La sélection multiple réunit Bayer/Flamsteed par clé HYG de la révision embarquée;
-les identités GCVS/NGC ne sont pas inférées. Le moteur astronomique reste commun.
+les identités GCVS/NGC ne sont pas inférées. Le moteur astronomique stellaire reste commun.
+
+`asteroids.py` sépare les orbites mobiles des objets fixes. Il lit une réponse
+SBDB locale, propage les positions par échantillon et estime les magnitudes H-G.
+Le filtre V est appliqué simultanément au champ; la fiche `AsteroidTarget` est
+créée après ce calcul, avec l'instant de référence. Les rendus partagent le
+symbole d'estimation et cet instant. Le moteur fixe refuse ces fiches pour éviter
+tout calcul saisonnier erroné. Voir la [décision 0003](architecture/decisions/0003-asteroides.md)
+et les [limites scientifiques](ASTEROIDS.md).
 Les tests ne doivent pas dépendre de leurs services distants. Une nouvelle
 méthode ou source doit avoir une notice, des exemples vérifiables et des tests.

@@ -12,7 +12,20 @@ Le prototype est déjà fonctionnel : il contient 21 212 entrées visuelles du
 General Catalogue of Variable Stars (GCVS), les 110 objets Messier et les
 109 objets Caldwell, 8 098 entrées NGC et les sélections stellaires Bayer/Flamsteed. Il
 calcule les coordonnées Alt/Az avec Astropy et fonctionne hors ligne grâce aux
-catalogues embarqués.
+catalogues embarqués. Il propose aussi les **1 000 premiers astéroïdes numérotés**,
+avec positions recalculées et magnitudes estimées pendant la soirée.
+Voir [le guide astéroïdes](docs/ASTEROIDS.md) pour les limites du modèle et
+l'actualisation des éléments orbitaux avec un fichier local.
+
+```powershell
+gnu-astrolist --date 2026-11-17 --time-range 21:00-22:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 10 --objects asteroids messier --max-magnitude 10 --offline --limit 20
+```
+
+`asteroids` peut être utilisé seul. `--asteroids-file local/orbites-sbdb.json`
+remplace la copie embarquée par une réponse SBDB locale plus récente ou plus
+étendue. La magnitude précédée de `≈` est une estimation H-G, associée à un
+instant dans le champ. Le modèle à deux corps accepte les dates à ±365 jours
+des éléments : cette borne ne garantit pas la précision du pointage.
 
 ## Installation
 
@@ -364,7 +377,8 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --az-max DEG                 Limite azimutale de fin
 --min-altitude DEG           Élévation minimale; --fov-v est un alias
 --alt-center DEG             Remplacement avancé facultatif du centre vertical
---objects CATALOGUE [...]    variable_stars, messier, caldwell, ngc, bayer, flamsteed
+--objects CATALOGUE [...]    variable_stars, messier, caldwell, ngc, bayer, flamsteed, asteroids
+--asteroids-file JSON        Remplace les orbites embarquées par une réponse SBDB locale
 --max-magnitude MAG          Limite V; défaut 8 pour les variables, aucune pour Messier
 --all-magnitudes             Désactive la limite pour le catalogue choisi
 --sample-minutes MIN         Pas de recherche (défaut : 10)
@@ -388,11 +402,14 @@ arguments, gestion du temps civil, chargement des catalogues, calcul astronomiqu
 et rendu. Cette séparation rend chaque partie testable et permettra d'ajouter
 d'autres catalogues ou formats de sortie sans réécrire le moteur.
 
-Les positions partent des coordonnées ICRS/J2000 des catalogues. Astropy réalise la
+Les positions fixes partent des coordonnées ICRS/J2000 des catalogues. Astropy réalise la
 [transformation vers le repère horizontal `AltAz`](https://docs.astropy.org/en/stable/coordinates/index.html)
 pour un lieu et un instant précis. Le calcul est vectorisé : toutes les étoiles
 présélectionnées sont transformées pour tous les instants d'échantillonnage en
 une seule opération.
+
+Les astéroïdes utilisent un moteur orbital séparé, décrit dans le
+[guide astéroïdes](docs/ASTEROIDS.md), puis rejoignent les mêmes rendus.
 
 Le paquet suit une structure `src/`, un fichier `pyproject.toml` et un point
 d'entrée `console_scripts`, conformément au guide de la

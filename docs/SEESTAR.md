@@ -91,6 +91,12 @@ lever l'ambiguïté. Les noms des autres catalogues gardent leurs règles préc�
 
 ## Vérification et confidentialité
 
+Pour les astéroïdes, préférer un nom explicite comme `MPC4`. Le nom source
+exact (`Vesta`), `4 Vesta` ou `(4) Vesta` est aussi reconnu. `M4`, `C4` et le
+numéro seul `4` ne sont jamais assimilés à Vesta. La présence d'une acquisition
+reconnue ne signifie pas que l'astéroïde occupe encore le même champ aujourd'hui.
+Toutes les protections du disque source s'appliquent également à ces objets.
+
 Les tests ordinaires utilisent des archives synthétiques sous les répertoires
 temporaires de tests. Ils n'utilisent pas le disque Seestar de l'utilisateur.
 L'essai manuel réel autorisé ne conserve ses rapports que dans `local/`, ignoré

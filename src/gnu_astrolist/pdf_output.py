@@ -42,7 +42,7 @@ from .output import (
     _reference_label,
 )
 from .seestar import SeestarInventory, protect_outputs
-from .selection import NOTES, CatalogSelection, catalog_label
+from .selection import ASTEROID_NOTES, NOTES, CatalogSelection, catalog_label
 
 NAVY = colors.HexColor("#18344A")
 TEAL = colors.HexColor("#2B7282")
@@ -463,6 +463,12 @@ def _result_card(
             _paragraph('Seestar', styles['label']),
             _paragraph(result.seestar_status, styles['value']), '', '',
         ])
+    if result.magnitude_reference_time is not None:
+        data.append([
+            _paragraph("Instant V estimée (local)", styles["label"]),
+            _paragraph(result.magnitude_reference_time.strftime("%Y-%m-%d %H:%M"), styles["value"]),
+            "", "",
+        ])
     if show_details:
         if star.size_source:
             size_detail = (
@@ -545,6 +551,8 @@ def _notes(object_kind: str | CatalogSelection) -> tuple[str, ...]:
     ]
     if isinstance(object_kind, CatalogSelection):
         notes.extend(object_kind.notes)
+    elif object_kind == "asteroids":
+        notes.extend((NOTES[object_kind], *ASTEROID_NOTES))
     elif object_kind == "variable_stars":
         notes.append(
             "La magnitude des étoiles variables est le maximum d'éclat publié, "

@@ -45,4 +45,6 @@ jobs:
           "$GITHUB_WORKSPACE/.wheel-check/bin/python" -m gnu_astrolist --date 2026-08-15 --time-range 21:00-22:00 --lat 45 --lon 0 --az-min 0 --az-max 360 --min-altitude 20 --objects ngc --max-magnitude 5 --offline --limit 3
           "$GITHUB_WORKSPACE/.wheel-check/bin/python" -m gnu_astrolist --date 2026-08-15 --time-range 21:00-22:00 --lat 45 --lon 0 --az-min 0 --az-max 360 --min-altitude 20 --objects messier caldwell ngc --max-magnitude 5 --offline --limit 3
           "$GITHUB_WORKSPACE/.wheel-check/bin/python" -m gnu_astrolist --date 2026-11-17 --time-range 21:00-22:00 --lat 45 --lon 0 --az-min 0 --az-max 360 --min-altitude 20 --objects bayer flamsteed --offline --limit 3 --output-pdf /tmp/stellar-report.pdf
+          "$GITHUB_WORKSPACE/.wheel-check/bin/python" -c "from gnu_astrolist.asteroids import load_asteroid_catalog; assert len(load_asteroid_catalog()) == 1000"
+          "$GITHUB_WORKSPACE/.wheel-check/bin/python" -m gnu_astrolist --date 2026-11-17 --time-range 21:00-22:00 --lat 45 --lon 0 --az-min 0 --az-max 360 --min-altitude 10 --objects asteroids messier --max-magnitude 10 --offline --limit 3 --output-pdf /tmp/asteroid-report.pdf
 

@@ -8,6 +8,7 @@ Les catalogues ont leurs propres conditions :
 
 | Données | Attribution et conditions |
 | --- | --- |
+| Orbites SBDB et références Horizons | NASA/JPL Solar System Dynamics; données du domaine public selon la FAQ SSD, attribution et transformations documentées dans ASTEROID_SOURCE.md |
 | GCVS | Auteurs GCVS et VizieR; voir CATALOG_SOURCE.md |
 | Messier dérivé d'OpenNGC | Mattia Verga et contributeurs; CC BY-SA 4.0 |
 | Caldwell dérivé d'OpenNGC | Mattia Verga et contributeurs; CC BY-SA 4.0 |

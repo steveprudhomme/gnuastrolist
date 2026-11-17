@@ -5,6 +5,18 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté — astéroïdes
+
+- Catalogue orbital JPL local des 1 000 premiers astéroïdes numérotés;
+  `--objects asteroids`, sélection multiple et remplacement par `--asteroids-file`.
+- Positions topocentriques par échantillon, propagation à deux corps et temps de
+  lumière; magnitude H-G estimée, heure de référence et filtre champ/V simultané.
+- Estimations distinguées dans les rapports écran/TXT/PDF, hypothèses documentées,
+  refus au-delà de ±365 jours de l'époque; pas de dates saisonnières fixes appliquées.
+- Identifiants Seestar `MPC` distincts de Messier/Caldwell, toujours en lecture seule.
+- Comparaisons JPL Horizons figées, tests hors réseau, génération reproductible,
+  notices et tutoriel illustré accessible à 10 ans.
+
 ### Ajouté — Bayer et Flamsteed
 
 - Sélections `bayer` et `flamsteed` issues de HYG 4.1, utilisables seules ou avec

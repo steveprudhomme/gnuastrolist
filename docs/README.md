@@ -3,6 +3,9 @@
 - [Installation](../INSTALL.md) et [guide utilisateur](../README.md).
 - [Tutoriel reproductible](TUTORIEL.md).
 - [Architecture](ARCHITECTURE.md).
+- [Astéroïdes : utilisation, modèle, actualisation et limites](ASTEROIDS.md).
+- [Provenance orbitale JPL](../src/gnu_astrolist/data/ASTEROID_SOURCE.md).
+- [Décision : séparer les orbites mobiles](architecture/decisions/0003-asteroides.md).
 - [Validation](VALIDATION.md).
 - [Vérification Seestar en lecture seule](SEESTAR.md).
 - [Préparer une version](RELEASE.md).

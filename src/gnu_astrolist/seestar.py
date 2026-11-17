@@ -12,7 +12,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from .catalog import load_caldwell_catalog, load_messier_catalog
-from .models import CatalogObject, DeepSkyObject, NamedStar, VisibilityResult
+from .models import AsteroidTarget, CatalogObject, DeepSkyObject, NamedStar, VisibilityResult
 from .stellar_names import normalize_stellar_name
 
 ACQUISITION = re.compile(
@@ -27,7 +27,7 @@ def normalize_name(value: str) -> str:
     if stellar:
         return stellar
     value = value.strip().upper()
-    match = re.fullmatch(r"(NGC|IC|M|C|HYG)[ _-]*(\d+)([A-Z]{0,2}|\s+NED\d+)?", value)
+    match = re.fullmatch(r"(NGC|IC|MPC|M|C|HYG)[ _-]*(\d+)([A-Z]{0,2}|\s+NED\d+)?", value)
     if match:
         return f"{match[1]}{int(match[2])}{(match[3] or '').strip()}"
     return " ".join(value.split())
@@ -142,6 +142,13 @@ def _known_aliases() -> dict[str, frozenset[str]]:
 
 def object_keys(obj: CatalogObject) -> set[str]:
     keys = {normalize_name(obj.name)}
+    if isinstance(obj, AsteroidTarget):
+        keys = {f"MPC{obj.number}"}
+        if obj.asteroid_name.strip():
+            keys.update(normalize_name(name) for name in (
+                obj.name, obj.asteroid_name, f"{obj.number} {obj.asteroid_name}",
+            ))
+        return keys
     if isinstance(obj, NamedStar):
         keys.update(normalize_name(name) for name in (
             obj.bayer_name, obj.flamsteed_name, obj.common_name, f'HYG{obj.hyg_id}', *obj.aliases,

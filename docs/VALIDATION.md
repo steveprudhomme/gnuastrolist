@@ -1,5 +1,35 @@
 # Validation
 
+## Lot astéroïdes
+
+Validation locale Windows/Python 3.13.6 : **125 tests réussis, un ignoré**.
+Les 15 avertissements comprennent les tables IERS prédictives hors couverture
+et une date volontairement ancienne du test de borne. Le test ignoré concerne
+la création d'un lien symbolique Windows, indisponible dans cet environnement.
+
+Les nouveaux tests vérifient les 1 000 orbites, les schémas et éléments refusés,
+les doublons, une orbite circulaire synthétique et une forte excentricité,
+la magnitude H-G, H absent, G supposé, l'expiration et les filtres simultanés.
+Ils couvrent la sélection mixte, les imports locaux immuables, la génération
+déterministe, les rapports terminal/TXT/PDF et l'identité Seestar sur copie
+synthétique. Aucun disque Seestar réel n'est consulté.
+
+Six positions indépendantes JPL Horizons (Ceres, Vesta, Eros) sont figées avec
+paramètres et empreintes. L'écart angulaire maximal est de 13,12″ sous Astropy 7.2;
+l'écart de magnitude reste inférieur à 0,001. Voir [le protocole](ASTEROIDS.md).
+Ces cas ne garantissent pas la précision de toutes les orbites.
+
+Ruff et contrôle des liens/versions réussis. Construction locale sans
+téléchargement avec `python -m build --no-isolation`; contrôle du contenu wheel/sdist,
+y compris orbites, notice, fixture et illustration. Les deux pages du PDF
+d'exemple et l'illustration SVG ont été rendues et vérifiées visuellement.
+La CI locale est enrichie d'un essai du catalogue installé; son exécution
+distante et toute publication restent différées.
+
+La wheel installée dans un environnement distinct a aussi exécuté, hors du
+dossier source, une sélection astéroïdes/Messier et ses exports TXT/PDF avec
+Astropy 8 et ReportLab 4.5. Les sources du projet n'interviennent pas dans cet essai.
+
 ## Lot Bayer et Flamsteed
 
 Validation locale : **102 tests réussis, un ignoré**, treize avertissements IERS.

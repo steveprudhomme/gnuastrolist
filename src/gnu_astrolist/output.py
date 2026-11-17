@@ -13,7 +13,7 @@ from .models import (
     WeatherSummary,
 )
 from .seestar import SeestarInventory
-from .selection import NOTES, CatalogSelection, catalog_label
+from .selection import ASTEROID_NOTES, NOTES, CatalogSelection, catalog_label
 
 
 def _object_name(result: VisibilityResult) -> str:
@@ -23,7 +23,7 @@ def _object_name(result: VisibilityResult) -> str:
 def _magnitude_label(result: VisibilityResult) -> str:
     if result.star.magnitude_v is None:
         return "non disponible"
-    prefix = result.star.magnitude_limit or ""
+    prefix = "≈" if result.magnitude_estimated else result.star.magnitude_limit or ""
     value = f"{prefix}{result.star.magnitude_v:.3f}".rstrip("0").rstrip(".")
     source = result.star.magnitude_source
     return f"{value} [{source}]" if source else value
@@ -251,6 +251,11 @@ def _format_table(
         )
         for result in results
     ]
+    if any(result.magnitude_estimated for result in results):
+        headers += ("Instant V estimée (local)",)
+        rows = [(*row, result.magnitude_reference_time.strftime("%Y-%m-%d %H:%M")
+                 if result.magnitude_reference_time is not None else "—")
+                for row, result in zip(rows, results)]
     if any(result.seestar_status is not None for result in results):
         headers += ('Seestar',)
         rows = [(*row, result.seestar_status or 'Non vérifié')
@@ -370,6 +375,8 @@ def render_report(
     )
     if isinstance(object_kind, CatalogSelection):
         lines.extend(f'       {note}' for note in object_kind.notes)
+    elif object_kind == "asteroids":
+        lines.extend(f"       {note}" for note in (NOTES[object_kind], *ASTEROID_NOTES))
     elif variable_stars:
         lines.extend(
             [

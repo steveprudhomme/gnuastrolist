@@ -5,6 +5,7 @@
 import csv
 import gzip
 import io
+import json
 import tarfile
 import zipfile
 from pathlib import Path
@@ -30,6 +31,10 @@ def main() -> None:
             assert len(rows) == count, (path, name, len(rows))
         assert any(k.endswith("/data/CALDWELL_SOURCE.md") for k in files), path
         assert any(k.endswith("/data/NGC_SOURCE.md") for k in files), path
+        orbital = [v for k, v in files.items() if k.endswith('/data/asteroids.json.gz')]
+        assert len(orbital) == 1 and len(json.loads(gzip.decompress(orbital[0]))['data']) == 1000
+        assert any(k.endswith('/data/ASTEROID_SOURCE.md') for k in files), path
+        assert any(k.endswith('gnu_astrolist/asteroids.py') for k in files), path
         for resource in ('STELLAR_SOURCE.md', 'HYG_LICENSE.md', 'FONT_SOURCE.md',
                          'fonts/DejaVuSans.ttf', 'fonts/DejaVuSans-Bold.ttf',
                          'fonts/LICENSE_DEJAVU.txt'):
@@ -39,9 +44,10 @@ def main() -> None:
         assert any(k.endswith("/LICENSE") or k == "LICENSE" for k in files), path
         assert not any("/local/" in k or k.endswith(("rapport.pdf", "rapport.txt")) for k in files)
         if path.name.endswith('.tar.gz'):
+            assert any(k.endswith('/tests/data/asteroid_horizons.json') for k in files), path
             for image in ('caldwell-parcours.svg', 'validation-locale.svg', 'ngc-selection.svg',
                           'multiple-catalogues.svg', 'seestar-lecture-seule.svg',
-                          'premiers-pas.svg', 'bayer-flamsteed.svg'):
+                          'premiers-pas.svg', 'bayer-flamsteed.svg', 'asteroides.svg'):
                 assert any(k.endswith(f'/docs/images/{image}') for k in files), (path, image)
         print(f"{path.name} : catalogues, notice, licence et exclusions OK")
 

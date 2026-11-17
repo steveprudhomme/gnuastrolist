@@ -20,6 +20,7 @@ from .catalog import (
 from .models import CatalogObject, DeepSkyObject, NamedStar
 
 LABELS = {
+    "asteroids": "Astéroïdes numérotés (JPL SBDB, fichier orbital local)",
     "variable_stars": "Étoiles variables (GCVS)",
     "messier": "Objets Messier (SIMBAD, repli OpenNGC)",
     "caldwell": "Objets Caldwell (OpenNGC, complément SIMBAD)",
@@ -28,6 +29,7 @@ LABELS = {
     "flamsteed": "Étoiles Flamsteed (HYG 4.1)",
 }
 NOTES = {
+    "asteroids": "Astéroïdes : orbites JPL SBDB, positions recalculées et magnitude V estimée H-G.",
     "variable_stars": "Les magnitudes GCVS sont les maxima d'éclat publiés, pas des prévisions.",
     "messier": "Messier : priorité SIMBAD, repli OpenNGC.",
     "caldwell": "Caldwell : données OpenNGC; complément de magnitude V SIMBAD si exploitable.",
@@ -36,6 +38,14 @@ NOTES = {
     "flamsteed": "Flamsteed : désignations HYG; magnitude visuelle de référence, pas un maximum GCVS.",
 }
 
+ASTEROID_NOTES = (
+    "Modèle à deux corps sans perturbations planétaires, avec temps de lumière; approximation de planification.",
+    "Éléments utilisés à ±365 jours de leur époque; cette limite ne garantit pas la précision.",
+    "≈ : magnitude H-G estimée; G=0,15 supposé si absent. H n'est pas une magnitude apparente.",
+    "Instant V : échantillon le plus brillant dans le champ; le filtre V s'applique au même instant.",
+    "Astéroïdes : franchissements recherchés seulement dans la plage; dates saisonnières et opposition non calculées.",
+)
+
 
 @dataclass(frozen=True)
 class CatalogSelection:
@@ -43,6 +53,7 @@ class CatalogSelection:
 
     kinds: tuple[str, ...]
     limits: tuple[float | None, ...]
+    source_notes: tuple[str, ...] = ()
 
     @property
     def label(self) -> str:
@@ -53,7 +64,9 @@ class CatalogSelection:
         parts = []
         for kind, limit in zip(self.kinds, self.limits):
             name = (
-                "GCVS (maximum publié)"
+                "Astéroïdes (V estimée)"
+                if kind == "asteroids"
+                else "GCVS (maximum publié)"
                 if kind == "variable_stars"
                 else "NGC"
                 if kind == "ngc"
@@ -65,6 +78,8 @@ class CatalogSelection:
     @property
     def notes(self) -> tuple[str, ...]:
         notes = tuple(NOTES[kind] for kind in self.kinds)
+        if "asteroids" in self.kinds:
+            notes += ASTEROID_NOTES
         if any(kind in self.kinds for kind in ("messier", "caldwell", "ngc")):
             notes += (
                 "Même désignation : une ligne, priorité Messier puis Caldwell puis NGC; alias conservés.",
@@ -76,7 +91,7 @@ class CatalogSelection:
                 "Les composants de même désignation restent distincts; aucun lien GCVS/NGC déduit.",
                 'Positions stellaires J2000 fixes; mouvements propres non appliqués.',
             )
-        return notes
+        return notes + self.source_notes
 
 
 def catalog_label(kind: str | CatalogSelection) -> str:
@@ -110,6 +125,7 @@ def load_catalog_selection(
     max_magnitude: float | None = None,
     all_magnitudes: bool = False,
 ) -> tuple[list[CatalogObject], CatalogSelection]:
+    # Les orbites mobiles sont calculées séparément, jamais filtrées sur H.
     kinds = normalize_catalogs(names)
     limits = tuple(
         None
@@ -123,6 +139,7 @@ def load_catalog_selection(
     )
     selection = CatalogSelection(kinds, limits)
     loaders = {
+        "asteroids": lambda: (),
         "messier": load_messier_catalog,
         "caldwell": load_caldwell_catalog,
         "ngc": load_ngc_catalog,
