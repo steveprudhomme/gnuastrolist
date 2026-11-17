@@ -486,3 +486,16 @@ ce résultat ne certifie pas l'absence de secrets ou de données personnelles.
 Les anciens rapports restent sur le poste et dans l'historique, sans contenu
 republié dans les documents. Les réglages GitHub ont été lus, jamais modifiés.
 Ruff, liens et schéma ECC-I vérifiés. L'audit Python 3.10 reste distinct et en échec.
+
+
+## ECC-F — Intégration et protection des caches
+
+Après tous les modules intégrés : **691 tests réussis, cinq ignorés** sous
+Python 3.13.6 (12 avertissements) et 3.10.16 (87 avertissements).
+Couverture combinée 90,32 % sous 3.13, seuils lignes/branches distincts atteints.
+Les 48 nouveaux tests passent, deux ignorés selon les capacités de liens/fork.
+La revue indépendante a conduit à trois régressions corrigées : réponse GP
+manquante, inventaire concurrent et validation avant création du verrou.
+Ruff, typage de deux modules, liens, wheel/sdist et six schémas sont contrôlés.
+La rétention ne vise que les générations reconnues d'un cache local explicite;
+aucune archive Seestar réelle n'a été parcourue. Voir [CACHE.md](CACHE.md).

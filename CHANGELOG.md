@@ -413,3 +413,13 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
   l'historique; exemples synthétiques et audit ciblé sans divulguer de contenu.
 - Checklist des dix sélections et relevé GitHub en lecture seule : `main` non
   protégée et signalement privé désactivé, sans changement de réglage.
+
+
+### ECC-F — Concurrence et rétention des caches
+
+- Verrou OS réentrant sur toute la transaction fournisseur, libéré après arrêt;
+  validation avant création, modes never/offline sans écriture de verrou.
+- Commande distincte `gnu-astrolist-cache`, simulation par défaut, retrait explicite,
+  conservation des générations réellement reconstructibles et état CelesTrak.
+- Tests concurrents, interruption et refus de liens, chemins inconnus et archives
+  sources; ADR 0008 et tutoriel illustré, aucune purge automatique.

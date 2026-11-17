@@ -46,14 +46,14 @@ purge implicite du cache personnel.
 3. Examiner la simulation, qui ne crée ni dossier ni fichier de verrou :
 
    ```powershell
-   python -m gnu_astrolist.cache_admin --cache-dir local/catalog-cache --keep 2
+   gnu-astrolist-cache --cache-dir local/catalog-cache --keep 2
    ```
 
 4. Lire les lignes `KEEP` (conserver) et `WOULD REMOVE` (retirer).
 5. Si ce résultat convient, demander explicitement l'application :
 
    ```powershell
-   python -m gnu_astrolist.cache_admin --cache-dir local/catalog-cache --keep 2 --apply
+   gnu-astrolist-cache --cache-dir local/catalog-cache --keep 2 --apply
    ```
 
 `--keep` doit être un entier supérieur ou égal à 1; sa valeur par défaut est 1.

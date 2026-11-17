@@ -41,3 +41,5 @@ politiques propres aux archives photographiques.
 - [Performances ECC-H](PERFORMANCES.md)
 
 - [Gouvernance vérifiée et historique ECC-I](GOUVERNANCE_VERIFIEE.md)
+
+- [Caches, concurrence et rétention ECC-F](CACHE.md)

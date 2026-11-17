@@ -236,11 +236,11 @@ Aucune fusion distante ni modification des protections GitHub n'est incluse.
       secrets sans afficher leur contenu. Borner la durée des jobs et utiliser
       les verrous dans la CI Windows/Linux 3.10/3.13. Distinguer examen local et
       audit en ligne actualisé; ne pas désactiver un contrôle pour obtenir du vert.
-- [ ] ECC-F.4 — Ajouter un verrou interprocessus du cache couvrant lecture,
+- [x] ECC-F.4 — Ajouter un verrou interprocessus du cache couvrant lecture,
       autorisation, requête et activation; réentrance et libération après panne.
       Les modes never/offline ne créent ni état ni verrou; les règles CelesTrak
       restent applicables sous deux processus concurrents.
-- [ ] ECC-F.5 — Ajouter une commande locale de rétention du cache, simulation
+- [x] ECC-F.5 — Ajouter une commande locale de rétention du cache, simulation
       par défaut, application explicite, conservation d'au moins une génération
       valide par famille, refus des chemins liés, inconnus ou protégés Seestar.
       Tester concurrence, arrêt brutal et rétention uniquement sur copies synthétiques.
@@ -318,11 +318,11 @@ Changement de compatibilité demandé au propriétaire; aucun avis supprimé.
 
 ### ECC-F — Coordonner et maîtriser les caches — priorité moyenne
 
-- [ ] ECC-F.1 — Protéger par verrou interprocessus la transaction de lecture,
+- [x] ECC-F.1 — Protéger par verrou interprocessus la transaction de lecture,
       autorisation, requête et écriture de l'état fournisseur partagé.
-- [ ] ECC-F.2 — Tester deux commandes simultanées et une interruption avec
+- [x] ECC-F.2 — Tester deux commandes simultanées et une interruption avec
       fournisseur simulé; vérifier délais, blocages et repli sans requête réelle.
-- [ ] ECC-F.3 — Définir une rétention configurable avec simulation de purge,
+- [x] ECC-F.3 — Définir une rétention configurable avec simulation de purge,
       conservation du dernier cache valide et protections Seestar; documenter
       son usage dans le tutoriel illustré et le guide des actualisations.
 

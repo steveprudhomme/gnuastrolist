@@ -21,7 +21,7 @@ python -m ruff check .
 python scripts/check_secrets.py
 ```
 
-Le typage strict commence par le module de validation. Les dépendances Astropy
+Le typage strict commence par le module de validation et le modèle de rapport partagé. Les dépendances Astropy
 et NumPy sont hors de ce périmètre initial; leur typage complet n'est pas
 revendiqué. Ruff ajoute les règles B006/B008/B018/B019 (défauts de valeurs par
 défaut, expressions sans effet, caches de méthodes).

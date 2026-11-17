@@ -575,3 +575,7 @@ et des [mesures temps/mémoire reproductibles](docs/PERFORMANCES.md).
 
 ECC-I précise [la confidentialité](PRIVACY.md), les attributions,
 [la livraison](docs/RELEASE.md) et [la gouvernance observée](docs/GOUVERNANCE_VERIFIEE.md).
+
+ECC-F coordonne les mises à jour par verrou. La [rétention du cache](docs/CACHE.md)
+se simule avec `gnu-astrolist-cache --cache-dir local/catalog-cache --keep 2`;
+l’option `--apply` applique explicitement le retrait. Les archives Seestar sont protégées.

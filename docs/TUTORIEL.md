@@ -759,3 +759,24 @@ prennent des exemples synthétiques, sans parcourir ton disque Seestar.
 Une licence explique comment utiliser le travail des auteurs.
 Un ancien fichier publié peut rester dans l'historique, même si on le retire
 aujourd'hui. Demande de l'aide avant de partager des informations personnelles.
+
+
+## ECC-F — Ranger les copies de catalogues
+
+![Schéma explicatif du cache et du verrou](images/cache-ecc-f.svg)
+
+Un cache est un dossier de copies. Tes photos Seestar sont ailleurs.
+Un verrou fait attendre deux mises à jour pour qu'elles ne travaillent pas ensemble.
+
+1. Termine les commandes qui utilisent le cache.
+2. Demande une simulation :
+
+   ```powershell
+   gnu-astrolist-cache --cache-dir local/catalog-cache --keep 2
+   ```
+
+3. Lis `KEEP` : garder. Lis `WOULD REMOVE` : serait retiré.
+4. Demande l'aide d'un adulte avant d'ajouter `--apply`. Cette option retire
+   vraiment les vieilles copies du cache local. Elle ne sert jamais aux photos.
+
+Le programme garde au moins une copie valide. Voir le [guide du cache](CACHE.md).
