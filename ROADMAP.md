@@ -1,5 +1,39 @@
 # Feuille de route
 
+## Lot versionnage par type de changement — VERSION
+
+Le propriétaire demande un système basé sur bugs, améliorations et nouvelles
+fonctionnalités, puis choisit explicitement le standard SemVer. Le système est
+préparé dans une branche distincte issue d'ALTMAX; son intégration dépend de la
+PR nº 14. Le plan est commité avant code. Aucun tag, Release, fusion ou réglage
+GitHub n'est créé automatiquement par l'outil.
+
+- [ ] VERSION.1 — Versionner la politique : bug → PATCH, amélioration et
+      fonctionnalité compatibles → MINOR, rupture explicite → MAJOR; conserver
+      séparément les trois catégories dans les notes de version.
+- [ ] VERSION.2 — Ajouter des fragments TOML publics par changement, validés
+      sans dépendance nouvelle, avec description et marqueur de rupture.
+      Initialiser ceux du plafond ALTMAX et du système de versionnage.
+- [ ] VERSION.3 — Fournir un outil local : validation, aperçu du prochain numéro,
+      préparation explicite d'une livraison datée. Synchroniser pyproject.toml,
+      __version__, CHANGELOG et fragments traités; défaut sans écriture.
+- [ ] VERSION.4 — Protéger liens, collisions et modifications concurrentes;
+      refuser une préparation sur une copie sale et préserver les fichiers
+      existants si validation ou préparation échoue. Ne pas toucher aux archives.
+- [ ] VERSION.5 — Faire contrôler la politique et les fragments par la CI,
+      dont présence d'un fragment pour une PR de code et cohérence d'une PR
+      préparant une version; conserver les cinq jobs qualité et les verrous.
+- [ ] VERSION.6 — Tester catégories, priorité, ruptures, refus, préparation et
+      garde CI dans des copies synthétiques hors réseau. Exécuter pytest, Ruff,
+      typage progressif, liens, archives et installation.
+- [ ] VERSION.7 — Actualiser contribution, modèles de PR, README, CHANGELOG,
+      RELEASE, validation, roadmap et tutoriel dès 10 ans avec schéma versionné.
+      Publier une PR distincte sur la base ALTMAX et vérifier ses contrôles.
+
+Le numéro du projet ne change pas pendant l'installation de ce mécanisme.
+Une future préparation de livraison doit être demandée explicitement; les
+commits de développement restent regroupés dans « Non publié » jusque-là.
+
 ## Lot plafond de hauteur — télescopes intelligents (ALTMAX)
 
 Demande du propriétaire : choisir une hauteur maximale, par exemple 80°, pour
