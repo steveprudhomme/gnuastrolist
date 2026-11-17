@@ -20,6 +20,8 @@ from datetime import datetime, timedelta, timezone
 from importlib.metadata import version
 from pathlib import Path
 
+from _local_output import publish_json, validate_output
+
 ROOT = Path(__file__).resolve().parents[1]
 SCENARIOS = ("catalogs", "satellites", "reports", "seestar")
 
@@ -141,7 +143,9 @@ def worker(scenario, memory):
     # Every input/output is generated here; never accept an external archive path.
     with tempfile.TemporaryDirectory(dir=local) as folder:
         run = prepare(scenario, Path(folder))
-        with iers.conf.set_temp("auto_download", False), iers.conf.set_temp("auto_max_age", None):
+        with (iers.conf.set_temp("auto_download", False),
+              iers.conf.set_temp("auto_max_age", None),
+              iers.conf.set_temp("iers_degraded_accuracy", "warn")):
             gc.collect()
             if memory:
                 tracemalloc.start()
@@ -159,6 +163,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repeat", type=int, default=3)
     parser.add_argument("--output", type=Path, default=ROOT / "local/benchmark-results.json")
+    parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--worker", choices=SCENARIOS)
     parser.add_argument("--memory", action="store_true")
     args = parser.parse_args()
@@ -167,8 +172,13 @@ def main():
         return
     if args.repeat < 1:
         parser.error("--repeat doit être positif")
+    try:
+        output_path = validate_output(ROOT, args.output, overwrite=args.overwrite)
+    except (OSError, ValueError) as exc:
+        parser.error(str(exc))
     env = dict(os.environ, PYTHONPATH=str(ROOT / "src"), PYTHONHASHSEED="0")
-    output = dict(schema_version=1, measured_on="2026-11-17", platform=platform.platform(),
+    output = dict(schema_version=1, measured_on=datetime.now(timezone.utc).isoformat(),
+                  platform=platform.platform(),
                   python=platform.python_version(), processor=platform.processor(),
                   versions={name: version(name) for name in ("astropy", "numpy", "sgp4", "reportlab")},
                   script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), scenarios={})
@@ -186,7 +196,8 @@ def main():
             wall_runs=runs[:-1], median_seconds=statistics.median(r["seconds"] for r in runs[:-1]),
             memory_run=runs[-1])
         print(f"{scenario}: {output['scenarios'][scenario]['median_seconds']:.3f} s", flush=True)
-    args.output.write_text(json.dumps(output, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    publish_json(ROOT, output_path, json.dumps(output, indent=2, ensure_ascii=False) + "\n",
+                 overwrite=args.overwrite)
 
 
 if __name__ == "__main__":

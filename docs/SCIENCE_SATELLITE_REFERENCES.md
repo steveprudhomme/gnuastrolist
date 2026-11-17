@@ -40,7 +40,7 @@ d246d1d9d768ace445a38a965713fa9ba52d80fd8a41a0502ff83d7acffe2881
 eopc04.1962-now
 d7c84f0357d6b60f99884ccb8bb6efd8ca1c6415d684383bf2dc58951dee14c0
 satellite_reference.json (sortie LF UTF-8)
-0d6368fd30889b526f70d805a7bae4bdaa13cc4de3eb9491ec2531ff5302221c
+68c9739fc51dd19e3a880cc1646dcf8f99f770bb320d99405557870ede00046a
 ```
 
 ## Indépendance et conventions
@@ -116,7 +116,8 @@ local/reference-venv/Scripts/python.exe scripts/generate_satellite_reference.py 
 
 Comparer le JSON reconstruit à [la fixture](../tests/data/satellite_reference.json).
 Le script refuse une empreinte source différente. Le SHA-256 du générateur
-(fins de ligne normalisées LF) et les versions sont également intégrés au JSON.
+(fins de ligne normalisées LF), celui de son auxiliaire standard
+`scripts/_local_output.py` et les versions sont également intégrés au JSON.
 La génération initiale utilise Python 3.13.6, Skyfield 1.54, SGP4 2.25,
 NumPy 2.5.5 et jplephem 2.24. Deux générations consécutives ont produit la même
 empreinte de sortie. Les calculs n'exigent
@@ -124,6 +125,16 @@ aucune éphéméride téléchargée. La génération initiale a lu la copie IERS
 installée avec Astropy; la commande ci-dessus indique comment la retrouver dans
 le venv dédié. Les licences intégrales des deux entrées sont conservées à côté
 de la fixture.
+
+La sortie du générateur doit rester sous `local/` du projet et son dossier
+parent doit déjà exister. Toute collision avec `--iers-file` ou le TLE source,
+y compris un alias, est refusée avant les calculs. Les liens symboliques,
+jonctions et fichiers avec plusieurs liens physiques sont refusés sur les
+sources et destinations. Un fichier existant exige `--overwrite`; la
+publication du JSON est atomique et préserve une destination créée entre-temps
+en l'absence de cette option. Pour actualiser la fixture versionnée, générer
+d'abord sous `local/`, contrôler les valeurs et l'empreinte, puis copier
+explicitement le résultat vers `tests/data/` dans le travail de développement.
 
 Les tests ordinaires lisent seulement le JSON, sans Skyfield installé, avec le
 blocage réseau global de `tests/conftest.py`. Le scénario de performance distinct

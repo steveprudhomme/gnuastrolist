@@ -11,8 +11,10 @@ from importlib import metadata, resources
 from pathlib import Path
 
 import numpy as np
+from _local_output import publish_json, validate_output
 from skyfield.api import EarthSatellite, load, wgs84
 
+ROOT = Path(__file__).resolve().parents[1]
 SITES = [
     dict(name="Greenwich public example", latitude_deg=51.4779, longitude_deg=0.0, elevation_m=46),
     dict(name="Equator public grid", latitude_deg=0.0, longitude_deg=0.0, elevation_m=0),
@@ -97,6 +99,8 @@ def generate(iers_path):
         schema_version=1, kind="computed references, not observations", retrieved_on="2026-11-17",
         versions={name: metadata.version(name) for name in ("skyfield", "sgp4", "numpy", "jplephem")},
         generator_sha256=digest(Path(__file__).read_bytes().replace(b"\r\n", b"\n")),
+        output_helper_sha256=digest(Path(__file__).with_name("_local_output.py").read_bytes()
+                                    .replace(b"\r\n", b"\n")),
         tle_source="https://pypi.org/project/sgp4/2.25/", tle_file_sha256=digest(tle_bytes),
         eop_source="https://hpiers.obspm.fr/iers/eop/eopc04/eopc04.1962-now",
         eop_file_sha256=digest(eop_bytes), eop_columns=["mjd_utc", "xp_arcsec", "yp_arcsec", "dut1_s"],
@@ -110,9 +114,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--iers-file", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
-    args.output.write_text(json.dumps(generate(args.iers_file), indent=2, ensure_ascii=False)
-                           + "\n", encoding="utf-8")
+    sources = (args.iers_file, Path(str(resources.files("sgp4").joinpath("SGP4-VER.TLE"))))
+    try:
+        output = validate_output(ROOT, args.output, overwrite=args.overwrite, sources=sources)
+    except (OSError, ValueError) as exc:
+        parser.error(str(exc))
+    content = json.dumps(generate(args.iers_file), indent=2, ensure_ascii=False) + "\n"
+    publish_json(ROOT, output, content, overwrite=args.overwrite, sources=sources)
 
 
 if __name__ == "__main__":

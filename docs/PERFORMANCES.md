@@ -14,11 +14,22 @@ local/ecc-dev/Scripts/python.exe scripts/benchmark.py --repeat 3 --output local/
 ```
 
 Le script crée un processus neuf pour chaque répétition. Les imports et la
-préparation des rapports/inventaires sont exclus du chronomètre. Les chargements
+préparation des rapports/inventaires sont exclus du chronomètre. La destination
+JSON est contrôlée avant toute mesure : uniquement sous `local/` du projet,
+dossier parent existant, sans lien symbolique, jonction ou lien physique
+multiple. Aucun remplacement implicite : ajouter `--overwrite` pour remplacer
+un JSON existant. La publication finale est atomique; sans cette option, un
+fichier créé par un autre processus pendant les mesures est préservé.
+La date `measured_on` est l'horodatage UTC réel du lancement, distinct de la
+date fixe du scénario astronomique.
+
+Les chargements
 des catalogues et des éléments satellitaires sont inclus. Aucun échauffement
 applicatif implicite, mais le cache disque du système peut être chaud : ce n'est
 pas une mesure de disque froid. Les sockets sont bloquées et les réglages IERS
-sont temporaires. `PYTHONHASHSEED=0` stabilise les ensembles. Les avertissements
+sont temporaires. Le contexte impose également `iers_degraded_accuracy=warn`,
+y compris sous Astropy 6.1, puis restaure les trois réglages après succès ou
+erreur. `PYTHONHASHSEED=0` stabilise les ensembles. Les avertissements
 de chaque processus sont conservés dans le JSON, sans les masquer.
 
 Trois passages mesurent le temps avec `perf_counter`, sans instrumentation
@@ -125,3 +136,29 @@ Ni compilation de distribution ni nouveau contrôle de typage applicatif n'est
 nécessaire à ces fichiers de test et de mesure; aucune validation distante ou
 observationnelle n'est revendiquée. Les fichiers communs d'avancement restent
 sous la responsabilité du pilote.
+
+### Correctifs ciblés après revue
+
+Les preuves JSON et mesures ci-dessus restent celles du script initial
+(`script_sha256` conservé), avant les protections de sorties. Les mesures n'ont
+pas été réétiquetées comme une nouvelle campagne. Le correctif ajoute la
+politique IERS explicite pour Python 3.10, les validations préalables, le
+remplacement volontaire et la publication atomique partagés par les deux
+scripts au moyen d'un auxiliaire standard indépendant de GNU Astrolist/Astropy.
+La fixture scientifique a été recalculée avec le venv Skyfield local; seules
+les empreintes des scripts changent, les 38 positions restent identiques.
+Le contrôle ciblé porte sur les références et les sorties, avec dépendance
+Skyfield simulée pour les seuls tests de commandes. Aucun calcul Skyfield
+n'est simulé dans la fixture gelée. Un passage réel du worker catalogues sous
+Python 3.10 termine avec 32 648 entrées, 13 instants et 189 sélections; les
+avertissements de précision sont visibles.
+
+Après correctif, les seuls tests ciblés `tests/test_scientific_references.py`
+réussissent dans les deux environnements fournis par le pilote : **56 réussis,
+3 ignorés, 1 avertissement ERFA** chacun. Les trois cas ignorés nécessitent la
+création de liens symboliques Windows; les liens physiques sont réellement
+testés et les jonctions sont également couvertes par métadonnées simulées.
+Les tests vérifient les refus avant calcul, les alias de source, la publication
+atomique interrompue, une création concurrente de destination, le remplacement
+explicite et l'horodatage dynamique. Le contexte IERS est vérifié après succès
+et erreur. Les suites complètes ne sont pas réexécutées pour ce correctif ciblé.
