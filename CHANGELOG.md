@@ -5,6 +5,15 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté — archives Seestar
+
+- Option `--seestar-path DOSSIER`, inventaire des noms et métadonnées en lecture
+  seule, correspondances par identifiants et alias connus, sans ouverture d'images.
+- Statuts empilé, brutes seules, non trouvé et indéterminé dans les sorties
+  terminal/TXT/PDF, avec signalement des lectures incomplètes.
+- Protection des destinations d'export, des liens et des jonctions; tests sur
+  archives synthétiques et tutoriel illustré, sans données personnelles publiées.
+
 ### Ajouté — sélection multiple
 
 - `--objects` accepte plusieurs catalogues et peut être répété; les commandes

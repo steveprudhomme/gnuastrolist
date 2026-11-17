@@ -41,6 +41,7 @@ from .output import (
     _object_name,
     _reference_label,
 )
+from .seestar import SeestarInventory, protect_outputs
 from .selection import CatalogSelection, catalog_label
 
 NAVY = colors.HexColor("#18344A")
@@ -456,6 +457,11 @@ def _result_card(
             _paragraph(f"{result.altitude_end_deg:+.1f}°", styles["value"]),
         ],
     ]
+    if result.seestar_status is not None:
+        data.append([
+            _paragraph('Seestar', styles['label']),
+            _paragraph(result.seestar_status, styles['value']), '', '',
+        ])
     if show_details:
         if star.size_source:
             size_detail = (
@@ -585,6 +591,7 @@ def _build_pdf(
     matched_count: int,
     object_kind: str | CatalogSelection,
     show_details: bool,
+    seestar_inventory: SeestarInventory | None = None,
 ) -> None:
     _register_fonts()
     styles = _styles()
@@ -624,6 +631,12 @@ def _build_pdf(
         ),
         _section("Conditions météo", styles),
     ]
+    if seestar_inventory is not None:
+        story.insert(3, _paragraph(
+            seestar_inventory.summary + " Présence d'acquisitions reconnues; qualité non vérifiée. "
+            "Non trouvé ne signifie pas jamais photographié; les noms non reconnus sont ignorés.",
+            styles['small'],
+        ))
     story.extend(_weather_panel(weather_summary, styles, available_width))
     story.extend(
         [
@@ -685,11 +698,14 @@ def export_pdf_report(
     matched_count: int,
     object_kind: str | CatalogSelection,
     show_details: bool,
+    seestar_inventory: SeestarInventory | None = None,
 ) -> None:
     """Crée atomiquement un PDF portrait au format lettre 8,5 x 11 pouces."""
 
     temporary_path: Path | None = None
     try:
+        if seestar_inventory is not None:
+            protect_outputs(seestar_inventory.root, (path,))
         with NamedTemporaryFile(
             prefix=f".{path.stem}-",
             suffix=".pdf",
@@ -712,6 +728,7 @@ def export_pdf_report(
             matched_count=matched_count,
             object_kind=object_kind,
             show_details=show_details,
+            seestar_inventory=seestar_inventory,
         )
         temporary_path.replace(path)
     except Exception as exc:

@@ -1,5 +1,11 @@
 # Confidentialité
 
+Avec `--seestar-path`, les noms et tailles des acquisitions sont examinés
+localement, sans lire les images ou leurs en-têtes FITS et sans cache persistant.
+Les rapports contiennent le chemin de la racine Seestar et les statuts par objet.
+Les conserver dans `local/`, hors des archives et hors Git. Les tests utilisent
+uniquement des archives synthétiques; aucun inventaire personnel n'est publié.
+
 GNU Astrolist traite localement les catalogues et les calculs astronomiques.
 Sans `--offline`, il contacte Open-Meteo et 7Timer! avec la latitude et la
 longitude demandées. Astropy peut également actualiser ses tables IERS.

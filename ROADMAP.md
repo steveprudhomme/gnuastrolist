@@ -3,23 +3,30 @@
 ## Lot Seestar S50 — présence dans les archives en lecture seule
 
 - [x] Examiner le code et la racine MyWorks autorisée, sans écriture externe.
-- [ ] Enregistrer le plan avant le développement.
-- [ ] Ajouter `--seestar-path CHEMIN` et un inventaire des acquisitions locales
+- [x] Enregistrer le plan avant le développement.
+- [x] Ajouter `--seestar-path CHEMIN` et un inventaire des acquisitions locales
       uniquement en lecture; ignorer les liens/jonctions et gérer les erreurs
       d'accès sans transformer une vérification incomplète en absence certaine.
-- [ ] Identifier les objets par noms de catalogue explicites dans les dossiers
-      et fichiers d'acquisition; utiliser les correspondances Messier/Caldwell/NGC
+- [x] Identifier les objets par noms de catalogue explicites dans les fichiers
+      d'acquisition; utiliser les correspondances Messier/Caldwell/NGC
       connues, sans rapprochement arbitraire par position ou nom courant.
-- [ ] Distinguer archive trouvée, aucune archive trouvée et vérification
+- [x] Distinguer archive trouvée, aucune archive trouvée et vérification
       incomplète. La présence d'un fichier n'atteste pas la qualité ou l'achèvement
       scientifique d'une photographie; un dossier vide ne suffit pas.
-- [ ] Ajouter le statut aux rapports écran, TXT et PDF; préserver les sorties
+- [x] Ajouter le statut aux rapports écran, TXT et PDF; préserver les sorties
       existantes sans cette option. Interdire les rapports/caches sous la racine
       protégée, y compris via des liens ou le dossier courant.
-- [ ] Tester identifiants et alias, faux positifs, dossiers vides, erreurs,
+- [x] Tester identifiants et alias, faux positifs, dossiers vides, erreurs,
       liens et absence d'écriture. Utiliser des archives synthétiques locales.
-- [ ] Documenter les limites, la confidentialité et la procédure dans les MD
+- [x] Documenter les limites, la confidentialité et la procédure dans les MD
       et le tutoriel illustré; vérifier les archives et committer localement.
+
+Plan préalable : `a52ad62`. Résultats locaux : 89 tests réussis, un test de lien
+symbolique ignoré par manque de permission Windows, dix avertissements IERS.
+Les jonctions sont vérifiées séparément sur attributs synthétiques. Le scanner
+réel a été essayé uniquement en lecture; les rapports restent dans `local/`.
+Ruff, structure, distributions et installation hors des sources vérifiés.
+Aucune publication distante ni donnée d'acquisition personnelle dans le dépôt.
 
 ## Lot multicatalogue — ligne de commande locale
 

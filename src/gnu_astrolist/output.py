@@ -12,6 +12,7 @@ from .models import (
     WeatherPeriodSummary,
     WeatherSummary,
 )
+from .seestar import SeestarInventory
 from .selection import CatalogSelection, catalog_label
 
 
@@ -250,6 +251,10 @@ def _format_table(
         )
         for result in results
     ]
+    if any(result.seestar_status is not None for result in results):
+        headers += ('Seestar',)
+        rows = [(*row, result.seestar_status or 'Non vérifié')
+                for row, result in zip(rows, results)]
     widths = [
         max(len(headers[index]), *(len(row[index]) for row in rows))
         for index in range(len(headers))
@@ -277,6 +282,7 @@ def render_report(
     matched_count: int,
     object_kind: str | CatalogSelection,
     show_details: bool = False,
+    seestar_inventory: SeestarInventory | None = None,
 ) -> str:
     """Produit une sortie lisible, déterministe et facile à copier."""
 
@@ -327,6 +333,13 @@ def render_report(
         ),
         "-" * 78,
     ]
+    if seestar_inventory is not None:
+        lines.extend([
+            seestar_inventory.summary,
+            "Seestar : présence d'acquisitions reconnues, sans validation de qualité des images.",
+            'Non trouvé ne signifie pas jamais photographié; les noms non reconnus sont ignorés.',
+            '-' * 78,
+        ])
     lines.extend(_format_weather_summary(weather_summary))
     lines.append("-" * 78)
     lines.extend(_format_moon_summary(moon_summary, window))

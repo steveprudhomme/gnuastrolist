@@ -14,6 +14,7 @@ from .models import FieldOfView
 from .moon import compute_moon_summary
 from .output import render_report
 from .pdf_output import PdfExportError, export_pdf_report
+from .seestar import annotate_results, protect_outputs, scan_seestar, validate_root
 from .selection import load_catalog_selection
 from .time_utils import parse_observation_window
 from .visibility import compute_visibility
@@ -135,6 +136,10 @@ def build_parser() -> argparse.ArgumentParser:
         help="crée un rapport PDF mis en page au format lettre 8,5 x 11 po",
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
+    parser.add_argument(
+        '--seestar-path', type=Path, metavar='DOSSIER',
+        help='vérifie les archives Seestar en lecture seule, par exemple E:\\MyWorks',
+    )
     return parser
 
 
@@ -154,6 +159,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         _validate_arguments(args)
+        seestar_root = validate_root(args.seestar_path) if args.seestar_path is not None else None
+        if seestar_root is not None:
+            protect_outputs(seestar_root, (args.output_txt, args.output_pdf))
         window = parse_observation_window(args.date, args.time_range, args.timezone)
         field_of_view = FieldOfView.from_automatic_center(
             azimuth_min_deg=args.az_min,
@@ -202,6 +210,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         parser.error(str(exc))
     matched_count = len(results)
     displayed_results = results[: args.limit] if args.limit is not None else results
+    try:
+        inventory = scan_seestar(seestar_root) if seestar_root is not None else None
+    except ValueError as exc:
+        parser.error(str(exc))
+    if inventory is not None:
+        displayed_results = annotate_results(displayed_results, inventory)
     report = render_report(
         window=window,
         latitude_deg=args.lat,
@@ -216,11 +230,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         matched_count=matched_count,
         object_kind=object_kind,
         show_details=args.details,
+        seestar_inventory=inventory,
     )
     if args.output_txt is not None:
         try:
+            if seestar_root is not None:
+                protect_outputs(seestar_root, (args.output_txt,))
             args.output_txt.write_text(f"{report}\n", encoding="utf-8")
-        except OSError as exc:
+        except (OSError, ValueError) as exc:
             parser.error(
                 f"impossible d'écrire le rapport dans {args.output_txt}: {exc}"
             )
@@ -241,6 +258,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 matched_count=matched_count,
                 object_kind=object_kind,
                 show_details=args.details,
+                seestar_inventory=inventory,
             )
         except PdfExportError as exc:
             parser.error(str(exc))

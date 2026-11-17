@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="370" viewBox="0 0 1100 370" role="img" aria-labelledby="title desc">
+<title id="title">Vérification Seestar en lecture seule</title><desc id="desc">Schéma synthétique : lire noms et métadonnées dans MyWorks, reconnaître les acquisitions et les identifiants, puis ajouter le statut aux rapports écrits uniquement hors des archives.</desc>
+<rect width="1100" height="370" rx="18" fill="#f8fafc"/>
+<g font-family="Segoe UI, Arial, sans-serif" fill="#0f172a">
+<text x="30" y="44" font-size="27" font-weight="700">Seestar : consulter les archives, écrire les rapports ailleurs</text>
+<text x="30" y="76" font-size="17">Schéma explicatif avec exemples synthétiques — aucune capture d'archives personnelles</text>
+<g stroke-width="2"><rect x="30" y="110" width="300" height="135" rx="12" fill="#fee2e2" stroke="#dc2626"/><rect x="400" y="110" width="300" height="135" rx="12" fill="#e0f2fe" stroke="#0284c7"/><rect x="770" y="110" width="300" height="135" rx="12" fill="#dcfce7" stroke="#16a34a"/></g>
+<g font-size="21" font-weight="600"><text x="48" y="148">MyWorks protégé</text><text x="418" y="148">Reconnaissance en mémoire</text><text x="788" y="148">Statut dans les résultats</text></g>
+<g font-size="17"><text x="48" y="182">Lecture des noms et tailles</text><text x="48" y="210">Aucune image ouverte</text><text x="48" y="233">Aucune écriture, aucun cache</text><text x="418" y="182">Stacked / Light reconnus</text><text x="418" y="210">M31 et NGC224 associés</text><text x="418" y="233">Liens et jonctions ignorés</text><text x="788" y="182">Écran, TXT et PDF</text><text x="788" y="210">Exports hors des archives</text><text x="788" y="233">Données source préservées</text></g>
+<g font-size="32" fill="#475569"><text x="350" y="185">→</text><text x="720" y="185">→</text></g>
+<text x="30" y="292" font-size="18">Empilement trouvé / brutes seules / non trouvé / indéterminé si lecture incomplète.</text>
+<text x="30" y="325" font-size="17">Un dossier vide ou une vignette ne suffit pas. Aucun rapprochement par position.</text>
+<text x="30" y="353" font-size="17">La présence d'une archive ne constitue pas une validation de la qualité des images.</text>
+</g></svg>

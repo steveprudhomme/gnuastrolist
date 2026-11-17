@@ -84,6 +84,25 @@ utilisent OpenNGC comme repli hors ligne. Le catalogue choisi est indiqué entre
 crochets à côté de chaque valeur. Ajoutez `--details` pour afficher également
 le bibcode ou la référence et la date de récupération.
 
+## Vérifier les acquisitions du Seestar S50
+
+Ajoutez `--seestar-path "E:\MyWorks"` pour voir une colonne **Seestar** à
+l'écran, dans le TXT et dans les fiches PDF. Le chemin peut varier à chaque usage.
+
+```powershell
+gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects messier caldwell ngc --offline --max-magnitude 8 --limit 20 --seestar-path "E:\MyWorks"
+```
+
+Les statuts distinguent un empilement trouvé, des brutes seules, une absence
+d'acquisition reconnue et une vérification incomplète. Le scanner ne lit que les
+noms et métadonnées : aucune écriture, aucun cache ni modification des archives.
+Les exports dans l'espace source protégé sont refusés. Les rapports doivent être
+écrits ailleurs, par exemple dans `local/` sur le disque du projet.
+
+Un dossier vide ne compte pas; « Non trouvé » ne signifie pas « jamais
+photographié ». Voir les [règles de reconnaissance Seestar](docs/SEESTAR.md) et
+le [tutoriel illustré](docs/TUTORIEL.md) pour les statuts et les limites.
+
 ## Utiliser plusieurs catalogues
 
 Fournissez plusieurs noms après `--objects`, ou répétez cette option :
@@ -331,6 +350,7 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --details                    Affiche la provenance complète des tailles et magnitudes
 --output-txt FICHIER         Enregistre le rapport complet en texte UTF-8
 --output-pdf FICHIER         Crée un PDF lettre 8,5 x 11 po mis en page
+--seestar-path DOSSIER       Vérifie les acquisitions Seestar en lecture seule
 ```
 
 La commande `gnu-astrolist --help` donne la liste à jour.

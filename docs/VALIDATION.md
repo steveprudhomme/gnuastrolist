@@ -1,5 +1,30 @@
 # Validation
 
+## Lot Seestar S50 en lecture seule
+
+Résultats locaux : **89 tests réussis, un test ignoré**, dix avertissements IERS.
+Le test ignoré nécessite la création d'un lien symbolique, non autorisée dans
+l'environnement Windows courant. Un test indépendant simule les attributs de
+jonction Windows et vérifie qu'aucune descente n'est effectuée.
+
+Les tests Seestar utilisent des acquisitions synthétiques : empilement, brutes,
+fichiers vides, vignettes, motifs non reconnus, alias et composants distincts.
+Ils vérifient les erreurs de lecture, les statuts incomplets, les sorties
+terminal/TXT/PDF et les archives sources inchangées. Un test interdit toute
+ouverture de fichier et les opérations d'écriture du scanner; les protections
+d'export couvrent chemins relatifs, liens physiques et création temporaire PDF.
+
+Ruff et contrôles de structure/distributions réussis. La wheel installée hors
+du dossier source a exécuté l'option sur une archive synthétique locale, sans
+téléchargement. Le contrôle exige `seestar.py` dans les paquets et l'illustration
+dans l'archive source. La CI distante du lot n'a pas été exécutée.
+
+Un essai manuel autorisé a consulté le véritable dossier MyWorks sans ouvrir
+les images ni écrire sur son volume; les rapports personnels TXT/PDF restent
+dans `local/`, ignoré par Git. Les statuts du PDF ont aussi été vérifiés par
+extraction de texte. Ces vérifications ne constituent pas un audit matériel
+du disque ni une validation scientifique des images.
+
 ## Lot sélection multiple
 
 Résultats locaux : **75 tests réussis**, huit avertissements IERS, Ruff et

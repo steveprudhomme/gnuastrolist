@@ -274,3 +274,4 @@ class VisibilityResult:
     rises_above_minimum_local: datetime | None = None
     sets_below_minimum_local: datetime | None = None
     always_above_minimum: bool = False
+    seestar_status: str | None = None

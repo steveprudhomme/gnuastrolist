@@ -1,5 +1,44 @@
 # Tutoriel : catalogues astronomiques et validation
 
+## Signaler les acquisitions Seestar existantes
+
+![Schéma Seestar en lecture seule](images/seestar-lecture-seule.svg)
+
+Le schéma et les exemples de fichiers ci-dessous sont synthétiques. Le plan a
+été enregistré au commit `a52ad62` avant le développement de l'option.
+
+```powershell
+gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects messier ngc --offline --max-magnitude 8 --limit 20 --seestar-path "E:\MyWorks" --output-txt local/soiree.txt --output-pdf local/soiree.pdf
+```
+
+Créer d'abord `local/` sur le disque du projet. Le logiciel refuse d'exporter
+dans les archives protégées, même via un chemin relatif ou un lien résolu.
+Le PDF temporaire reste auprès de la destination de sortie autorisée.
+
+Dans le scénario synthétique utilisé par les tests :
+
+| Acquisition synthétique | Ligne du rapport | Statut attendu |
+| --- | --- | --- |
+| `Stacked_20_M 31_10.0s_LP_20260815-210000.fit` | M31 / NGC224 | Fait (empilé) |
+| `Light_NGC 869_10.0s_LP_20260815-210000.fit` | NGC869 | Brutes seules |
+| Aucun fichier reconnu | NGC884 | Non trouvé |
+| Dossier illisible sans preuve trouvée | Objet concerné | Indéterminé |
+
+Les tests vérifient les mêmes statuts à l'écran, dans le TXT et dans le texte
+extrait du PDF. Les noms de fichiers personnels ne sont pas ajoutés au dépôt.
+Un essai manuel autorisé a parcouru le véritable MyWorks en lecture de noms et
+métadonnées uniquement; ses rapports sont conservés dans `local/`, ignoré par Git.
+Cet essai n'a pas créé de cache ou de sortie sur le disque Seestar.
+
+La [documentation Seestar](SEESTAR.md) décrit les motifs de fichiers reconnus,
+les alias et les limites. Le statut ne valide pas la qualité des acquisitions.
+
+La validation locale compte 89 tests réussis et un test de création de lien
+symbolique ignoré faute de permission Windows, avec dix avertissements IERS.
+Le comportement des jonctions est testé séparément avec leurs attributs Windows.
+Les archives du logiciel et son installation hors des sources ont été vérifiées.
+Aucune donnée d'acquisition personnelle n'est incluse dans les distributions.
+
 ## Réunir plusieurs catalogues dans une commande
 
 ![Schéma de sélection de plusieurs catalogues](images/multiple-catalogues.svg)
