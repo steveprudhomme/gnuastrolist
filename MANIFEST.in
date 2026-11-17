@@ -4,3 +4,4 @@ recursive-include docs *.md *.svg
 recursive-include scripts *.py
 recursive-include tests *.py
 recursive-include src/gnu_astrolist/data *.csv.gz *.csv *.md
+recursive-include src/gnu_astrolist/data/fonts *.ttf *.txt

@@ -23,13 +23,17 @@ def main() -> None:
             with tarfile.open(path) as archive:
                 files = {n.name: archive.extractfile(n).read() for n in archive if n.isfile()}
         for name, count in [("caldwell", 109), ("messier", 110), ("gcvs_visual", 21212),
-                            ("ngc", 8098)]:
+                            ("ngc", 8098), ('bayer', 1537), ('flamsteed', 2737)]:
             matches = [v for k, v in files.items() if k.endswith(f"/data/{name}.csv.gz")]
             assert len(matches) == 1, (path, name)
             rows = list(csv.DictReader(io.StringIO(gzip.decompress(matches[0]).decode("utf-8"))))
             assert len(rows) == count, (path, name, len(rows))
         assert any(k.endswith("/data/CALDWELL_SOURCE.md") for k in files), path
         assert any(k.endswith("/data/NGC_SOURCE.md") for k in files), path
+        for resource in ('STELLAR_SOURCE.md', 'HYG_LICENSE.md', 'FONT_SOURCE.md',
+                         'fonts/DejaVuSans.ttf', 'fonts/DejaVuSans-Bold.ttf',
+                         'fonts/LICENSE_DEJAVU.txt'):
+            assert any(k.endswith(f'/data/{resource}') for k in files), (path, resource)
         assert any(k.endswith('gnu_astrolist/selection.py') for k in files), path
         assert any(k.endswith('gnu_astrolist/seestar.py') for k in files), path
         assert any(k.endswith("/LICENSE") or k == "LICENSE" for k in files), path
@@ -37,7 +41,7 @@ def main() -> None:
         if path.name.endswith('.tar.gz'):
             for image in ('caldwell-parcours.svg', 'validation-locale.svg', 'ngc-selection.svg',
                           'multiple-catalogues.svg', 'seestar-lecture-seule.svg',
-                          'premiers-pas.svg'):
+                          'premiers-pas.svg', 'bayer-flamsteed.svg'):
                 assert any(k.endswith(f'/docs/images/{image}') for k in files), (path, image)
         print(f"{path.name} : catalogues, notice, licence et exclusions OK")
 

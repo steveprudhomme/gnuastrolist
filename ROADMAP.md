@@ -3,26 +3,31 @@
 ## Lot Bayer et Flamsteed — sélections stellaires locales
 
 - [x] Examiner les modèles, la sélection multiple et les protections Seestar.
-- [ ] Enregistrer le plan dans un commit avant le développement.
-- [ ] Choisir une source stellaire attribuable et redistribuable, vérifier ses
+- [x] Enregistrer le plan dans un commit avant le développement.
+- [x] Choisir une source stellaire attribuable et redistribuable, vérifier ses
       champs Bayer/Flamsteed, coordonnées, magnitudes et licence; conserver une
       copie dans le projet local avec révision et empreinte documentées.
-- [ ] Générer deux sélections reproductibles, sans inventer de désignation ni
+- [x] Générer deux sélections reproductibles, sans inventer de désignation ni
       substituer une autre bande à V; distinguer ces systèmes de noms d'un
       inventaire exhaustif de toutes les étoiles.
-- [ ] Ajouter `--objects bayer` et `--objects flamsteed`, seuls ou combinés;
+- [x] Ajouter `--objects bayer` et `--objects flamsteed`, seuls ou combinés;
       réunir une même étoile par identifiant source stable, conserver les noms
       secondaires et ne pas présumer une identité croisée avec GCVS ou NGC.
-- [ ] Afficher les désignations et la provenance dans les rapports écran/TXT/PDF;
+- [x] Afficher les désignations et la provenance dans les rapports écran/TXT/PDF;
       gérer le nom Bayer/Flamsteed et ses variantes explicites dans Seestar,
       sans modifier les archives ni déduire une correspondance par position.
-- [ ] Remplacer les polices PDF sans alphabet grec par DejaVu Sans régulier/gras
+- [x] Remplacer les polices PDF sans alphabet grec par DejaVu Sans régulier/gras
       redistribués sans modification avec leurs notices; vérifier les glyphes,
       la conservation des lettres grecques et leur présence dans les paquets.
-- [ ] Tester données réelles de référence, génération synthétique, doublons,
+- [x] Tester données réelles de référence, génération synthétique, doublons,
       filtres, rapports, lecture seule et distribution hors ligne.
-- [ ] Mettre à jour les MD et le tutoriel accessible dès 10 ans avec une image,
+- [x] Mettre à jour les MD et le tutoriel accessible dès 10 ans avec une image,
       exécuter les contrôles locaux et enregistrer le lot sans push.
+
+Plans préalables : `691f039`, puis `d5c94af` pour les polices grecques.
+Résultats : 102 tests réussis, un ignoré, treize avertissements IERS; Ruff,
+structure, distributions et installation hors des sources vérifiés. Les données
+et polices gardent leurs licences et empreintes. Aucune publication distante.
 
 ## Finalisation PR nº 6 — tests Windows et tutoriel accessible
 

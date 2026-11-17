@@ -12,6 +12,8 @@ Les catalogues ont leurs propres conditions :
 | Messier dérivé d'OpenNGC | Mattia Verga et contributeurs; CC BY-SA 4.0 |
 | Caldwell dérivé d'OpenNGC | Mattia Verga et contributeurs; CC BY-SA 4.0 |
 | NGC dérivé d'OpenNGC | Mattia Verga et contributeurs; CC BY-SA 4.0; voir NGC_SOURCE.md |
+| Bayer/Flamsteed dérivés de HYG 4.1 | David Nash / Astronomy Nexus et contributeurs; CC BY-SA 4.0; voir STELLAR_SOURCE.md |
+| Polices DejaVu Sans | Notices Bitstream/DejaVu/Arev conservées dans data/fonts/LICENSE_DEJAVU.txt; voir FONT_SOURCE.md |
 | Compléments SIMBAD | CDS, Observatoire astronomique de Strasbourg; attribution conservée |
 
 Les notices détaillées sont dans `src/gnu_astrolist/data/`, notamment

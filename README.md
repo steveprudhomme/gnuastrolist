@@ -10,7 +10,7 @@ trie par magnitude en bande V.
 
 Le prototype est déjà fonctionnel : il contient 21 212 entrées visuelles du
 General Catalogue of Variable Stars (GCVS), les 110 objets Messier et les
-109 objets Caldwell et 8 098 entrées NGC. Il
+109 objets Caldwell, 8 098 entrées NGC et les sélections stellaires Bayer/Flamsteed. Il
 calcule les coordonnées Alt/Az avec Astropy et fonctionne hors ligne grâce aux
 catalogues embarqués.
 
@@ -86,6 +86,26 @@ Les tailles et magnitudes Messier privilégient les valeurs valides de SIMBAD et
 utilisent OpenNGC comme repli hors ligne. Le catalogue choisi est indiqué entre
 crochets à côté de chaque valeur. Ajoutez `--details` pour afficher également
 le bibcode ou la référence et la date de récupération.
+
+## Désignations de Bayer et Flamsteed
+
+Utilisez `--objects bayer`, `--objects flamsteed` ou les deux ensemble :
+
+```powershell
+gnu-astrolist --date 2026-11-17 --time-range 21:00-22:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 20 --objects bayer flamsteed --offline --limit 20
+```
+
+Les extraits HYG embarqués contiennent 1 537 fiches Bayer et 2 737 Flamsteed.
+Ensemble, ils donnent 3 321 fiches HYG distinctes, dont certaines à plusieurs noms :
+`α Lyr / 3 Lyr` pour Véga. Les composants qui partagent un nom ne sont pas fusionnés.
+Les deux choix fonctionnent aussi avec `messier`, `caldwell`, `ngc` et `variable_stars`.
+
+Aucune limite de magnitude n'est appliquée à ces sélections par défaut.
+`--max-magnitude` et `--all-magnitudes`, les rapports TXT/PDF et l'option Seestar
+sont pris en charge. Les lettres grecques sont conservées dans les PDF grâce aux
+polices libres incorporées. Voir la [notice des données](src/gnu_astrolist/data/STELLAR_SOURCE.md)
+et le [tutoriel illustré](docs/TUTORIEL.md). Ces extraits ne couvrent pas toutes
+les désignations historiques; les coordonnées restent fixes à leur référence J2000.
 
 ## Vérifier les acquisitions du Seestar S50
 
@@ -344,7 +364,7 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --az-max DEG                 Limite azimutale de fin
 --min-altitude DEG           Élévation minimale; --fov-v est un alias
 --alt-center DEG             Remplacement avancé facultatif du centre vertical
---objects CATALOGUE [...]    un ou plusieurs : variable_stars, messier, caldwell, ngc
+--objects CATALOGUE [...]    variable_stars, messier, caldwell, ngc, bayer, flamsteed
 --max-magnitude MAG          Limite V; défaut 8 pour les variables, aucune pour Messier
 --all-magnitudes             Désactive la limite pour le catalogue choisi
 --sample-minutes MIN         Pas de recherche (défaut : 10)

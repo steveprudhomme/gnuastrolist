@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="350" viewBox="0 0 1100 350" role="img" aria-labelledby="title desc">
+<title id="title">Une étoile, deux façons de la nommer</title><desc id="desc">Schéma explicatif : Véga est appelée alpha de la Lyre en Bayer et 3 Lyrae en Flamsteed. Les deux sélections sont réunies par leur clé HYG, avec une seule ligne pour cette étoile.</desc>
+<rect width="1100" height="350" rx="20" fill="#f8fafc"/>
+<g font-family="Segoe UI, DejaVu Sans, Arial, sans-serif" fill="#0f172a">
+<text x="30" y="45" font-size="28" font-weight="700">Une étoile peut avoir deux étiquettes</text>
+<g stroke-width="2"><rect x="30" y="90" width="300" height="190" rx="14" fill="#e0f2fe" stroke="#0284c7"/><rect x="400" y="90" width="300" height="190" rx="14" fill="#fef3c7" stroke="#d97706"/><rect x="770" y="90" width="300" height="190" rx="14" fill="#dcfce7" stroke="#16a34a"/></g>
+<g font-size="24" font-weight="700"><text x="50" y="130">Bayer</text><text x="420" y="130">La même étoile : Véga</text><text x="790" y="130">Flamsteed</text></g>
+<g font-size="42"><text x="110" y="195">α Lyr</text><text x="495" y="195">★</text><text x="850" y="195">3 Lyr</text></g>
+<g font-size="18"><text x="50" y="245">Une lettre et une constellation</text><text x="420" y="245">Une fiche, pas deux étoiles</text><text x="790" y="245">Un nombre et une constellation</text></g>
+<g font-size="32" fill="#475569"><text x="350" y="190">→</text><text x="720" y="190">←</text></g>
+<text x="30" y="318" font-size="19">Le rapport peut afficher : α Lyr / 3 Lyr. « α » se lit « alpha ».</text>
+<text x="30" y="343" font-size="16">Dessin explicatif, pas une photo. Les composants aux noms partagés restent distincts.</text>
+</g></svg>

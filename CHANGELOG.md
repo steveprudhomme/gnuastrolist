@@ -5,6 +5,18 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté — Bayer et Flamsteed
+
+- Sélections `bayer` et `flamsteed` issues de HYG 4.1, utilisables seules ou avec
+  les autres catalogues, avec regroupement par clé HYG et préservation des composants.
+- Génération locale déterministe, notices de provenance/licence et tutoriel illustré.
+- Reconnaissance Seestar des variantes explicites et signalement des noms partagés.
+
+### Corrigé — alphabet grec PDF
+
+- Polices DejaVu Sans régulière et grasse incorporées avec leurs notices pour
+  préserver les lettres grecques et indices de composants Bayer dans les PDF.
+
 ### Corrigé — validation Windows
 
 - Fichiers temporaires des tests CI placés sur le volume du logiciel, pour

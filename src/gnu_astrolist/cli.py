@@ -84,7 +84,7 @@ def build_parser() -> argparse.ArgumentParser:
         required=True,
         nargs="+",
         action="extend",
-        choices=("variable_stars", "messier", "messier_objects", "caldwell", "ngc"),
+        choices=("variable_stars", "messier", "messier_objects", "caldwell", "ngc", 'bayer', 'flamsteed'),
         help="un ou plusieurs catalogues; option répétable (messier_objects : alias de messier)",
     )
     magnitudes = parser.add_mutually_exclusive_group()
@@ -94,7 +94,7 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help=(
             "magnitude V maximale (défaut : 8 pour variable_stars; "
-            "aucune limite pour messier, caldwell et ngc)"
+            "aucune limite pour les autres catalogues)"
         ),
     )
     magnitudes.add_argument(

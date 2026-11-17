@@ -1,5 +1,27 @@
 # Validation
 
+## Lot Bayer et Flamsteed
+
+Validation locale : **102 tests réussis, un ignoré**, treize avertissements IERS.
+Les tests contrôlent les 1 537 fiches Bayer et 2 737 Flamsteed, l'union de 3 321
+clés HYG, les noms/coordonnées de référence, les composants partagés et les filtres.
+Le générateur est testé sur des données synthétiques pour la reproductibilité,
+les valeurs absentes, les noms ambigus et les empreintes incorrectes.
+
+Les rapports terminal/TXT/PDF sont testés dans les trois modes Bayer seul,
+Flamsteed seul et combinés, avec une archive Seestar synthétique. La reconnaissance
+accepte les variantes explicites des lettres et préserve leurs indices. Une
+désignation partagée ne devient pas une acquisition certaine de tous les composants.
+Les 24 lettres grecques et les chiffres en exposant sont exigés dans les deux
+polices PDF; l'extraction doit conserver `α Lyr`.
+
+Ruff, structure et contenu des distributions réussis. La wheel installée hors
+du dossier source a produit un rapport Bayer/Flamsteed et son PDF avec les polices
+embarquées, sans dépendance à Matplotlib. Le disque Seestar réel n'a pas été
+consulté pendant ce lot; les tests de lecture seule précédents restent inclus.
+La source HYG a été téléchargée dans `local/`, puis les générateurs et contrôles
+ont utilisé les copies locales. Aucune publication ou CI distante du lot.
+
 ## Finalisation de la PR nº 6
 
 La première CI a réussi sur Linux et pour les distributions. Les tests Windows

@@ -85,6 +85,60 @@ image rangée ailleurs peut échapper à la recherche. « Fait » ne veut pas di
 que l'image est réussie : il faut encore la regarder. Les exemples détaillés
 ci-dessous sont inventés pour les tests ou clairement signalés comme des essais.
 
+## Choisir les noms Bayer et Flamsteed
+
+![Véga avec ses deux étiquettes](images/bayer-flamsteed.svg)
+
+Une étoile peut porter plusieurs noms. **Bayer** utilise notamment une lettre
+grecque : `α Lyr` se lit « alpha de la Lyre ». **Flamsteed** utilise un nombre :
+la même étoile porte aussi le nom `3 Lyr`. Son nom courant est Véga.
+`Lyr` est un petit code pour la constellation de la Lyre, une région du ciel.
+Tu n'as pas besoin de taper les lettres grecques : le programme les écrit pour toi.
+HYG est le nom de la liste de référence utilisée pour ces étoiles.
+
+Pour essayer, copie cette commande dans le projet installé sur ton ordinateur :
+
+```powershell
+.venv\Scripts\python -m gnu_astrolist --date 2026-11-17 --time-range 21:00-22:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 20 --objects bayer flamsteed --offline --limit 3
+```
+
+La date et le lieu sont un exemple pour Laval; change-les pour ta soirée.
+Pour une seule liste, remplace `bayer flamsteed` par `bayer` ou `flamsteed`.
+Tu peux aussi ajouter `messier` ou `ngc` après `--objects`. Les deux étiquettes
+d'une même fiche HYG sont réunies, sans compter cette fiche deux fois.
+
+Lors de cet essai local réel, 1 414 fiches ont traversé le champ choisi :
+
+| Dans le rapport | Nom courant | Luminosité de référence |
+| --- | --- | --- |
+| α Lyr / 3 Lyr | Véga | 0,03 |
+| α Aur / 13 Aur | Capella | 0,08 |
+| α Ori / 58 Ori | Bételgeuse | 0,45 |
+
+Ces nombres viennent d'une liste de référence. Ce n'est pas une mesure du ciel
+prise ce soir et certaines étoiles changent de luminosité. L'image ci-dessus
+est un dessin explicatif, pas une photo du Seestar.
+
+Avec `--seestar-path`, le programme reconnaît des formes comme `Alp Lyr`,
+`alpha Lyr`, `α Lyr`, `3 Lyr` et le nom courant exact fourni par HYG. Pour une
+paire d'étoiles proches partageant une étiquette, une photo avec ce seul
+nom donne « Indéterminé (nom partagé) ». On ne devine pas laquelle est photographiée.
+La protection du disque reste la même : aucune photo n'est changée.
+
+### Détails pour vérifier le travail
+
+Le plan a été commité avant le code (`691f039`), puis complété pour les polices
+grecques (`d5c94af`). La source HYG est conservée localement, avec son empreinte.
+Les deux catalogues sont générés sans réseau depuis cette copie. La police Vera
+ne restituait pas les noms grecs dans le PDF; DejaVu Sans et sa licence sont
+maintenant embarqués. Les tests vérifient ces lettres dans le texte extrait du PDF.
+
+La validation locale compte 102 tests réussis, un test de lien symbolique ignoré
+faute de permission et treize avertissements IERS. Les archives du logiciel et
+une installation hors des sources ont été vérifiées. L'exemple de rapport a été
+généré sans ouvrir le disque Seestar réel. Les avertissements astronomiques ne
+sont pas masqués, et les données de référence ne deviennent pas des observations.
+
 ## Pour aller plus loin : fonctionnement et journal des vérifications
 
 Les sections suivantes gardent les détails utiles pour vérifier le travail et

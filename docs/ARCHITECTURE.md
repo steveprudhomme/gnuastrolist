@@ -24,5 +24,10 @@ identiques et définit les filtres par catalogue. Les rendus utilisent
 protège l'espace source contre les exports et annote les résultats affichés.
 Les statuts sont partagés par les rendus TXT/PDF. Sans option Seestar, cet
 inventaire n'est pas lancé et les sorties gardent leur format précédent.
+
+`NamedStar` représente les fiches HYG, indépendamment des maxima GCVS et des
+objets du ciel profond. `stellar_names.py` normalise les désignations explicites.
+La sélection multiple réunit Bayer/Flamsteed par clé HYG de la révision embarquée;
+les identités GCVS/NGC ne sont pas inférées. Le moteur astronomique reste commun.
 Les tests ne doivent pas dépendre de leurs services distants. Une nouvelle
 méthode ou source doit avoir une notice, des exemples vérifiables et des tests.

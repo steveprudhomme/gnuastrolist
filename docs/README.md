@@ -10,6 +10,8 @@
 - [Décision : sélection de plusieurs catalogues](architecture/decisions/0002-selection-multiple.md).
 - [Provenance Caldwell](../src/gnu_astrolist/data/CALDWELL_SOURCE.md).
 - [Provenance NGC](../src/gnu_astrolist/data/NGC_SOURCE.md).
+- [Bayer et Flamsteed](../src/gnu_astrolist/data/STELLAR_SOURCE.md).
+- [Polices PDF et licences](../src/gnu_astrolist/data/FONT_SOURCE.md).
 
 Le cadre de contribution adapte les pratiques consultées dans
 [gnu-astrophotography-recycle](https://github.com/steveprudhomme/gnu-astrophotography-recycle)

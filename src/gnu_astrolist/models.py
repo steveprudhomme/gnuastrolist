@@ -75,7 +75,37 @@ class DeepSkyObject:
 
 MessierObject = DeepSkyObject  # Compatibilité avec les utilisateurs du modèle initial.
 CaldwellObject = DeepSkyObject
-CatalogObject: TypeAlias = VariableStar | DeepSkyObject
+
+
+@dataclass(frozen=True, slots=True)
+class NamedStar:
+    """Étoile HYG nommée en Bayer ou Flamsteed; identité liée à la révision HYG."""
+
+    name: str
+    ra_deg: float
+    dec_deg: float
+    magnitude_v: float | None
+    hyg_id: int
+    constellation: str
+    bayer_name: str = ''
+    flamsteed_name: str = ''
+    common_name: str = ''
+    ambiguous_names: tuple[str, ...] = ()
+    aliases: tuple[str, ...] = ()
+    object_type: str = 'Star'
+    passband: str = 'V'
+    magnitude_limit: str = ''
+    magnitude_source: str = 'HYG 4.1'
+    magnitude_reference: str = 'HYG 4.1 / mag'
+    magnitude_retrieved_on: str = '2026-11-17'
+    apparent_major_arcmin: float | None = None
+    apparent_minor_arcmin: float | None = None
+    size_source: str = ''
+    size_reference: str = ''
+    size_retrieved_on: str = ''
+
+
+CatalogObject: TypeAlias = VariableStar | DeepSkyObject | NamedStar
 
 
 @dataclass(frozen=True, slots=True)

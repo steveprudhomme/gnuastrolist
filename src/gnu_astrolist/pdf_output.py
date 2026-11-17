@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from importlib import resources
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from xml.sax.saxutils import escape
 
-import reportlab
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from reportlab.lib.pagesizes import letter
@@ -42,7 +42,7 @@ from .output import (
     _reference_label,
 )
 from .seestar import SeestarInventory, protect_outputs
-from .selection import CatalogSelection, catalog_label
+from .selection import NOTES, CatalogSelection, catalog_label
 
 NAVY = colors.HexColor("#18344A")
 TEAL = colors.HexColor("#2B7282")
@@ -58,14 +58,15 @@ class PdfExportError(RuntimeError):
 
 
 def _register_fonts() -> None:
-    fonts_directory = Path(reportlab.__file__).resolve().parent / "fonts"
     fonts = {
-        "AstrolistSans": "Vera.ttf",
-        "AstrolistSansBold": "VeraBd.ttf",
+        "AstrolistSans": "DejaVuSans.ttf",
+        "AstrolistSansBold": "DejaVuSans-Bold.ttf",
     }
     for name, filename in fonts.items():
         if name not in pdfmetrics.getRegisteredFontNames():
-            pdfmetrics.registerFont(TTFont(name, str(fonts_directory / filename)))
+            resource = resources.files('gnu_astrolist.data').joinpath('fonts', filename)
+            with resource.open('rb') as stream:
+                pdfmetrics.registerFont(TTFont(name, stream))
     pdfmetrics.registerFontFamily(
         "AstrolistSans",
         normal="AstrolistSans",
@@ -549,6 +550,8 @@ def _notes(object_kind: str | CatalogSelection) -> tuple[str, ...]:
             "La magnitude des étoiles variables est le maximum d'éclat publié, "
             "et non une prévision instantanée."
         )
+    elif object_kind in ('bayer', 'flamsteed'):
+        notes.extend([NOTES[object_kind], 'Positions J2000 fixes; mouvements propres non appliqués.'])
     elif object_kind == "ngc":
         notes.append("Données NGC : OpenNGC; composants distincts inclus, hors doublons.")
     else:

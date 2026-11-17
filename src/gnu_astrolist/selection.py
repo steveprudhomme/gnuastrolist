@@ -10,24 +10,30 @@ from dataclasses import dataclass, replace
 
 from .catalog import (
     filter_by_magnitude,
+    load_bayer_catalog,
     load_caldwell_catalog,
+    load_flamsteed_catalog,
     load_messier_catalog,
     load_ngc_catalog,
     load_variable_star_catalog,
 )
-from .models import CatalogObject, DeepSkyObject
+from .models import CatalogObject, DeepSkyObject, NamedStar
 
 LABELS = {
     "variable_stars": "Étoiles variables (GCVS)",
     "messier": "Objets Messier (SIMBAD, repli OpenNGC)",
     "caldwell": "Objets Caldwell (OpenNGC, complément SIMBAD)",
     "ngc": "Objets NGC (OpenNGC)",
+    "bayer": "Étoiles Bayer (HYG 4.1)",
+    "flamsteed": "Étoiles Flamsteed (HYG 4.1)",
 }
 NOTES = {
     "variable_stars": "Les magnitudes GCVS sont les maxima d'éclat publiés, pas des prévisions.",
     "messier": "Messier : priorité SIMBAD, repli OpenNGC.",
     "caldwell": "Caldwell : données OpenNGC; complément de magnitude V SIMBAD si exploitable.",
     "ngc": "NGC : données OpenNGC; composants distincts inclus, hors doublons.",
+    "bayer": "Bayer : désignations HYG; magnitude visuelle de référence, pas un maximum GCVS.",
+    "flamsteed": "Flamsteed : désignations HYG; magnitude visuelle de référence, pas un maximum GCVS.",
 }
 
 
@@ -58,10 +64,19 @@ class CatalogSelection:
 
     @property
     def notes(self) -> tuple[str, ...]:
-        return tuple(NOTES[kind] for kind in self.kinds) + (
-            "Même désignation : une ligne, priorité Messier puis Caldwell puis NGC; alias conservés.",
-            "Les groupes et leurs composants restent distincts; aucun rapprochement par position.",
-        )
+        notes = tuple(NOTES[kind] for kind in self.kinds)
+        if any(kind in self.kinds for kind in ("messier", "caldwell", "ngc")):
+            notes += (
+                "Même désignation : une ligne, priorité Messier puis Caldwell puis NGC; alias conservés.",
+                "Les groupes et leurs composants restent distincts; aucun rapprochement par position.",
+            )
+        if any(kind in self.kinds for kind in ("bayer", "flamsteed")):
+            notes += (
+                "Étoiles HYG réunies par identifiant source; priorité Bayer, alias Flamsteed conservés.",
+                "Les composants de même désignation restent distincts; aucun lien GCVS/NGC déduit.",
+                'Positions stellaires J2000 fixes; mouvements propres non appliqués.',
+            )
+        return notes
 
 
 def catalog_label(kind: str | CatalogSelection) -> str:
@@ -112,6 +127,8 @@ def load_catalog_selection(
         "caldwell": load_caldwell_catalog,
         "ngc": load_ngc_catalog,
         "variable_stars": load_variable_star_catalog,
+        "bayer": load_bayer_catalog,
+        "flamsteed": load_flamsteed_catalog,
     }
     if len(kinds) == 1:
         return filter_by_magnitude(loaders[kinds[0]](), limits[0]), selection
@@ -145,4 +162,19 @@ def load_catalog_selection(
         objects.extend(
             filter_by_magnitude(load_variable_star_catalog(), limit_by_kind["variable_stars"])
         )
+    stellar: dict[int, tuple[NamedStar, str]] = {}
+    for kind in ("bayer", "flamsteed"):
+        if kind not in kinds:
+            continue
+        for star in loaders[kind]():
+            if star.hyg_id in stellar:
+                existing, origin = stellar[star.hyg_id]
+                stellar[star.hyg_id] = (
+                    replace(existing, aliases=(*existing.aliases, star.name)),
+                    origin,
+                )
+            else:
+                stellar[star.hyg_id] = (star, kind)
+    for star, kind in stellar.values():
+        objects.extend(filter_by_magnitude((star,), limit_by_kind[kind]))
     return objects, selection

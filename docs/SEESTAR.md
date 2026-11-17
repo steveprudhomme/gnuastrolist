@@ -76,6 +76,19 @@ elle-même liée sont des erreurs explicites avant traitement des rapports.
 son temps d'intégration, son cadrage, son contenu ou sa qualité. « Non trouvé »
 ne signifie pas « jamais photographié ».
 
+## Désignations stellaires HYG
+
+Pour Bayer/Flamsteed, les lettres grecques, leurs abréviations HYG et leur nom
+écrit en toutes lettres sont rapprochés explicitement (`α Lyr`, `Alp Lyr`,
+`alpha Lyr`), avec conservation des indices de composants. Le numéro Flamsteed,
+le nom courant exact et la clé HYG peuvent aussi servir d'identifiant.
+Les noms courants ne sont pas étendus par ressemblance ou par position.
+
+Un nom partagé par plusieurs fiches HYG ne constitue pas une preuve pour chacune.
+Sans autre preuve unique, un fichier portant ce nom produit
+**Indéterminé (nom partagé)**. Un identifiant explicite comme `HYG 36744` peut
+lever l'ambiguïté. Les noms des autres catalogues gardent leurs règles précédentes.
+
 ## Vérification et confidentialité
 
 Les tests ordinaires utilisent des archives synthétiques sous les répertoires

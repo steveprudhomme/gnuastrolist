@@ -13,7 +13,7 @@ from .models import (
     WeatherSummary,
 )
 from .seestar import SeestarInventory
-from .selection import CatalogSelection, catalog_label
+from .selection import NOTES, CatalogSelection, catalog_label
 
 
 def _object_name(result: VisibilityResult) -> str:
@@ -377,6 +377,9 @@ def render_report(
                 "       pas une prévision instantanée.",
             ]
         )
+    elif object_kind in ('bayer', 'flamsteed'):
+        lines.append(f'       {NOTES[object_kind]}')
+        lines.append('       Positions J2000 fixes; mouvements propres non appliqués.')
     elif object_kind == "ngc":
         lines.append("       Données NGC : OpenNGC; composants distincts inclus, hors doublons.")
     elif object_kind == "caldwell":
