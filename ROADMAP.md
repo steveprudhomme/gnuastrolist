@@ -4,12 +4,15 @@
 
 - [x] Identifier l'échec Python 3.10 dans la CI : le test de tri utilise une
       date hors couverture IERS sans définir sa propre politique hors ligne.
-- [ ] Enregistrer ce plan avant le correctif.
-- [ ] Configurer temporairement IERS dans ce test, sans dépendre des tests CLI
+- [x] Enregistrer ce plan avant le correctif.
+- [x] Configurer temporairement IERS dans ce test, sans dépendre des tests CLI
       précédents ni modifier durablement les paramètres astronomiques.
-- [ ] Documenter le correctif dans le tutoriel, la validation et le journal.
-- [ ] Exécuter le test isolé puis les contrôles locaux et la CI Windows/Linux.
-- [ ] Fusionner la PR nº 1 lorsque tous les contrôles réussissent.
+- [x] Documenter le correctif dans le tutoriel, la validation et le journal.
+- [x] Exécuter le test isolé et les contrôles locaux : 61 tests réussis.
+- [ ] Confirmer la nouvelle CI Windows/Linux et la distribution sur GitHub.
+
+La fusion de la PR nº 1 est autorisée par l'utilisateur et doit suivre la
+réussite des cinq contrôles. Son état final est consultable dans GitHub.
 
 ## Lot en cours — finalisation locale Caldwell et cadre open source
 

@@ -1,5 +1,15 @@
 # Validation
 
+## Correctif de la première CI
+
+Python 3.10 sur Windows et Linux a révélé une dépendance du test de tri Caldwell
+à la configuration IERS laissée par d'autres tests. Le test fixe maintenant ses
+paramètres dans des contextes temporaires qui les restaurent en sortie. Les
+avertissements de précision restent visibles. Les résultats CI précédents ne
+doivent pas être présentés comme tous réussis; une nouvelle exécution est requise.
+Le test isolé, les 61 tests locaux, Ruff et le contrôle de structure ont réussi
+après le correctif sous Windows/Python 3.13.6.
+
 Exécuter depuis un environnement installé avec `pip install -e ".[dev]"` :
 
 ```text

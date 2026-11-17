@@ -5,6 +5,11 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Corrigé
+
+- Configuration IERS temporaire et explicite du test de tri Caldwell pour le
+  rendre indépendant de l'ordre d'exécution, notamment sous Python 3.10.
+
 ### Ajouté
 
 - Tutoriel illustré par des schémas SVG versionnés, inclus dans l'archive source.

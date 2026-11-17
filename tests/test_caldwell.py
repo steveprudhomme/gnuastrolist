@@ -9,6 +9,7 @@ import sys
 from dataclasses import replace
 
 import pytest
+from astropy.utils import iers
 from pypdf import PdfReader
 
 from gnu_astrolist.catalog import filter_by_magnitude, load_caldwell_catalog
@@ -90,14 +91,21 @@ def test_visibility_sorts_unknown_magnitude_after_known_values():
     # Même position publique pour isoler le tri de la sélection géométrique.
     reference = load_caldwell_catalog()[0]
     stars = [replace(reference, name="Sans V", magnitude_v=None), reference]
-    results = compute_visibility(
-        stars,
-        parse_observation_window("2026-08-15", "21:00-22:00", "UTC"),
-        85,
-        0,
-        0,
-        FieldOfView(180, 45, 360, 90),
-    )
+    # Le tri ne teste pas la précision des tables IERS. Définir sa politique
+    # explicitement, même si aucun test CLI n'a encore configuré le mode offline.
+    with (
+        iers.conf.set_temp("auto_download", False),
+        iers.conf.set_temp("auto_max_age", None),
+        iers.conf.set_temp("iers_degraded_accuracy", "warn"),
+    ):
+        results = compute_visibility(
+            stars,
+            parse_observation_window("2026-08-15", "21:00-22:00", "UTC"),
+            85,
+            0,
+            0,
+            FieldOfView(180, 45, 360, 90),
+        )
     assert [result.star.name for result in results] == ["C1", "Sans V"]
 
 

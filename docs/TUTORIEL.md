@@ -1,5 +1,23 @@
 # Préparer une liste Caldwell hors ligne
 
+## Correctif avant fusion : un test indépendant de l'ordre d'exécution
+
+La première CI a réussi sous Python 3.13 et pour les distributions, mais le test
+de tri Caldwell a échoué sous Python 3.10 sur Windows et Linux avec IERSRangeError.
+Le calcul saisonnier utilise des dates hors couverture des tables embarquées.
+Le test définit désormais temporairement les paramètres IERS hors ligne et la
+politique d'avertissement, puis restaure les valeurs précédentes. Les assertions
+de sélection et de tri restent identiques; aucun résultat astronomique n'est modifié.
+
+Le [schéma de validation locale](images/validation-locale.svg) s'applique aussi
+à ce correctif : plan enregistré dans `2f0c0bd`, test isolé, suite locale puis CI
+avant fusion. La publication et la fusion sont maintenant autorisées par
+l'utilisateur; la restriction locale décrite plus bas documente le lot précédent.
+
+```powershell
+.venv\Scripts\python -m pytest tests/test_caldwell.py::test_visibility_sorts_unknown_magnitude_after_known_values
+```
+
 ![Schéma du parcours local Caldwell](images/caldwell-parcours.svg)
 
 Cette image est un schéma explicatif, pas une capture d'écran ni une mesure.
