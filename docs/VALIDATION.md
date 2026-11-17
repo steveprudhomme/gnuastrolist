@@ -1,5 +1,47 @@
 # Validation
 
+## ECC-A — Entrées protégées et exports atomiques
+
+Le plan détaillé a été commité et publié avant les nouveaux tests et le code :
+`8276bb4`, empreinte distante vérifiée. Les méthodes ECC `python-testing`,
+`python-patterns`, `security-review` et `verification-loop` ont guidé les
+régressions, les contrôles partagés des fichiers et la revue finale locale.
+
+Windows/Python 3.13.6 : **385 tests réussis, trois ignorés, 26 avertissements**.
+Les 35 nouveaux tests réussis couvrent les sept entrées × deux sorties, les
+chemins équivalents, liens physiques et jonctions simulées, refus avant effets,
+protection Seestar malgré `--overwrite`, remplacement explicite, pannes d'écriture
+TXT/PDF et de publication, et créations concurrentes avant/pendant publication.
+Les trois cas ignorés sont les deux créations de liens symboliques non
+autorisées localement et le test de FIFO réservé à POSIX. Les avertissements
+IERS/ERFA sont ceux des modèles/dates déjà documentés, sans nouveau masquage.
+
+Ruff, contrôle du dépôt, différences sans erreurs d'espacement et XML du schéma
+réussis. Wheel et sdist construites sans téléchargement, puis vérifiées avec le
+contrôleur existant dirigé en mémoire vers `local/ecc-a-dist/`. La wheel a été
+réinstallée sans dépendances ni réseau dans `.wheel-check`, environnement distinct
+sans paquets système; `pip check` y réussit. Cette opération ne corrige pas
+l'environnement de développement principal, objet du futur lot ECC-D.
+
+Exécutée hors des sources, cette installation produit un TXT/PDF de trois objets,
+refuse leur remplacement implicite, accepte `--overwrite`, protège le fichier de
+configuration et exécute les dix sélections ensemble hors ligne. L'empreinte de
+l'acquisition Seestar synthétique reste identique. Le schéma du tutoriel et les
+deux pages du PDF de démonstration ont été rendus et inspectés visuellement.
+Aucun disque USB réel n'a été parcouru ni modifié.
+
+L'atomicité est par fichier, pas pour la paire TXT/PDF. Les limites de panne
+matérielle, d'arrêt brutal et de changement malveillant de chemin sont explicites
+dans [EXPORTS.md](EXPORTS.md). Couverture et typage statique supplémentaires
+restent au lot ECC-E; leur réussite n'est pas revendiquée ici. Le correctif
+`f37c3c0` et ses documents sont publiés dans la
+[PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9). Pour le commit
+`97b7671`, les cinq contrôles distants ont réussi : Windows/Linux en Python
+3.10 et 3.13, puis distributions et essais installés hors des sources. Voir
+l'[exécution vérifiée](https://github.com/steveprudhomme/gnuastrolist/actions/runs/44057483487).
+Avant toute fusion, vérifier également les contrôles du dernier commit de la PR;
+la réussite d'un commit précédent ne remplace pas cette vérification.
+
 ## Publication GitHub — compatibilité des époques GP
 
 La première CI de la PR nº 7 a détecté trois échecs sous Python 3.10 pour les

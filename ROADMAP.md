@@ -7,8 +7,10 @@ approuvées par le propriétaire. Leurs identifiants permanents sont **ECC-A à
 ECC-I**. Ce plan est enregistré avant toute implémentation; les cases restent
 ouvertes tant que leurs critères ne sont pas vérifiés.
 
-**Prochaine étape : utiliser ECC pour réaliser ECC-A — protéger les fichiers
-d'entrée et fiabiliser les exports.** Ensuite, choisir le premier lot incomplet
+**Prochaine étape de développement : utiliser ECC pour réaliser ECC-B —
+fiabiliser les données météo.** ECC-A est implémenté sur la branche dédiée et
+publié dans la [PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9);
+sa fusion dans `main` reste une étape distincte. Choisir le premier lot incomplet
 dans l'ordre ECC-A, ECC-B, ECC-C, ECC-D, ECC-E, ECC-F, ECC-G, ECC-H, ECC-I.
 À chaque demande de prochaine étape, préciser explicitement l'usage d'ECC et
 l'identifiant du lot, en tenant compte des cases réellement terminées.
@@ -17,17 +19,61 @@ La [méthode de développement ECC](docs/DEVELOPPEMENT_ECC.md) décrit le contex
 les contrôles communs et les limites de cet accord. Les lots ECC-D à ECC-I
 prolongent certaines tâches existantes : conserver les renvois et éviter de
 compter deux fois le même travail. Les lots ci-dessous concernent le
-développement local; ils n'autorisent aucune publication ou modification GitHub.
+développement local; ils n'autorisent pas, à eux seuls, une publication ou une
+modification GitHub. L'instruction particulière de publication ECC-A est
+consignée ci-dessous; toute fusion reste distincte.
 
 ### ECC-A — Préserver les entrées et fiabiliser les exports — priorité haute
 
-- [ ] ECC-A.1 — Recenser tous les fichiers d'entrée et de sortie; refuser
+Plan d'exécution détaillé, à committer et publier **avant les tests nouveaux
+et le code**, selon l'instruction du propriétaire du 17 novembre 2026 :
+
+- [x] ECC-A.0 — Publier le commit de ce plan sur la branche dédiée et vérifier
+      son empreinte distante avant toute implémentation.
+- [x] ECC-A.1a — Centraliser le contrôle des sept entrées locales : configuration,
+      orbites astéroïdes/comètes, observations CBAT, éléments GP, SATCAT et UNOOSA.
+      Contrôler les destinations TXT/PDF entre elles, les ressources du logiciel
+      et le cache utilisé; refuser collisions résolues et identités physiques.
+- [x] ECC-A.1b — Effectuer ces contrôles avant actualisation, météo et calculs,
+      puis avant publication de chaque rapport. Refuser sorties liées/jonctions,
+      fichiers spéciaux et parents invalides; conserver la protection Seestar.
+- [x] ECC-A.2a — Refuser par défaut un rapport existant. Ajouter `--overwrite`
+      pour autoriser explicitement le remplacement des seuls rapports ordinaires;
+      cette option ne contourne ni les entrées, ni le cache, ni les archives.
+- [x] ECC-A.2b — Écrire TXT et PDF dans un fichier temporaire du dossier de
+      destination, puis publier chaque fichier atomiquement après validation.
+      En cas d'échec d'écriture ou de publication, préserver son ancien rapport
+      et nettoyer le temporaire. Empêcher l'écrasement concurrent sans autorisation.
+      L'atomicité porte sur chaque fichier, pas sur la paire TXT/PDF.
+- [x] ECC-A.3a — Écrire d'abord les régressions ECC : sept entrées × deux sorties,
+      collisions TXT/PDF, chemins relatifs et alias, liens physiques et jonctions,
+      refus avant effets, remplacement explicite et pannes d'écriture/publication.
+      Utiliser uniquement des fichiers et archives synthétiques sur le disque local.
+- [x] ECC-A.3b — Vérifier terminal/TXT/PDF, protections USB simulées, tests complets,
+      Ruff, liens, contenu des distributions et installation hors des sources;
+      inspecter le schéma et un rapport PDF de démonstration.
+- [x] ECC-A.3c — Mettre à jour README, CHANGELOG, architecture, guides Seestar,
+      développement ECC et validation; expliquer le remplacement dans le tutoriel
+      dès 10 ans avec une image SVG versionnée. Publier code et documents sur la
+      branche dédiée et ouvrir une PR; la fusion de cette PR reste une étape distincte.
+
+Suivi ECC-A : plan `8276bb4` publié avant code, correctif `f37c3c0`, PR nº 9.
+Validation locale : 385 tests réussis, trois ignorés, 26 avertissements connus;
+Ruff, liens, distributions et installation hors des sources réussis. Les
+résultats distants sont consignés séparément dans [VALIDATION.md](docs/VALIDATION.md).
+
+Méthodes ECC : `python-testing` (régression avant correctif), `python-patterns`
+(contrôles partagés), `security-review` (destinations/entrées/USB) et
+`verification-loop` (validation finale). Cette instruction autorise la publication
+du plan et des changements ECC-A, en conservant le développement sur la copie locale.
+
+- [x] ECC-A.1 — Recenser tous les fichiers d'entrée et de sortie; refuser
       entrée=sortie et TXT=PDF avant tout effet, avec chemins relatifs, chemins
       résolus et identités de fichiers/liens applicables.
-- [ ] ECC-A.2 — Rendre le TXT atomique, définir une politique explicite de
+- [x] ECC-A.2 — Rendre le TXT atomique, définir une politique explicite de
       remplacement des rapports et préserver les entrées et anciens rapports
       en cas d'erreur. Préserver toutes les protections Seestar.
-- [ ] ECC-A.3 — Ajouter les régressions du cas configuration=export et des
+- [x] ECC-A.3 — Ajouter les régressions du cas configuration=export et des
       collisions/échecs d'écriture avec sources synthétiques; vérifier les
       résultats terminal, TXT et PDF, puis documenter dans le tutoriel illustré.
 

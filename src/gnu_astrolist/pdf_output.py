@@ -5,7 +5,6 @@ from __future__ import annotations
 from collections.abc import Sequence
 from importlib import resources
 from pathlib import Path
-from tempfile import NamedTemporaryFile
 from xml.sax.saxutils import escape
 
 from reportlab.lib import colors
@@ -42,7 +41,8 @@ from .output import (
     _object_name,
     _reference_label,
 )
-from .seestar import SeestarInventory, protect_outputs
+from .report_files import staged_report
+from .seestar import SeestarInventory
 from .selection import (
     ASTEROID_NOTES,
     COMET_NOTES,
@@ -745,39 +745,33 @@ def export_pdf_report(
     object_kind: str | CatalogSelection,
     show_details: bool,
     seestar_inventory: SeestarInventory | None = None,
+    overwrite: bool = False,
+    input_paths: Sequence[Path] = (),
+    protected_roots: Sequence[Path] = (),
 ) -> None:
     """Crée atomiquement un PDF portrait au format lettre 8,5 x 11 pouces."""
 
-    temporary_path: Path | None = None
     try:
-        if seestar_inventory is not None:
-            protect_outputs(seestar_inventory.root, (path,))
-        with NamedTemporaryFile(
-            prefix=f".{path.stem}-",
-            suffix=".pdf",
-            dir=path.parent,
-            delete=False,
-        ) as temporary:
-            temporary_path = Path(temporary.name)
-        _build_pdf(
-            temporary_path,
-            window=window,
-            latitude_deg=latitude_deg,
-            longitude_deg=longitude_deg,
-            elevation_m=elevation_m,
-            field_of_view=field_of_view,
-            max_magnitude=max_magnitude,
-            sample_minutes=sample_minutes,
-            weather_summary=weather_summary,
-            moon_summary=moon_summary,
-            results=results,
-            matched_count=matched_count,
-            object_kind=object_kind,
-            show_details=show_details,
-            seestar_inventory=seestar_inventory,
-        )
-        temporary_path.replace(path)
+        with staged_report(
+            path, inputs=input_paths, overwrite=overwrite, protected_roots=protected_roots,
+            seestar_root=seestar_inventory.root if seestar_inventory is not None else None,
+        ) as temporary_path:
+            _build_pdf(
+                temporary_path,
+                window=window,
+                latitude_deg=latitude_deg,
+                longitude_deg=longitude_deg,
+                elevation_m=elevation_m,
+                field_of_view=field_of_view,
+                max_magnitude=max_magnitude,
+                sample_minutes=sample_minutes,
+                weather_summary=weather_summary,
+                moon_summary=moon_summary,
+                results=results,
+                matched_count=matched_count,
+                object_kind=object_kind,
+                show_details=show_details,
+                seestar_inventory=seestar_inventory,
+            )
     except Exception as exc:
-        if temporary_path is not None:
-            temporary_path.unlink(missing_ok=True)
         raise PdfExportError(f"impossible de créer le rapport PDF {path}: {exc}") from exc

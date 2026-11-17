@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="390" viewBox="0 0 960 390" role="img" aria-labelledby="title desc">
+  <title id="title">ECC-A : garder ses fichiers en sécurité</title>
+  <desc id="desc">Sur l'ordinateur, choisir un nouveau nom pour le rapport. Pour remplacer un ancien rapport, vérifier le nom puis ajouter overwrite. Les entrées et les archives Seestar protégées restent interdites.</desc>
+  <rect width="960" height="390" rx="16" fill="#f2f6f8"/>
+  <g font-family="sans-serif" fill="#18344a">
+    <text x="32" y="42" font-size="25" font-weight="bold">ECC-A : un rapport ne remplace pas une entrée</text>
+    <text x="32" y="73" font-size="17">Tous les rapports restent sur l'ordinateur, dans le dossier local.</text>
+    <rect x="32" y="103" width="430" height="152" rx="12" fill="#e7f1f3" stroke="#2b7282"/>
+    <rect x="490" y="103" width="438" height="152" rx="12" fill="#fff6df" stroke="#ac7c14"/>
+    <text x="52" y="137" font-size="21" font-weight="bold">Garder l'ancien rapport</text>
+    <text x="52" y="173" font-size="18">Choisir un nouveau nom :</text>
+    <text x="52" y="205" font-size="18">local/soiree-2.txt</text>
+    <text x="52" y="234" font-size="18">local/soiree-2.pdf</text>
+    <text x="510" y="137" font-size="21" font-weight="bold">Remplacer exprès</text>
+    <text x="510" y="173" font-size="18">Vérifier les noms des rapports.</text>
+    <text x="510" y="205" font-size="18">Ajouter --overwrite à la commande.</text>
+    <text x="510" y="234" font-size="17">L'ancien rapport sera remplacé.</text>
+    <rect x="32" y="276" width="896" height="80" rx="12" fill="#fae9e6" stroke="#a44b3c"/>
+    <text x="52" y="308" font-size="20" font-weight="bold">Toujours protégés : les entrées et les archives Seestar</text>
+    <text x="52" y="337" font-size="17">Le dossier USB des photos ne doit jamais recevoir un rapport.</text>
+    <text x="32" y="377" font-size="14">Schéma explicatif. Le TXT et le PDF sont préparés puis publiés séparément.</text>
+  </g>
+</svg>

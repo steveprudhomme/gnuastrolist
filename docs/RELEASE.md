@@ -7,6 +7,9 @@
 - [ ] Construire sdist et wheel; contrôler leur contenu et installer la wheel
       dans un environnement neuf, hors du répertoire des sources.
 - [ ] Exécuter les exemples Caldwell hors ligne depuis cette installation.
+- [ ] Vérifier les exports ECC-A : nouveau TXT/PDF, refus d'un rapport existant,
+      remplacement explicite `--overwrite` et préservation des entrées/archives
+      avec des fichiers Seestar synthétiques; voir [EXPORTS.md](EXPORTS.md).
 - [ ] Établir les empreintes SHA-256 des fichiers réellement distribués.
 - [ ] Vérifier les dépendances distribuées et leurs notices; produire un SBOM
       si la distribution inclut des dépendances ou exécutables embarqués.

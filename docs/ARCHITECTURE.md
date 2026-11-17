@@ -25,6 +25,13 @@ protège l'espace source contre les exports et annote les résultats affichés.
 Les statuts sont partagés par les rendus TXT/PDF. Sans option Seestar, cet
 inventaire n'est pas lancé et les sorties gardent leur format précédent.
 
+`report_files.py` centralise les contrôles ECC-A des entrées et destinations,
+avant les effets de la CLI puis avant chaque publication. Il protège également
+le paquet installé et le cache de la commande. `staged_report()` prépare un
+fichier voisin et publie chaque rapport atomiquement, avec remplacement explicite
+uniquement (`--overwrite` dans la CLI). TXT et PDF restent indépendants; le rendu
+PDF réutilise ce composant. Voir les [règles et limites des exports](EXPORTS.md).
+
 `NamedStar` représente les fiches HYG, indépendamment des maxima GCVS et des
 objets du ciel profond. `stellar_names.py` normalise les désignations explicites.
 La sélection multiple réunit Bayer/Flamsteed par clé HYG de la révision embarquée;

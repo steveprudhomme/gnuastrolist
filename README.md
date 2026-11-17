@@ -239,6 +239,13 @@ Ajoutez `--output-txt` et le chemin du fichier voulu pour enregistrer une copie
 UTF-8 du rapport complet. Le rapport demeure également affiché dans le terminal.
 Le dossier parent doit déjà exister.
 
+Un fichier existant est refusé par défaut. Choisissez un nouveau nom ou ajoutez
+`--overwrite` pour remplacer volontairement les rapports. Les entrées, le cache,
+les ressources du logiciel et les archives Seestar protégées restent interdits,
+même avec cette option. TXT et PDF doivent avoir des chemins distincts. Chaque
+rapport est publié atomiquement; les deux exports ne forment pas une transaction
+commune. Voir le [guide des exports protégés](docs/EXPORTS.md).
+
 ```powershell
 gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects messier --output-txt soiree-2026-08-15.txt
 ```
