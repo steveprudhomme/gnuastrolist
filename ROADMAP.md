@@ -1,5 +1,29 @@
 # Feuille de route
 
+## Lot suivant — actualisation configurable au démarrage
+
+Demande du 2026-11-17, à réaliser après l'intégration des comètes. Le logiciel
+ne possède pas encore ces options : noms et délais ci-dessous sont proposés.
+
+- [ ] Enregistrer le plan de ce lot avant son implémentation.
+- [ ] Définir une politique par source : âge maximal réglable, proposition
+      initiale de 24 h pour les comètes; ne pas confondre date de téléchargement
+      et époque orbitale ni imposer la même cadence aux catalogues fixes.
+- [ ] Proposer une option de démarrage « jamais / si périmé / forcé », et des
+      délais par catalogue; documenter leur priorité sur une configuration locale.
+- [ ] Faire de `--offline` une interdiction absolue de téléchargement, même en
+      présence d'une demande de mise à jour forcée; expliquer la combinaison.
+- [ ] Conserver les ressources embarquées intactes; télécharger seulement dans
+      un cache local au logiciel, hors de tout disque source Seestar protégé.
+- [ ] Valider format, unités, effectifs, empreinte et provenance avant remplacement
+      atomique; garder la dernière copie exploitable et un historique minimal.
+- [ ] Respecter les limites et les droits propres à MPC, CBAT et JPL; connexions
+      séquentielles, délais d'attente et reprise limitée sans requête par objet.
+- [ ] Afficher la copie utilisée, son âge, les mises à jour effectuées et les
+      échecs réseau; refuser une orbite non exploitable plutôt que la masquer.
+- [ ] Tester temps simulé, réglages, pannes, cache corrompu, mode hors ligne et
+      protections Seestar; compléter le tutoriel illustré et les MD.
+
 ## Lot comètes — MPC et informations CBAT
 
 - [x] Examiner les moteurs mobiles et les formats officiels disponibles.
