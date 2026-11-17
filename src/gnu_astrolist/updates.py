@@ -29,6 +29,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from . import __version__, catalog
+from .cache_lock import cache_transaction
 from .catalog_resources import use_catalog_resources
 from .data_builders import build_caldwell_catalog as caldwell
 from .data_builders import build_catalog as gcvs
@@ -329,6 +330,14 @@ def refresh_catalogs(
     # Aucun mkdir, fichier temporaire ou téléchargement avant cette protection.
     _guard(cache_dir, seestar_root)
     cache_dir = cache_dir.resolve()
+    if not selected:
+        return UpdateResult({}, ())
+    return _refresh_catalogs(selected, mode, offline, cache_dir, ages, seestar_root)
+
+
+@cache_transaction
+def _refresh_catalogs(selected, mode, offline, cache_dir, ages, seestar_root):
+    """Transaction exécutée seulement après validation des paramètres publics."""
     now = datetime.now(timezone.utc)
     active, notes = {}, []
     satellite_kinds = tuple(kind for kind in selected if kind in {'satellites', 'debris'})

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="260" viewBox="0 0 960 260">
+<rect width="960" height="260" rx="16" fill="#eff5fa"/>
+<g font-family="sans-serif" fill="#183a55">
+<text x="28" y="42" font-size="25" font-weight="bold">ECC-I : partager un projet facile à comprendre</text>
+<rect x="28" y="75" width="280" height="110" rx="12" fill="#e2ede6"/>
+<rect x="338" y="75" width="280" height="110" rx="12" fill="#e2ede6"/>
+<rect x="648" y="75" width="280" height="110" rx="12" fill="#e2ede6"/>
+<text x="44" y="110" font-size="20">1. Expliquer les étapes</text>
+<text x="44" y="151" font-size="16">Des mots simples et des dessins</text>
+<text x="354" y="110" font-size="20">2. Citer les sources</text>
+<text x="354" y="151" font-size="16">Respecter le travail des auteurs</text>
+<text x="664" y="110" font-size="20">3. Garder ses données</text>
+<text x="664" y="151" font-size="16">Rapports personnels dans local/</text>
+<text x="28" y="226" font-size="16">Schéma explicatif. Les archives Seestar restent en lecture seule.</text>
+</g></svg>

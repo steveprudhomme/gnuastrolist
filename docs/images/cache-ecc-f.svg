@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="260" viewBox="0 0 960 260">
+<rect width="960" height="260" rx="16" fill="#eff5fa"/>
+<g font-family="sans-serif" fill="#183a55">
+<text x="28" y="42" font-size="25" font-weight="bold">ECC-F : ranger les copies sans toucher aux photos</text>
+<rect x="28" y="75" width="280" height="110" rx="12" fill="#e2ede6"/>
+<rect x="338" y="75" width="280" height="110" rx="12" fill="#e2ede6"/>
+<rect x="648" y="75" width="280" height="110" rx="12" fill="#e2ede6"/>
+<text x="44" y="110" font-size="20">1. Attendre son tour</text>
+<text x="44" y="151" font-size="16">Un verrou pour les mises à jour</text>
+<text x="354" y="110" font-size="20">2. Simuler le rangement</text>
+<text x="354" y="151" font-size="16">Lire ce qui serait retiré</text>
+<text x="664" y="110" font-size="20">3. Garder une bonne copie</text>
+<text x="664" y="151" font-size="16">Appliquer seulement si souhaité</text>
+<text x="28" y="226" font-size="16">Schéma explicatif. Le cache local est séparé des archives Seestar en lecture seule.</text>
+</g></svg>

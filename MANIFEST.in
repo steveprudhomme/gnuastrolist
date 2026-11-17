@@ -1,7 +1,8 @@
 include LICENSE *.md .editorconfig .gitattributes
 recursive-include .github *.yml *.md
-recursive-include docs *.md *.svg
+recursive-include docs *.md *.svg *.json
 recursive-include scripts *.py
-recursive-include tests *.py *.json
+recursive-include requirements *.txt *.md
+recursive-include tests *.py *.json *.txt
 recursive-include src/gnu_astrolist/data *.txt.gz *.json.gz *.csv.gz *.csv *.md
 recursive-include src/gnu_astrolist/data/fonts *.ttf *.txt

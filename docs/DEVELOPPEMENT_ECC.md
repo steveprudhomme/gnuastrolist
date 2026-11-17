@@ -16,15 +16,13 @@ retrouver lors des prochaines étapes. Le plan détaillé est dans
 
 ECC-A est fusionné dans `main` par la
 [PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9), commit `1d75522`.
-ECC-B est réalisé et publié dans la
-[PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10), avec cinq
-contrôles réussis sur le correctif; sa fusion reste distincte. ECC-C est publié
-dans la [PR nº 11](https://github.com/steveprudhomme/gnuastrolist/pull/11), basée
-sur ECC-B, avec cinq contrôles réussis sur le correctif. Intégrer ECC-B avant
-de revoir la base et la fusion d'ECC-C dans `main`.
-La prochaine étape de développement est **utiliser ECC pour réaliser ECC-D —
-environnement et livraison reproductibles**. Toujours lire les cases plutôt
-qu'un ancien compte rendu.
+ECC-B est fusionné par la [PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10)
+(`7f3b4d0`), puis ECC-C par la
+[PR nº 11](https://github.com/steveprudhomme/gnuastrolist/pull/11) (`b75f5d7`).
+Les lots ECC-D à ECC-I sont réalisés dans la PR nº 12, replacée sur main.
+Le propriétaire a explicitement autorisé le cycle de fusion nº 10 → nº 11 → nº 12
+avec nouveaux contrôles avant chaque intégration. Les cases et preuves sont
+dans ROADMAP.md. Aucun lot ECC terminé ne doit être recommandé de nouveau.
 Une demande d'information sur la prochaine étape ne déclenche pas sa réalisation.
 
 ## Périmètre des lots
@@ -77,7 +75,7 @@ Ces constats motivent ECC-A, ECC-B et ECC-C. ECC-A apporte maintenant les
 contrôles de fichiers et les exports décrits dans [EXPORTS.md](EXPORTS.md);
 voir les résultats et limites dans [VALIDATION.md](VALIDATION.md). Les défauts
 météo sont traités par ECC-B, décrit dans [METEO.md](METEO.md); les paramètres
-numériques restent à traiter dans ECC-C.
+numériques sont traités par ECC-C, décrit dans [PARAMETRES.md](PARAMETRES.md).
 
 L'environnement local héritait de paquets système et présentait deux conflits
 extérieurs au projet, ce qui motive ECC-D. Les risques de concurrence des caches
@@ -89,3 +87,13 @@ L'accord concerne le plan et son commit local. Il n'autorise pas l'activation
 de services externes, des installations automatiques ou une publication GitHub.
 Les archives Seestar restent strictement en lecture seule. Ne jamais fabriquer
 de données, signatures ou attestations pour satisfaire un contrôle.
+
+
+## Autorisation du lot autonome du 17 novembre 2026
+
+Le propriétaire a explicitement demandé de publier le plan avant le code et de
+mettre GitHub à jour pour ECC-D à ECC-I. Cette autorisation remplace la consigne
+locale par défaut pour cette branche seulement. Les calculs et modifications
+se font dans les copies locales; aucune fusion ni modification de réglage GitHub
+n'est incluse. Les installations nécessaires restent dans les environnements
+locaux du projet, sans service permanent. Le plan publié est `a814a49`.

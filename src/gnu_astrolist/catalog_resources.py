@@ -13,7 +13,8 @@ from pathlib import Path
 from threading import RLock
 
 _overrides: dict[str, Path] = {}
-_lock = RLock()
+# Un seul verrou pour les deux contextes globaux : aucune inversion possible.
+application_context_lock = RLock()
 
 
 def catalog_resource(filename: str):
@@ -49,7 +50,7 @@ def _clear_caches() -> None:
 def use_catalog_resources(overrides: Mapping[str, Path]) -> Iterator[None]:
     """Active des ressources pour une commande; restaure aussi les contextes imbriqués."""
     global _overrides
-    with _lock:
+    with application_context_lock:
         previous = _overrides
         _clear_caches()
         _overrides = {name: Path(path) for name, path in overrides.items()}

@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "measured_on": "2026-11-17",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "python": "3.13.6",
+  "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+  "versions": {
+    "astropy": "7.2.0",
+    "numpy": "2.4.0",
+    "sgp4": "2.25",
+    "reportlab": "4.4.7"
+  },
+  "script_sha256": "9d77358beab6746308341ec01b2f6c13e46801b341b6ffbf86d0371c09395b2d",
+  "scenarios": {
+    "catalogs": {
+      "wall_runs": [
+        {
+          "seconds": 0.6800141999992775,
+          "python_peak_bytes": null,
+          "process_peak_rss_bytes": 184975360,
+          "workload": {
+            "input_objects": 32648,
+            "samples": 13,
+            "selected": 189
+          },
+          "warnings": "WARNING: Tried to get polar motions for times after IERS data is valid. Defaulting to polar motion from the 50-yr mean for those. This may affect precision at the arcsec level. Please check your astropy.utils.iers.conf.iers_auto_url and point it to a newer version if necessary. [astropy.coordinates.builtin_frames.utils]"
+        },
+        {
+          "seconds": 0.672737099994265,
+          "python_peak_bytes": null,
+          "process_peak_rss_bytes": 184971264,
+          "workload": {
+            "input_objects": 32648,
+            "samples": 13,
+            "selected": 189
+          },
+          "warnings": "WARNING: Tried to get polar motions for times after IERS data is valid. Defaulting to polar motion from the 50-yr mean for those. This may affect precision at the arcsec level. Please check your astropy.utils.iers.conf.iers_auto_url and point it to a newer version if necessary. [astropy.coordinates.builtin_frames.utils]"
+        },
+        {
+          "seconds": 0.7010061999972095,
+          "python_peak_bytes": null,
+          "process_peak_rss_bytes": 184225792,
+          "workload": {
+            "input_objects": 32648,
+            "samples": 13,
+            "selected": 189
+          },
+          "warnings": "WARNING: Tried to get polar motions for times after IERS data is valid. Defaulting to polar motion from the 50-yr mean for those. This may affect precision at the arcsec level. Please check your astropy.utils.iers.conf.iers_auto_url and point it to a newer version if necessary. [astropy.coordinates.builtin_frames.utils]"
+        }
+      ],
+      "median_seconds": 0.6800141999992775,
+      "memory_run": {
+        "seconds": 3.113805600005435,
+        "python_peak_bytes": 102048508,
+        "process_peak_rss_bytes": 320733184,
+        "workload": {
+          "input_objects": 32648,
+          "samples": 13,
+          "selected": 189
+        },
+        "warnings": "WARNING: Tried to get polar motions for times after IERS data is valid. Defaulting to polar motion from the 50-yr mean for those. This may affect precision at the arcsec level. Please check your astropy.utils.iers.conf.iers_auto_url and point it to a newer version if necessary. [astropy.coordinates.builtin_frames.utils]"
+      }
+    },
+    "satellites": {
+      "wall_runs": [
+        {
+          "seconds": 1.9024744999987888,
+          "python_peak_bytes": null,
+          "process_peak_rss_bytes": 164585472,
+          "workload": {
+            "input_objects": 737,
+            "samples": 41,
+            "selected": 130,
+            "age_filter": "deliberately bypassed: numerical workload, not observing advice"
+          },
+          "warnings": ""
+        },
+        {
+          "seconds": 1.8750252999961958,
+          "python_peak_bytes": null,
+          "process_peak_rss_bytes": 164675584,
+          "workload": {
+            "input_objects": 737,
+            "samples": 41,
+            "selected": 130,
+            "age_filter": "deliberately bypassed: numerical workload, not observing advice"
+          },
+          "warnings": ""
+        },
+        {
+          "seconds": 1.8706545000022743,
+          "python_peak_bytes": null,
+          "process_peak_rss_bytes": 164143104,
+          "workload": {
+            "input_objects": 737,
+            "samples": 41,
+            "selected": 130,
+            "age_filter": "deliberately bypassed: numerical workload, not observing advice"
+          },
+          "warnings": ""
+        }
+      ],
+      "median_seconds": 1.8750252999961958,
+      "memory_run": {
+        "seconds": 7.684990300003847,
+        "python_peak_bytes": 85478269,
+        "process_peak_rss_bytes": 261165056,
+        "workload": {
+          "input_objects": 737,
+          "samples": 41,
+          "selected": 130,
+          "age_filter": "deliberately bypassed: numerical workload, not observing advice"
+        },
+        "warnings": ""
+      }
+    },
+    "reports": {
+      "wall_runs": [
+        {
+          "seconds": 2.4467444000038086,
+          "python_peak_bytes": null,
+          "process_peak_rss_bytes": 130101248,
+          "workload": {
+            "rows": 1000,
+            "txt_bytes": 486859,
+            "pdf_bytes": 437123
+          },
+          "warnings": ""
+        },
+        {
+          "seconds": 2.485806799995771,
+          "python_peak_bytes": null,
+          "process_peak_rss_bytes": 130375680,
+          "workload": {
+            "rows": 1000,
+            "txt_bytes": 486859,
+            "pdf_bytes": 437123
+          },
+          "warnings": ""
+        },
+        {
+          "seconds": 2.361006400002225,
+          "python_peak_bytes": null,
+          "process_peak_rss_bytes": 130416640,
+          "workload": {
+            "rows": 1000,
+            "txt_bytes": 486859,
+            "pdf_bytes": 437123
+          },
+          "warnings": ""
+        }
+      ],
+      "median_seconds": 2.4467444000038086,
+      "memory_run": {
+        "seconds": 14.29123350000009,
+        "python_peak_bytes": 30590877,
+        "process_peak_rss_bytes": 171581440,
+        "workload": {
+          "rows": 1000,
+          "txt_bytes": 486859,
+          "pdf_bytes": 437123
+        },
+        "warnings": ""
+      }
+    },
+    "seestar": {
+      "wall_runs": [
+        {
+          "seconds": 0.228973400000541,
+          "python_peak_bytes": null,
+          "process_peak_rss_bytes": 68734976,
+          "workload": {
+            "folders": 1000,
+            "files": 10000,
+            "recognized": 1000
+          },
+          "warnings": ""
+        },
+        {
+          "seconds": 0.20767129999876488,
+          "python_peak_bytes": null,
+          "process_peak_rss_bytes": 68481024,
+          "workload": {
+            "folders": 1000,
+            "files": 10000,
+            "recognized": 1000
+          },
+          "warnings": ""
+        },
+        {
+          "seconds": 0.20455590000347001,
+          "python_peak_bytes": null,
+          "process_peak_rss_bytes": 68415488,
+          "workload": {
+            "folders": 1000,
+            "files": 10000,
+            "recognized": 1000
+          },
+          "warnings": ""
+        }
+      ],
+      "median_seconds": 0.20767129999876488,
+      "memory_run": {
+        "seconds": 0.7017274000027101,
+        "python_peak_bytes": 3749725,
+        "process_peak_rss_bytes": 71622656,
+        "workload": {
+          "folders": 1000,
+          "files": 10000,
+          "recognized": 1000
+        },
+        "warnings": ""
+      }
+    }
+  }
+}

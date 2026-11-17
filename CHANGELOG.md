@@ -5,6 +5,14 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté — ECC-D, livraison reproductible
+
+- NumPy déclaré directement; quatre verrous Windows/Linux Python 3.10/3.13
+  avec versions et empreintes, outil de reconstruction uv épinglé.
+- Environnements locaux sans paquets système, contrôles de dépendances et
+  inventaire de livraison avec licences déclarées et empreintes, sans faux SBOM.
+- Guide et tutoriel illustré; versions et limites des essais consignées.
+
 ### Corrigé — ECC-C, précontrôle des paramètres
 
 - Validation partagée des nombres finis, du site terrestre, du champ, des
@@ -368,3 +376,80 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 - Transformation vectorisée ICRS vers Alt/Az avec Astropy.
 - Champ de visée centré, sélection pendant la plage et tri par magnitude.
 - Validation des entrées, mode hors ligne, limite d'affichage et tests.
+
+
+### ECC-E — Contrôles de qualité
+
+- Couverture mesurée et planchers globaux/chemins critiques; typage strict initial
+  de la validation et règles Ruff supplémentaires.
+- Recherche ciblée de secrets sans contenu dans les diagnostics; CI avec verrous,
+  actions épinglées et durée bornée; audit de tous les verrous.
+- Python 3.11 minimum, avec correctifs Pillow/filelock et verrous audités;
+  aucun avis ignoré.
+
+
+### ECC-G — Service et rapport partagé
+
+- Service de préparation testable, objet `ReportData` et formats publics communs
+  aux rendus; CLI/TXT/PDF préservés.
+- Contexte IERS temporaire restauré après succès, erreur et appels imbriqués;
+  décision ADR 0007, régressions d'appels successifs et guide illustré.
+
+
+### ECC-H — Références scientifiques et performances
+
+- 38 références topocentriques Skyfield gelées, trois sites et quatre TLE publics;
+  générateur, versions, empreintes, licences et tolérances documentés.
+- Vérification des franchissements d'horizon; mesures temps/mémoire des
+  catalogues, satellites, rapports et 10 000 fichiers Seestar synthétiques.
+- SGP4 demeure commun aux deux chaînes; aucune observation réelle revendiquée.
+
+
+### ECC-I — Documentation et pratiques open source
+
+- Confidentialité des fournisseurs et caches, User-Agent issu de la version,
+  19 avis SPDX attribués à l'auteur vérifié et notices des références conservées.
+- Anciens rapports retirés du suivi courant, conservés sur le poste et dans
+  l'historique; exemples synthétiques et audit ciblé sans divulguer de contenu.
+- Checklist des dix sélections et relevé GitHub en lecture seule : `main` non
+  protégée et signalement privé désactivé, sans changement de réglage.
+
+
+### ECC-F — Concurrence et rétention des caches
+
+- Verrou OS réentrant sur toute la transaction fournisseur, libéré après arrêt;
+  validation avant création, modes never/offline sans écriture de verrou.
+- Commande distincte `gnu-astrolist-cache`, simulation par défaut, retrait explicite,
+  conservation des générations réellement reconstructibles et état CelesTrak.
+- Tests concurrents, interruption et refus de liens, chemins inconnus et archives
+  sources; ADR 0008 et tutoriel illustré, aucune purge automatique.
+
+Revue ECC-G : verrou de contexte commun, précontrôle strict de la limite/âge GP
+du service direct et erreur CLI lisible en cas de délai du cache dépassé.
+
+Revue finale ECC-H/D : sorties des outils scientifiques et du manifeste locales,
+atomiques et protégées; contexte IERS corrigé pour le benchmark Python 3.10.
+
+
+### ECC-E.6 — Python 3.11 minimum (changement de compatibilité)
+
+- Après accord du propriétaire, minimum Python relevé de 3.10 à 3.11 et matrice
+  Windows/Linux 3.11/3.13; retrait des verrous 3.10 vulnérables.
+- Versions minimales corrigées Pillow 13 et filelock 4.2.1; quatre verrous
+  régénérés avec empreintes. Aucun avis de vulnérabilité ignoré.
+
+Revue croisée ECC-F/G : ordre commun contexte → cache pour les actualisations
+directes et la rétention; deux régressions concurrentes supplémentaires.
+
+Clôture ECC-D à ECC-I : 716 tests locaux réussis sur Python 3.11/3.13,
+couverture 90,34 %, quatre audits sans avis connu et cinq contrôles GitHub
+verts sur `a3804fe`. PR nº 12 proposée à la revue; aucune fusion effectuée.
+
+
+### Intégration des PR nº 10, nº 11 et nº 12
+
+- Fusions autorisées dans cet ordre, avec conservation de l'historique;
+  les PR dépendantes sont replacées sur main et actualisées dans des copies locales.
+- Cinq contrôles vérifiés avant chaque fusion; contrôle final de main.
+- Documentation et tutoriel réconciliés; aucune modification du code, des
+  réglages GitHub ou des archives Seestar réelles pendant cette intégration.

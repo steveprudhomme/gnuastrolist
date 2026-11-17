@@ -18,3 +18,7 @@ Les protections de branche, les contrôles requis et le signalement privé de
 vulnérabilités sont des réglages GitHub à vérifier séparément avant publication;
 leur présence n'est pas garantie par ces fichiers. Les tags `vMAJOR.MINOR.PATCH`
 désignent uniquement les versions réellement publiées.
+
+Le [relevé ECC-I du 17 novembre 2026](docs/GOUVERNANCE_VERIFIEE.md) indique
+les réglages réellement observés, leurs limites et les décisions du propriétaire
+encore nécessaires. La publication du lot autonome n’autorise aucune fusion.

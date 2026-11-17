@@ -29,3 +29,10 @@ document n'est ni un SBOM ni un audit juridique automatisé.
 La dépendance SGP4 de Brandon Rhodes et contributeurs est sous MIT. Aucune
 fiche réelle UNOOSA n'est distribuée : l'import local du registre reste soumis
 aux droits des données fournies par l'utilisateur.
+
+
+Les références de tests ECC-H conservent les textes MIT SGP4 et BSD-3-Clause
+IERS dans `tests/data/`; [la notice scientifique](docs/SCIENCE_SATELLITE_REFERENCES.md)
+précise l'origine, l'extraction et les conditions sans relicencier les données.
+Les avis ajoutés aux anciens fichiers originaux suivent l'auteur vérifié dans
+Git; aucun avis de tiers n'est supprimé ni aucune attestation DCO fabriquée.

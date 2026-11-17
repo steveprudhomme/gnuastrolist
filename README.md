@@ -70,7 +70,7 @@ automatique fiable n'est validé.
 
 ## Installation
 
-Python 3.10 ou une version plus récente est requis.
+Python 3.11 ou une version plus récente est requis.
 
 ### Windows PowerShell
 
@@ -513,6 +513,11 @@ d'entrée `console_scripts`, conformément au guide de la
 
 ## Tests et qualité
 
+Pour reproduire les versions de développement/livraison, utiliser les
+[quatre verrous avec empreintes](requirements/README.md) dans un environnement
+sans paquets système. Voir [ECC-D](docs/LIVRAISON_REPRODUCTIBLE.md) pour les
+versions testées, la reconstruction et l'inventaire de livraison.
+
 Les réglages sont vérifiés avant les actualisations, la météo et les exports.
 NaN/infini, les pas non représentables et les budgets dépassés sont refusés par
 une erreur de commande. Les limites sont de 2 000 instants pour les objets
@@ -546,8 +551,8 @@ Les contributions sont bienvenues. Consultez [CONTRIBUTING.md](CONTRIBUTING.md),
 [ROADMAP.md](ROADMAP.md) et [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 Les améliorations approuvées après l'audit sont identifiées **ECC-A à ECC-I**
-dans le roadmap et se réalisent avec ECC. La prochaine étape est le premier
-lot incomplet de cette liste; voir la [méthode ECC](docs/DEVELOPPEMENT_ECC.md).
+dans le roadmap et se réalisent avec ECC. Ils sont réalisés dans cette branche;
+la revue et les fusions restent distinctes. Voir la [méthode ECC](docs/DEVELOPPEMENT_ECC.md).
 
 Le cadre de développement est décrit dans [AGENTS.md](AGENTS.md),
 [INSTALL.md](INSTALL.md) et l'[index documentaire](docs/README.md).
@@ -556,5 +561,32 @@ Consultez aussi [GOVERNANCE.md](GOVERNANCE.md), [DCO.md](DCO.md),
 [LICENSE-NOTICE.md](LICENSE-NOTICE.md).
 
 Le [tutoriel illustré](docs/TUTORIEL.md) décrit le parcours Caldwell et les
-contrôles locaux. La finalisation en cours reste exclusivement locale : commits,
-tests et archives sur la copie de travail, opérations GitHub différées.
+contrôles locaux. Le propriétaire a autorisé la publication du plan et des
+lots ECC-D à ECC-I sur leur branche. Le travail reste dans les copies locales.
+Les fusions nº 10 → nº 11 → nº 12 ont ensuite été explicitement autorisées,
+avec contrôles verts avant chaque fusion; aucun réglage GitHub ne change.
+
+Les [contrôles ECC-E](docs/QUALITE.md) mesurent lignes et branches, vérifient
+progressivement les types et recherchent secrets et dépendances vulnérables.
+
+ECC-G sépare le [service et les rapports](docs/APPLICATION.md), avec restauration
+des réglages IERS à la sortie et préservation des commandes existantes.
+
+ECC-H ajoute des [références satellitaires gelées](docs/SCIENCE_SATELLITE_REFERENCES.md)
+et des [mesures temps/mémoire reproductibles](docs/PERFORMANCES.md).
+
+ECC-I précise [la confidentialité](PRIVACY.md), les attributions,
+[la livraison](docs/RELEASE.md) et [la gouvernance observée](docs/GOUVERNANCE_VERIFIEE.md).
+
+ECC-F coordonne les mises à jour par verrou. La [rétention du cache](docs/CACHE.md)
+se simule avec `gnu-astrolist-cache --cache-dir local/catalog-cache --keep 2`;
+l’option `--apply` applique explicitement le retrait. Les archives Seestar sont protégées.
+
+Validation ECC-D à ECC-I : 716 tests locaux réussis, couverture 90,34 % et
+cinq contrôles GitHub verts sur `a3804fe`; [PR nº 12](https://github.com/steveprudhomme/gnuastrolist/pull/12).
+Python 3.11 minimum, quatre verrous audités, aucune archive Seestar réelle utilisée.
+
+
+Le parcours d'intégration dans `main` suit les PR nº 9 (ECC-A), nº 10 (ECC-B),
+nº 11 (ECC-C), puis nº 12 (ECC-D à ECC-I). Les contrôles sont vérifiés sur
+chaque nouvelle base et sur main après intégration. Voir [la feuille de route](ROADMAP.md).

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="430" viewBox="0 0 1000 430" role="img" aria-labelledby="title desc">
+<title id="title">ECC-G : du choix de l’observation au rapport</title>
+<desc id="desc">Schéma synthétique. La CLI vérifie les paramètres et orchestre les actualisations. Le service appelle les modules métier puis produit un objet de rapport partagé. Les rendus texte et PDF utilisent les formats communs. Le contexte IERS est restauré à la sortie.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#245c75"/></marker></defs>
+<rect width="1000" height="430" fill="#f5f8fb"/>
+<g font-family="sans-serif" fill="#18344a" text-anchor="middle">
+<text x="500" y="35" font-size="22" font-weight="bold">ECC-G — schéma synthétique des responsabilités</text>
+<rect x="20" y="60" width="960" height="340" rx="18" fill="none" stroke="#327d75" stroke-width="2"/>
+<text x="500" y="88" font-size="17">Contexte temporaire IERS : restauré après succès ou erreur</text>
+<g fill="white" stroke="#245c75" stroke-width="2">
+<rect x="40" y="150" width="180" height="95" rx="10"/>
+<rect x="270" y="150" width="200" height="95" rx="10"/>
+<rect x="520" y="150" width="180" height="95" rx="10"/>
+<rect x="760" y="125" width="190" height="65" rx="10"/>
+<rect x="760" y="215" width="190" height="65" rx="10"/>
+<rect x="270" y="300" width="200" height="70" rx="10"/>
+<rect x="730" y="315" width="230" height="55" rx="10"/>
+</g>
+<g font-size="17">
+<text x="130" y="180">CLI : paramètres</text><text x="130" y="205">et actualisations</text><text x="130" y="230">Exports protégés</text>
+<text x="370" y="180">Service d’application</text><text x="370" y="210">Collaborateurs injectés</text>
+<text x="610" y="184">ReportData</text><text x="610" y="215">Données communes</text>
+<text x="855" y="165">Texte / terminal / TXT</text><text x="855" y="255">PDF</text>
+<text x="370" y="328">Modules métier</text><text x="370" y="353">Météo, Lune, objets</text>
+<text x="845" y="348">Formats publics communs</text>
+</g>
+<g fill="none" stroke="#245c75" stroke-width="2" marker-end="url(#arrow)">
+<path d="M220 198 H265"/><path d="M470 198 H515"/><path d="M700 180 L755 160"/><path d="M700 215 L755 245"/><path d="M370 245 V295"/><path d="M800 315 V285"/><path d="M935 315 V285 Q975 200 950 175"/>
+</g>
+</g></svg>

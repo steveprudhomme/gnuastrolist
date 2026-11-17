@@ -13,17 +13,32 @@ Ce dessin est un schéma explicatif, pas une capture de l'application.
 1. Demande « Quelle est la prochaine étape ? ».
 2. La réponse indique **utiliser ECC** et la première étiquette encore ouverte.
 3. **ECC-A** protège les fichiers, **ECC-B** vérifie la météo et **ECC-C**
-   vérifie les réglages de la commande. Le groupe suivant, **ECC-D**, préparera
-   une installation du logiciel facile à reproduire.
+   vérifie les réglages de la commande. **ECC-D** rend l’installation facile à reproduire.
+   **ECC-E à ECC-I** vérifient les tests, caches, calculs et guides.
 4. Après les changements, on vérifie les tests et on explique le résultat.
    On coche une étape seulement quand elle est terminée.
 
 Les neuf groupes sont approuvés. Les cases de la liste indiquent les changements
-réalisés; une branche doit encore être intégrée pour les retrouver dans la
-version principale. Les détails pour les personnes qui
-développent sont dans le [guide ECC](DEVELOPPEMENT_ECC.md).
+réalisés. La feuille de route indique leur intégration dans la version principale.
+Les détails pour les personnes qui développent sont dans le
+[guide ECC](DEVELOPPEMENT_ECC.md).
 
 ## Commencer ici : préparer sa soirée, pas à pas
+
+### Retrouver les mêmes outils avec ECC-D
+
+Un **environnement** est une boîte qui contient les outils du logiciel.
+Un **verrou** est la liste de leurs versions exactes. Cela évite qu'un outil
+d'un autre logiciel change notre résultat.
+
+![Créer une boîte isolée avec la bonne liste d'outils](images/environnement-ecc-d.svg)
+
+1. Avec une personne qui connaît Python, choisis la liste Windows ou Linux.
+2. Crée une nouvelle boîte dans `local`, sur l'ordinateur, pas sur le disque des photos.
+3. Installe la liste choisie, puis vérifie les tests avant de préparer ta soirée.
+
+Le dessin est explicatif. Les [commandes d'installation](../requirements/README.md)
+sont dans le guide pour les personnes qui développent.
 
 ### Vérifier ses réglages avec ECC-C
 
@@ -690,3 +705,101 @@ sur `feat/caldwell-catalog`. La présente clôture documentaire enregistre cette
 vérification. Aucun push, PR distante, fusion ou réglage GitHub n'a été effectué
 pendant cette finalisation. La conception de l'archive météo reste le lot suivant
 proposé dans ROADMAP.md, sans implémentation ajoutée pendant ce lot.
+
+
+## ECC-E — Le contrôle avant de partager
+
+![Schéma explicatif des vérifications](images/qualite-ecc-e.svg)
+
+1. Lance les tests. Un test vérifie un comportement avec un exemple.
+2. Lis les erreurs. Elles aident à trouver ce qu'il faut réparer.
+3. Attends que les contrôles réussissent avant de partager le changement.
+
+La couverture indique les parties parcourues par les tests. Un grand nombre
+ne prouve pas que tout est juste. Le guide [qualité](QUALITE.md) est destiné
+aux personnes qui développent le programme.
+
+
+## ECC-G — Une seule fiche pour les rapports
+
+![Schéma explicatif du service et des rendus](images/ecc-g-application.svg)
+
+1. Choisis ta soirée avec la commande habituelle.
+2. Le programme prépare une seule fiche de résultats.
+3. L'écran, le texte et le PDF lisent cette même fiche.
+
+IERS fournit des nombres utiles pour situer la Terre. Les réglages temporaires
+sont remis comme avant à la fin. Tu n'as aucune nouvelle option à apprendre.
+Le détail pour les développeurs est dans [APPLICATION.md](APPLICATION.md).
+
+
+## ECC-H — Comparer les calculs
+
+![Schéma explicatif de la comparaison](images/ecc-h-reference.svg)
+
+1. Prends les mêmes données de départ pour un satellite.
+2. Fais le calcul avec deux chemins différents.
+3. Compare les directions obtenues. Un écart trop grand fait échouer le test.
+
+Ces chiffres sont des calculs. Ce ne sont pas des photos ni des observations.
+Un satellite calculé dans le champ peut rester invisible.
+Le guide [des références](SCIENCE_SATELLITE_REFERENCES.md) explique les limites.
+Les [mesures de performance](PERFORMANCES.md) indiquent aussi combien de temps
+prennent des exemples synthétiques, sans parcourir ton disque Seestar.
+
+
+## ECC-I — Partager sans partager ses affaires personnelles
+
+![Schéma explicatif des bonnes pratiques](images/pratiques-ecc-i.svg)
+
+1. Lis le guide de démarrage. Les détails techniques viennent plus tard.
+2. Regarde les sources. Elles expliquent d'où viennent les catalogues.
+3. Garde tes rapports dans `local/`. Ils peuvent contenir ton lieu et tes heures.
+
+Une licence explique comment utiliser le travail des auteurs.
+Un ancien fichier publié peut rester dans l'historique, même si on le retire
+aujourd'hui. Demande de l'aide avant de partager des informations personnelles.
+
+
+## ECC-F — Ranger les copies de catalogues
+
+![Schéma explicatif du cache et du verrou](images/cache-ecc-f.svg)
+
+Un cache est un dossier de copies. Tes photos Seestar sont ailleurs.
+Un verrou fait attendre deux mises à jour pour qu'elles ne travaillent pas ensemble.
+
+1. Termine les commandes qui utilisent le cache.
+2. Demande une simulation :
+
+   ```powershell
+   gnu-astrolist-cache --cache-dir local/catalog-cache --keep 2
+   ```
+
+3. Lis `KEEP` : garder. Lis `WOULD REMOVE` : serait retiré.
+4. Demande l'aide d'un adulte avant d'ajouter `--apply`. Cette option retire
+   vraiment les vieilles copies du cache local. Elle ne sert jamais aux photos.
+
+Le programme garde au moins une copie valide. Voir le [guide du cache](CACHE.md).
+
+
+### Choisir une version Python encore prise en charge
+
+1. Utilise Python **3.11 ou plus récent**. Les tests suivent 3.11 et 3.13.
+2. Si tu as Python 3.10, demande de l'aide pour le mettre à jour.
+3. Recrée la boîte d'outils locale avec la bonne liste de versions.
+
+Ce changement permet d'utiliser les corrections de sécurité des outils.
+Tes photos Seestar ne changent pas.
+
+
+## Réunir les versions vérifiées
+
+![Schéma explicatif du parcours de vérification ECC](images/parcours-ecc.svg)
+
+Une fusion réunit deux versions du logiciel. Elle ne change pas tes photos.
+
+1. Vérifier les tests. Tous les contrôles doivent être verts.
+2. Réunir les versions dans l'ordre : nº 10, puis nº 11, puis nº 12.
+3. Vérifier encore les tests de `main`. C'est la version principale du projet.
+
+Les détails des fusions restent dans le journal technique de la feuille de route.

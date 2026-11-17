@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Vérifie les catalogues et notices réellement inclus dans la wheel et la sdist."""
 
+import argparse
 import csv
 import gzip
 import io
@@ -12,7 +13,10 @@ from pathlib import Path
 
 
 def main() -> None:
-    dist = Path(__file__).resolve().parents[1] / "dist"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--dist', type=Path,
+                        default=Path(__file__).resolve().parents[1] / 'dist')
+    dist = parser.parse_args().dist
     wheels, sources = sorted(dist.glob("*.whl")), sorted(dist.glob("*.tar.gz"))
     if not wheels or not sources:
         raise SystemExit("Construire wheel et sdist avec python -m build avant ce contrôle")
@@ -59,6 +63,9 @@ def main() -> None:
         assert any(k.endswith('gnu_astrolist/seestar.py') for k in files), path
         assert any(k.endswith('gnu_astrolist/report_files.py') for k in files), path
         assert any(k.endswith('gnu_astrolist/validation.py') for k in files), path
+        for module in ('cache_admin.py', 'cache_lock.py', 'application.py',
+                       'report_data.py', 'report_formatting.py'):
+            assert any(k.endswith('gnu_astrolist/' + module) for k in files), (path, module)
         assert any(k.endswith("/LICENSE") or k == "LICENSE" for k in files), path
         assert not any("/local/" in k or k.endswith(("rapport.pdf", "rapport.txt")) for k in files)
         if path.name.endswith('.tar.gz'):
@@ -75,6 +82,21 @@ def main() -> None:
             assert any(k.endswith('/docs/METEO.md') for k in files), path
             assert any(k.endswith('/docs/PARAMETRES.md') for k in files), path
             assert any(k.endswith('/docs/images/parametres-ecc-c.svg') for k in files), path
+            assert any(k.endswith('/docs/LIVRAISON_REPRODUCTIBLE.md') for k in files), path
+            assert any(k.endswith('/docs/images/environnement-ecc-d.svg') for k in files), path
+            for guide in ('QUALITE.md', 'CACHE.md', 'APPLICATION.md', 'PERFORMANCES.md',
+                          'SCIENCE_SATELLITE_REFERENCES.md', 'GOUVERNANCE_VERIFIEE.md'):
+                assert any(k.endswith('/docs/' + guide) for k in files), (path, guide)
+            for illustration in ('qualite-ecc-e.svg', 'cache-ecc-f.svg', 'ecc-g-application.svg',
+                                 'ecc-h-reference.svg', 'pratiques-ecc-i.svg'):
+                assert any(k.endswith('/docs/images/' + illustration) for k in files), path
+            for reference in ('satellite_reference.json', 'satellite_reference_iers_LICENSE.txt',
+                              'satellite_reference_sgp4_LICENSE.txt'):
+                assert any(k.endswith('/tests/data/' + reference) for k in files), path
+            for python in ('311', '313'):
+                for platform in ('windows', 'linux'):
+                    assert any(k.endswith(f'/requirements/py{python}-{platform}.txt')
+                               for k in files), (path, python, platform)
         print(f"{path.name} : catalogues, notice, licence et exclusions OK")
 
 

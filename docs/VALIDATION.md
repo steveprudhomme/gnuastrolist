@@ -1,5 +1,20 @@
 # Validation
 
+## État courant — ECC-D à ECC-I réalisés
+
+Windows isolé Python 3.11.9 et 3.13.6 : **716 tests réussis, huit ignorés,
+13 avertissements** chacun; couverture combinée **90,34 %**, seuils séparés
+respectés. Quatre audits sans avis connu, Ruff, typage progressif, liens,
+archives/installations et six schémas contrôlés. PDF avec objets/statuts Seestar
+synthétiques inspecté, simulation du cache sans création de verrou vérifiée.
+
+Les cinq contrôles GitHub de `a3804fe` passent sur Windows/Linux 3.11/3.13
+et la livraison. Plans publiés avant code : `a814a49`, puis `1f2745c` pour
+Python 3.11 minimum. La PR nº 12 est replacée sur main après ECC-B nº 10 et ECC-C nº 11;
+le cycle de fusion nº 10 → nº 11 → nº 12 est ensuite autorisé explicitement.
+Les sections suivantes conservent le journal technique
+et ses mesures intermédiaires; elles ne remplacent pas cet état courant.
+
 ## ECC-C — Paramètres et budgets avant traitement
 
 Plan commité et publié avant les tests nouveaux et le code : `d9545c5`, avec
@@ -439,3 +454,109 @@ La revue locale a confirmé la séparation du plan (`f737e4d`), de la fonctionna
 (`8015cc8`) et du cadre/documentation (`f308106`), puis un arbre de travail propre.
 Les 31 magnitudes V absentes, les avertissements IERS et la CI distante non
 exécutée restent des limites explicites. L'archive météo n'est pas implémentée.
+
+
+## ECC-D — Environnements isolés et livraison
+
+Le plan `a814a49` a été publié avant le code. Windows Python 3.13.6 :
+566 tests réussis, trois ignorés, 12 avertissements ERFA. Sous Python 3.10.16,
+la suite initiale de 564 tests passe (trois ignorés, 87 avertissements IERS/ERFA);
+les deux nouveaux contrats de livraison passent également.
+Ruff, structure, verrous avec empreintes et contrôle des dépendances passent.
+La wheel et la sdist contiennent les données, notices et quatre verrous.
+La wheel installée dans un environnement distinct exécute les dix sélections
+ensemble et produit TXT/PDF hors des sources. L'inventaire local enregistre
+12 composants d'exécution et les empreintes des deux archives.
+Voir [la procédure reproductible](LIVRAISON_REPRODUCTIBLE.md).
+Ces essais Windows ne remplacent pas les contrôles Linux distants.
+
+
+## ECC-G — Service et contexte
+
+Après intégration sur ECC-D/E : 600 tests réussis, trois ignorés et
+12 avertissements ERFA sous Python 3.13.6. Les tests vérifient restauration
+IERS après succès/erreur, imbrication, appels successifs, service injectable et
+cohérence du rapport. Ruff et liens passent; schéma ECC-G inspecté.
+La copie du lot a également exécuté ses 597 tests de base sous Python 3.10.16.
+
+
+## ECC-H — Comparaison indépendante des transformations
+
+La copie dédiée a obtenu 604 tests réussis et trois ignorés sous Python 3.10
+et 3.13. Les 40 nouveaux cas vérifient les références, leur intégrité et la
+sortie publique près de l'horizon. Les calculs Skyfield ne remplacent pas des
+observations; le propagateur SGP4 reste commun. Les conditions et budgets
+mesurés sont dans [PERFORMANCES.md](PERFORMANCES.md), la provenance dans
+[SCIENCE_SATELLITE_REFERENCES.md](SCIENCE_SATELLITE_REFERENCES.md).
+
+
+## ECC-I — Documentation, confidentialité et métadonnées
+
+Après ECC-D/E/G/H/I : 643 tests réussis, trois ignorés, 12 avertissements ERFA
+sous Python 3.13.6; couverture combinée 90,45 %, seuils séparés vérifiés.
+Les avis SPDX couvrent les 19 fichiers originaux sans avis; auteur vérifié dans
+Git. La requête météo simulée annonce la version réelle. Le détecteur ciblé ne
+trouve aucun format de secret reconnu dans 558 blobs textuels historiques;
+ce résultat ne certifie pas l'absence de secrets ou de données personnelles.
+Les anciens rapports restent sur le poste et dans l'historique, sans contenu
+republié dans les documents. Les réglages GitHub ont été lus, jamais modifiés.
+Ruff, liens et schéma ECC-I vérifiés. L'audit Python 3.10 reste distinct et en échec.
+
+
+## ECC-F — Intégration et protection des caches
+
+Après tous les modules intégrés : **691 tests réussis, cinq ignorés** sous
+Python 3.13.6 (12 avertissements) et 3.10.16 (87 avertissements).
+Couverture combinée 90,32 % sous 3.13, seuils lignes/branches distincts atteints.
+Les 48 nouveaux tests passent, deux ignorés selon les capacités de liens/fork.
+La revue indépendante a conduit à trois régressions corrigées : réponse GP
+manquante, inventaire concurrent et validation avant création du verrou.
+Ruff, typage de deux modules, liens, wheel/sdist et six schémas sont contrôlés.
+La rétention ne vise que les générations reconnues d'un cache local explicite;
+aucune archive Seestar réelle n'a été parcourue. Voir [CACHE.md](CACHE.md).
+
+
+## Bilan intermédiaire avant Python 3.11 — PR nº 12
+
+Après les corrections de revue : **714 tests réussis, huit ignorés** dans les
+copies Windows isolées Python 3.13.6 et 3.10.16. Les avertissements restent
+visibles : 13/88 selon Astropy et les tables. Couverture combinée 90,33 %, avec
+planchers séparés lignes/branches vérifiés, Ruff, typage progressif et liens OK.
+Les nouveaux cas de protection des outils scientifiques passent aussi; les
+38 positions régénérées sont inchangées. Six schémas et les pages d'un PDF avec
+objets/statuts Seestar synthétiques ont été inspectés.
+Les dix sélections, TXT/PDF et `gnu-astrolist-cache --help` fonctionnent depuis
+la wheel installée; les archives incluent les notices des références et guides.
+Le manifeste utilise également la publication atomique locale protégée.
+
+La première CI du brouillon a réussi les quatre jobs de tests Windows/Linux
+3.10/3.13. Le job distribution échoue à l'audit Python 3.10 (59 avis sur deux
+paquets), avant la construction; ce n'est pas un défaut d'archive démontré.
+Les audits 3.13 Windows/Linux ne trouvent aucun avis connu. Aucun avis ignoré.
+La PR reste en brouillon, dépendant d'ECC-C puis ECC-B; aucune fusion effectuée.
+La décision de passer à Python 3.11 minimum est requise pour terminer ECC-E.
+Les résultats de cette première CI ne prouvent pas ceux d'un commit ultérieur.
+
+
+## ECC-E.6 — Version minimale approuvée et audit corrigé
+
+Plan ajusté publié avant code : `1f2745c`. Support Python **3.11 minimum**,
+matrice Windows/Linux 3.11/3.13. Environnements isolés Python 3.11.9 et 3.13.6 :
+714 tests réussis, huit ignorés et 13 avertissements chacun. Couverture combinée
+90,33 % et seuils séparés vérifiés. Python 3.11 emploie Astropy 8.0.2 et
+NumPy 2.4.6; Python 3.13 emploie NumPy 2.5.5. Pillow 13.0.0/filelock 4.2.11.
+Les quatre verrous complets passent pip-audit sans avis connu au 17 novembre
+2026. Les verrous 3.10 sont retirés; aucun avis n'est ignoré. Le dernier passage
+GitHub confirme ensuite les cinq contrôles au commit `a3804fe` (voir état courant).
+
+
+## Cycle de fusion autorisé — 17 novembre 2026
+
+La PR nº 10 est fusionnée après ses cinq contrôles verts; la CI main réussit
+au commit `7f3b4d0`. La PR nº 11 est replacée sur main, actualisée localement
+sans changement de fichiers, puis vérifiée par cinq nouveaux contrôles verts
+sur `332276c` avant fusion `b75f5d7`.
+La PR nº 12 reprend ce main dans une copie locale; les seules modifications
+supplémentaires sont documentaires. Les cinq contrôles de sa nouvelle tête
+sont exigés avant fusion, puis les contrôles de main sont vérifiés. Les bilans
+antérieurs sans fusion restent des relevés historiques, pas l'état du cycle actuel.

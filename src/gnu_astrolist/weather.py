@@ -14,6 +14,7 @@ from typing import Any
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
+from . import __version__
 from .models import ObservationWindow, WeatherPeriodSummary, WeatherSummary
 
 OPEN_METEO_ENDPOINT = "https://api.open-meteo.com/v1/forecast"
@@ -24,7 +25,7 @@ MAX_WEATHER_SAMPLES = 1_000
 SOLAR_FALLBACK_WARNING = (
     "Open-Meteo : horaires solaires indisponibles; périodes de repli 20–23 h et 3–6 h locales"
 )
-USER_AGENT = "GNU-Astrolist/0.9"
+USER_AGENT = f"GNU-Astrolist/{__version__}"
 HOURLY_VARIABLES = (
     "temperature_2m",
     "relative_humidity_2m",

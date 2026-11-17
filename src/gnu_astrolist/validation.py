@@ -16,7 +16,9 @@ MAX_STEP_SECONDS = 86_400
 MIN_STEP_SECONDS = 1e-6
 
 
-def finite_number(value: float, name: str, lower=None, upper=None) -> float:
+def finite_number(
+    value: float, name: str, lower: float | None = None, upper: float | None = None
+) -> float:
     if isinstance(value, (bool, str, bytes)):
         raise ValueError(f"{name} : nombre fini requis")
     try:

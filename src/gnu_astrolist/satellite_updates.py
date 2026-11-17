@@ -25,6 +25,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from . import __version__
+from .cache_lock import cache_transaction
 from .updates import (
     MAX_DOWNLOAD_BYTES,
     SOURCE_REGISTRY,
@@ -187,6 +188,27 @@ def _merge(groups: list[list[dict]]) -> list[dict]:
     return list(merged.values())
 
 
+def validate_generation(generation, seestar_root, now, baseline):
+    """Valide une génération partagée pour lecture et rétention."""
+    path, manifest = generation / ARTIFACT, generation / 'metadata.json'
+    for target in (generation, path, manifest):
+        _guard(target, seestar_root)
+    info = json.loads(manifest.read_text(encoding='utf-8'))
+    if (type(info['schema_version']) is not int or info['schema_version'] != 1
+            or info['kind'] not in {'satellites', 'debris'}
+            or info['sha256'] != _sha(path.read_bytes())):
+        raise ValueError('Métadonnées de génération invalides')
+    stamp = _timestamp(info['retrieved_at'])
+    payload = _read_bundle(path)
+    if (stamp > now or info['count'] != len(payload['gp'])
+            or info['sources'] != payload['sources']
+            or any(_source_time(s) > stamp for s in payload['sources'])):
+        raise ValueError('Métadonnées de génération incohérentes')
+    if baseline:
+        _check_population(payload, baseline)
+    return path, payload, stamp
+
+
 def _local_copy(cache_dir, seestar_root, now, notes):
     bundled = None
     try:
@@ -198,22 +220,8 @@ def _local_copy(cache_dir, seestar_root, now, notes):
     for pattern in ('satellites-*', 'debris-*'):
         for generation in cache_dir.glob(pattern):
             try:
-                path, manifest = generation / ARTIFACT, generation / 'metadata.json'
-                for target in (generation, path, manifest):
-                    _guard(target, seestar_root)
-                info = json.loads(manifest.read_text(encoding='utf-8'))
-                if (type(info['schema_version']) is not int or info['schema_version'] != 1
-                        or info['kind'] not in {'satellites', 'debris'}
-                        or info['sha256'] != _sha(path.read_bytes())):
-                    raise ValueError('Métadonnées de génération invalides')
-                stamp = _timestamp(info['retrieved_at'])
-                payload = _read_bundle(path)
-                if (stamp > now or info['count'] != len(payload['gp'])
-                        or info['sources'] != payload['sources']
-                        or any(_source_time(s) > stamp for s in payload['sources'])):
-                    raise ValueError('Métadonnées de génération incohérentes')
-                if bundled:
-                    _check_population(payload, bundled)
+                path, payload, stamp = validate_generation(
+                    generation, seestar_root, now, bundled)
                 # L'ordre du nom d'alias ne doit pas masquer un cache plus récent.
                 candidates.append((stamp, str(path), path, payload))
             except _ERRORS:
@@ -259,6 +267,12 @@ def refresh_satellite_catalog(
     cache_dir = Path(cache_dir)
     _guard(cache_dir, seestar_root)
     cache_dir = cache_dir.resolve()
+    return _refresh_satellite_catalog(mode, offline, cache_dir, gp_age, satcat_age, seestar_root)
+
+
+@cache_transaction
+def _refresh_satellite_catalog(mode, offline, cache_dir, gp_age, satcat_age, seestar_root):
+    """Décision fournisseur et activation sous verrou, après validation des entrées."""
     now, notes = _now(), []
     cached, payload, baseline = _local_copy(cache_dir, seestar_root, now, notes)
     active = {ARTIFACT: cached} if cached else {}

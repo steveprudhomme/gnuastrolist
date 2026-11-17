@@ -16,6 +16,8 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
+from .. import __version__
+
 SIMBAD_TAP_URL = "https://simbad.cds.unistra.fr/simbad/sim-tap/sync"
 TAP_QUERY = """
 SELECT i.id, b.main_id,
@@ -56,7 +58,7 @@ def query_simbad(source_url: str = SIMBAD_TAP_URL) -> bytes:
     request = urllib.request.Request(
         source_url,
         data=payload,
-        headers={"User-Agent": "gnu-astrolist-simbad-cache/0.5"},
+        headers={"User-Agent": f"GNU-Astrolist/{__version__} (simbad-cache)"},
     )
     with urllib.request.urlopen(request, timeout=120) as response:
         return response.read()

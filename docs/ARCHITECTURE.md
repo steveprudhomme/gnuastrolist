@@ -1,10 +1,13 @@
 # Architecture
 
 Le paquet suit une structure `src/` et expose `gnu-astrolist` ainsi que
-`python -m gnu_astrolist`. `cli.py` orchestre les composants :
+`python -m gnu_astrolist`. `cli.py` valide les arguments et protège les destinations; `application.py`
+orchestre les composants via un service testable :
 
 ```text
-arguments → time_utils + models → catalog → visibilité → output / pdf_output
+arguments → application + time_utils + models → catalog → visibilité → ReportData
+                                                                    ↓
+                                                           output / pdf_output
                                     moon et weather → résumés du rapport
 ```
 
@@ -91,3 +94,5 @@ reste sans magnitude; géométrie solaire et immatriculation ne sont pas de la p
 requêtes du fournisseur. Les règles CelesTrak (délais minimaux, compression,
 arrêt sur statut non 200) s'appliquent avant publication dans le cache protégé.
 La [décision 0005](architecture/decisions/0005-satellites-registres.md) décrit les limites.
+
+ECC-G : voir [APPLICATION.md](APPLICATION.md) et l’[ADR 0007](architecture/decisions/0007-service-application-rapport.md).

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="250" viewBox="0 0 960 250">
+<rect width="960" height="250" rx="16" fill="#eff5fa"/>
+<g font-family="sans-serif" fill="#183a55">
+<text x="28" y="42" font-size="25" font-weight="bold">ECC-E : vérifier avant de partager</text>
+<rect x="28" y="75" width="280" height="100" rx="12" fill="#dbece7"/>
+<rect x="338" y="75" width="280" height="100" rx="12" fill="#dbece7"/>
+<rect x="648" y="75" width="280" height="100" rx="12" fill="#dbece7"/>
+<text x="44" y="110" font-size="20">1. Tester les comportements</text>
+<text x="44" y="148" font-size="16">Avec des exemples synthétiques</text>
+<text x="354" y="110" font-size="20">2. Chercher les défauts</text>
+<text x="354" y="148" font-size="16">Types, secrets et dépendances</text>
+<text x="664" y="110" font-size="20">3. Lire les résultats</text>
+<text x="664" y="148" font-size="16">Un échec demande une correction</text>
+<text x="28" y="217" font-size="16">Schéma explicatif. Un test réussi ne garantit pas toute la science du programme.</text>
+</g></svg>

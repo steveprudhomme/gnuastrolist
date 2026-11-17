@@ -7,14 +7,16 @@ approuvées par le propriétaire. Leurs identifiants permanents sont **ECC-A à
 ECC-I**. Ce plan est enregistré avant toute implémentation; les cases restent
 ouvertes tant que leurs critères ne sont pas vérifiés.
 
-**Prochaine étape de développement : utiliser ECC pour réaliser ECC-D —
-environnement et livraison reproductibles.** ECC-A est fusionné dans `main` par la
+**ECC-D à ECC-I sont réalisés dans la [PR nº 12](https://github.com/steveprudhomme/gnuastrolist/pull/12).**
+716 tests locaux réussis sous Python 3.11/3.13, cinq contrôles distants verts
+sur `a3804fe`; voir ci-dessous la nouvelle intégration autorisée. ECC-A est fusionné dans `main` par la
 [PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9), commit `1d75522`.
-ECC-B est publié dans la [PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10),
-avec cinq contrôles réussis sur le correctif; sa fusion reste distincte.
-ECC-C est publié dans la [PR nº 11](https://github.com/steveprudhomme/gnuastrolist/pull/11),
-basée sur ECC-B. Ses cinq contrôles ont réussi sur le correctif; intégrer ECC-B
-avant de revoir la base et de fusionner ECC-C dans `main`.
+ECC-B est fusionné dans `main` par la [PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10),
+commit `7f3b4d0`. ECC-C est fusionné par la
+[PR nº 11](https://github.com/steveprudhomme/gnuastrolist/pull/11), commit `b75f5d7`.
+La PR nº 12 regroupe ECC-D à ECC-I sur cette base `main`, avec nouvelle
+vérification des cinq contrôles avant fusion. Après son intégration, tous les
+lots ECC-A à ECC-I sont réunis dans `main`.
 Choisir le premier lot incomplet
 dans l'ordre ECC-A, ECC-B, ECC-C, ECC-D, ECC-E, ECC-F, ECC-G, ECC-H, ECC-I.
 À chaque demande de prochaine étape, préciser explicitement l'usage d'ECC et
@@ -206,72 +208,162 @@ externe, réglage GitHub ni fusion distante.
 
 ### ECC-D — Environnement et livraison reproductibles — priorité haute
 
-- [ ] ECC-D.1 — Créer un environnement neuf sans paquets système et obtenir
+## Exécution autonome approuvée ECC-D à ECC-I — 17 novembre 2026
+
+Le propriétaire demande de réaliser les six lots, avec plan commité et publié
+avant code, puis tests, tutoriel illustré et publication à chaque lot. Le travail
+part d'ECC-C (`bd53ad3`), dont la PR nº 11 dépend encore d'ECC-B (PR nº 10).
+La nouvelle PR visera ECC-C tant que ces dépendances ne sont pas intégrées.
+Aucune fusion distante ni modification des protections GitHub n'est incluse.
+
+- [x] ECC-DI.0 — Publier ce plan détaillé et vérifier son empreinte distante
+      avant tests nouveaux, dépendances de développement et code.
+- [x] ECC-DI.1 — Employer les méthodes ECC de tests Python, revue de sécurité,
+      architecture et vérification. Répartir exploration/implémentation/revue
+      indépendantes en copies locales distinctes lorsque cela réduit les angles
+      morts; conserver au pilote les décisions et l'intégration.
+- [x] ECC-D.4 — Ajouter NumPy directement, un environnement de développement
+      isolé sans paquets système et des verrous avec versions/empreintes pour
+      Windows/Linux, Python 3.10/3.13. Installer seulement les outils et dépendances
+      nécessaires dans les environnements locaux du projet, jamais globalement.
+- [x] ECC-D.5 — Ajouter une reconstruction des verrous avec outil de résolution
+      versionné, contrôler l'environnement installé, les archives et les dix
+      sélections hors ligne; produire un inventaire de dépendances avec licences
+      et empreintes des distributions sans prétendre signer une livraison.
+- [x] ECC-E.4 — Mesurer la couverture des lignes et branches; choisir un plancher
+      initial démontré et des objectifs renforcés sur les chemins critiques.
+      Compléter des régressions utiles si nécessaire, pas des tests miroirs.
+- [x] ECC-E.5 — Ajouter typage progressif sur les composants contrôlables,
+      contrôles Ruff pertinents, vérification des dépendances et recherche de
+      secrets sans afficher leur contenu. Borner la durée des jobs et utiliser
+      les verrous dans la CI Windows/Linux 3.10/3.13. Distinguer examen local et
+      audit en ligne actualisé; ne pas désactiver un contrôle pour obtenir du vert.
+- [x] ECC-F.4 — Ajouter un verrou interprocessus du cache couvrant lecture,
+      autorisation, requête et activation; réentrance et libération après panne.
+      Les modes never/offline ne créent ni état ni verrou; les règles CelesTrak
+      restent applicables sous deux processus concurrents.
+- [x] ECC-F.5 — Ajouter une commande locale de rétention du cache, simulation
+      par défaut, application explicite, conservation d'au moins une génération
+      valide par famille, refus des chemins liés, inconnus ou protégés Seestar.
+      Tester concurrence, arrêt brutal et rétention uniquement sur copies synthétiques.
+- [x] ECC-G.4 — Introduire un service d'application et un objet de rapport
+      partagé sans casser CLI/TXT/PDF; déplacer les formats communs derrière
+      une API publique plutôt que les imports de fonctions privées entre rendus.
+- [x] ECC-G.5 — Restaurer le contexte IERS après succès et erreur, avec tests
+      d'appels successifs, erreurs et ressources. Documenter une décision
+      d'architecture avant intégration du changement et conserver les contrôles
+      numériques et de destinations ECC-A/C.
+- [x] ECC-H.4 — Ajouter des références gelées de positions satellitaires
+      topocentriques calculées par une chaîne indépendante de la transformation
+      Astropy actuelle (ex. Skyfield), à partir de sources publiques licenciées.
+      Fournir générateur, versions, dates, conventions, empreintes et tolérances;
+      ne pas présenter ces calculs comme des observations réelles.
+- [x] ECC-H.5 — Ajouter des mesures reproductibles temps/mémoire des catalogues
+      combinés, satellites, rapports et inventaires Seestar synthétiques, avec
+      budgets raisonnés d'après la mesure et contrôles non instables en CI.
+      Les tests ordinaires restent entièrement hors réseau.
+- [x] ECC-I.6 — Réconcilier les tâches réalisées et leurs renvois ECC; compléter
+      les avis SPDX des fichiers originaux vérifiés sans inventer de titulaires.
+      Vérifier les notices des données sans leur attribuer de nouvelle licence.
+- [x] ECC-I.7 — Actualiser confidentialité (fournisseurs/cache/rapports), User-Agent
+      issu de la version, gouvernance et livraison des dix catalogues. Examiner
+      les anciens rapports suivis sans publier leur contenu; remplacer leur
+      rôle d'exemple par des fichiers synthétiques documentés. Ne pas réécrire
+      l'historique, fabriquer de signature ou prétendre qu'un canal privé est actif.
+- [x] ECC-DI.2 — À chaque lot : mettre à jour README, CHANGELOG, ROADMAP et
+      guides concernés, ajouter un schéma au tutoriel dès 10 ans, exécuter les
+      contrôles pertinents, consigner les résultats, committer et publier la branche.
+- [x] ECC-DI.3 — Terminer par revue indépendante, suite complète, typage,
+      couverture, audits, archives et installation hors des sources; inspecter
+      les schémas et un PDF. Publier une PR détaillée ciblant ECC-C et vérifier
+      tous les contrôles distants du dernier commit avant de conclure.
+
+L'instruction autorise ces installations locales nécessaires et la publication
+des six lots, mais aucun service externe permanent, réglage GitHub ou fusion.
+Les accès en ligne servent uniquement aux dépendances, références publiques,
+audits de versions et publication autorisée; aucun inventaire Seestar n'est transmis.
+Le disque USB réel ne sera ni parcouru ni modifié.
+
+### ECC-D — Critères initiaux conservés
+
+- [x] ECC-D.1 — Créer un environnement neuf sans paquets système et obtenir
       un contrôle des dépendances réussi, indépendant des autres logiciels.
-- [ ] ECC-D.2 — Déclarer NumPy comme dépendance directe et définir des
+- [x] ECC-D.2 — Déclarer NumPy comme dépendance directe et définir des
       contraintes/verrous adaptés aux plateformes et versions Python prises
       en charge, avec procédure de mise à jour documentée.
-- [ ] ECC-D.3 — Construire et contrôler les archives; installer la wheel
+- [x] ECC-D.3 — Construire et contrôler les archives; installer la wheel
       hors des sources et exercer les dix sélections et exports hors ligne.
       Actualiser les guides; prolonger la tâche de verrouillage et de SBOM
       conditionnel déjà prévue, sans créer de doublon.
 
+Preuves ECC-D (17 novembre 2026) : plan publié `a814a49` avant code;
+566 tests réussis, trois ignorés sous Python 3.13.6 isolé; suite de base
+564 réussis et deux contrats de livraison supplémentaires sous 3.10.16.
+Quatre verrous avec empreintes, contrôle des dépendances, wheel/sdist et
+inventaire de 12 composants vérifiés. Dix sélections et TXT/PDF hors ligne
+depuis la wheel, hors des sources; schéma ECC-D inspecté.
+
 ### ECC-E — Renforcer les vérifications automatiques — priorité moyenne
 
-- [ ] ECC-E.1 — Mesurer couverture et branches, puis fixer des objectifs
+- [x] ECC-E.1 — Mesurer couverture et branches, puis fixer des objectifs
       justifiés sur les chemins critiques et les régressions de l'audit.
-- [ ] ECC-E.2 — Introduire progressivement contrôle des types et règles Ruff
+- [x] ECC-E.2 — Introduire progressivement contrôle des types et règles Ruff
       pertinentes, sans réécriture générale ni tests miroirs de l'implémentation.
-- [ ] ECC-E.3 — Préparer contrôles de dépendances/secrets, durées CI bornées
+- [x] ECC-E.3 — Préparer contrôles de dépendances/secrets, durées CI bornées
       et matrice cohérente avec le support Python annoncé; documenter les
       commandes et distinguer contrôles locaux et résultats distants exécutés.
 
+État ECC-E : couverture initiale 90 %, seuil global 88 % et chemins critiques
+90 %; typage validation et règles Ruff vérifiés. Audit 3.13 sans avis connu.
+Audit 3.10 en échec (Pillow/filelock); correctifs exigeant Python 3.11.
+Changement de compatibilité demandé au propriétaire; aucun avis supprimé.
+
 ### ECC-F — Coordonner et maîtriser les caches — priorité moyenne
 
-- [ ] ECC-F.1 — Protéger par verrou interprocessus la transaction de lecture,
+- [x] ECC-F.1 — Protéger par verrou interprocessus la transaction de lecture,
       autorisation, requête et écriture de l'état fournisseur partagé.
-- [ ] ECC-F.2 — Tester deux commandes simultanées et une interruption avec
+- [x] ECC-F.2 — Tester deux commandes simultanées et une interruption avec
       fournisseur simulé; vérifier délais, blocages et repli sans requête réelle.
-- [ ] ECC-F.3 — Définir une rétention configurable avec simulation de purge,
+- [x] ECC-F.3 — Définir une rétention configurable avec simulation de purge,
       conservation du dernier cache valide et protections Seestar; documenter
       son usage dans le tutoriel illustré et le guide des actualisations.
 
 ### ECC-G — Séparer orchestration, rapport et contexte — priorité moyenne
 
-- [ ] ECC-G.1 — Définir un service d'application testable et un modèle de
+- [x] ECC-G.1 — Définir un service d'application testable et un modèle de
       rapport partagé; documenter la décision avant une refactorisation ciblée.
-- [ ] ECC-G.2 — Réduire les dépendances aux fonctions privées entre rendus
+- [x] ECC-G.2 — Réduire les dépendances aux fonctions privées entre rendus
       et restaurer le contexte IERS après succès ou erreur.
-- [ ] ECC-G.3 — Préserver CLI, TXT et PDF par les tests existants et les
+- [x] ECC-G.3 — Préserver CLI, TXT et PDF par les tests existants et les
       régressions nécessaires; mettre à jour le schéma d'architecture et les
       guides concernés sans surcharger le parcours débutant.
 
 ### ECC-H — Validation scientifique et performances — priorité moyenne
 
-- [ ] ECC-H.1 — Étendre les références externes, notamment des passages
+- [x] ECC-H.1 — Étendre les références externes, notamment des passages
       satellitaires complets, avec site, époque, conventions, empreintes et
       tolérances; conserver les références Horizons, USNO et Vallado existantes.
-- [ ] ECC-H.2 — Vérifier limites temporelles et d'échantillonnage; mesurer
+- [x] ECC-H.2 — Vérifier limites temporelles et d'échantillonnage; mesurer
       temps/mémoire des catalogues combinés, satellites, rapports volumineux
       et grands inventaires Seestar synthétiques, puis fixer des budgets mesurés.
-- [ ] ECC-H.3 — Documenter précision, avertissements et limites, avec exemples
+- [x] ECC-H.3 — Documenter précision, avertissements et limites, avec exemples
       illustrés; ne pas présenter les tests comme une garantie de détection
       ou une validation observationnelle exhaustive.
 
 ### ECC-I — Documentation et pratiques open source — priorité moyenne
 
-- [ ] ECC-I.1 — Réconcilier les tâches déjà réalisées (astéroïdes et mises à
+- [x] ECC-I.1 — Réconcilier les tâches déjà réalisées (astéroïdes et mises à
       jour contrôlées notamment), conserver l'historique et relier les dettes
       de SPDX, dépendances et livraison aux lots ECC correspondants.
-- [ ] ECC-I.2 — Étendre la checklist de livraison aux dix sélections, maintenir
+- [x] ECC-I.2 — Étendre la checklist de livraison aux dix sélections, maintenir
       un parcours débutant court avec images versionnées et séparer le journal
       technique des instructions utilisateur.
-- [ ] ECC-I.3 — Actualiser la confidentialité pour les fournisseurs de
+- [x] ECC-I.3 — Actualiser la confidentialité pour les fournisseurs de
       catalogues et harmoniser le User-Agent avec la version du paquet.
-- [ ] ECC-I.4 — Vérifier les avis SPDX avec titulaires réels, attributions
+- [x] ECC-I.4 — Vérifier les avis SPDX avec titulaires réels, attributions
       et conditions des données; examiner les anciens rapports suivis et la
       portée d'une revue de secrets/historique sans publier de données privées.
-- [ ] ECC-I.5 — Consigner les contrôles de gouvernance et sécurité restant
+- [x] ECC-I.5 — Consigner les contrôles de gouvernance et sécurité restant
       à vérifier sur GitHub; différer les opérations distantes jusqu'à instruction
       explicite et ne jamais fabriquer d'attestation ou de signature.
 
@@ -609,7 +701,7 @@ demande un plan détaillé et un commit de planification préalables.
     introuvables, ainsi que des exemples et des tests d'interopérabilité.
 - [ ] Ajouter un mode « visible au début », « visible à la fin » ou « visible
       pendant toute la plage ».
-- [ ] Ajouter les astéroïdes comme type d'objet, avec des éphémérides adaptées
+- [x] Ajouter les astéroïdes comme type d'objet, avec des éphémérides adaptées
       à leur déplacement et à leur magnitude variable.
 - [x] Ajouter les 109 objets Caldwell comme type d'objet, hors ligne, avec
       provenance et prise en charge des magnitudes V absentes.
@@ -688,15 +780,16 @@ demande un plan détaillé et un commit de planification préalables.
   - risque de rosée;
   - risque de précipitation (%).
 - [ ] Calculer le crépuscule et la séparation avec la Lune.
-- [ ] Permettre la mise à jour contrôlée du catalogue.
+- [x] Permettre la mise à jour contrôlée du catalogue (lot actualisations et ECC-F).
 
 ## Moyen terme
 
 - [ ] Compléter les magnitudes V Caldwell à partir de sources scientifiques
       vérifiables, en distinguant bande, qualité et objet mesuré.
-- [ ] Auditer progressivement les anciens fichiers Python pour leurs avis SPDX.
-- [ ] Vérifier les protections GitHub et la CI distante avant publication.
-- [ ] Définir un verrouillage reproductible des dépendances de livraison et
+- [x] Auditer les anciens fichiers Python pour leurs avis SPDX (ECC-I).
+- [x] Vérifier les protections GitHub : relevé ECC-I, main non protégée;
+      toute modification de réglage exige une instruction distincte.
+- [x] Définir un verrouillage reproductible des dépendances de livraison et
       une production de SBOM si des dépendances sont distribuées.
 
 ## Remise à niveau du cadre de développement
@@ -726,3 +819,85 @@ les commits de planification décrits dans AGENTS.md.
 - [ ] Prédire les magnitudes lorsque des éphémérides fiables sont disponibles.
 - [ ] Modéliser la météo, la pollution lumineuse et les caractéristiques de
       l'instrument.
+
+Revue finale ECC-G : trois défauts reproduits puis corrigés (ordre des verrous,
+limite non entière, domaine âge GP); 40 tests du service réussis.
+
+
+## Bilan intermédiaire autonome — avant accord Python 3.11
+
+Plan `a814a49` publié avant code. ECC-D/F/G/H/I réalisés et publiés dans
+la PR nº 12 en brouillon, sans fusion. ECC-E implémenté mais incomplet :
+audit Python 3.10 en échec, choix Python 3.11 minimum soumis au propriétaire.
+Les contrôles restent actifs. Dernière suite locale : 714 tests réussis,
+huit ignorés sous 3.10.16 et 3.13.6; couverture combinée 90,33 %.
+Revue indépendante, six images inspectées, TXT/PDF et archives vérifiés.
+Le premier passage distant réussit les quatre jobs de tests; distribution
+échoue à l'audit connu. La branche publiée reste distincte de main.
+Le point ouvert à ce stade était ECC-E et le choix de version minimale;
+voir l’ajustement approuvé ECC-E.6 ci-dessous.
+
+
+### ECC-E.6 — Ajustement approuvé : Python 3.11 minimum
+
+Le propriétaire approuve le passage à Python 3.11/3.13 après le constat des
+59 avis connus sur Pillow/filelock sous 3.10. Cet ajustement est commité et
+publié avant sa réalisation.
+
+- [x] ECC-E.6.1 — Relever la version minimale et la matrice à 3.11/3.13;
+      reconstruire les quatre verrous avec empreintes et retirer les verrous 3.10.
+- [x] ECC-E.6.2 — Installer un environnement Python 3.11 local isolé, contrôler
+      les dépendances et exécuter tests, couverture et quatre audits actualisés.
+- [x] ECC-E.6.3 — Actualiser compatibilité, installation, tutoriel et preuves,
+      publier puis vérifier les cinq contrôles distants au dernier commit.
+
+Aucun avis ne sera ignoré; les résultats 3.10 antérieurs restent un historique
+de compatibilité et ne constituent plus une cible de livraison prise en charge.
+
+
+Validation ECC-E.6 après migration : Python 3.11.9 et 3.13.6 isolés,
+714 tests réussis et huit ignorés chacun, 13 avertissements conservés;
+couverture combinée 90,33 %. Quatre audits 3.11/3.13 Windows/Linux : aucun
+avis connu. Pillow 13.0.0 et filelock 4.2.11 verrouillés. CI finale à vérifier.
+
+
+Les cinq contrôles distants de `775fc32` réussissent sur Windows/Linux,
+Python 3.11/3.13, avec audit des quatre verrous et construction/installations.
+Une dernière revue croisée reproduit puis corrige l'inversion contexte/cache
+entre CLI, actualisation directe et rétention. 90 tests ciblés réussis, deux
+ignorés; nouvelle CI requise pour ce correctif avant clôture ECC-DI.3.
+
+
+## Clôture des six lots ECC-D à ECC-I
+
+Tous les critères ECC sont vérifiés dans cette branche. Dernière validation
+locale : 716 tests réussis, huit ignorés et 13 avertissements conservés sous
+Python 3.11.9 et 3.13.6; couverture combinée 90,34 %, seuils distincts atteints.
+Quatre audits sans avis connu, Ruff, typage progressif, liens, six images,
+archives et installation séparée réussis. Recherche ciblée : 667 blobs historiques
+sélectionnés examinés, sans certification générale de confidentialité.
+
+Les cinq contrôles GitHub de `a3804fe` réussissent : quatre jobs Windows/Linux
+3.11/3.13 et distribution (audits, types, secrets, archives, installation).
+La PR nº 12 est proposée à la revue après ECC-B nº 10 et ECC-C nº 11.
+Aucune fusion, modification de réglage GitHub ni utilisation d'archives Seestar
+réelles. La publication du présent bilan est suivie d'une dernière vérification
+de ses contrôles avant le compte rendu utilisateur.
+
+
+## Intégration autorisée dans main — 17 novembre 2026
+
+Le propriétaire demande explicitement les fusions nº 10, nº 11 et nº 12 dans
+cet ordre, après vérification de tous les contrôles. Cette demande complète
+l'autorisation de publication précédente, qui n'incluait pas les fusions.
+
+- PR nº 10 : cinq contrôles verts avant fusion; commit `7f3b4d0`, puis CI main réussie.
+- PR nº 11 : base replacée sur main, fusion préparée localement sans modification
+  de fichiers, cinq nouveaux contrôles verts au commit `332276c`, puis fusion `b75f5d7`.
+- PR nº 12 : base replacée sur main après nº 11; historique conservé et documents
+  réconciliés dans une copie locale. Les cinq contrôles de cette nouvelle tête
+  doivent être verts avant sa fusion; la CI main est vérifiée ensuite.
+
+Les anciens bilans « aucune fusion » décrivent les étapes antérieures à cette
+autorisation. Aucun réglage GitHub n'est modifié; les archives Seestar réelles
+ne sont ni parcourues ni modifiées. Les branches de travail sont conservées.
