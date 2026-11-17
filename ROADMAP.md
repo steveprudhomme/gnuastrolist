@@ -4,7 +4,8 @@
 
 Demande du propriétaire : choisir une hauteur maximale, par exemple 80°, pour
 éviter la zone proche du zénith. Plan local enregistré avant tests nouveaux et
-code; aucune publication ni fusion distante incluse dans ce lot.
+code. Le propriétaire autorise ensuite la publication GitHub de la fonctionnalité;
+la fusion dans main reste une opération distincte.
 
 - [x] ALTMAX.1 — Ajouter `--max-altitude`, plafond effectif de 90° par défaut;
       conserver les anciennes commandes, l'alias `--fov-v` et les appels Python.
@@ -31,8 +32,9 @@ Python 3.11.9 et 3.13.6, huit ignorés et 15 avertissements chacun; couverture
 90,38 %. Après placement de la note en première page du PDF, 38 tests ciblés
 passent sur les deux versions. Ruff, typage progressif, liens et archives
 réussis; schéma et PDF inspectés. Wheel exécutée hors des sources avec écran,
-TXT/PDF et champ 20°–80°. Aucun push, fusion, nouvelle CI distante ni accès
-aux archives Seestar réelles. Le ticket météo nº 13 est distinct de ce lot;
+TXT/PDF et champ 20°–80°. Ces contrôles ont été réalisés localement avant
+publication; les résultats CI de la PR sont vérifiés après publication. Aucun
+accès aux archives Seestar réelles. Le ticket météo nº 13 est distinct de ce lot;
 aucune correction météo n'est incluse.
 
 ## Améliorations approuvées après l'audit ECC — 17 novembre 2026

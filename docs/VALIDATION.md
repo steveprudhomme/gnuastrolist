@@ -20,7 +20,9 @@ objets. La note d'inclusion partielle figure dès la première page du PDF;
 après cet ajustement de présentation, 38 tests ciblés passent sous chacune
 des deux versions Python. Aucun fichier source du disque Seestar n'est utilisé.
 
-Ce lot reste local : aucune nouvelle CI Linux ou GitHub n’est revendiquée.
+La validation ci-dessus est locale. La publication GitHub est ensuite autorisée
+par le propriétaire; les résultats Linux et GitHub doivent être vérifiés sur
+le dernier commit de la PR avant tout compte rendu de validation distante.
 Le plafond porte sur les échantillons retenus, pas toute la trajectoire ni la
 durée d’une pose. Les dates de franchissement existantes concernent la borne
 basse; elles ne donnent pas une fenêtre complète sous le plafond. Aucun
