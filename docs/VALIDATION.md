@@ -51,3 +51,8 @@ structure et distributions ont de nouveau réussi. La construction utilise
 `--no-isolation` avec setuptools 84.2.1 récupéré dans le cache local, sans
 téléchargement. Le contrôle de l'archive source exige aussi les deux images SVG
 du tutoriel. Les opérations GitHub sont différées selon la consigne utilisateur.
+
+La revue locale a confirmé la séparation du plan (`f737e4d`), de la fonctionnalité
+(`8015cc8`) et du cadre/documentation (`f308106`), puis un arbre de travail propre.
+Les 31 magnitudes V absentes, les avertissements IERS et la CI distante non
+exécutée restent des limites explicites. L'archive météo n'est pas implémentée.

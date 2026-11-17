@@ -16,10 +16,14 @@ implémentés dans l'arbre de travail; ce plan précède leur finalisation.
       de distribution pour inclure les illustrations.
 - [x] Exécuter les tests et contrôles pertinents, puis consigner les résultats
       et leurs limites dans le tutoriel et le document de validation.
-- [ ] Enregistrer séparément la fonctionnalité Caldwell et le cadre de
+- [x] Enregistrer séparément la fonctionnalité Caldwell et le cadre de
       développement/documentation dans des commits locaux cohérents.
-- [ ] Vérifier l'historique et l'état final; préparer une synthèse de revue
+- [x] Vérifier l'historique et l'état final; préparer une synthèse de revue
       locale avec les opérations distantes explicitement différées.
+
+Historique local vérifié : plan `f737e4d`, fonctionnalité `8015cc8`, cadre de
+développement et tutoriel illustré `f308106`. L'arbre de travail était propre
+après ces trois commits. La clôture documentaire consigne ce résultat.
 
 ## Lot suivant proposé — conception de l'archive météo
 

@@ -90,3 +90,17 @@ absent. La version 84.2.1 a été retrouvée dans le cache local, copiée sous
 `local/build-tools/` puis installée avec `pip install --no-index --no-deps`.
 La reconstruction a ensuite réussi, sans téléchargement. Le dossier `local/`
 est ignoré par Git et ne fait pas partie des archives distribuées.
+
+### Commits et revue locale
+
+| Commit | Résultat enregistré |
+| --- | --- |
+| `f737e4d` | Plan et sous-étapes avant la finalisation |
+| `8015cc8` | Catalogue Caldwell, provenance et tests |
+| `f308106` | Cadre open source et tutoriel illustré |
+
+Après ces commits, `git status --short --branch` n'indiquait aucune modification
+sur `feat/caldwell-catalog`. La présente clôture documentaire enregistre cette
+vérification. Aucun push, PR distante, fusion ou réglage GitHub n'a été effectué
+pendant cette finalisation. La conception de l'archive météo reste le lot suivant
+proposé dans ROADMAP.md, sans implémentation ajoutée pendant ce lot.
