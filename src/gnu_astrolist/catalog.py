@@ -8,7 +8,7 @@ from collections.abc import Iterable
 from functools import lru_cache
 from importlib import resources
 
-from .models import CatalogObject, MessierObject, VariableStar
+from .models import CatalogObject, DeepSkyObject, MessierObject, VariableStar
 
 VARIABLE_STAR_CATALOG_RESOURCE = "gcvs_visual.csv.gz"
 MESSIER_CATALOG_RESOURCE = "messier.csv.gz"
@@ -58,20 +58,28 @@ def load_variable_star_catalog() -> tuple[VariableStar, ...]:
 def load_messier_catalog() -> tuple[MessierObject, ...]:
     """Charge les 110 objets Messier une fois par processus."""
 
-    resource = resources.files("gnu_astrolist.data").joinpath(
-        MESSIER_CATALOG_RESOURCE
-    )
+    return _load_deep_sky_catalog(MESSIER_CATALOG_RESOURCE)
+
+
+@lru_cache(maxsize=1)
+def load_caldwell_catalog() -> tuple[DeepSkyObject, ...]:
+    """Charge les 109 objets Caldwell, y compris ceux sans magnitude V."""
+    return _load_deep_sky_catalog("caldwell.csv.gz")
+
+
+def _load_deep_sky_catalog(filename: str) -> tuple[DeepSkyObject, ...]:
+    resource = resources.files("gnu_astrolist.data").joinpath(filename)
     with resource.open("rb") as raw, gzip.open(
         raw, mode="rt", encoding="utf-8", newline=""
     ) as stream:
         rows = csv.DictReader(stream)
         objects = tuple(
-            MessierObject(
+            DeepSkyObject(
                 name=row["name"],
                 ra_deg=float(row["ra_deg"]),
                 dec_deg=float(row["dec_deg"]),
                 object_type=row["object_type"],
-                magnitude_v=float(row["magnitude_v"]),
+                magnitude_v=_optional_float(row["magnitude_v"]),
                 passband=row["passband"],
                 catalog_designation=row["catalog_designation"],
                 constellation=row["constellation"],
@@ -88,7 +96,7 @@ def load_messier_catalog() -> tuple[MessierObject, ...]:
             for row in rows
         )
     if not objects:
-        raise RuntimeError("le catalogue Messier embarqué est vide")
+        raise RuntimeError(f"le catalogue embarqué {filename} est vide")
     return objects
 
 
@@ -99,4 +107,7 @@ def filter_by_magnitude(
 
     if max_magnitude is None:
         return list(objects)
-    return [obj for obj in objects if obj.magnitude_v <= max_magnitude]
+    return [
+        obj for obj in objects
+        if obj.magnitude_v is not None and obj.magnitude_v <= max_magnitude
+    ]

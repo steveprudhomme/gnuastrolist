@@ -197,7 +197,10 @@ def _metadata_rows(
     catalog = (
         "Étoiles variables (GCVS)"
         if variable_stars
-        else "Objets Messier (SIMBAD, repli OpenNGC)"
+        else (
+            "Objets Caldwell (OpenNGC, complément SIMBAD)" if object_kind == "caldwell"
+            else "Objets Messier (SIMBAD, repli OpenNGC)"
+        )
     )
     if max_magnitude is None:
         magnitude = "Aucune limite"
@@ -542,7 +545,11 @@ def _notes(object_kind: str) -> tuple[str, ...]:
             "et non une prévision instantanée."
         )
     else:
-        notes.append("Les dimensions et magnitudes privilégient SIMBAD, avec repli OpenNGC.")
+        notes.append(
+            "Données OpenNGC; complément de magnitude V SIMBAD si exploitable."
+            if object_kind == "caldwell"
+            else "Les dimensions et magnitudes privilégient SIMBAD, avec repli OpenNGC."
+        )
     return tuple(notes)
 
 

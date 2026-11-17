@@ -6,7 +6,8 @@ fin d'une plage horaire, retient ceux qui traversent le champ de visée et les
 trie par magnitude en bande V.
 
 Le prototype est déjà fonctionnel : il contient 21 212 entrées visuelles du
-General Catalogue of Variable Stars (GCVS) ainsi que les 110 objets Messier. Il
+General Catalogue of Variable Stars (GCVS), les 110 objets Messier et les
+109 objets Caldwell. Il
 calcule les coordonnées Alt/Az avec Astropy et fonctionne hors ligne grâce aux
 catalogues embarqués.
 
@@ -82,6 +83,22 @@ Les tailles et magnitudes Messier privilégient les valeurs valides de SIMBAD et
 utilisent OpenNGC comme repli hors ligne. Le catalogue choisi est indiqué entre
 crochets à côté de chaque valeur. Ajoutez `--details` pour afficher également
 le bibcode ou la référence et la date de récupération.
+
+## Objets Caldwell
+
+Les **109 objets Caldwell** sont disponibles hors ligne avec `--objects caldwell`.
+Ils utilisent OpenNGC, avec un complément de magnitude V SIMBAD lorsqu'il est
+exploitable. La [notice des données](src/gnu_astrolist/data/CALDWELL_SOURCE.md)
+précise les sources, licences, objets composés et limites.
+
+```powershell
+gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects caldwell --offline
+```
+
+Aucune limite de magnitude n'est appliquée par défaut. Les objets sans magnitude
+V publiée restent inclus, sont triés après ceux dont la magnitude est connue et
+affichent « non disponible ». `--max-magnitude 8` les exclut et retient les V ≤ 8.
+Les options `--details`, `--output-txt` et `--output-pdf` fonctionnent également.
 
 ## Export du rapport en fichier texte
 
@@ -268,7 +285,7 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --az-max DEG                 Limite azimutale de fin
 --min-altitude DEG           Élévation minimale; --fov-v est un alias
 --alt-center DEG             Remplacement avancé facultatif du centre vertical
---objects CATALOGUE          variable_stars ou messier
+--objects CATALOGUE          variable_stars, messier ou caldwell
 --max-magnitude MAG          Limite V; défaut 8 pour les variables, aucune pour Messier
 --all-magnitudes             Désactive la limite pour le catalogue choisi
 --sample-minutes MIN         Pas de recherche (défaut : 10)
@@ -351,3 +368,13 @@ d'utilisation.
 
 Les contributions sont bienvenues. Consultez [CONTRIBUTING.md](CONTRIBUTING.md),
 [ROADMAP.md](ROADMAP.md) et [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+Le cadre de développement est décrit dans [AGENTS.md](AGENTS.md),
+[INSTALL.md](INSTALL.md) et l'[index documentaire](docs/README.md).
+Consultez aussi [GOVERNANCE.md](GOVERNANCE.md), [DCO.md](DCO.md),
+[PRIVACY.md](PRIVACY.md), [SECURITY.md](SECURITY.md) et
+[LICENSE-NOTICE.md](LICENSE-NOTICE.md).
+
+Le [tutoriel illustré](docs/TUTORIEL.md) décrit le parcours Caldwell et les
+contrôles locaux. La finalisation en cours reste exclusivement locale : commits,
+tests et archives sur la copie de travail, opérations GitHub différées.

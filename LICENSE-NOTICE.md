@@ -1,0 +1,21 @@
+# Licences et attributions
+
+Le logiciel original est sous **GPL-3.0-or-later**; le texte intégral est dans
+[LICENSE](LICENSE). Les personnes contributrices conservent leurs droits.
+Le nom du projet ne constitue pas une déclaration d'affiliation officielle GNU.
+
+Les catalogues ont leurs propres conditions :
+
+| Données | Attribution et conditions |
+| --- | --- |
+| GCVS | Auteurs GCVS et VizieR; voir CATALOG_SOURCE.md |
+| Messier dérivé d'OpenNGC | Mattia Verga et contributeurs; CC BY-SA 4.0 |
+| Caldwell dérivé d'OpenNGC | Mattia Verga et contributeurs; CC BY-SA 4.0 |
+| Compléments SIMBAD | CDS, Observatoire astronomique de Strasbourg; attribution conservée |
+
+Les notices détaillées sont dans `src/gnu_astrolist/data/`, notamment
+[CALDWELL_SOURCE.md](src/gnu_astrolist/data/CALDWELL_SOURCE.md).
+Ces données ne sont pas relicenciées sous GPL par leur inclusion dans le paquet.
+Toute nouvelle source ou dépendance doit être examinée avant redistribution.
+Les dépendances Python gardent leurs licences et notices propres; le présent
+document n'est ni un SBOM ni un audit juridique automatisé.

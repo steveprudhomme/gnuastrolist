@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from collections.abc import Sequence
 from pathlib import Path
 
@@ -11,6 +12,7 @@ from astropy.utils import iers
 from . import __version__
 from .catalog import (
     filter_by_magnitude,
+    load_caldwell_catalog,
     load_messier_catalog,
     load_variable_star_catalog,
 )
@@ -84,8 +86,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--objects",
         required=True,
-        choices=("variable_stars", "messier", "messier_objects"),
-        help="catalogue : variable_stars ou messier (messier_objects est un alias)",
+        choices=("variable_stars", "messier", "messier_objects", "caldwell"),
+        help="catalogue : variable_stars, messier ou caldwell (alias : messier_objects)",
     )
     magnitudes = parser.add_mutually_exclusive_group()
     magnitudes.add_argument(
@@ -94,7 +96,7 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help=(
             "magnitude V maximale (défaut : 8 pour variable_stars; "
-            "aucune limite pour messier)"
+            "aucune limite pour messier et caldwell)"
         ),
     )
     magnitudes.add_argument(
@@ -186,11 +188,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     else:
         max_magnitude = 8.0 if object_kind == "variable_stars" else None
 
-    catalog = (
-        load_variable_star_catalog()
-        if object_kind == "variable_stars"
-        else load_messier_catalog()
-    )
+    catalog = {
+        "variable_stars": load_variable_star_catalog,
+        "messier": load_messier_catalog,
+        "caldwell": load_caldwell_catalog,
+    }[object_kind]()
     stars = filter_by_magnitude(catalog, max_magnitude)
     try:
         moon_summary = compute_moon_summary(
@@ -254,5 +256,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         except PdfExportError as exc:
             parser.error(str(exc))
+    # Sous Windows, les sorties redirigées héritent parfois de cp1252, qui ne
+    # peut pas représenter les flèches et symboles astronomiques du rapport.
+    if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     print(report)
     return 0

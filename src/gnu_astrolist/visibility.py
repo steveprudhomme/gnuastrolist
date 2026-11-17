@@ -323,7 +323,10 @@ def compute_visibility(
             for index in selected_indices
         )
     results.sort(
-        key=lambda result: (result.star.magnitude_v, result.star.name.casefold())
+        key=lambda result: (
+            result.star.magnitude_v if result.star.magnitude_v is not None else float("inf"),
+            result.star.name.casefold(),
+        )
     )
     return _enrich_results(
         results,

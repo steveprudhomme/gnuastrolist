@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="330" viewBox="0 0 1100 330" role="img" aria-labelledby="title desc">
+<title id="title">Cycle de travail local</title><desc id="desc">Plan et commit préalable, travail et tutoriel illustré, tests et archives sans réseau, commits locaux. Les opérations GitHub sont différées.</desc>
+<rect width="1100" height="330" rx="18" fill="#f8fafc"/>
+<g font-family="Segoe UI, Arial, sans-serif" fill="#0f172a">
+<text x="30" y="44" font-size="27" font-weight="700">Planifier, vérifier et enregistrer localement</text>
+<text x="30" y="76" font-size="17">Schéma de procédure — les résultats réels sont consignés dans le tutoriel</text>
+<g fill="#dcfce7" stroke="#16a34a" stroke-width="2"><rect x="30" y="110" width="240" height="110" rx="12"/><rect x="310" y="110" width="230" height="110" rx="12"/><rect x="580" y="110" width="230" height="110" rx="12"/><rect x="850" y="110" width="220" height="110" rx="12"/></g>
+<g font-size="20" font-weight="600"><text x="46" y="145">1. Plan préalable</text><text x="326" y="145">2. Travail</text><text x="596" y="145">3. Vérifications</text><text x="866" y="145">4. Historique local</text></g>
+<g font-size="16"><text x="46" y="177">Sous-étapes dans ROADMAP</text><text x="46" y="203">Commit avant de commencer</text><text x="326" y="177">Code et Markdown</text><text x="326" y="203">Tutoriel avec images</text><text x="596" y="177">Tests, qualité et archives</text><text x="596" y="203">Données et outils locaux</text><text x="866" y="177">Commits cohérents</text><text x="866" y="203">Synthèse et état Git</text></g>
+<g font-size="28" fill="#475569"><text x="277" y="176">→</text><text x="547" y="176">→</text><text x="817" y="176">→</text></g>
+<text x="30" y="270" font-size="18" font-weight="600">Publication, PR, fusion et réglages GitHub : différés.</text>
+<text x="30" y="302" font-size="16">Un test local réussi ne prouve pas la réussite de la CI distante ni une validation scientifique externe.</text>
+</g></svg>

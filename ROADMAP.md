@@ -1,5 +1,57 @@
 # Feuille de route
 
+## Correctif avant fusion — autonomie du test de tri Caldwell
+
+- [x] Identifier l'échec Python 3.10 dans la CI : le test de tri utilise une
+      date hors couverture IERS sans définir sa propre politique hors ligne.
+- [x] Enregistrer ce plan avant le correctif.
+- [x] Configurer temporairement IERS dans ce test, sans dépendre des tests CLI
+      précédents ni modifier durablement les paramètres astronomiques.
+- [x] Documenter le correctif dans le tutoriel, la validation et le journal.
+- [x] Exécuter le test isolé et les contrôles locaux : 61 tests réussis.
+- [ ] Confirmer la nouvelle CI Windows/Linux et la distribution sur GitHub.
+
+La fusion de la PR nº 1 est autorisée par l'utilisateur et doit suivre la
+réussite des cinq contrôles. Son état final est consultable dans GitHub.
+
+## Lot en cours — finalisation locale Caldwell et cadre open source
+
+Périmètre : travailler exclusivement sur la copie locale. Aucun push, aucune
+demande d'intégration distante, aucune fusion sur GitHub ni modification des
+réglages distants. Le lot Caldwell et son cadre de développement sont déjà
+implémentés dans l'arbre de travail; ce plan précède leur finalisation.
+
+- [x] Examiner les changements présents et définir le périmètre local.
+- [x] Enregistrer ce plan dans un commit distinct avant les opérations suivantes.
+- [x] Relire le code, la provenance Caldwell et les contrôles de développement.
+- [x] Illustrer le tutoriel avec des images de l'architecture et du parcours de
+      validation locale, clairement identifiées comme des schémas.
+- [x] Mettre à jour les consignes persistantes, les Markdown et les fichiers
+      de distribution pour inclure les illustrations.
+- [x] Exécuter les tests et contrôles pertinents, puis consigner les résultats
+      et leurs limites dans le tutoriel et le document de validation.
+- [x] Enregistrer séparément la fonctionnalité Caldwell et le cadre de
+      développement/documentation dans des commits locaux cohérents.
+- [x] Vérifier l'historique et l'état final; préparer une synthèse de revue
+      locale avec les opérations distantes explicitement différées.
+
+Historique local vérifié : plan `f737e4d`, fonctionnalité `8015cc8`, cadre de
+développement et tutoriel illustré `f308106`. L'arbre de travail était propre
+après ces trois commits. La clôture documentaire consigne ce résultat.
+
+## Lot suivant proposé — conception de l'archive météo
+
+Ce lot n'est pas implémenté pendant la finalisation Caldwell. Son démarrage
+demande un plan détaillé et un commit de planification préalables.
+
+- [ ] Inventorier les données météo actuelles et leurs métadonnées disponibles.
+- [ ] Définir les exigences de provenance, site, unités, qualité, heure de
+      collecte, heure d'émission et heure de validité, sans confondre ces dates.
+- [ ] Comparer les formats de stockage et documenter une décision avant de coder.
+- [ ] Définir des exemples synthétiques et les tests d'intégrité/relecture.
+- [ ] Planifier séparément chaque fournisseur supplémentaire et ses conditions
+      d'utilisation; ne pas présumer un accès réseau pendant le travail local.
+
 ## Prochaine version
 
 - [ ] Exporter les résultats en CSV et JSON.
@@ -31,7 +83,8 @@
       pendant toute la plage ».
 - [ ] Ajouter les astéroïdes comme type d'objet, avec des éphémérides adaptées
       à leur déplacement et à leur magnitude variable.
-- [ ] Ajouter les objets du catalogue Caldwell comme type d'objet.
+- [x] Ajouter les 109 objets Caldwell comme type d'objet, hors ligne, avec
+      provenance et prise en charge des magnitudes V absentes.
 - [ ] Ajouter les nébuleuses planétaires comme type d'objet.
 - [ ] Ajouter les amas ouverts comme type d'objet.
 - [x] Enrichir le tableau des résultats avec les colonnes suivantes :
@@ -110,6 +163,28 @@
 - [ ] Permettre la mise à jour contrôlée du catalogue.
 
 ## Moyen terme
+
+- [ ] Compléter les magnitudes V Caldwell à partir de sources scientifiques
+      vérifiables, en distinguant bande, qualité et objet mesuré.
+- [ ] Auditer progressivement les anciens fichiers Python pour leurs avis SPDX.
+- [ ] Vérifier les protections GitHub et la CI distante avant publication.
+- [ ] Définir un verrouillage reproductible des dépendances de livraison et
+      une production de SBOM si des dépendances sont distribuées.
+
+## Remise à niveau du cadre de développement
+
+- [x] Consulter les conventions de gnu-astrophotography-recycle et gnu-apmg.
+- [x] Documenter installation, architecture, tutoriel et portée de validation.
+- [x] Ajouter gouvernance, DCO, confidentialité, sécurité et notices de licences.
+- [x] Ajouter modèles d'issues/PR, CI Windows/Linux et mises à jour de dépendances.
+- [x] Définir les contrôles de structure et du contenu des distributions.
+- [x] Exécuter et consigner les vérifications finales locales du lot.
+
+Les premiers changements Caldwell avaient commencé avant l'élargissement du lot
+à ce cadre de développement. Les prochains lots suivent le plan préalable et
+les commits de planification décrits dans AGENTS.md.
+
+## Évolutions des données
 
 - [ ] Intégrer VSX/AAVSO avec cache, provenance et gestion des pannes réseau.
 - [ ] Ajouter les catalogues complets NGC/IC et d'autres familles d'objets.

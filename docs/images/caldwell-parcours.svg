@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="330" viewBox="0 0 1100 330" role="img" aria-labelledby="title desc">
+<title id="title">Parcours local Caldwell</title><desc id="desc">Schéma : données locales OpenNGC et complément SIMBAD conservé, 109 objets, sélection et tri, rapports terminal TXT et PDF.</desc>
+<rect width="1100" height="330" rx="18" fill="#f8fafc"/>
+<g font-family="Segoe UI, Arial, sans-serif" fill="#0f172a">
+<text x="30" y="44" font-size="27" font-weight="700">Caldwell : des données locales au rapport</text>
+<text x="30" y="76" font-size="17">Schéma explicatif — aucun téléchargement pendant le parcours hors ligne</text>
+<g fill="#e0f2fe" stroke="#0284c7" stroke-width="2"><rect x="30" y="110" width="240" height="110" rx="12"/><rect x="310" y="110" width="230" height="110" rx="12"/><rect x="580" y="110" width="230" height="110" rx="12"/><rect x="850" y="110" width="220" height="110" rx="12"/></g>
+<g font-size="20" font-weight="600"><text x="46" y="145">Sources conservées</text><text x="326" y="145">109 objets Caldwell</text><text x="596" y="145">Sélection et tri</text><text x="866" y="145">Rapports</text></g>
+<g font-size="16"><text x="46" y="177">OpenNGC local</text><text x="46" y="203">Complément SIMBAD local</text><text x="326" y="177">Provenance par valeur</text><text x="326" y="203">V absente : valeur vide</text><text x="596" y="177">Champ et plage horaire</text><text x="596" y="203">Filtre V facultatif</text><text x="866" y="177">Terminal / TXT / PDF</text><text x="866" y="203">Même sélection d'objets</text></g>
+<g font-size="28" fill="#475569"><text x="277" y="176">→</text><text x="547" y="176">→</text><text x="817" y="176">→</text></g>
+<text x="30" y="270" font-size="17">Sans limite V : objets sans magnitude conservés, après les valeurs connues au tri.</text>
+<text x="30" y="302" font-size="17">Avec une limite V : seuls les objets ayant une magnitude connue compatible sont retenus.</text>
+</g></svg>
