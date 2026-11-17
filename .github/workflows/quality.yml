@@ -23,6 +23,7 @@ jobs:
       - run: python scripts/check_repository.py
       - run: python -m ruff check .
       # Les copies synthétiques Seestar doivent être sur le volume du logiciel.
+      - run: python -c "from pathlib import Path; Path('.pytest_cache').mkdir(exist_ok=True)"
       - run: python -m pytest --basetemp=.pytest_cache/ci-tmp
   distribution:
     runs-on: ubuntu-latest

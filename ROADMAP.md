@@ -7,6 +7,8 @@
 - [x] Enregistrer ce plan avant le correctif.
 - [x] Placer les fichiers temporaires de la CI dans le dossier de travail
       pour tester les copies locales sur le même volume, sans affaiblir la protection.
+- [x] Créer explicitement le parent des fichiers temporaires sur une copie neuve
+      avant d'exécuter pytest; vérifier un scénario local sans parent préexistant.
 - [x] Ajouter un test explicite de protection d'un volume Windows distinct.
 - [x] Ajouter un parcours débutant lisible à 10 ans, une image simple et les
       consignes persistantes de documentation; actualiser les MD concernés.

@@ -18,6 +18,15 @@ Les contrôles locaux de cette finalisation ont réussi : 90 tests réussis,
 un test de lien symbolique ignoré faute de permission Windows, dix avertissements
 IERS; Ruff et contrôle de structure réussis.
 
+Sur une copie GitHub neuve, le parent `.pytest_cache` n'existe pas encore.
+La préparation de la CI le crée explicitement avant d'utiliser `--basetemp`;
+pytest crée ensuite son dossier de tests. Cette étape ne touche que la copie
+de travail, jamais les archives Seestar. Le test local précédent utilisait un
+cache existant; un nouvel essai local part d'un parent dédié nouvellement créé.
+Le chemin plus long de cet essai a également révélé un retour à la ligne dans
+le texte extrait du PDF. Le test normalise les espaces avant de chercher les
+libellés; la comparaison exacte entre sortie terminal et TXT reste inchangée.
+
 ## Lot Seestar S50 en lecture seule
 
 Résultats locaux : **89 tests réussis, un test ignoré**, dix avertissements IERS.

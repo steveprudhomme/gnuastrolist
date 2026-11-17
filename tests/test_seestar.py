@@ -180,6 +180,8 @@ def test_cli_reports_screen_txt_pdf_and_preserves_source(tmp_path, capsys):
     report = capsys.readouterr().out
     assert txt.read_text(encoding="utf-8") == report
     for text in (report, "\n".join(p.extract_text() for p in PdfReader(pdf).pages)):
+        # Un chemin long peut faire passer "lecture seule" sur deux lignes du PDF.
+        text = ' '.join(text.split())
         assert "Seestar" in text
         assert "lecture seule" in text
         assert "M31 / NGC224" in text

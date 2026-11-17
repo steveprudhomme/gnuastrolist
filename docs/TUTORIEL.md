@@ -90,6 +90,19 @@ ci-dessous sont inventés pour les tests ou clairement signalés comme des essai
 Les sections suivantes gardent les détails utiles pour vérifier le travail et
 pour les personnes qui souhaitent améliorer le programme.
 
+### Préparer une copie neuve pour les tests automatiques
+
+Les tests utilisent de fausses photos dans un dossier temporaire du projet.
+Sur une copie neuve, le dossier qui doit les accueillir n'existe pas encore.
+La préparation crée donc d'abord `.pytest_cache`, puis lance les tests dans
+`.pytest_cache/ci-tmp`. C'est comme préparer une boîte vide avant d'y ranger
+des cartes de jeu. Cette boîte est dans le projet : le disque des vraies photos
+reste en lecture seule. Ce point a été corrigé après un essai GitHub sur copie neuve.
+
+Un chemin de dossier très long peut aussi couper une phrase en deux lignes
+dans un PDF. Le test du PDF tient compte de ce simple changement de ligne;
+il continue à vérifier les mots et les statuts affichés.
+
 ## Signaler les acquisitions Seestar existantes
 
 ![Schéma Seestar en lecture seule](images/seestar-lecture-seule.svg)
