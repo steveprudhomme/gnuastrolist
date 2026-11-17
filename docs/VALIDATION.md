@@ -454,3 +454,12 @@ ensemble et produit TXT/PDF hors des sources. L'inventaire local enregistre
 12 composants d'exécution et les empreintes des deux archives.
 Voir [la procédure reproductible](LIVRAISON_REPRODUCTIBLE.md).
 Ces essais Windows ne remplacent pas les contrôles Linux distants.
+
+
+## ECC-G — Service et contexte
+
+Après intégration sur ECC-D/E : 600 tests réussis, trois ignorés et
+12 avertissements ERFA sous Python 3.13.6. Les tests vérifient restauration
+IERS après succès/erreur, imbrication, appels successifs, service injectable et
+cohérence du rapport. Ruff et liens passent; schéma ECC-G inspecté.
+La copie du lot a également exécuté ses 597 tests de base sous Python 3.10.16.

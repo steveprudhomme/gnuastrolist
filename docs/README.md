@@ -34,3 +34,5 @@ et [gnu-apmg](https://github.com/steveprudhomme/gnu-apmg), sans en reprendre les
 politiques propres aux archives photographiques.
 
 - [Contrôles de qualité ECC-E](QUALITE.md)
+
+- [Service et rapport partagé ECC-G](APPLICATION.md)

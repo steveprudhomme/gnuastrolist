@@ -718,3 +718,16 @@ proposé dans ROADMAP.md, sans implémentation ajoutée pendant ce lot.
 La couverture indique les parties parcourues par les tests. Un grand nombre
 ne prouve pas que tout est juste. Le guide [qualité](QUALITE.md) est destiné
 aux personnes qui développent le programme.
+
+
+## ECC-G — Une seule fiche pour les rapports
+
+![Schéma explicatif du service et des rendus](images/ecc-g-application.svg)
+
+1. Choisis ta soirée avec la commande habituelle.
+2. Le programme prépare une seule fiche de résultats.
+3. L'écran, le texte et le PDF lisent cette même fiche.
+
+IERS fournit des nombres utiles pour situer la Terre. Les réglages temporaires
+sont remis comme avant à la fin. Tu n'as aucune nouvelle option à apprendre.
+Le détail pour les développeurs est dans [APPLICATION.md](APPLICATION.md).

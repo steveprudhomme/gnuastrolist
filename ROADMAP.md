@@ -244,10 +244,10 @@ Aucune fusion distante ni modification des protections GitHub n'est incluse.
       par défaut, application explicite, conservation d'au moins une génération
       valide par famille, refus des chemins liés, inconnus ou protégés Seestar.
       Tester concurrence, arrêt brutal et rétention uniquement sur copies synthétiques.
-- [ ] ECC-G.4 — Introduire un service d'application et un objet de rapport
+- [x] ECC-G.4 — Introduire un service d'application et un objet de rapport
       partagé sans casser CLI/TXT/PDF; déplacer les formats communs derrière
       une API publique plutôt que les imports de fonctions privées entre rendus.
-- [ ] ECC-G.5 — Restaurer le contexte IERS après succès et erreur, avec tests
+- [x] ECC-G.5 — Restaurer le contexte IERS après succès et erreur, avec tests
       d'appels successifs, erreurs et ressources. Documenter une décision
       d'architecture avant intégration du changement et conserver les contrôles
       numériques et de destinations ECC-A/C.
@@ -328,11 +328,11 @@ Changement de compatibilité demandé au propriétaire; aucun avis supprimé.
 
 ### ECC-G — Séparer orchestration, rapport et contexte — priorité moyenne
 
-- [ ] ECC-G.1 — Définir un service d'application testable et un modèle de
+- [x] ECC-G.1 — Définir un service d'application testable et un modèle de
       rapport partagé; documenter la décision avant une refactorisation ciblée.
-- [ ] ECC-G.2 — Réduire les dépendances aux fonctions privées entre rendus
+- [x] ECC-G.2 — Réduire les dépendances aux fonctions privées entre rendus
       et restaurer le contexte IERS après succès ou erreur.
-- [ ] ECC-G.3 — Préserver CLI, TXT et PDF par les tests existants et les
+- [x] ECC-G.3 — Préserver CLI, TXT et PDF par les tests existants et les
       régressions nécessaires; mettre à jour le schéma d'architecture et les
       guides concernés sans surcharger le parcours débutant.
 

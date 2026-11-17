@@ -386,3 +386,11 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
   actions épinglées et durée bornée; audit de tous les verrous.
 - Audit Python 3.10 en échec : correctifs Pillow/filelock exigeant Python 3.11;
   décision de compatibilité soumise au propriétaire, aucun avis ignoré.
+
+
+### ECC-G — Service et rapport partagé
+
+- Service de préparation testable, objet `ReportData` et formats publics communs
+  aux rendus; CLI/TXT/PDF préservés.
+- Contexte IERS temporaire restauré après succès, erreur et appels imbriqués;
+  décision ADR 0007, régressions d'appels successifs et guide illustré.
