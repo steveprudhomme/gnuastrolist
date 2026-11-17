@@ -1,5 +1,26 @@
 # Feuille de route
 
+## Lot Bayer et Flamsteed — sélections stellaires locales
+
+- [x] Examiner les modèles, la sélection multiple et les protections Seestar.
+- [ ] Enregistrer le plan dans un commit avant le développement.
+- [ ] Choisir une source stellaire attribuable et redistribuable, vérifier ses
+      champs Bayer/Flamsteed, coordonnées, magnitudes et licence; conserver une
+      copie dans le projet local avec révision et empreinte documentées.
+- [ ] Générer deux sélections reproductibles, sans inventer de désignation ni
+      substituer une autre bande à V; distinguer ces systèmes de noms d'un
+      inventaire exhaustif de toutes les étoiles.
+- [ ] Ajouter `--objects bayer` et `--objects flamsteed`, seuls ou combinés;
+      réunir une même étoile par identifiant source stable, conserver les noms
+      secondaires et ne pas présumer une identité croisée avec GCVS ou NGC.
+- [ ] Afficher les désignations et la provenance dans les rapports écran/TXT/PDF;
+      gérer le nom Bayer/Flamsteed et ses variantes explicites dans Seestar,
+      sans modifier les archives ni déduire une correspondance par position.
+- [ ] Tester données réelles de référence, génération synthétique, doublons,
+      filtres, rapports, lecture seule et distribution hors ligne.
+- [ ] Mettre à jour les MD et le tutoriel accessible dès 10 ans avec une image,
+      exécuter les contrôles locaux et enregistrer le lot sans push.
+
 ## Finalisation PR nº 6 — tests Windows et tutoriel accessible
 
 - [x] Identifier le refus d'export Windows : code sur D:, fausses archives
