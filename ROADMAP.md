@@ -857,3 +857,10 @@ Validation ECC-E.6 après migration : Python 3.11.9 et 3.13.6 isolés,
 714 tests réussis et huit ignorés chacun, 13 avertissements conservés;
 couverture combinée 90,33 %. Quatre audits 3.11/3.13 Windows/Linux : aucun
 avis connu. Pillow 13.0.0 et filelock 4.2.11 verrouillés. CI finale à vérifier.
+
+
+Les cinq contrôles distants de `775fc32` réussissent sur Windows/Linux,
+Python 3.11/3.13, avec audit des quatre verrous et construction/installations.
+Une dernière revue croisée reproduit puis corrige l'inversion contexte/cache
+entre CLI, actualisation directe et rétention. 90 tests ciblés réussis, deux
+ignorés; nouvelle CI requise pour ce correctif avant clôture ECC-DI.3.

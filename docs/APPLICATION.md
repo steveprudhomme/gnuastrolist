@@ -142,3 +142,6 @@ hors domaine avant ses collaborateurs. Les contextes IERS et ressources
 partagent un seul verrou réentrant : appeler le service dans un contexte de
 ressources ne peut plus inverser deux verrous avec une commande CLI concurrente.
 La CLI transforme un délai de verrou dépassé en erreur lisible (code 2).
+
+L’ordre commun inclut aussi le cache : contexte d’application, puis verrou
+cache, puis validation/publication. Les appels directs suivent cet ordre.

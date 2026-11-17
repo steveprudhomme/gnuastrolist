@@ -11,7 +11,8 @@ le cache, nommé `.catalog.lock`. Le verrou couvre lecture des générations,
 lecture et autorisation de l'état fournisseur, requêtes, reconstruction et
 activation. L'appel général et l'appel spécialisé satellites partagent ce
 verrou. Un appel imbriqué dans le même thread peut le reprendre sans se bloquer.
-Deux caches distincts sont indépendants.
+Deux caches distincts sont indépendants entre processus. Dans un même
+processus, les transactions partagent aussi le contexte astronomique global.
 
 L'attente dure au maximum 120 secondes. Après ce délai, l'appel échoue sans
 entrer dans la transaction. Aucun contournement du verrou n'est tenté. Le
@@ -136,3 +137,12 @@ POSIX et la création de liens symboliques non autorisée pour ce compte Windows
 La couverture des deux nouveaux modules est de 90 % (rétention 91 %, verrou
 87 %). Ruff et le typage ciblé de ces modules passent. Les branches POSIX ont
 été relues, sans exécution Linux dans cette vérification.
+
+
+## Ordre des verrous dans un même processus
+
+La CLI, les actualisations directes et la rétention appliquée acquièrent le
+contexte d'application avant le verrou du cache. La validation des catalogues
+peut ainsi reprendre son contexte sans attente circulaire avec un autre thread.
+Deux régressions concurrentes vérifient actualisation directe et rétention;
+les modes never/offline conservent leur retour sans verrou de cache.

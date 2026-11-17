@@ -5,11 +5,66 @@ import argparse
 import os
 import subprocess
 import sys
+from contextlib import contextmanager
 from pathlib import Path
+from threading import Event, Thread
 
 import pytest
 
 from gnu_astrolist.cache_lock import LOCK_FILE, cache_lock
+
+
+@pytest.mark.parametrize('operation', ['refresh', 'retention'])
+def test_context_owner_can_take_cache_while_direct_operation_waits(tmp_path, monkeypatch, operation):
+    import importlib
+
+    from gnu_astrolist import cache_admin
+    from gnu_astrolist.catalog_resources import application_context_lock
+
+    locking = importlib.import_module('gnu_astrolist.cache_lock')
+    held, started = Event(), Event()
+    errors = []
+
+    @contextmanager
+    def observed_lock(*args, **kwargs):
+        with cache_lock(*args, **kwargs):
+            held.set()
+            yield
+
+    def validation(*args):
+        with application_context_lock:
+            return (), (), {}, {}
+
+    @locking.cache_transaction
+    def transaction(mode='force', offline=False, cache_dir=tmp_path, seestar_root=None):
+        validation()
+
+    monkeypatch.setattr(locking, 'cache_lock', observed_lock)
+    monkeypatch.setattr(cache_admin, 'cache_lock', observed_lock)
+    monkeypatch.setattr(cache_admin, '_plan', validation)
+
+    def direct_operation():
+        started.set()
+        try:
+            if operation == 'refresh':
+                transaction()
+            else:
+                cache_admin.retain_cache(tmp_path, apply=True)
+        except Exception as exc:
+            errors.append(exc)
+
+    thread = Thread(target=direct_operation, daemon=True)
+    try:
+        with application_context_lock:
+            thread.start()
+            assert started.wait(2)
+            # L'ancien ordre retenait le cache en attendant ce contexte : inversion.
+            held.wait(.1)
+            with cache_lock(tmp_path, timeout=.5):
+                pass
+    finally:
+        thread.join(timeout=3)
+    assert not thread.is_alive() and not errors
 
 
 def child(cache, code, *arguments):

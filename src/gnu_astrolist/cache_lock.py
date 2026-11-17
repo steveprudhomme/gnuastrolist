@@ -14,6 +14,8 @@ from contextlib import contextmanager
 from functools import wraps
 from pathlib import Path
 
+from .catalog_resources import application_context_lock
+
 LOCK_FILE = '.catalog.lock'
 _registry_guard = threading.Lock()
 _registry: dict[str, list] = {}
@@ -131,7 +133,8 @@ def cache_transaction(function):
         values = arguments.arguments
         if values['offline'] or values['mode'] not in {'if-stale', 'force'}:
             return function(*args, **kwargs)
-        with cache_lock(values['cache_dir'], values['seestar_root']):
+        # La CLI détient déjà le contexte; les appels directs suivent le même ordre.
+        with application_context_lock, cache_lock(values['cache_dir'], values['seestar_root']):
             return function(*args, **kwargs)
 
     return wrapped

@@ -19,6 +19,7 @@ from pathlib import Path
 from . import satellite_updates as satellite
 from . import updates
 from .cache_lock import LOCK_FILE, cache_lock
+from .catalog_resources import application_context_lock
 from .seestar import validate_root
 
 _GENERATION = re.compile(
@@ -236,6 +237,9 @@ def retain_cache(cache_dir: Path, *, keep: int = 1, apply: bool = False,
     if apply:
         _preflight(root, seestar_root)
     with ExitStack() as stack:
+        # Même ordre que la CLI et les actualisations avant validation des ressources.
+        if apply:
+            stack.enter_context(application_context_lock)
         # Épingler toute la chaîne parentale avant d'ouvrir le verrou ou de relire.
         root_fd = None
         if apply:

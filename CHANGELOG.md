@@ -437,3 +437,6 @@ atomiques et protégées; contexte IERS corrigé pour le benchmark Python 3.10.
   Windows/Linux 3.11/3.13; retrait des verrous 3.10 vulnérables.
 - Versions minimales corrigées Pillow 13 et filelock 4.2.1; quatre verrous
   régénérés avec empreintes. Aucun avis de vulnérabilité ignoré.
+
+Revue croisée ECC-F/G : ordre commun contexte → cache pour les actualisations
+directes et la rétention; deux régressions concurrentes supplémentaires.
