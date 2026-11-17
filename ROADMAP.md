@@ -251,12 +251,12 @@ Aucune fusion distante ni modification des protections GitHub n'est incluse.
       d'appels successifs, erreurs et ressources. Documenter une décision
       d'architecture avant intégration du changement et conserver les contrôles
       numériques et de destinations ECC-A/C.
-- [ ] ECC-H.4 — Ajouter des références gelées de positions satellitaires
+- [x] ECC-H.4 — Ajouter des références gelées de positions satellitaires
       topocentriques calculées par une chaîne indépendante de la transformation
       Astropy actuelle (ex. Skyfield), à partir de sources publiques licenciées.
       Fournir générateur, versions, dates, conventions, empreintes et tolérances;
       ne pas présenter ces calculs comme des observations réelles.
-- [ ] ECC-H.5 — Ajouter des mesures reproductibles temps/mémoire des catalogues
+- [x] ECC-H.5 — Ajouter des mesures reproductibles temps/mémoire des catalogues
       combinés, satellites, rapports et inventaires Seestar synthétiques, avec
       budgets raisonnés d'après la mesure et contrôles non instables en CI.
       Les tests ordinaires restent entièrement hors réseau.
@@ -338,13 +338,13 @@ Changement de compatibilité demandé au propriétaire; aucun avis supprimé.
 
 ### ECC-H — Validation scientifique et performances — priorité moyenne
 
-- [ ] ECC-H.1 — Étendre les références externes, notamment des passages
+- [x] ECC-H.1 — Étendre les références externes, notamment des passages
       satellitaires complets, avec site, époque, conventions, empreintes et
       tolérances; conserver les références Horizons, USNO et Vallado existantes.
-- [ ] ECC-H.2 — Vérifier limites temporelles et d'échantillonnage; mesurer
+- [x] ECC-H.2 — Vérifier limites temporelles et d'échantillonnage; mesurer
       temps/mémoire des catalogues combinés, satellites, rapports volumineux
       et grands inventaires Seestar synthétiques, puis fixer des budgets mesurés.
-- [ ] ECC-H.3 — Documenter précision, avertissements et limites, avec exemples
+- [x] ECC-H.3 — Documenter précision, avertissements et limites, avec exemples
       illustrés; ne pas présenter les tests comme une garantie de détection
       ou une validation observationnelle exhaustive.
 

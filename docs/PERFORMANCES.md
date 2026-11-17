@@ -6,11 +6,11 @@ une analyse locale après une nouvelle mesure sur une machine comparable.
 
 ## Protocole
 
-Exécuter depuis le worktree avec le Python déjà installé :
+Exécuter depuis la racine du projet avec l’environnement isolé ECC-D :
 
 ```powershell
 $env:PYTHONPATH=(Resolve-Path src).Path
-../../.venv/Scripts/python.exe scripts/benchmark.py --repeat 3 --output local/benchmark-results.json
+local/ecc-dev/Scripts/python.exe scripts/benchmark.py --repeat 3 --output local/benchmark-results.json
 ```
 
 Le script crée un processus neuf pour chaque répétition. Les imports et la

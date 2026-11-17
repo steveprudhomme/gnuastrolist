@@ -394,3 +394,12 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
   aux rendus; CLI/TXT/PDF préservés.
 - Contexte IERS temporaire restauré après succès, erreur et appels imbriqués;
   décision ADR 0007, régressions d'appels successifs et guide illustré.
+
+
+### ECC-H — Références scientifiques et performances
+
+- 38 références topocentriques Skyfield gelées, trois sites et quatre TLE publics;
+  générateur, versions, empreintes, licences et tolérances documentés.
+- Vérification des franchissements d'horizon; mesures temps/mémoire des
+  catalogues, satellites, rapports et 10 000 fichiers Seestar synthétiques.
+- SGP4 demeure commun aux deux chaînes; aucune observation réelle revendiquée.

@@ -731,3 +731,18 @@ aux personnes qui développent le programme.
 IERS fournit des nombres utiles pour situer la Terre. Les réglages temporaires
 sont remis comme avant à la fin. Tu n'as aucune nouvelle option à apprendre.
 Le détail pour les développeurs est dans [APPLICATION.md](APPLICATION.md).
+
+
+## ECC-H — Comparer les calculs
+
+![Schéma explicatif de la comparaison](images/ecc-h-reference.svg)
+
+1. Prends les mêmes données de départ pour un satellite.
+2. Fais le calcul avec deux chemins différents.
+3. Compare les directions obtenues. Un écart trop grand fait échouer le test.
+
+Ces chiffres sont des calculs. Ce ne sont pas des photos ni des observations.
+Un satellite calculé dans le champ peut rester invisible.
+Le guide [des références](SCIENCE_SATELLITE_REFERENCES.md) explique les limites.
+Les [mesures de performance](PERFORMANCES.md) indiquent aussi combien de temps
+prennent des exemples synthétiques, sans parcourir ton disque Seestar.

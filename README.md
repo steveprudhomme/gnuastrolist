@@ -569,3 +569,6 @@ progressivement les types et recherchent secrets et dépendances vulnérables.
 
 ECC-G sépare le [service et les rapports](docs/APPLICATION.md), avec restauration
 des réglages IERS à la sortie et préservation des commandes existantes.
+
+ECC-H ajoute des [références satellitaires gelées](docs/SCIENCE_SATELLITE_REFERENCES.md)
+et des [mesures temps/mémoire reproductibles](docs/PERFORMANCES.md).

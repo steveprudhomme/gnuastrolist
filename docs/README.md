@@ -36,3 +36,6 @@ politiques propres aux archives photographiques.
 - [Contrôles de qualité ECC-E](QUALITE.md)
 
 - [Service et rapport partagé ECC-G](APPLICATION.md)
+
+- [Références satellitaires ECC-H](SCIENCE_SATELLITE_REFERENCES.md)
+- [Performances ECC-H](PERFORMANCES.md)

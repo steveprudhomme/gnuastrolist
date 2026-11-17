@@ -463,3 +463,13 @@ Après intégration sur ECC-D/E : 600 tests réussis, trois ignorés et
 IERS après succès/erreur, imbrication, appels successifs, service injectable et
 cohérence du rapport. Ruff et liens passent; schéma ECC-G inspecté.
 La copie du lot a également exécuté ses 597 tests de base sous Python 3.10.16.
+
+
+## ECC-H — Comparaison indépendante des transformations
+
+La copie dédiée a obtenu 604 tests réussis et trois ignorés sous Python 3.10
+et 3.13. Les 40 nouveaux cas vérifient les références, leur intégrité et la
+sortie publique près de l'horizon. Les calculs Skyfield ne remplacent pas des
+observations; le propagateur SGP4 reste commun. Les conditions et budgets
+mesurés sont dans [PERFORMANCES.md](PERFORMANCES.md), la provenance dans
+[SCIENCE_SATELLITE_REFERENCES.md](SCIENCE_SATELLITE_REFERENCES.md).
