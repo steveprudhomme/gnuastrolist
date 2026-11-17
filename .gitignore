@@ -13,4 +13,6 @@ venv/
 .vscode/
 .DS_Store
 Thumbs.db
+local/
+.wheel-check/
 

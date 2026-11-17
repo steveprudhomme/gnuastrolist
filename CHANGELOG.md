@@ -5,6 +5,26 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté
+
+- Tutoriel illustré par des schémas SVG versionnés, inclus dans l'archive source.
+- Procédure de finalisation exclusivement locale avec commit de planification.
+
+- Catalogue Caldwell complet (109 objets) avec l'option `--objects caldwell`,
+  données locales OpenNGC, complément V SIMBAD vérifié et notice de provenance.
+- Générateur reproductible et tests du catalogue, des filtres et des exports.
+- Cadre de contribution : AGENTS, DCO, gouvernance, confidentialité, sécurité,
+  notices de licences, installation, architecture, tutoriel et préparation des versions.
+- Modèles GitHub, CI Windows/Linux, mises à jour Dependabot et contrôles de
+  structure et de contenu des distributions.
+
+### Modifié
+
+- Sortie terminal UTF-8 sous Windows, y compris lorsqu'elle est redirigée.
+- Modèle commun du ciel profond, avec alias MessierObject compatible.
+- Les magnitudes V absentes sont explicites : conservées sans filtre, exclues
+  avec une limite numérique et triées après les magnitudes connues.
+
 ## [0.11.0] - 2026-08-03
 
 ### Ajouté

@@ -8,13 +8,13 @@ réglages distants. Le lot Caldwell et son cadre de développement sont déjà
 implémentés dans l'arbre de travail; ce plan précède leur finalisation.
 
 - [x] Examiner les changements présents et définir le périmètre local.
-- [ ] Enregistrer ce plan dans un commit distinct avant les opérations suivantes.
-- [ ] Relire le code, la provenance Caldwell et les contrôles de développement.
-- [ ] Illustrer le tutoriel avec des images de l'architecture et du parcours de
+- [x] Enregistrer ce plan dans un commit distinct avant les opérations suivantes.
+- [x] Relire le code, la provenance Caldwell et les contrôles de développement.
+- [x] Illustrer le tutoriel avec des images de l'architecture et du parcours de
       validation locale, clairement identifiées comme des schémas.
-- [ ] Mettre à jour les consignes persistantes, les Markdown et les fichiers
+- [x] Mettre à jour les consignes persistantes, les Markdown et les fichiers
       de distribution pour inclure les illustrations.
-- [ ] Exécuter les tests et contrôles pertinents, puis consigner les résultats
+- [x] Exécuter les tests et contrôles pertinents, puis consigner les résultats
       et leurs limites dans le tutoriel et le document de validation.
 - [ ] Enregistrer séparément la fonctionnalité Caldwell et le cadre de
       développement/documentation dans des commits locaux cohérents.
