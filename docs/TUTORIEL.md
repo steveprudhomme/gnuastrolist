@@ -12,8 +12,9 @@ Ce dessin est un schéma explicatif, pas une capture de l'application.
 
 1. Demande « Quelle est la prochaine étape ? ».
 2. La réponse indique **utiliser ECC** et la première étiquette encore ouverte.
-3. **ECC-A** protège les fichiers. **ECC-B** vérifie les données météo.
-   Le groupe suivant, **ECC-C**, vérifiera les réglages que tu tapes dans la commande.
+3. **ECC-A** protège les fichiers, **ECC-B** vérifie la météo et **ECC-C**
+   vérifie les réglages de la commande. Le groupe suivant, **ECC-D**, préparera
+   une installation du logiciel facile à reproduire.
 4. Après les changements, on vérifie les tests et on explique le résultat.
    On coche une étape seulement quand elle est terminée.
 

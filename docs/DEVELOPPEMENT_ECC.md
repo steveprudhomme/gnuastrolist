@@ -18,9 +18,13 @@ ECC-A est fusionné dans `main` par la
 [PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9), commit `1d75522`.
 ECC-B est réalisé et publié dans la
 [PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10), avec cinq
-contrôles réussis sur le correctif; sa fusion reste distincte. La prochaine étape
-de développement est **utiliser ECC pour réaliser ECC-C — valider les paramètres
-avant traitement**. Toujours lire les cases plutôt qu'un ancien compte rendu.
+contrôles réussis sur le correctif; sa fusion reste distincte. ECC-C est publié
+dans la [PR nº 11](https://github.com/steveprudhomme/gnuastrolist/pull/11), basée
+sur ECC-B, avec cinq contrôles réussis sur le correctif. Intégrer ECC-B avant
+de revoir la base et la fusion d'ECC-C dans `main`.
+La prochaine étape de développement est **utiliser ECC pour réaliser ECC-D —
+environnement et livraison reproductibles**. Toujours lire les cases plutôt
+qu'un ancien compte rendu.
 Une demande d'information sur la prochaine étape ne déclenche pas sa réalisation.
 
 ## Périmètre des lots

@@ -37,6 +37,14 @@ des données sont dans [PARAMETRES.md](PARAMETRES.md). Couverture supplémentair
 et typage restent au lot ECC-E. Les contrôles distants de la PR du dernier
 commit doivent être vérifiés avant toute fusion, après intégration d'ECC-B.
 
+Le correctif `3eb2da9` est publié dans la
+[PR nº 11](https://github.com/steveprudhomme/gnuastrolist/pull/11), basée sur la
+branche ECC-B. Ses cinq contrôles ont réussi sous Windows/Linux en Python
+3.10/3.13 et pour les distributions/essais installés hors des sources :
+[exécution vérifiée](https://github.com/steveprudhomme/gnuastrolist/actions/runs/44139484042).
+Ces résultats ne remplacent pas la vérification de la base et du dernier commit
+lorsqu'ECC-B aura été intégré dans `main`.
+
 ## ECC-B — Réponses météo et rosée alignée
 
 Plan commité et publié avant les nouveaux tests et le code : `af9a639`, avec
