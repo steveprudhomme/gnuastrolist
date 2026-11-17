@@ -9,6 +9,14 @@ la chaîne originale complète reste transmise à Astropy. Les tests couvrent
 également les fractions de 1, 3, 5 et 6 chiffres. Aucune valeur orbitale de la
 source n'est modifiée. Le plan du correctif a été commité avant le code.
 
+Après le correctif `9cc0d57`, **350 tests locaux réussissent, un est ignoré**,
+avec 26 avertissements IERS/ERFA documentés. Les cinq contrôles de la
+[PR nº 7](https://github.com/steveprudhomme/gnuastrolist/pull/7) ont réussi :
+tests Windows/Linux en Python 3.10 et 3.13, puis construction et vérification
+des distributions. Voir l'[exécution GitHub](https://github.com/steveprudhomme/gnuastrolist/actions/runs/44045350000).
+Cette publication et sa fusion dans main ont été explicitement demandées par
+le propriétaire; la consigne de travail local reste le défaut des autres lots.
+
 ## Satellites artificiels, SATCAT et registre ONU
 
 Validation Windows/Python 3.13.6 : **338 tests réussis, un ignoré**, avec

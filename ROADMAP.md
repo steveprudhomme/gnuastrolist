@@ -5,8 +5,12 @@
 - [x] Identifier dans la CI l'échec de validation des fractions de seconde longues.
 - [x] Valider le calendrier sans imposer les limites de fractions de `datetime`
       3.10; transmettre l'époque complète à Astropy sans altérer les données.
-- [ ] Vérifier les différentes longueurs de fraction et les quatre plateformes
+- [x] Vérifier les différentes longueurs de fraction et les quatre plateformes
       Python/OS avant de fusionner la PR; documenter le résultat de publication.
+
+Correctif `9cc0d57` : 350 tests locaux réussis, un ignoré. Les cinq contrôles
+de la PR nº 7 ont réussi sur GitHub, dont Windows/Linux en Python 3.10 et 3.13
+et la construction des distributions.
 
 ## Lot satellites artificiels et débris — COSPAR, SATCAT et registre ONU
 
