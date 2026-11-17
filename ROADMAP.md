@@ -1,5 +1,29 @@
 # Feuille de route
 
+## Lot comètes — MPC et informations CBAT
+
+- [x] Examiner les moteurs mobiles et les formats officiels disponibles.
+- [ ] Enregistrer ce plan localement avant l'implémentation.
+- [ ] Vérifier les rôles MPC/CBAT, l'accès aux fichiers, les unités, les dates
+      et les droits; conserver les sources récupérées et leurs empreintes.
+- [ ] Ajouter la sélection `comets`, l'import local du format orbital MPC et
+      une copie redistribuable si disponible; annoncer clairement toute source inaccessible.
+- [ ] Propager les orbites elliptiques, paraboliques et hyperboliques sans
+      appliquer le modèle H-G des astéroïdes; contrôler époques et convergence.
+- [ ] Distinguer la magnitude totale cométaire estimée d'une magnitude V et
+      conserver les observations CBAT datées séparément des prévisions.
+- [ ] Associer les données CBAT par désignation explicite, sans inventer de
+      mesure ni fusionner des fragments; prévoir un import local si nécessaire.
+- [ ] Réunir comètes et autres catalogues, écran/TXT/PDF et Seestar en lecture
+      seule, avec filtres simultanés et heure de référence.
+- [ ] Tester hors réseau les formats, coniques, filtres, sources absentes,
+      identité, rapports et cas de référence indépendants.
+- [ ] Actualiser les MD, ajouter un tutoriel illustré accessible dès 10 ans,
+      contrôler distributions et installation puis enregistrer le lot localement.
+
+Contraintes : aucun abonnement CBAT contourné, aucune magnitude d'une autre
+bande étiquetée V, aucun téléchargement implicite à l'exécution ni écriture Seestar.
+
 ## Lot astéroïdes — catalogue orbital et positions variables
 
 - [x] Examiner le moteur actuel et identifier les calculs réservés aux objets fixes.
