@@ -31,6 +31,13 @@ aucun tag ou publication. La version reste 0.11.0; l'aperçu propose 0.12.0.
 Les contrôles CI ajoutés sont testés localement; leur exécution distante reste
 à faire lors d'une future publication autorisée.
 
+Publication puis intégration autorisées : la PR nº 15 passe ses cinq contrôles
+Linux/Windows et distribution sur `e25c041`. Le propriétaire demande ensuite
+la fusion dans main. Après validation des cinq contrôles de la PR nº 14 sur
+`ae13c05`, celle-ci est fusionnée par `cc6c670`. La PR nº 15 est replacée
+sur main et actualisée avec cette base; ses contrôles doivent être revérifiés
+sur le nouveau commit avant fusion. Ce journal ne préjuge pas de leur résultat.
+
 ## Plafond de hauteur ALTMAX — validation locale
 
 Plan local enregistré avant code : `3d84a0b`. La nouvelle option a été testée

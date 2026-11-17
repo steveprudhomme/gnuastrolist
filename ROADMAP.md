@@ -49,6 +49,12 @@ le propriétaire le 17 novembre 2026. Une PR distincte cible la branche ALTMAX
 tant que la PR nº 14 reste ouverte. Ses contrôles distants sont à vérifier
 après publication. Aucun tag, Release ou changement du numéro courant.
 
+Intégration autorisée le 17 novembre 2026 : les cinq contrôles de la PR nº 14
+sont verts sur `ae13c05`, puis elle est fusionnée dans main par `cc6c670`.
+La PR nº 15, initialement validée par cinq contrôles sur `e25c041`, est
+replacée sur main et actualisée avec cette fusion. Ses nouveaux contrôles
+doivent passer avant sa propre fusion; ceux de main seront vérifiés ensuite.
+
 ## Lot plafond de hauteur — télescopes intelligents (ALTMAX)
 
 Demande du propriétaire : choisir une hauteur maximale, par exemple 80°, pour
