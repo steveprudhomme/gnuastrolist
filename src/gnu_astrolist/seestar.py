@@ -12,7 +12,14 @@ from functools import lru_cache
 from pathlib import Path
 
 from .catalog import load_caldwell_catalog, load_messier_catalog
-from .models import AsteroidTarget, CatalogObject, DeepSkyObject, NamedStar, VisibilityResult
+from .models import (
+    AsteroidTarget,
+    CatalogObject,
+    CometTarget,
+    DeepSkyObject,
+    NamedStar,
+    VisibilityResult,
+)
 from .stellar_names import normalize_stellar_name
 
 ACQUISITION = re.compile(
@@ -23,6 +30,10 @@ IGNORED_DIRECTORIES = {".git", ".cache", "__pycache__"}
 
 
 def normalize_name(value: str) -> str:
+    from .comets import normalize_comet_name
+    comet = normalize_comet_name(value)
+    if comet:
+        return comet
     stellar = normalize_stellar_name(value)
     if stellar:
         return stellar
@@ -141,6 +152,9 @@ def _known_aliases() -> dict[str, frozenset[str]]:
 
 
 def object_keys(obj: CatalogObject) -> set[str]:
+    if isinstance(obj, CometTarget):
+        # Nom de famille seul (ATLAS, PANSTARRS...) partagé par de nombreuses comètes.
+        return {normalize_name(obj.designation)}
     keys = {normalize_name(obj.name)}
     if isinstance(obj, AsteroidTarget):
         keys = {f"MPC{obj.number}"}

@@ -85,6 +85,84 @@ image rangée ailleurs peut échapper à la recherche. « Fait » ne veut pas di
 que l'image est réussie : il faut encore la regarder. Les exemples détaillés
 ci-dessous sont inventés pour les tests ou clairement signalés comme des essais.
 
+## Choisir quand rafraîchir les listes
+
+Les listes du ciel changent. Pour les comètes, les nombres qui décrivent leur
+trajet sont particulièrement importants. Tu peux demander au programme de
+vérifier leur âge chaque fois que tu le lances.
+
+![Vérifier les listes au démarrage avec ses propres délais](images/catalogues-mise-a-jour.svg)
+
+C'est un schéma pour expliquer le fonctionnement. Il ne montre aucune donnée privée.
+
+1. Dans ta commande habituelle, ajoute `--update-catalogs if-stale`.
+   Cela veut dire : « demande une nouvelle liste seulement si ma copie est trop vieille ».
+2. Pour les comètes, ajoute `--catalog-age comets=24` pour choisir 24 heures.
+   Pour les étoiles Bayer, tu peux ajouter `--catalog-age bayer=720` : 720 heures
+   font 30 jours. Les réglages marchent pour tous les catalogues proposés.
+3. Pour autoriser Internet, enlève `--offline`. Pour rester sans Internet,
+   garde-le : aucune nouvelle liste ne sera téléchargée, même avec `force`.
+4. Lis les notes du rapport : elles disent si une copie récente a été trouvée,
+   si une nouvelle copie a été vérifiée, ou si l'ancienne a dû être conservée.
+
+Le contrôle n'a lieu que pendant le lancement. Il ne continue pas quand le
+programme est fermé. Les nouvelles listes vont dans `local/catalog-cache`
+sur l'ordinateur. Elles ne vont jamais dans le dossier des photos Seestar.
+Une panne Internet ne doit pas remplacer une bonne copie par un fichier cassé.
+
+Avec une personne qui connaît les fichiers de réglages, tu peux préparer un
+fichier pour éviter de tout recopier. Le [guide des mises à jour](CATALOG_UPDATES.md)
+donne un exemple et explique les délais pour chaque source.
+
+## Ajouter les comètes
+
+Une **comète** est un petit monde qui peut libérer du gaz et de la poussière
+près du Soleil. Elle bouge parmi les étoiles et sa lumière peut changer beaucoup.
+
+![Le trajet MPC et les observations datées CBAT restent séparés](images/cometes-sources.svg)
+
+Ce dessin explique les rôles des sources. Il ne montre aucune vraie mesure.
+
+### 1. Demander la liste des comètes
+
+Dans le dossier du projet sur l'ordinateur, crée `local` comme au début du guide.
+Copie cette commande d'exemple pour Laval :
+
+```powershell
+.venv\Scripts\python -m gnu_astrolist --date 2026-11-17 --time-range 21:00-22:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 10 --objects comets --max-magnitude 18 --offline --limit 20 --output-txt local/cometes.txt --output-pdf local/cometes.pdf
+```
+
+Pour mélanger les listes, écris par exemple `--objects comets asteroids messier`.
+Pour demander des orbites plus récentes au démarrage, enlève `--offline` et
+ajoute `--update-catalogs if-stale --catalog-age comets=24`.
+
+### 2. Lire le résultat
+
+Le **MPC** donne les nombres qui décrivent le trajet. Le programme calcule une
+place et une lumière pour chaque petit moment de la soirée. Le signe **≈**
+veut dire « environ ». La lumière **totale** d'une comète n'est pas une mesure
+dans la bande V des étoiles. Le rapport le précise.
+
+Certaines orbites sont trop vieilles ou n'ont pas de date d'époque. Elles ne
+sont pas utilisées et le rapport dit combien ont été écartées. Un téléchargement
+récent ne suffit pas à rendre tous les anciens nombres fiables.
+
+### 3. Comprendre le complément CBAT
+
+Le **CBAT** publie des annonces astronomiques et renvoie vers des observations
+de lumière ICQ. Une observation dit ce qui a été vu **à une date précise**.
+Elle n'est pas automatiquement vraie pour ce soir.
+
+Le site n'a pas pu être lu pendant ce travail. Aucune vraie mesure CBAT n'est
+donc fournie. Une personne qui possède un extrait autorisé peut préparer un
+fichier local et ajouter `--cbat-file local/cbat.csv`. Le
+[guide des comètes](COMETS.md) décrit son format. La mesure apparaît à côté
+de la prévision, avec sa date et sa source. On ne mélange pas les deux.
+
+Pour Seestar, utiliser un identifiant complet comme `161P` ou `C_2023_A3`.
+Le nom `ATLAS` seul ne suffit pas : plusieurs comètes portent ce nom.
+Le disque des photos reste en lecture seule et les rapports restent dans `local`.
+
 ## Chercher des astéroïdes : une liste qui bouge
 
 Un **astéroïde** est un petit monde qui tourne autour du Soleil. Il change de

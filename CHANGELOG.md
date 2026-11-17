@@ -5,6 +5,22 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté — comètes et mises à jour configurables
+
+- Sélection `comets`, copie MPC locale (958 entrées cométaires sur 973 lignes),
+  import `--comets-file`, coniques elliptiques/paraboliques/hyperboliques et
+  magnitude totale estimée distincte de V; exclusions d'époque annoncées.
+- Import `--cbat-file` d'observations datées transcrites dans un CSV documenté,
+  sans substitution à la prévision; aucune observation CBAT réelle téléchargée
+  ni connexion automatique CBAT annoncée, le site étant inaccessible pendant ce lot.
+- Sélections mixtes, rapports TXT/PDF, identifiants Seestar complets et fragments
+  distincts; moteur de géométrie partagé avec les astéroïdes.
+- Actualisations au démarrage configurables pour GCVS, OpenNGC/SIMBAD, HYG,
+  JPL et MPC : modes never/if-stale/force, délais globaux/par source, cache local
+  validé atomiquement et fichier JSON facultatif; priorité absolue de `--offline`.
+- Générateurs réutilisables dans le paquet installé, tests de pannes et de lecture
+  seule, comparaisons JPL figées et tutoriel illustré accessible à 10 ans.
+
 ### Ajouté — astéroïdes
 
 - Catalogue orbital JPL local des 1 000 premiers astéroïdes numérotés;

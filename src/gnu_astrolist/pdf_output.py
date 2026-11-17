@@ -26,6 +26,7 @@ from reportlab.platypus import (
 )
 
 from .models import (
+    CometTarget,
     FieldOfView,
     MoonSummary,
     ObservationWindow,
@@ -42,7 +43,7 @@ from .output import (
     _reference_label,
 )
 from .seestar import SeestarInventory, protect_outputs
-from .selection import ASTEROID_NOTES, NOTES, CatalogSelection, catalog_label
+from .selection import ASTEROID_NOTES, COMET_NOTES, NOTES, CatalogSelection, catalog_label
 
 NAVY = colors.HexColor("#18344A")
 TEAL = colors.HexColor("#2B7282")
@@ -240,7 +241,7 @@ def _metadata_rows(
                 f"{field_of_view.altitude_upper_deg:g}°"
             ),
         ),
-        ("Filtre photométrique", f"Bande V; {magnitude}"),
+        ("Filtre photométrique", f"{'V ou totale cométaire' if object_kind == 'comets' or isinstance(object_kind, CatalogSelection) and 'comets' in object_kind.kinds else 'Bande V'}; {magnitude}"),
         (
             "Critère d'inclusion",
             (
@@ -412,7 +413,7 @@ def _result_card(
         [
             _paragraph("Taille apparente", styles["label"]),
             _paragraph(_apparent_size_label(result), styles["value"]),
-            _paragraph("Magnitude V", styles["label"]),
+            _paragraph("Magnitude totale" if isinstance(star, CometTarget) else "Magnitude V", styles["label"]),
             _paragraph(_magnitude_label(result), styles["value"]),
         ],
         [
@@ -465,10 +466,12 @@ def _result_card(
         ])
     if result.magnitude_reference_time is not None:
         data.append([
-            _paragraph("Instant V estimée (local)", styles["label"]),
+            _paragraph("Instant estimé (local)" if isinstance(star, CometTarget) else "Instant V estimée (local)", styles["label"]),
             _paragraph(result.magnitude_reference_time.strftime("%Y-%m-%d %H:%M"), styles["value"]),
             "", "",
         ])
+    if result.comet_observation is not None:
+        data.append([_paragraph('CBAT (observation datée) : '+result.comet_observation, styles['small']), '', '', ''])
     if show_details:
         if star.size_source:
             size_detail = (
@@ -520,6 +523,9 @@ def _result_card(
                 ("BACKGROUND", (0, detail_start), (-1, -1), PALE_BLUE),
             ]
         )
+    if result.comet_observation is not None:
+        observation_row = len(data)-3 if show_details else len(data)-1
+        commands.append(('SPAN',(0,observation_row),(3,observation_row)))
     card.setStyle(TableStyle(commands))
     return KeepTogether([card, Spacer(1, 6)])
 
@@ -553,6 +559,8 @@ def _notes(object_kind: str | CatalogSelection) -> tuple[str, ...]:
         notes.extend(object_kind.notes)
     elif object_kind == "asteroids":
         notes.extend((NOTES[object_kind], *ASTEROID_NOTES))
+    elif object_kind == "comets":
+        notes.extend((NOTES[object_kind], *COMET_NOTES))
     elif object_kind == "variable_stars":
         notes.append(
             "La magnitude des étoiles variables est le maximum d'éclat publié, "

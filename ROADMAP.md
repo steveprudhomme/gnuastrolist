@@ -2,53 +2,56 @@
 
 ## Lot actualisation configurable au démarrage — toutes les sources évolutives
 
-Demande du 2026-11-17, incluse dans le travail en cours. Le logiciel
-ne possède pas encore ces options : noms et délais ci-dessous sont proposés.
+Demande du 2026-11-17, implémentée localement. Modes et délais sont décrits
+dans docs/CATALOG_UPDATES.md. Plans préalables : 051be12 puis d35bc21.
 
-- [ ] Enregistrer le plan de ce lot avant son implémentation.
-- [ ] Couvrir GCVS, OpenNGC (Messier/Caldwell/NGC), compléments SIMBAD,
+- [x] Enregistrer le plan de ce lot avant son implémentation.
+- [x] Couvrir GCVS, OpenNGC (Messier/Caldwell/NGC), compléments SIMBAD,
       HYG (Bayer/Flamsteed), orbites JPL astéroïdes et MPC comètes. Traiter
       CBAT comme observations locales tant qu'aucun accès structuré n'est validé,
       et afficher explicitement cette limite plutôt qu'annoncer une mise à jour fictive.
-- [ ] Rendre les générateurs réutilisables depuis le paquet installé, sans
+- [x] Rendre les générateurs réutilisables depuis le paquet installé, sans
       dépendre du répertoire scripts du dépôt; préserver les commandes existantes.
-- [ ] Définir une politique par source : âge maximal réglable, proposition
+- [x] Définir une politique par source : âge maximal réglable, proposition
       initiale de 24 h pour les comètes; ne pas confondre date de téléchargement
       et époque orbitale ni imposer la même cadence aux catalogues fixes.
-- [ ] Proposer une option de démarrage « jamais / si périmé / forcé », et des
+- [x] Proposer une option de démarrage « jamais / si périmé / forcé », et des
       délais par catalogue; documenter leur priorité sur une configuration locale.
-- [ ] Faire de `--offline` une interdiction absolue de téléchargement, même en
+- [x] Faire de `--offline` une interdiction absolue de téléchargement, même en
       présence d'une demande de mise à jour forcée; expliquer la combinaison.
-- [ ] Conserver les ressources embarquées intactes; télécharger seulement dans
+- [x] Conserver les ressources embarquées intactes; télécharger seulement dans
       un cache local au logiciel, hors de tout disque source Seestar protégé.
-- [ ] Valider format, unités, effectifs, empreinte et provenance avant remplacement
+- [x] Valider format, unités, effectifs, empreinte et provenance avant remplacement
       atomique; garder la dernière copie exploitable et un historique minimal.
-- [ ] Respecter les limites et les droits propres à MPC, CBAT et JPL; connexions
+- [x] Respecter les limites et les droits propres à MPC, CBAT et JPL; connexions
       séquentielles, délais d'attente et reprise limitée sans requête par objet.
-- [ ] Afficher la copie utilisée, son âge, les mises à jour effectuées et les
+- [x] Afficher la copie utilisée, son âge, les mises à jour effectuées et les
       échecs réseau; refuser une orbite non exploitable plutôt que la masquer.
-- [ ] Tester temps simulé, réglages, pannes, cache corrompu, mode hors ligne et
+- [x] Tester temps simulé, réglages, pannes, cache corrompu, mode hors ligne et
       protections Seestar; compléter le tutoriel illustré et les MD.
+
+Plans comètes : 75cee35. Catalogue MPC et import local CBAT réalisés;
+l’accès automatique aux observations CBAT reste différé faute d’interface validée.
 
 ## Lot comètes — MPC et informations CBAT
 
 - [x] Examiner les moteurs mobiles et les formats officiels disponibles.
-- [ ] Enregistrer ce plan localement avant l'implémentation.
-- [ ] Vérifier les rôles MPC/CBAT, l'accès aux fichiers, les unités, les dates
+- [x] Enregistrer ce plan localement avant l'implémentation.
+- [x] Vérifier les rôles MPC/CBAT, l'accès aux fichiers, les unités, les dates
       et les droits; conserver les sources récupérées et leurs empreintes.
-- [ ] Ajouter la sélection `comets`, l'import local du format orbital MPC et
+- [x] Ajouter la sélection `comets`, l'import local du format orbital MPC et
       une copie redistribuable si disponible; annoncer clairement toute source inaccessible.
-- [ ] Propager les orbites elliptiques, paraboliques et hyperboliques sans
+- [x] Propager les orbites elliptiques, paraboliques et hyperboliques sans
       appliquer le modèle H-G des astéroïdes; contrôler époques et convergence.
-- [ ] Distinguer la magnitude totale cométaire estimée d'une magnitude V et
+- [x] Distinguer la magnitude totale cométaire estimée d'une magnitude V et
       conserver les observations CBAT datées séparément des prévisions.
-- [ ] Associer les données CBAT par désignation explicite, sans inventer de
+- [x] Associer les données CBAT par désignation explicite, sans inventer de
       mesure ni fusionner des fragments; prévoir un import local si nécessaire.
-- [ ] Réunir comètes et autres catalogues, écran/TXT/PDF et Seestar en lecture
+- [x] Réunir comètes et autres catalogues, écran/TXT/PDF et Seestar en lecture
       seule, avec filtres simultanés et heure de référence.
-- [ ] Tester hors réseau les formats, coniques, filtres, sources absentes,
+- [x] Tester hors réseau les formats, coniques, filtres, sources absentes,
       identité, rapports et cas de référence indépendants.
-- [ ] Actualiser les MD, ajouter un tutoriel illustré accessible dès 10 ans,
+- [x] Actualiser les MD, ajouter un tutoriel illustré accessible dès 10 ans,
       contrôler distributions et installation puis enregistrer le lot localement.
 
 Contraintes : aucun abonnement CBAT contourné, aucune magnitude d'une autre

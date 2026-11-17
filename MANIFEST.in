@@ -3,5 +3,5 @@ recursive-include .github *.yml *.md
 recursive-include docs *.md *.svg
 recursive-include scripts *.py
 recursive-include tests *.py *.json
-recursive-include src/gnu_astrolist/data *.json.gz *.csv.gz *.csv *.md
+recursive-include src/gnu_astrolist/data *.txt.gz *.json.gz *.csv.gz *.csv *.md
 recursive-include src/gnu_astrolist/data/fonts *.ttf *.txt

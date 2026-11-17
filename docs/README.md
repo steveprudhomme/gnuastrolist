@@ -3,6 +3,9 @@
 - [Installation](../INSTALL.md) et [guide utilisateur](../README.md).
 - [Tutoriel reproductible](TUTORIEL.md).
 - [Architecture](ARCHITECTURE.md).
+- [Comètes MPC et observations CBAT](COMETS.md).
+- [Mises à jour configurables de tous les catalogues](CATALOG_UPDATES.md).
+- [Provenance et droits MPC/CBAT](../src/gnu_astrolist/data/COMET_SOURCE.md).
 - [Astéroïdes : utilisation, modèle, actualisation et limites](ASTEROIDS.md).
 - [Provenance orbitale JPL](../src/gnu_astrolist/data/ASTEROID_SOURCE.md).
 - [Décision : séparer les orbites mobiles](architecture/decisions/0003-asteroides.md).

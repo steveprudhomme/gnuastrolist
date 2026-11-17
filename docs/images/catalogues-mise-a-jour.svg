@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="440" viewBox="0 0 1000 440" role="img" aria-labelledby="title desc">
+ <title id="title">Au démarrage, vérifier l'âge des catalogues</title>
+ <desc id="desc">Schéma pédagogique du contrôle au démarrage : lire les réglages, garder la copie récente ou vérifier une nouvelle copie, puis préparer la liste. En mode hors ligne aucune connexion n'est faite. Les fichiers Seestar restent intacts.</desc>
+ <rect width="1000" height="440" rx="20" fill="#10283f"/>
+ <g font-family="DejaVu Sans, sans-serif" fill="white">
+  <text x="35" y="48" font-size="25" font-weight="bold">Des listes à jour, avec les délais de ton choix</text>
+  <text x="35" y="82" font-size="17">Le contrôle a lieu quand tu lances le programme.</text>
+  <g fill="#225e70" stroke="#69d8c4" stroke-width="2">
+   <rect x="35" y="130" width="270" height="155" rx="16"/>
+   <rect x="365" y="130" width="270" height="155" rx="16"/>
+   <rect x="695" y="130" width="270" height="155" rx="16"/>
+  </g>
+  <g font-size="20" font-weight="bold">
+   <text x="57" y="169">1. Tes réglages</text>
+   <text x="387" y="169">2. Une copie vérifiée</text>
+   <text x="717" y="169">3. Ta soirée</text>
+  </g>
+  <g font-size="17">
+   <text x="57" y="211">Comètes : 24 heures ?</text>
+   <text x="57" y="243">Étoiles : 30 jours ?</text>
+   <text x="387" y="211">Trop ancienne ?</text>
+   <text x="387" y="243">Vérifier avant d'utiliser.</text>
+   <text x="717" y="211">Préparer la liste</text>
+   <text x="717" y="243">et afficher la source.</text>
+  </g>
+  <path d="M316 205 H352 M341 194 L353 205 L341 216 M646 205 H682 M671 194 L683 205 L671 216" fill="none" stroke="#ffca68" stroke-width="4"/>
+  <rect x="35" y="316" width="930" height="87" rx="14" fill="#f1f6fa"/>
+  <g fill="#10283f" font-size="18">
+   <text x="57" y="350">« --offline » : aucune connexion, même si une mise à jour est demandée.</text>
+   <text x="57" y="383">Les nouvelles listes restent sur l'ordinateur. Le disque des photos reste intact.</text>
+  </g>
+  <text x="35" y="426" font-size="14">GNU Astrolist • Schéma pédagogique • Délais proposés et réglables</text>
+ </g>
+</svg>

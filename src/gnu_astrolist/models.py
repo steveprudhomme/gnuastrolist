@@ -114,7 +114,20 @@ class AsteroidTarget(DeepSkyObject):
     epoch_jd_tdb: float = 0.0
 
 
-CatalogObject: TypeAlias = VariableStar | DeepSkyObject | NamedStar | AsteroidTarget
+@dataclass(frozen=True, slots=True)
+class CometTarget(DeepSkyObject):
+    """Fiche cométaire calculée, magnitude totale distincte de V."""
+
+    designation: str = ''
+    magnitude_total: float | None = None
+
+
+CatalogObject: TypeAlias = VariableStar | DeepSkyObject | NamedStar | AsteroidTarget | CometTarget
+
+
+def apparent_magnitude(obj: CatalogObject) -> float | None:
+    """Valeur à afficher/trier, sans placer une magnitude totale dans le champ V."""
+    return obj.magnitude_total if isinstance(obj, CometTarget) else obj.magnitude_v
 
 
 @dataclass(frozen=True, slots=True)
@@ -316,3 +329,4 @@ class VisibilityResult:
     seestar_status: str | None = None
     magnitude_estimated: bool = False
     magnitude_reference_time: datetime | None = None
+    comet_observation: str | None = None

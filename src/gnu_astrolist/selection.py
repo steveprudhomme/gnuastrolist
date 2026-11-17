@@ -20,6 +20,7 @@ from .catalog import (
 from .models import CatalogObject, DeepSkyObject, NamedStar
 
 LABELS = {
+    "comets": "Comètes (orbites MPC, observations CBAT facultatives)",
     "asteroids": "Astéroïdes numérotés (JPL SBDB, fichier orbital local)",
     "variable_stars": "Étoiles variables (GCVS)",
     "messier": "Objets Messier (SIMBAD, repli OpenNGC)",
@@ -29,6 +30,7 @@ LABELS = {
     "flamsteed": "Étoiles Flamsteed (HYG 4.1)",
 }
 NOTES = {
+    "comets": "Comètes : positions MPC et magnitude totale estimée H,k, distincte de la bande V.",
     "asteroids": "Astéroïdes : orbites JPL SBDB, positions recalculées et magnitude V estimée H-G.",
     "variable_stars": "Les magnitudes GCVS sont les maxima d'éclat publiés, pas des prévisions.",
     "messier": "Messier : priorité SIMBAD, repli OpenNGC.",
@@ -44,6 +46,15 @@ ASTEROID_NOTES = (
     "≈ : magnitude H-G estimée; G=0,15 supposé si absent. H n'est pas une magnitude apparente.",
     "Instant V : échantillon le plus brillant dans le champ; le filtre V s'applique au même instant.",
     "Astéroïdes : franchissements recherchés seulement dans la plage; dates saisonnières et opposition non calculées.",
+)
+
+COMET_NOTES = (
+    "Comètes : modèle à deux corps, temps de lumière et position topocentrique; perturbations et dégazage ignorés.",
+    "Magnitude totale ≈ H + 5 log10(Δ) + 2,5 k log10(r); aucun H ou k absent n'est inventé.",
+    "Instant estimé : meilleur échantillon dans le champ; filtre de magnitude simultané, valeur totale pour les comètes.",
+    "Époque MPC requise à ±365 jours; borne de fonctionnement sans garantie de précision ni d'activité de la comète.",
+    "Franchissements cométaires dans la plage seulement; dates saisonnières et opposition non calculées.",
+    "CBAT : observation datée séparée, jamais substituée à la magnitude prévue; fragments conservés distincts.",
 )
 
 
@@ -66,6 +77,8 @@ class CatalogSelection:
             name = (
                 "Astéroïdes (V estimée)"
                 if kind == "asteroids"
+                else "Comètes (totale estimée)"
+                if kind == "comets"
                 else "GCVS (maximum publié)"
                 if kind == "variable_stars"
                 else "NGC"
@@ -80,6 +93,8 @@ class CatalogSelection:
         notes = tuple(NOTES[kind] for kind in self.kinds)
         if "asteroids" in self.kinds:
             notes += ASTEROID_NOTES
+        if "comets" in self.kinds:
+            notes += COMET_NOTES
         if any(kind in self.kinds for kind in ("messier", "caldwell", "ngc")):
             notes += (
                 "Même désignation : une ligne, priorité Messier puis Caldwell puis NGC; alias conservés.",
@@ -139,6 +154,7 @@ def load_catalog_selection(
     )
     selection = CatalogSelection(kinds, limits)
     loaders = {
+        "comets": lambda: (),
         "asteroids": lambda: (),
         "messier": load_messier_catalog,
         "caldwell": load_caldwell_catalog,

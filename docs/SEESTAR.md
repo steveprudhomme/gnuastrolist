@@ -91,6 +91,12 @@ lever l'ambiguïté. Les noms des autres catalogues gardent leurs règles préc�
 
 ## Vérification et confidentialité
 
+Les comètes utilisent leur désignation complète (`161P`, `C/2023 A3`, `73P-B`).
+Les formes de fichiers `C_2023_A3` sont normalisées explicitement. Un nom partagé
+comme ATLAS seul ne constitue pas une identité, et un fragment n'est pas assimilé
+à son parent. Les caches d'actualisation des catalogues sont protégés par les
+mêmes limites avant toute écriture lorsque la racine Seestar est indiquée.
+
 Pour les astéroïdes, préférer un nom explicite comme `MPC4`. Le nom source
 exact (`Vesta`), `4 Vesta` ou `(4) Vesta` est aussi reconnu. `M4`, `C4` et le
 numéro seul `4` ne sont jamais assimilés à Vesta. La présence d'une acquisition

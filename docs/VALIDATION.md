@@ -1,5 +1,47 @@
 # Validation
 
+## Comètes MPC/CBAT et actualisations au démarrage
+
+Sur Windows, Python 3.13.6 / Astropy 7.2 / ReportLab 4.4 : **202 tests réussis,
+un ignoré**, 26 avertissements (tables IERS prédictives et conversions de dates
+historiques volontairement présentes dans les éléments cométaires). Le test
+ignoré exige la création de liens symboliques Windows. Les 55 tests des mises
+à jour et options de démarrage passent aussi après la revue du signalement
+des générations corrompues.
+
+Les coniques sont vérifiées par équation de Barker, hyperbole analytique,
+équivalence avec le moteur elliptique et continuité autour de e=1. Quatre
+positions JPL Horizons indépendantes pour 67P et C/2023 A3 sont figées avec
+paramètres et empreintes : écarts inférieurs à 10″. La photométrie MPC/JPL
+n'est pas forcée à concorder lorsque les paramètres sources diffèrent.
+
+Les tests CBAT sont synthétiques et contrôlent date/fuseau, attribution,
+bande, observations futures, doublons, fragments et séparation de la prévision.
+Aucune mesure CBAT réelle n'a été récupérée : les pages publiques ont échoué
+en TLS/passerelle. Le fichier MPC public a été récupéré localement et son
+empreinte est documentée dans COMET_SOURCE.md.
+
+Les huit catalogues évolutifs sont couverts par le registre de mise à jour,
+avec réseau simulé : modes never/if-stale/force, âges par catalogue/fournisseur,
+configuration et priorité des options, délais invalides, pannes, tailles limites,
+générations tronquées/corrompues, intégrité, publication atomique, repli, dates de
+provenance et isolation des caches mémoire. Les générateurs réels sont exercés
+sur sources synthétiques; les protections Seestar refusent le cache avant écriture.
+`--offline --update-catalogs force` est testé sur les huit catalogues sans connexion.
+
+Un essai supplémentaire reconstruit le cache cométaire avec la copie MPC déjà
+récupérée, sans réseau, puis produit un rapport de trois comètes et le relit hors
+ligne. Les deux pages PDF et les deux schémas SVG du tutoriel sont rendus et
+vérifiés visuellement. Ruff, liens/versions et contenu wheel/sdist réussis.
+Les essais ne prouvent pas la disponibilité future de chaque service réseau.
+Le disque Seestar réel et GitHub n'ont reçu aucune modification de ce lot.
+
+La wheel finale a été installée dans un environnement distinct (Astropy 8,
+ReportLab 4.5) et exécutée hors du dossier source : huit catalogues sélectionnés
+avec mise à jour forcée mais mode hors ligne prioritaire, puis un rapport de
+trois comètes avec exports TXT/PDF. Aucun cache n'a été créé en mode hors ligne;
+l'extraction du PDF confirme la magnitude totale et l'état des actualisations.
+
 ## Lot astéroïdes
 
 Validation locale Windows/Python 3.13.6 : **125 tests réussis, un ignoré**.

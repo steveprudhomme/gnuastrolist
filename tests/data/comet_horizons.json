@@ -1,0 +1,72 @@
+{
+  "source": "NASA/JPL Horizons API 1.3",
+  "retrieved_on": "2026-11-17",
+  "references": [
+    {
+      "designation": "67P",
+      "parameters": {
+        "format": "json",
+        "COMMAND": "'DES=67P;CAP;'",
+        "EPHEM_TYPE": "'OBSERVER'",
+        "CENTER": "'coord@399'",
+        "COORD_TYPE": "'GEODETIC'",
+        "SITE_COORD": "'-73.68,45.57,0'",
+        "TLIST": "'2461362.583333333 2461362.625'",
+        "QUANTITIES": "'4,9,20'",
+        "CSV_FORMAT": "'YES'",
+        "CAL_FORMAT": "'JD'",
+        "APPARENT": "'AIRLESS'"
+      },
+      "sha256": "8c1d29348a5c3c18a4f7bfe26d77c4d9cbb2e11dc6e09a8fb24e3546d30146db",
+      "samples": [
+        [
+          2461362.583333333,
+          262.280662,
+          -30.151039,
+          21.212,
+          5.13168360134429
+        ],
+        [
+          2461362.625,
+          272.717494,
+          -40.647762,
+          21.212,
+          5.1318397352283
+        ]
+      ]
+    },
+    {
+      "designation": "C/2023 A3",
+      "parameters": {
+        "format": "json",
+        "COMMAND": "'C/2023 A3'",
+        "EPHEM_TYPE": "'OBSERVER'",
+        "CENTER": "'coord@399'",
+        "COORD_TYPE": "'GEODETIC'",
+        "SITE_COORD": "'-73.68,45.57,0'",
+        "TLIST": "'2461362.583333333 2461362.625'",
+        "QUANTITIES": "'4,9,20'",
+        "CSV_FORMAT": "'YES'",
+        "CAL_FORMAT": "'JD'",
+        "APPARENT": "'AIRLESS'"
+      },
+      "sha256": "d251faf5ba7ceb46d1caafbb6a1cb325682134153cc1d1976d72dc4404999909",
+      "samples": [
+        [
+          2461362.583333333,
+          289.253103,
+          -0.663952,
+          19.049,
+          9.59981277652313
+        ],
+        [
+          2461362.625,
+          300.442416,
+          -10.208184,
+          19.05,
+          9.60046759202289
+        ]
+      ]
+    }
+  ]
+}

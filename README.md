@@ -6,7 +6,8 @@ Pour commencer sans connaître le programme, suivre le
 GNU Astrolist est un prototype libre en ligne de commande qui prépare une soirée
 d'observation astronomique. Il calcule la hauteur des objets au début et à la
 fin d'une plage horaire, retient ceux qui traversent le champ de visée et les
-trie par magnitude en bande V.
+trie par magnitude indiquée : V pour les catalogues stellaires et du ciel
+profond, magnitude totale estimée pour les comètes.
 
 Le prototype est déjà fonctionnel : il contient 21 212 entrées visuelles du
 General Catalogue of Variable Stars (GCVS), les 110 objets Messier et les
@@ -26,6 +27,31 @@ remplace la copie embarquée par une réponse SBDB locale plus récente ou plus
 étendue. La magnitude précédée de `≈` est une estimation H-G, associée à un
 instant dans le champ. Le modèle à deux corps accepte les dates à ±365 jours
 des éléments : cette borne ne garantit pas la précision du pointage.
+
+Les **comètes MPC** sont disponibles avec `--objects comets`, seules ou mélangées
+aux autres catalogues. La copie embarquée contient 958 entrées cométaires;
+les orbites sans époque exploitable sont écartées avec un effectif annoncé.
+`--comets-file` accepte un fichier orbital MPC local; `--cbat-file` ajoute des
+observations CBAT/ICQ datées dans un CSV documenté, séparées des prévisions.
+Aucune mesure CBAT réelle n'est fournie avec le paquet : voir le
+[guide des comètes](docs/COMETS.md).
+
+### Garder les catalogues à jour au démarrage
+
+Tous les catalogues évolutifs ont une politique configurable. Ajouter à sa
+commande, par exemple :
+
+```text
+--update-catalogs if-stale --catalog-age comets=24 --catalog-age asteroids=48 --catalog-age openngc=720
+```
+
+Cela contrôle uniquement les catalogues sélectionnés, au lancement. Les délais
+sont en heures; un [fichier de configuration local](docs/CATALOG_UPDATES.md)
+peut mémoriser les réglages. Le mode par défaut `never` ne télécharge rien;
+`--offline` interdit toujours les connexions, même avec `force`.
+Le cache reste sur l'ordinateur et garde la dernière copie validée en cas de
+panne. Les observations CBAT restent importées localement tant qu'aucun accès
+automatique fiable n'est validé.
 
 ## Installation
 
@@ -377,9 +403,16 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --az-max DEG                 Limite azimutale de fin
 --min-altitude DEG           Élévation minimale; --fov-v est un alias
 --alt-center DEG             Remplacement avancé facultatif du centre vertical
---objects CATALOGUE [...]    variable_stars, messier, caldwell, ngc, bayer, flamsteed, asteroids
+--objects CATALOGUE [...]    variable_stars, messier, caldwell, ngc, bayer, flamsteed, asteroids, comets
 --asteroids-file JSON        Remplace les orbites embarquées par une réponse SBDB locale
---max-magnitude MAG          Limite V; défaut 8 pour les variables, aucune pour Messier
+--comets-file FICHIER        Remplace les orbites cométaires par un fichier MPC local
+--cbat-file CSV              Ajoute des observations datées CBAT/ICQ transcrites localement
+--update-catalogs MODE       never (défaut), if-stale ou force; --offline reste prioritaire
+--catalog-age SOURCE=HEURES  Délai par catalogue ou fournisseur; répétable
+--catalog-max-age-hours H    Délai commun à tous les catalogues
+--catalog-cache-dir DOSSIER  Cache de copies validées sur l'ordinateur
+--catalog-config JSON       Configuration locale facultative des mises à jour
+--max-magnitude MAG          Seuil V ou total cométaire; défaut 8 pour GCVS, aucun sinon
 --all-magnitudes             Désactive la limite pour le catalogue choisi
 --sample-minutes MIN         Pas de recherche (défaut : 10)
 --limit N                    Tronque uniquement l'affichage après le tri

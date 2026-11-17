@@ -39,3 +39,20 @@ tout calcul saisonnier erroné. Voir la [décision 0003](architecture/decisions/
 et les [limites scientifiques](ASTEROIDS.md).
 Les tests ne doivent pas dépendre de leurs services distants. Une nouvelle
 méthode ou source doit avoir une notice, des exemples vérifiables et des tests.
+
+`moving.py` partage la géométrie Terre/Soleil/site, le temps de lumière et la
+sélection simultanée champ/magnitude des astéroïdes et comètes. `comets.py`
+lit les colonnes MPC, propage les trois coniques par variables universelles
+et garde la photométrie totale distincte de V. Les observations CBAT locales
+restent un enrichissement daté du résultat; elles ne servent pas au filtre.
+
+`updates.py` décrit les sources évolutives et construit des générations de cache
+validées avant activation atomique. `data_builders/` contient les générateurs
+installables; les anciens scripts restent des points d'entrée compatibles.
+`catalog_resources.py` active temporairement les copies de la commande et
+vide les caches mémoire à l'entrée et à la sortie. Les ressources distribuées
+ne sont pas écrasées. La CLI valide ses paramètres et protège les destinations
+Seestar avant tout appel d'actualisation. Le mode hors ligne est fixé avant
+les conversions temporelles, la météo ou les téléchargements de catalogues.
+
+Voir la [décision 0004](architecture/decisions/0004-cometes-actualisations.md).
