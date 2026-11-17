@@ -7,8 +7,9 @@ approuvées par le propriétaire. Leurs identifiants permanents sont **ECC-A à
 ECC-I**. Ce plan est enregistré avant toute implémentation; les cases restent
 ouvertes tant que leurs critères ne sont pas vérifiés.
 
-**Prochaine étape de développement : utiliser ECC pour réaliser ECC-D —
-environnement et livraison reproductibles.** ECC-A est fusionné dans `main` par la
+**ECC-D à ECC-I sont réalisés dans la [PR nº 12](https://github.com/steveprudhomme/gnuastrolist/pull/12).**
+716 tests locaux réussis sous Python 3.11/3.13, cinq contrôles distants verts
+sur `a3804fe`; aucune fusion incluse. ECC-A est fusionné dans `main` par la
 [PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9), commit `1d75522`.
 ECC-B est publié dans la [PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10),
 avec cinq contrôles réussis sur le correctif; sa fusion reste distincte.
@@ -271,7 +272,7 @@ Aucune fusion distante ni modification des protections GitHub n'est incluse.
 - [x] ECC-DI.2 — À chaque lot : mettre à jour README, CHANGELOG, ROADMAP et
       guides concernés, ajouter un schéma au tutoriel dès 10 ans, exécuter les
       contrôles pertinents, consigner les résultats, committer et publier la branche.
-- [ ] ECC-DI.3 — Terminer par revue indépendante, suite complète, typage,
+- [x] ECC-DI.3 — Terminer par revue indépendante, suite complète, typage,
       couverture, audits, archives et installation hors des sources; inspecter
       les schémas et un PDF. Publier une PR détaillée ciblant ECC-C et vérifier
       tous les contrôles distants du dernier commit avant de conclure.
@@ -846,7 +847,7 @@ publié avant sa réalisation.
       reconstruire les quatre verrous avec empreintes et retirer les verrous 3.10.
 - [x] ECC-E.6.2 — Installer un environnement Python 3.11 local isolé, contrôler
       les dépendances et exécuter tests, couverture et quatre audits actualisés.
-- [ ] ECC-E.6.3 — Actualiser compatibilité, installation, tutoriel et preuves,
+- [x] ECC-E.6.3 — Actualiser compatibilité, installation, tutoriel et preuves,
       publier puis vérifier les cinq contrôles distants au dernier commit.
 
 Aucun avis ne sera ignoré; les résultats 3.10 antérieurs restent un historique
@@ -864,3 +865,20 @@ Python 3.11/3.13, avec audit des quatre verrous et construction/installations.
 Une dernière revue croisée reproduit puis corrige l'inversion contexte/cache
 entre CLI, actualisation directe et rétention. 90 tests ciblés réussis, deux
 ignorés; nouvelle CI requise pour ce correctif avant clôture ECC-DI.3.
+
+
+## Clôture des six lots ECC-D à ECC-I
+
+Tous les critères ECC sont vérifiés dans cette branche. Dernière validation
+locale : 716 tests réussis, huit ignorés et 13 avertissements conservés sous
+Python 3.11.9 et 3.13.6; couverture combinée 90,34 %, seuils distincts atteints.
+Quatre audits sans avis connu, Ruff, typage progressif, liens, six images,
+archives et installation séparée réussis. Recherche ciblée : 667 blobs historiques
+sélectionnés examinés, sans certification générale de confidentialité.
+
+Les cinq contrôles GitHub de `a3804fe` réussissent : quatre jobs Windows/Linux
+3.11/3.13 et distribution (audits, types, secrets, archives, installation).
+La PR nº 12 est proposée à la revue après ECC-B nº 10 et ECC-C nº 11.
+Aucune fusion, modification de réglage GitHub ni utilisation d'archives Seestar
+réelles. La publication du présent bilan est suivie d'une dernière vérification
+de ses contrôles avant le compte rendu utilisateur.

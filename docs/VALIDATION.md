@@ -1,5 +1,19 @@
 # Validation
 
+## État courant — ECC-D à ECC-I réalisés
+
+Windows isolé Python 3.11.9 et 3.13.6 : **716 tests réussis, huit ignorés,
+13 avertissements** chacun; couverture combinée **90,34 %**, seuils séparés
+respectés. Quatre audits sans avis connu, Ruff, typage progressif, liens,
+archives/installations et six schémas contrôlés. PDF avec objets/statuts Seestar
+synthétiques inspecté, simulation du cache sans création de verrou vérifiée.
+
+Les cinq contrôles GitHub de `a3804fe` passent sur Windows/Linux 3.11/3.13
+et la livraison. Plans publiés avant code : `a814a49`, puis `1f2745c` pour
+Python 3.11 minimum. La PR nº 12 vise ECC-C nº 11, dépendant d’ECC-B nº 10;
+aucune fusion effectuée. Les sections suivantes conservent le journal technique
+et ses mesures intermédiaires; elles ne remplacent pas cet état courant.
+
 ## ECC-C — Paramètres et budgets avant traitement
 
 Plan commité et publié avant les tests nouveaux et le code : `d9545c5`, avec
@@ -501,7 +515,7 @@ La rétention ne vise que les générations reconnues d'un cache local explicite
 aucune archive Seestar réelle n'a été parcourue. Voir [CACHE.md](CACHE.md).
 
 
-## État final du brouillon ECC-D à ECC-I — PR nº 12
+## Bilan intermédiaire avant Python 3.11 — PR nº 12
 
 Après les corrections de revue : **714 tests réussis, huit ignorés** dans les
 copies Windows isolées Python 3.13.6 et 3.10.16. Les avertissements restent
@@ -532,4 +546,4 @@ matrice Windows/Linux 3.11/3.13. Environnements isolés Python 3.11.9 et 3.13.6 
 NumPy 2.4.6; Python 3.13 emploie NumPy 2.5.5. Pillow 13.0.0/filelock 4.2.11.
 Les quatre verrous complets passent pip-audit sans avis connu au 17 novembre
 2026. Les verrous 3.10 sont retirés; aucun avis n'est ignoré. Le dernier passage
-GitHub doit encore confirmer les cinq contrôles avant de terminer ECC-DI.3.
+GitHub confirme ensuite les cinq contrôles au commit `a3804fe` (voir état courant).

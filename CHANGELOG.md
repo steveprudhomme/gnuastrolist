@@ -440,3 +440,7 @@ atomiques et protégées; contexte IERS corrigé pour le benchmark Python 3.10.
 
 Revue croisée ECC-F/G : ordre commun contexte → cache pour les actualisations
 directes et la rétention; deux régressions concurrentes supplémentaires.
+
+Clôture ECC-D à ECC-I : 716 tests locaux réussis sur Python 3.11/3.13,
+couverture 90,34 %, quatre audits sans avis connu et cinq contrôles GitHub
+verts sur `a3804fe`. PR nº 12 proposée à la revue; aucune fusion effectuée.

@@ -22,9 +22,10 @@ contrôles réussis sur le correctif; sa fusion reste distincte. ECC-C est publi
 dans la [PR nº 11](https://github.com/steveprudhomme/gnuastrolist/pull/11), basée
 sur ECC-B, avec cinq contrôles réussis sur le correctif. Intégrer ECC-B avant
 de revoir la base et la fusion d'ECC-C dans `main`.
-Les lots ECC-D à ECC-I sont en cours sur une branche autonome; leurs cases
-et preuves courantes sont dans ROADMAP.md. Toujours les relire avant de
-recommander une prochaine étape.
+Les lots ECC-D à ECC-I sont réalisés dans la PR nº 12, sur une branche
+autonome basée sur ECC-C. Les cases et preuves courantes sont dans ROADMAP.md.
+Aucun lot ECC terminé ne doit être recommandé de nouveau; la revue et les
+fusions restent des décisions distinctes.
 Une demande d'information sur la prochaine étape ne déclenche pas sa réalisation.
 
 ## Périmètre des lots

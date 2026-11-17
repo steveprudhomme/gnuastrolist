@@ -551,8 +551,8 @@ Les contributions sont bienvenues. Consultez [CONTRIBUTING.md](CONTRIBUTING.md),
 [ROADMAP.md](ROADMAP.md) et [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 Les améliorations approuvées après l'audit sont identifiées **ECC-A à ECC-I**
-dans le roadmap et se réalisent avec ECC. La prochaine étape est le premier
-lot incomplet de cette liste; voir la [méthode ECC](docs/DEVELOPPEMENT_ECC.md).
+dans le roadmap et se réalisent avec ECC. Ils sont réalisés dans cette branche;
+la revue et les fusions restent distinctes. Voir la [méthode ECC](docs/DEVELOPPEMENT_ECC.md).
 
 Le cadre de développement est décrit dans [AGENTS.md](AGENTS.md),
 [INSTALL.md](INSTALL.md) et l'[index documentaire](docs/README.md).
@@ -580,3 +580,7 @@ ECC-I précise [la confidentialité](PRIVACY.md), les attributions,
 ECC-F coordonne les mises à jour par verrou. La [rétention du cache](docs/CACHE.md)
 se simule avec `gnu-astrolist-cache --cache-dir local/catalog-cache --keep 2`;
 l’option `--apply` applique explicitement le retrait. Les archives Seestar sont protégées.
+
+Validation ECC-D à ECC-I : 716 tests locaux réussis, couverture 90,34 % et
+cinq contrôles GitHub verts sur `a3804fe`; [PR nº 12](https://github.com/steveprudhomme/gnuastrolist/pull/12).
+Python 3.11 minimum, quatre verrous audités, aucune archive Seestar réelle utilisée.
