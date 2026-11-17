@@ -18,7 +18,7 @@
 - [Vérification Seestar en lecture seule](SEESTAR.md).
 - [Exports TXT/PDF protégés et remplacement explicite — ECC-A](EXPORTS.md).
 - [Météo fiable, données partielles et rosée — ECC-B](METEO.md).
-- [Paramètres et budgets vérifiés avant traitement — ECC-C](PARAMETRES.md).
+- [Paramètres, budgets et plafond de hauteur — ECC-C / ALTMAX](PARAMETRES.md).
 - [Décision : précontrôle et grilles temporelles partagés](architecture/decisions/0006-precontrole-parametres.md).
 - [Préparer une version](RELEASE.md).
 - [Décision : catalogues du ciel profond](architecture/decisions/0001-catalogues.md).

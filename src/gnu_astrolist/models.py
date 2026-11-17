@@ -235,16 +235,25 @@ class FieldOfView:
         azimuth_max_deg: float,
         minimum_altitude_deg: float,
         altitude_center_deg: float | None = None,
+        maximum_altitude_deg: float | None = None,
     ) -> FieldOfView:
         """Construit un champ centré automatiquement, sauf remplacement explicite.
 
         Le champ horizontal suit le sens nord vers est entre les deux limites.
-        Le champ vertical s'étend de l'élévation minimale choisie jusqu'à 90°.
+        Le plafond vaut 90° sans réglage explicite. L'ancien remplacement du
+        centre conserve son comportement uniquement sans plafond explicite.
         """
 
         finite_number(azimuth_min_deg, "azimut minimal", 0, 360)
         finite_number(azimuth_max_deg, "azimut maximal", 0, 360)
         finite_number(minimum_altitude_deg, "élévation minimale", 0, 90)
+        maximum = 90.0 if maximum_altitude_deg is None else finite_number(
+            maximum_altitude_deg, "élévation maximale", 0, 90
+        )
+        if maximum < minimum_altitude_deg:
+            raise ValueError("L'élévation maximale doit être supérieure ou égale à la minimale")
+        if maximum_altitude_deg is not None and altitude_center_deg is not None:
+            raise ValueError("Le centre vertical (--alt-center) est incompatible avec --max-altitude")
         if altitude_center_deg is not None:
             finite_number(altitude_center_deg, "centre vertical", 0, 90)
 
@@ -259,7 +268,7 @@ class FieldOfView:
         automatic_azimuth_center = (
             normalized_minimum + horizontal_deg / 2.0
         ) % 360.0
-        automatic_altitude_center = (minimum_altitude_deg + 90.0) / 2.0
+        automatic_altitude_center = (minimum_altitude_deg + maximum) / 2.0
         return cls(
             azimuth_center_deg=automatic_azimuth_center,
             altitude_center_deg=(
@@ -268,7 +277,7 @@ class FieldOfView:
                 else altitude_center_deg
             ),
             horizontal_deg=horizontal_deg,
-            vertical_deg=90.0 - minimum_altitude_deg,
+            vertical_deg=maximum - minimum_altitude_deg,
         )
 
     @property

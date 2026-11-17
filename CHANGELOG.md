@@ -5,6 +5,16 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté — Plafond de hauteur configurable (ALTMAX)
+
+- `--max-altitude` limite le champ, par exemple 20° à 80°, sans déplacer le
+  minimum; plafond effectif de 90° par défaut, bornes incluses.
+- Validation préalable des valeurs finies, de l'ordre des bornes et du conflit
+  avec `--alt-center`; anciens appels et alias `--fov-v` conservés.
+- Champ commun aux objets fixes, petits corps, satellites/débris; plafond et
+  limite de l'inclusion partielle indiqués dans les rapports écran/TXT/PDF.
+- Tutoriel avec schéma synthétique et tests hors réseau; développement local.
+
 ### Ajouté — ECC-D, livraison reproductible
 
 - NumPy déclaré directement; quatre verrous Windows/Linux Python 3.10/3.13

@@ -37,6 +37,7 @@ from .models import (
 )
 from .report_files import staged_report
 from .report_formatting import (
+    ALTITUDE_CEILING_NOTE,
     apparent_size_label,
     crossing_time_label,
     magnitude_label,
@@ -679,6 +680,8 @@ def _build_pdf(
         ),
         _section("Conditions météo", styles),
     ]
+    if field_of_view.altitude_upper_deg < 90:
+        story.insert(3, _paragraph(ALTITUDE_CEILING_NOTE, styles["small"]))
     if seestar_inventory is not None:
         story.insert(3, _paragraph(
             seestar_inventory.summary + " Présence d'acquisitions reconnues; qualité non vérifiée. "

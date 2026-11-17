@@ -96,3 +96,9 @@ arrêt sur statut non 200) s'appliquent avant publication dans le cache protég�
 La [décision 0005](architecture/decisions/0005-satellites-registres.md) décrit les limites.
 
 ECC-G : voir [APPLICATION.md](APPLICATION.md) et l’[ADR 0007](architecture/decisions/0007-service-application-rapport.md).
+
+
+ALTMAX ajoute seulement une limite au champ partagé : la CLI et le service
+valident les mêmes bornes dans `FieldOfView`. Les moteurs continuent à appeler
+`contains()`; les rendus lisent les bornes effectives, avec une note publique
+commune sur l'inclusion partielle. Aucun nouveau calcul d'orbite ou pilote matériel.

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+<title id="title">Choisir une hauteur maximale de 80 degrés</title>
+<desc id="desc">Schéma synthétique : zone recherchée entre 20 et 80 degrés, sous le zénith à 90 degrés. Les objets peuvent entrer puis sortir de cette zone.</desc>
+<rect width="960" height="420" rx="16" fill="#f2f6f8"/>
+<g font-family="sans-serif" fill="#18344a">
+<text x="30" y="43" font-size="25" font-weight="bold">Choisir un plafond pour le télescope</text>
+<rect x="100" y="80" width="360" height="30" fill="#f4cfca"/>
+<rect x="100" y="110" width="360" height="180" fill="#d7eade"/>
+<rect x="100" y="290" width="360" height="60" fill="#e1e5ea"/>
+<path d="M90 80H465 M90 110H465 M90 290H465 M90 350H620" fill="none" stroke="#35536b" stroke-width="2"/>
+<text x="39" y="86" font-size="18">90°</text>
+<text x="39" y="116" font-size="18">80°</text>
+<text x="39" y="296" font-size="18">20°</text>
+<text x="48" y="356" font-size="18">0°</text>
+<text x="480" y="86" font-size="17">Zénith</text>
+<text x="480" y="116" font-size="17">Plafond choisi</text>
+<text x="480" y="296" font-size="17">Limite basse</text>
+<text x="480" y="345" font-size="17">Horizon</text>
+<text x="119" y="102" font-size="16">Au-dessus du plafond</text>
+<text x="119" y="204" font-size="20">Zone de recherche : 20° à 80°</text>
+<text x="119" y="327" font-size="17">Sous la limite basse</text>
+<rect x="650" y="95" width="280" height="140" rx="12" fill="#e7f1f3"/>
+<text x="669" y="127" font-size="18" font-weight="bold">Dans ta commande :</text>
+<g font-family="monospace" font-size="17">
+<text x="669" y="170">--min-altitude 20</text>
+<text x="669" y="202">--max-altitude 80</text>
+</g>
+<g font-size="16">
+<text x="650" y="274">Un objet peut entrer</text>
+<text x="650" y="296">dans cette zone puis en sortir.</text>
+<text x="650" y="322">Ce n'est pas une garantie</text>
+<text x="650" y="344">pour toute la pose.</text>
+</g>
+<text x="30" y="392" font-size="16">Schéma explicatif. Le programme prépare une liste; il ne pilote pas le télescope.</text>
+</g></svg>
