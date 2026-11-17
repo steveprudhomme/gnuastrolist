@@ -4,5 +4,5 @@
 <g font-family="sans-serif" fill="#18344a"><text x="30" y="42" font-size="25" font-weight="bold">ECC-D : retrouver les mêmes outils</text>
 <rect x="30" y="78" width="275" height="105" rx="12" fill="#e7f1f3"/><rect x="342" y="78" width="275" height="105" rx="12" fill="#e7f1f3"/><rect x="654" y="78" width="275" height="105" rx="12" fill="#e7f1f3"/>
 <g font-size="20"><text x="48" y="112">1. Choisir la liste</text><text x="360" y="112">2. Créer sa boîte</text><text x="672" y="112">3. Vérifier les tests</text></g>
-<g font-size="17"><text x="48" y="152">Python + Windows/Linux</text><text x="360" y="152">Dans local, sans mélange</text><text x="672" y="152">Avant de préparer le ciel</text></g>
+<g font-size="17"><text x="48" y="152">Python 3.11/3.13 + OS</text><text x="360" y="152">Dans local, sans mélange</text><text x="672" y="152">Avant de préparer le ciel</text></g>
 <text x="30" y="220" font-size="16">Schéma explicatif. Les photos Seestar restent en lecture seule.</text></g></svg>

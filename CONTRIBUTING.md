@@ -49,7 +49,7 @@ Une modification de méthode scientifique demande des références et des cas
 de comparaison; un changement d'architecture demande une décision documentée.
 Voir [GOVERNANCE.md](GOVERNANCE.md) et [docs/VALIDATION.md](docs/VALIDATION.md).
 
-Le code doit rester lisible sous Python 3.10 et plus récent. Les nouvelles
+Le code doit rester lisible sous Python 3.11 et plus récent. Les nouvelles
 données astronomiques doivent avoir une provenance, une version et des
 conditions de redistribution documentées. Aucun résultat céleste ne doit être
 inventé pour satisfaire un exemple ou un test.

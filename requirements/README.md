@@ -1,7 +1,7 @@
 # Verrous de développement et livraison — ECC-D
 
 Ces quatre fichiers fixent les versions et empreintes pour Windows/Linux x86-64,
-Python 3.10/3.13. Ils incluent les outils de développement; ce ne sont pas des
+Python 3.11/3.13. Ils incluent les outils de développement; ce ne sont pas des
 contraintes universelles pour toutes les plateformes ou architectures.
 Les plages compatibles de l'application restent dans `pyproject.toml`.
 
@@ -15,7 +15,7 @@ local/ecc-dev/Scripts/python -m pip check
 ```
 
 Sous Linux, utiliser `python3.13 -m venv local/ecc-dev`, les chemins `bin/python`
-et le verrou `py313-linux.txt`. Pour Python 3.10, choisir le verrou `py310-*`.
+et le verrou `py313-linux.txt`. Pour Python 3.11, choisir le verrou `py311-*`.
 Ne pas utiliser `--system-site-packages`. L'environnement historique `.venv`
 reste conservé mais ne prouve plus la reproductibilité de la livraison.
 
@@ -38,9 +38,10 @@ n'est pas une attestation signée ni un SBOM normalisé validé; un SBOM appropr
 reste requis avant une distribution incluant des dépendances/exécutables embarqués.
 
 
-### Avis de sécurité au 17 novembre 2026
+### Compatibilité et sécurité au 17 novembre 2026
 
-Les verrous 3.10 sont conservés pour les tests de compatibilité. L'audit échoue
-sur Pillow/filelock, dont les versions corrigées exigent Python 3.11. Ils ne
-valident pas une livraison sûre. Utiliser Python 3.13 pour la livraison actuelle;
-la décision de relever la version minimale a été soumise au propriétaire.
+Le propriétaire a approuvé Python **3.11 minimum**. Les verrous 3.10 sont retirés
+car ils conservaient des dépendances vulnérables sans correctif compatible.
+Pillow >=13 et filelock >=4.2.1 fixent les versions minimales corrigées;
+les résultats 3.10 antérieurs restent uniquement un historique de compatibilité.
+L'audit actualisé doit être refait pour les quatre verrous avant livraison.

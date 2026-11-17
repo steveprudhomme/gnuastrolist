@@ -384,8 +384,8 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
   de la validation et règles Ruff supplémentaires.
 - Recherche ciblée de secrets sans contenu dans les diagnostics; CI avec verrous,
   actions épinglées et durée bornée; audit de tous les verrous.
-- Audit Python 3.10 en échec : correctifs Pillow/filelock exigeant Python 3.11;
-  décision de compatibilité soumise au propriétaire, aucun avis ignoré.
+- Python 3.11 minimum, avec correctifs Pillow/filelock et verrous audités;
+  aucun avis ignoré.
 
 
 ### ECC-G — Service et rapport partagé
@@ -429,3 +429,11 @@ du service direct et erreur CLI lisible en cas de délai du cache dépassé.
 
 Revue finale ECC-H/D : sorties des outils scientifiques et du manifeste locales,
 atomiques et protégées; contexte IERS corrigé pour le benchmark Python 3.10.
+
+
+### ECC-E.6 — Python 3.11 minimum (changement de compatibilité)
+
+- Après accord du propriétaire, minimum Python relevé de 3.10 à 3.11 et matrice
+  Windows/Linux 3.11/3.13; retrait des verrous 3.10 vulnérables.
+- Versions minimales corrigées Pillow 13 et filelock 4.2.1; quatre verrous
+  régénérés avec empreintes. Aucun avis de vulnérabilité ignoré.

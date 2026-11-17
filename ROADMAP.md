@@ -231,7 +231,7 @@ Aucune fusion distante ni modification des protections GitHub n'est incluse.
 - [x] ECC-E.4 — Mesurer la couverture des lignes et branches; choisir un plancher
       initial démontré et des objectifs renforcés sur les chemins critiques.
       Compléter des régressions utiles si nécessaire, pas des tests miroirs.
-- [ ] ECC-E.5 — Ajouter typage progressif sur les composants contrôlables,
+- [x] ECC-E.5 — Ajouter typage progressif sur les composants contrôlables,
       contrôles Ruff pertinents, vérification des dépendances et recherche de
       secrets sans afficher leur contenu. Borner la durée des jobs et utiliser
       les verrous dans la CI Windows/Linux 3.10/3.13. Distinguer examen local et
@@ -307,7 +307,7 @@ depuis la wheel, hors des sources; schéma ECC-D inspecté.
       justifiés sur les chemins critiques et les régressions de l'audit.
 - [x] ECC-E.2 — Introduire progressivement contrôle des types et règles Ruff
       pertinentes, sans réécriture générale ni tests miroirs de l'implémentation.
-- [ ] ECC-E.3 — Préparer contrôles de dépendances/secrets, durées CI bornées
+- [x] ECC-E.3 — Préparer contrôles de dépendances/secrets, durées CI bornées
       et matrice cohérente avec le support Python annoncé; documenter les
       commandes et distinguer contrôles locaux et résultats distants exécutés.
 
@@ -822,7 +822,7 @@ Revue finale ECC-G : trois défauts reproduits puis corrigés (ordre des verrous
 limite non entière, domaine âge GP); 40 tests du service réussis.
 
 
-## Bilan autonome ECC-D à ECC-I — 17 novembre 2026
+## Bilan intermédiaire autonome — avant accord Python 3.11
 
 Plan `a814a49` publié avant code. ECC-D/F/G/H/I réalisés et publiés dans
 la PR nº 12 en brouillon, sans fusion. ECC-E implémenté mais incomplet :
@@ -832,8 +832,8 @@ huit ignorés sous 3.10.16 et 3.13.6; couverture combinée 90,33 %.
 Revue indépendante, six images inspectées, TXT/PDF et archives vérifiés.
 Le premier passage distant réussit les quatre jobs de tests; distribution
 échoue à l'audit connu. La branche publiée reste distincte de main.
-La prochaine étape ouverte est **Utiliser ECC pour réaliser ECC-E — terminer
-l'audit des dépendances après décision sur la version minimale de Python**.
+Le point ouvert à ce stade était ECC-E et le choix de version minimale;
+voir l’ajustement approuvé ECC-E.6 ci-dessous.
 
 
 ### ECC-E.6 — Ajustement approuvé : Python 3.11 minimum
@@ -842,12 +842,18 @@ Le propriétaire approuve le passage à Python 3.11/3.13 après le constat des
 59 avis connus sur Pillow/filelock sous 3.10. Cet ajustement est commité et
 publié avant sa réalisation.
 
-- [ ] ECC-E.6.1 — Relever la version minimale et la matrice à 3.11/3.13;
+- [x] ECC-E.6.1 — Relever la version minimale et la matrice à 3.11/3.13;
       reconstruire les quatre verrous avec empreintes et retirer les verrous 3.10.
-- [ ] ECC-E.6.2 — Installer un environnement Python 3.11 local isolé, contrôler
+- [x] ECC-E.6.2 — Installer un environnement Python 3.11 local isolé, contrôler
       les dépendances et exécuter tests, couverture et quatre audits actualisés.
 - [ ] ECC-E.6.3 — Actualiser compatibilité, installation, tutoriel et preuves,
       publier puis vérifier les cinq contrôles distants au dernier commit.
 
 Aucun avis ne sera ignoré; les résultats 3.10 antérieurs restent un historique
 de compatibilité et ne constituent plus une cible de livraison prise en charge.
+
+
+Validation ECC-E.6 après migration : Python 3.11.9 et 3.13.6 isolés,
+714 tests réussis et huit ignorés chacun, 13 avertissements conservés;
+couverture combinée 90,33 %. Quatre audits 3.11/3.13 Windows/Linux : aucun
+avis connu. Pillow 13.0.0 et filelock 4.2.11 verrouillés. CI finale à vérifier.

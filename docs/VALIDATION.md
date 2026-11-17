@@ -521,3 +521,15 @@ Les audits 3.13 Windows/Linux ne trouvent aucun avis connu. Aucun avis ignoré.
 La PR reste en brouillon, dépendant d'ECC-C puis ECC-B; aucune fusion effectuée.
 La décision de passer à Python 3.11 minimum est requise pour terminer ECC-E.
 Les résultats de cette première CI ne prouvent pas ceux d'un commit ultérieur.
+
+
+## ECC-E.6 — Version minimale approuvée et audit corrigé
+
+Plan ajusté publié avant code : `1f2745c`. Support Python **3.11 minimum**,
+matrice Windows/Linux 3.11/3.13. Environnements isolés Python 3.11.9 et 3.13.6 :
+714 tests réussis, huit ignorés et 13 avertissements chacun. Couverture combinée
+90,33 % et seuils séparés vérifiés. Python 3.11 emploie Astropy 8.0.2 et
+NumPy 2.4.6; Python 3.13 emploie NumPy 2.5.5. Pillow 13.0.0/filelock 4.2.11.
+Les quatre verrous complets passent pip-audit sans avis connu au 17 novembre
+2026. Les verrous 3.10 sont retirés; aucun avis n'est ignoré. Le dernier passage
+GitHub doit encore confirmer les cinq contrôles avant de terminer ECC-DI.3.

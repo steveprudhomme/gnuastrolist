@@ -93,7 +93,7 @@ def main() -> None:
             for reference in ('satellite_reference.json', 'satellite_reference_iers_LICENSE.txt',
                               'satellite_reference_sgp4_LICENSE.txt'):
                 assert any(k.endswith('/tests/data/' + reference) for k in files), path
-            for python in ('310', '313'):
+            for python in ('311', '313'):
                 for platform in ('windows', 'linux'):
                     assert any(k.endswith(f'/requirements/py{python}-{platform}.txt')
                                for k in files), (path, python, platform)

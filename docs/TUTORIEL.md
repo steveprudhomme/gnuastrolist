@@ -780,3 +780,13 @@ Un verrou fait attendre deux mises à jour pour qu'elles ne travaillent pas ense
    vraiment les vieilles copies du cache local. Elle ne sert jamais aux photos.
 
 Le programme garde au moins une copie valide. Voir le [guide du cache](CACHE.md).
+
+
+### Choisir une version Python encore prise en charge
+
+1. Utilise Python **3.11 ou plus récent**. Les tests suivent 3.11 et 3.13.
+2. Si tu as Python 3.10, demande de l'aide pour le mettre à jour.
+3. Recrée la boîte d'outils locale avec la bonne liste de versions.
+
+Ce changement permet d'utiliser les corrections de sécurité des outils.
+Tes photos Seestar ne changent pas.

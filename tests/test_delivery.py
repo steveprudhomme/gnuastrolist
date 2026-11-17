@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_four_target_locks_pin_every_dependency_with_hashes():
-    for python in ("310", "313"):
+    for python in ("311", "313"):
         for platform in ("windows", "linux"):
             text = (ROOT / "requirements" / f"py{python}-{platform}.txt").read_text()
             blocks = re.split(r"\n(?=[a-zA-Z0-9])", text)

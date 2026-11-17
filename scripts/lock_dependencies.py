@@ -10,7 +10,7 @@ from pathlib import Path
 def main() -> None:
     root = Path(__file__).resolve().parents[1]
     (root / "requirements").mkdir(exist_ok=True)
-    for version in ("3.10", "3.13"):
+    for version in ("3.11", "3.13"):
         for platform in ("windows", "linux"):
             subprocess.run(
                 [

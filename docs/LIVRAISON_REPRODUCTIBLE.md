@@ -1,7 +1,7 @@
 # Environnements et livraison reproductibles — ECC-D
 
 Le projet dispose de quatre verrous avec versions exactes et empreintes :
-Windows/Linux x86-64, Python 3.10/3.13. NumPy est une dépendance directe, car le
+Windows/Linux x86-64, Python 3.11/3.13. NumPy est une dépendance directe, car le
 code l'importe directement. La procédure de reconstruction est dans
 [requirements/README.md](../requirements/README.md).
 
@@ -32,7 +32,7 @@ ni inventaire Seestar. Il n'est pas un SBOM normalisé ou une signature. Un
 paquet Python qui ne redistribue pas ses dépendances ne les relicencie pas;
 une future distribution autonome devra produire le SBOM et les notices adaptés.
 
-## Validation initiale
+## Validation initiale avant relèvement de la version minimale
 
 Windows, environnements isolés : 564 tests réussis, trois ignorés sous Python
 3.13.6 (Astropy 8.0.2, NumPy 2.5.5) et Python 3.10.16 (Astropy 6.1.7,
@@ -46,13 +46,14 @@ sa version exacte est consignée dans l'inventaire. Les résultats Linux et les
 derniers commits se vérifient dans la CI, pas par extrapolation des essais Windows.
 
 
-## État de sécurité après ECC-E
+## Compatibilité approuvée après l'audit ECC-E
 
-Le verrou Python 3.13 Windows/Linux ne présente aucun avis connu lors de l'audit
-du 17 novembre 2026. Python 3.10 reste testé pour compatibilité, mais son audit
-échoue sur Pillow 12.3.0 et filelock 4.1.0 : les correctifs exigent Python 3.11.
-Ce verrou ne constitue donc pas une livraison de sécurité validée. La décision
-sur la version minimale est en attente; ne pas ignorer les avis pour publier.
+Le propriétaire a approuvé le passage à Python **3.11 minimum**. Les verrous
+3.10 sont retirés : les correctifs de Pillow/filelock exigeaient Python 3.11.
+Pillow >=13 (rendu PDF) et filelock >=4.2.1 (outils d'audit) imposent les
+versions minimales corrigées; la matrice cible désormais 3.11/3.13.
+Les essais 3.10 ci-dessus sont des preuves historiques, pas un support actuel.
+
 L'inventaire exige un dossier parent existant sous `local/`, refuse liens et
 collisions et publie atomiquement. Ajouter `--overwrite` pour remplacer un
 inventaire existant, jamais pour autoriser l'écrasement d'une source.

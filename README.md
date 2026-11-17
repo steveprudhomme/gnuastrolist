@@ -70,7 +70,7 @@ automatique fiable n'est validé.
 
 ## Installation
 
-Python 3.10 ou une version plus récente est requis.
+Python 3.11 ou une version plus récente est requis.
 
 ### Windows PowerShell
 
