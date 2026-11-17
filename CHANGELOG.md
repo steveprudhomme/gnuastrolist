@@ -5,6 +5,13 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Corrigé — validation Windows
+
+- Fichiers temporaires des tests CI placés sur le volume du logiciel, pour
+  distinguer les copies synthétiques locales d'un disque source externe protégé.
+  Les protections Seestar en lecture seule restent inchangées.
+- Guide de démarrage illustré accessible dès 10 ans, séparé du journal technique.
+
 ### Ajouté — archives Seestar
 
 - Option `--seestar-path DOSSIER`, inventaire des noms et métadonnées en lecture

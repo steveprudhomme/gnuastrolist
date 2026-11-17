@@ -4,6 +4,7 @@
 
 import os
 import stat
+import sys
 from contextlib import contextmanager
 from dataclasses import replace
 from pathlib import Path
@@ -273,3 +274,18 @@ def test_relative_output_from_archive_directory_is_blocked(tmp_path, monkeypatch
         main(arguments() + ["--seestar-path", str(tmp_path), "--output-txt", "report.txt"])
     assert error.value.code == 2
     assert list(tmp_path.iterdir()) == []
+
+
+@pytest.mark.skipif(sys.platform != "win32", reason="Protection des volumes Windows")
+def test_external_windows_volume_is_protected_without_blocking_local_copies(tmp_path, monkeypatch):
+    root = tmp_path / "MyWorks"
+    root.mkdir()
+    other_drive = "Z:" if root.drive.upper() != "Z:" else "Y:"
+    monkeypatch.setattr("gnu_astrolist.seestar.__file__", other_drive + "/program/seestar.py")
+    output = tmp_path / "report.txt"
+    with pytest.raises(ValueError, match="protégées"):
+        protect_outputs(root, (output,))
+    monkeypatch.setattr("gnu_astrolist.seestar.__file__", root.drive + "/program/seestar.py")
+    protect_outputs(root, (output,))
+    assert not output.exists()
+    assert list(root.iterdir()) == []

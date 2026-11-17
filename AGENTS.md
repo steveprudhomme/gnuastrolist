@@ -14,6 +14,9 @@
   limites et les sorties publiques affectées; exécuter pytest et Ruff.
 - Mettre à jour README, CHANGELOG, ROADMAP et docs concernés avec le code.
 - Documenter chaque lot dans docs/TUTORIEL.md avec des images versionnées.
+  Le parcours débutant doit être compréhensible à 10 ans : phrases courtes,
+  mots expliqués, étapes numérotées et exemples faciles à copier. Séparer le
+  journal technique du guide de démarrage.
   Identifier schémas et exemples synthétiques; ne jamais fabriquer de captures.
 - Travailler uniquement dans les copies locales selon la consigne actuelle :
   aucun push, PR distante, fusion distante ou réglage GitHub. Utiliser les

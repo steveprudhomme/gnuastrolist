@@ -1,5 +1,95 @@
 # Tutoriel : catalogues astronomiques et validation
 
+## Commencer ici : préparer sa soirée, pas à pas
+
+GNU Astrolist prépare une liste d'objets à regarder dans le ciel. Un **catalogue**
+est une liste de noms et de positions. Messier, Caldwell et NGC sont trois listes.
+Un même objet peut avoir deux noms, comme M31 et NGC224 : le programme les réunit
+sur une seule ligne quand il sait qu'il s'agit du même objet.
+
+![Les trois étapes pour préparer sa soirée](images/premiers-pas.svg)
+
+Ce dessin explique les étapes. Il ne montre aucune photo personnelle.
+
+### 1. Ouvrir le dossier du projet
+
+Si le programme n'est pas encore installé, suivre [INSTALL.md](../INSTALL.md)
+avec une personne qui connaît l'installation de logiciels. Les étapes suivantes
+se font dans PowerShell, une fenêtre où l'on peut copier des commandes.
+
+Ouvre PowerShell dans le dossier du projet. Crée ensuite un dossier pour les
+rapports en copiant cette ligne :
+
+Avant de continuer, vérifie que tu es dans le projet sur l'ordinateur. Si la
+fenêtre indique `E:\MyWorks`, arrête-toi et ouvre le bon dossier : on ne crée
+aucun dossier sur le disque des photos.
+
+```powershell
+New-Item -ItemType Directory -Force local
+```
+
+`local` est un dossier sur l'ordinateur. Ce n'est pas le disque du Seestar.
+Tous les rapports doivent aller sur l'ordinateur, hors du disque des photos.
+
+### 2. Choisir les listes et le dossier de photos
+
+La commande ci-dessous est un exemple pour Laval. La date est un exemple,
+pas une demande d'utiliser cette soirée précise. Remplace `2026-08-15` par ta
+date au format année-mois-jour. `21:00-02:00` veut dire de 21 h à 2 h le lendemain.
+Si tu observes ailleurs, change la latitude et la longitude avec une personne
+qui connaît ton lieu d'observation. Le **fuseau horaire** indique l'heure locale.
+
+```powershell
+.venv\Scripts\python -m gnu_astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects messier caldwell ngc --offline --max-magnitude 8 --limit 20 --seestar-path "E:\MyWorks" --output-txt local/soiree.txt --output-pdf local/soiree.pdf
+```
+
+Voici les morceaux à connaître :
+
+| Morceau de la commande | Ce que cela veut dire |
+| --- | --- |
+| `--objects messier caldwell ngc` | Utiliser les trois listes ensemble. |
+| `--seestar-path "E:\MyWorks"` | Regarder dans ce dossier de photos. Change le chemin si ton disque porte une autre lettre. |
+| `--offline` | Travailler sans demander la météo sur Internet. |
+| `--limit 20` | Afficher au maximum 20 lignes. |
+| `--max-magnitude 8` | Garder les objets dont la luminosité publiée passe cette limite. Un petit nombre correspond à un objet plus brillant. |
+| `--az-min 15 --az-max 180` | Choisir les directions du ciel à examiner. |
+| `--min-altitude 20` | Éviter les objets trop bas sur l'horizon. |
+| `--output-pdf local/soiree.pdf` | Ranger le rapport PDF sur l'ordinateur. |
+
+Avec une limite de luminosité, un objet dont la valeur manque dans la liste
+n'est pas retenu. Pour garder tous les objets, enlève `--max-magnitude 8`;
+pour enlever aussi la limite des étoiles variables, utilise `--all-magnitudes`.
+
+Le programme regarde les noms et tailles des fichiers du Seestar. Il ne change
+aucune photo et n'écrit aucun rapport sur ce disque. Ne remplace pas le chemin
+de sortie `local/soiree.pdf` par un chemin sur le disque des photos.
+Si le disque n'est pas branché, le programme affiche une erreur : vérifie le
+câble et le chemin, puis recommence. Pour travailler sans ce disque, enlève
+simplement `--seestar-path "E:\MyWorks"` de la commande.
+
+### 3. Lire le résultat
+
+Le résultat apparaît dans la fenêtre. Tu retrouves aussi `soiree.txt` et
+`soiree.pdf` dans le dossier `local`. Ouvre le PDF pour lire le rapport mis en page.
+
+| Dans la colonne Seestar | Comment le lire |
+| --- | --- |
+| Fait (empilé) | Une image créée en réunissant plusieurs prises a été trouvée. |
+| Brutes seules | Des prises individuelles ont été trouvées, mais pas d'image réunie. |
+| Brutes (incomplet) | Des prises ont été trouvées, mais une partie du dossier n'a pas pu être lue. |
+| Non trouvé | Aucune image reconnue n'a été trouvée pour ce nom. |
+| Indéterminé | Le programme n'a pas pu tout regarder; il ne peut pas répondre. |
+
+« Non trouvé » ne veut pas dire « jamais photographié » : un autre nom ou une
+image rangée ailleurs peut échapper à la recherche. « Fait » ne veut pas dire
+que l'image est réussie : il faut encore la regarder. Les exemples détaillés
+ci-dessous sont inventés pour les tests ou clairement signalés comme des essais.
+
+## Pour aller plus loin : fonctionnement et journal des vérifications
+
+Les sections suivantes gardent les détails utiles pour vérifier le travail et
+pour les personnes qui souhaitent améliorer le programme.
+
 ## Signaler les acquisitions Seestar existantes
 
 ![Schéma Seestar en lecture seule](images/seestar-lecture-seule.svg)

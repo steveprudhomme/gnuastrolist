@@ -1,5 +1,23 @@
 # Validation
 
+## Finalisation de la PR nº 6
+
+La première CI a réussi sur Linux et pour les distributions. Les tests Windows
+Seestar ont révélé que les fichiers temporaires pytest étaient sur C: tandis
+que le logiciel était sur D:. La protection du volume source a correctement
+refusé les exports sur C:, ce qui ne correspondait pas au scénario synthétique
+prévu par ces tests. La CI utilise désormais `--basetemp=.pytest_cache/ci-tmp`
+sur le volume du logiciel. La protection applicative reste inchangée.
+
+Un test Windows supplémentaire vérifie explicitement que les exports sur un
+volume source distinct restent refusés, tandis qu'une copie locale permet un
+rapport hors de son propre dossier. Le tutoriel commence par un guide illustré
+accessible dès 10 ans, distinct du journal technique. Une nouvelle CI est requise
+sur le commit contenant ces corrections avant la fusion autorisée.
+Les contrôles locaux de cette finalisation ont réussi : 90 tests réussis,
+un test de lien symbolique ignoré faute de permission Windows, dix avertissements
+IERS; Ruff et contrôle de structure réussis.
+
 ## Lot Seestar S50 en lecture seule
 
 Résultats locaux : **89 tests réussis, un test ignoré**, dix avertissements IERS.

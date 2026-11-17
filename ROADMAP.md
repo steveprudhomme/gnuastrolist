@@ -4,14 +4,17 @@
 
 - [x] Identifier le refus d'export Windows : code sur D:, fausses archives
       pytest sur C:, donc protection correcte de tout le volume C:.
-- [ ] Enregistrer ce plan avant le correctif.
-- [ ] Placer les fichiers temporaires de la CI dans le dossier de travail
+- [x] Enregistrer ce plan avant le correctif.
+- [x] Placer les fichiers temporaires de la CI dans le dossier de travail
       pour tester les copies locales sur le même volume, sans affaiblir la protection.
-- [ ] Ajouter un test explicite de protection d'un volume Windows distinct.
-- [ ] Ajouter un parcours débutant lisible à 10 ans, une image simple et les
+- [x] Ajouter un test explicite de protection d'un volume Windows distinct.
+- [x] Ajouter un parcours débutant lisible à 10 ans, une image simple et les
       consignes persistantes de documentation; actualiser les MD concernés.
-- [ ] Vérifier les tests locaux puis les cinq contrôles GitHub et fusionner
-      la PR autorisée lorsque les contrôles réussissent.
+- [x] Vérifier les tests locaux : 90 réussis, un ignoré, dix avertissements IERS.
+
+Plan préalable : `de320c5`. Les cinq nouveaux contrôles GitHub doivent réussir
+avant la fusion autorisée. Le résultat et l'état final de fusion sont consultables
+dans la PR nº 6; les résultats de la première CI ne valent pas validation de ce correctif.
 
 ## Lot Seestar S50 — présence dans les archives en lecture seule
 

@@ -1,5 +1,8 @@
 # GNU Astrolist
 
+Pour commencer sans connaître le programme, suivre le
+[tutoriel illustré pas à pas](docs/TUTORIEL.md), écrit pour être compris dès 10 ans.
+
 GNU Astrolist est un prototype libre en ligne de commande qui prépare une soirée
 d'observation astronomique. Il calcule la hauteur des objets au début et à la
 fin d'une plage horaire, retient ceux qui traversent le champ de visée et les

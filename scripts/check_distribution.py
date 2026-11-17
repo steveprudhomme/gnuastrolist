@@ -36,7 +36,8 @@ def main() -> None:
         assert not any("/local/" in k or k.endswith(("rapport.pdf", "rapport.txt")) for k in files)
         if path.name.endswith('.tar.gz'):
             for image in ('caldwell-parcours.svg', 'validation-locale.svg', 'ngc-selection.svg',
-                          'multiple-catalogues.svg', 'seestar-lecture-seule.svg'):
+                          'multiple-catalogues.svg', 'seestar-lecture-seule.svg',
+                          'premiers-pas.svg'):
                 assert any(k.endswith(f'/docs/images/{image}') for k in files), (path, image)
         print(f"{path.name} : catalogues, notice, licence et exclusions OK")
 
