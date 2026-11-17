@@ -705,3 +705,16 @@ sur `feat/caldwell-catalog`. La présente clôture documentaire enregistre cette
 vérification. Aucun push, PR distante, fusion ou réglage GitHub n'a été effectué
 pendant cette finalisation. La conception de l'archive météo reste le lot suivant
 proposé dans ROADMAP.md, sans implémentation ajoutée pendant ce lot.
+
+
+## ECC-E — Le contrôle avant de partager
+
+![Schéma explicatif des vérifications](images/qualite-ecc-e.svg)
+
+1. Lance les tests. Un test vérifie un comportement avec un exemple.
+2. Lis les erreurs. Elles aident à trouver ce qu'il faut réparer.
+3. Attends que les contrôles réussissent avant de partager le changement.
+
+La couverture indique les parties parcourues par les tests. Un grand nombre
+ne prouve pas que tout est juste. Le guide [qualité](QUALITE.md) est destiné
+aux personnes qui développent le programme.

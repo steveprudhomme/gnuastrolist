@@ -228,7 +228,7 @@ Aucune fusion distante ni modification des protections GitHub n'est incluse.
       versionné, contrôler l'environnement installé, les archives et les dix
       sélections hors ligne; produire un inventaire de dépendances avec licences
       et empreintes des distributions sans prétendre signer une livraison.
-- [ ] ECC-E.4 — Mesurer la couverture des lignes et branches; choisir un plancher
+- [x] ECC-E.4 — Mesurer la couverture des lignes et branches; choisir un plancher
       initial démontré et des objectifs renforcés sur les chemins critiques.
       Compléter des régressions utiles si nécessaire, pas des tests miroirs.
 - [ ] ECC-E.5 — Ajouter typage progressif sur les composants contrôlables,
@@ -303,13 +303,18 @@ depuis la wheel, hors des sources; schéma ECC-D inspecté.
 
 ### ECC-E — Renforcer les vérifications automatiques — priorité moyenne
 
-- [ ] ECC-E.1 — Mesurer couverture et branches, puis fixer des objectifs
+- [x] ECC-E.1 — Mesurer couverture et branches, puis fixer des objectifs
       justifiés sur les chemins critiques et les régressions de l'audit.
-- [ ] ECC-E.2 — Introduire progressivement contrôle des types et règles Ruff
+- [x] ECC-E.2 — Introduire progressivement contrôle des types et règles Ruff
       pertinentes, sans réécriture générale ni tests miroirs de l'implémentation.
 - [ ] ECC-E.3 — Préparer contrôles de dépendances/secrets, durées CI bornées
       et matrice cohérente avec le support Python annoncé; documenter les
       commandes et distinguer contrôles locaux et résultats distants exécutés.
+
+État ECC-E : couverture initiale 90 %, seuil global 88 % et chemins critiques
+90 %; typage validation et règles Ruff vérifiés. Audit 3.13 sans avis connu.
+Audit 3.10 en échec (Pillow/filelock); correctifs exigeant Python 3.11.
+Changement de compatibilité demandé au propriétaire; aucun avis supprimé.
 
 ### ECC-F — Coordonner et maîtriser les caches — priorité moyenne
 

@@ -563,3 +563,6 @@ Consultez aussi [GOVERNANCE.md](GOVERNANCE.md), [DCO.md](DCO.md),
 Le [tutoriel illustré](docs/TUTORIEL.md) décrit le parcours Caldwell et les
 contrôles locaux. La finalisation en cours reste exclusivement locale : commits,
 tests et archives sur la copie de travail, opérations GitHub différées.
+
+Les [contrôles ECC-E](docs/QUALITE.md) mesurent lignes et branches, vérifient
+progressivement les types et recherchent secrets et dépendances vulnérables.

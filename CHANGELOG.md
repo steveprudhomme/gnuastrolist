@@ -376,3 +376,13 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 - Transformation vectorisée ICRS vers Alt/Az avec Astropy.
 - Champ de visée centré, sélection pendant la plage et tri par magnitude.
 - Validation des entrées, mode hors ligne, limite d'affichage et tests.
+
+
+### ECC-E — Contrôles de qualité
+
+- Couverture mesurée et planchers globaux/chemins critiques; typage strict initial
+  de la validation et règles Ruff supplémentaires.
+- Recherche ciblée de secrets sans contenu dans les diagnostics; CI avec verrous,
+  actions épinglées et durée bornée; audit de tous les verrous.
+- Audit Python 3.10 en échec : correctifs Pillow/filelock exigeant Python 3.11;
+  décision de compatibilité soumise au propriétaire, aucun avis ignoré.
