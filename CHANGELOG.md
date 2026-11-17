@@ -423,3 +423,6 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
   conservation des générations réellement reconstructibles et état CelesTrak.
 - Tests concurrents, interruption et refus de liens, chemins inconnus et archives
   sources; ADR 0008 et tutoriel illustré, aucune purge automatique.
+
+Revue ECC-G : verrou de contexte commun, précontrôle strict de la limite/âge GP
+du service direct et erreur CLI lisible en cas de délai du cache dépassé.

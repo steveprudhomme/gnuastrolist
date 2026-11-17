@@ -7,12 +7,12 @@ from collections.abc import Callable, Iterator, Sequence
 from contextlib import contextmanager
 from dataclasses import dataclass, replace
 from pathlib import Path
-from threading import RLock
 
 from astropy.time import Time
 from astropy.utils import iers
 
 from .asteroids import compute_asteroid_visibility, load_asteroid_catalog
+from .catalog_resources import application_context_lock
 from .comets import (
     annotate_cbat,
     compute_comet_visibility,
@@ -34,6 +34,7 @@ from .seestar import annotate_results, scan_seestar
 from .selection import load_catalog_selection, normalize_catalogs
 from .time_utils import parse_observation_window
 from .validation import (
+    MAX_AGE_HOURS,
     finite_number,
     sampling_plan,
     sampling_step,
@@ -43,14 +44,12 @@ from .validation import (
 from .visibility import MAX_TIME_SAMPLES, compute_visibility
 from .weather import compute_weather_summary
 
-_iers_lock = RLock()
-
 
 @contextmanager
 def astronomical_context(offline: bool) -> Iterator[None]:
     """Restaure les trois réglages IERS, même après une exception ou une imbrication."""
     with (
-        _iers_lock,
+        application_context_lock,
         iers.conf.set_temp('auto_download', not offline),
         iers.conf.set_temp('auto_max_age', None if offline else 30.0),
         iers.conf.set_temp('iers_degraded_accuracy', 'warn'),
@@ -97,8 +96,11 @@ class ObservationRequest:
         sampling_step(self.sample_minutes, '--sample-minutes', 60)
         sampling_step(self.satellite_step_seconds, '--satellite-step-seconds')
         finite_number(self.satellite_max_sun_altitude, '--satellite-max-sun-altitude', -90, 90)
-        finite_number(self.satellite_max_epoch_hours, '--satellite-max-epoch-hours', 0)
-        if self.limit is not None and self.limit <= 0:
+        age = finite_number(self.satellite_max_epoch_hours,
+                            '--satellite-max-epoch-hours', 0, MAX_AGE_HOURS)
+        if age <= 0:
+            raise ValueError('--satellite-max-epoch-hours doit être positif')
+        if self.limit is not None and (type(self.limit) is not int or self.limit <= 0):
             raise ValueError('--limit doit être un entier supérieur à zéro')
         selected = normalize_catalogs(self.objects)
         if (self.satellite_elements_file or self.satcat_file or self.unoosa_file

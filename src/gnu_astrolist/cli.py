@@ -468,5 +468,5 @@ def main(argv: Sequence[str] | None = None) -> int:
                 result = replace(result, notes=())
             with use_catalog_resources(result.resources):
                 return _run(args, parser, result, root, directory)
-    except ValueError as exc:
+    except (ValueError, TimeoutError) as exc:
         parser.error(str(exc))

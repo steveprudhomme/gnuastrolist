@@ -126,6 +126,9 @@ def test_service_restores_context_after_failure_and_can_be_reused(stage, error_t
 
 
 @pytest.mark.parametrize('changes', [dict(lat=float('nan')), dict(limit=0),
+                                    dict(limit=0.5), dict(limit=True), dict(limit=float('nan')),
+                                    dict(satellite_max_epoch_hours=0),
+                                    dict(satellite_max_epoch_hours=1e20),
                                     dict(sample_minutes=1e-9), dict(objects=('inconnu',))])
 def test_direct_service_rejects_invalid_request_before_dependencies(changes):
     weather = Mock(side_effect=AssertionError('collaborateur sollicité'))
@@ -135,6 +138,29 @@ def test_direct_service_rejects_invalid_request_before_dependencies(changes):
             request(**changes))
     weather.assert_not_called()
     assert iers_state() == before
+
+
+def test_catalog_and_iers_contexts_use_same_reentrant_lock():
+    from gnu_astrolist import application, catalog_resources
+
+    assert application.application_context_lock is catalog_resources.application_context_lock
+    # Ces deux ordres publics ne peuvent plus inverser deux verrous distincts.
+    with astronomical_context(True), catalog_resources.use_catalog_resources({}):
+        with catalog_resources.use_catalog_resources({}), astronomical_context(True):
+            assert iers.conf.auto_download is False
+
+
+def test_cli_reports_cache_lock_timeout_without_traceback(monkeypatch, capsys):
+    def timeout(*args, **kwargs):
+        raise TimeoutError('Cache lock timeout')
+
+    monkeypatch.setattr(cli, 'refresh_catalogs', timeout)
+    with pytest.raises(SystemExit) as caught:
+        cli.main(['--date', '2026-11-17', '--time-range', '21:00-22:00',
+                  '--lat', '45', '--lon', '0', '--az-min', '0', '--az-max', '360',
+                  '--min-altitude', '10', '--objects', 'messier', '--offline'])
+    assert caught.value.code == 2
+    assert 'Cache lock timeout' in capsys.readouterr().err
 
 
 def test_shared_data_adapts_to_both_existing_render_apis(tmp_path):

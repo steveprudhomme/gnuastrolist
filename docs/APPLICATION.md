@@ -133,3 +133,12 @@ git diff --check
 Les avertissements proviennent des tables embarquées et des dates utilisées;
 les tests n’ont téléchargé aucune table. Les 33 cas ECC-G et les deux corrections
 ciblées des tests existants sont inclus dans les 597 réussites de chaque version.
+
+
+## Revue finale : service direct et concurrence
+
+Le service refuse aussi les limites non entières/booléennes et les âges GP
+hors domaine avant ses collaborateurs. Les contextes IERS et ressources
+partagent un seul verrou réentrant : appeler le service dans un contexte de
+ressources ne peut plus inverser deux verrous avec une commande CLI concurrente.
+La CLI transforme un délai de verrou dépassé en erreur lisible (code 2).

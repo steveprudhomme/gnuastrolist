@@ -817,3 +817,6 @@ les commits de planification décrits dans AGENTS.md.
 - [ ] Prédire les magnitudes lorsque des éphémérides fiables sont disponibles.
 - [ ] Modéliser la météo, la pollution lumineuse et les caractéristiques de
       l'instrument.
+
+Revue finale ECC-G : trois défauts reproduits puis corrigés (ordre des verrous,
+limite non entière, domaine âge GP); 40 tests du service réussis.
