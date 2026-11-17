@@ -8,31 +8,44 @@ préparé dans une branche distincte issue d'ALTMAX; son intégration dépend de
 PR nº 14. Le plan est commité avant code. Aucun tag, Release, fusion ou réglage
 GitHub n'est créé automatiquement par l'outil.
 
-- [ ] VERSION.1 — Versionner la politique : bug → PATCH, amélioration et
+- [x] VERSION.1 — Versionner la politique : bug → PATCH, amélioration et
       fonctionnalité compatibles → MINOR, rupture explicite → MAJOR; conserver
       séparément les trois catégories dans les notes de version.
-- [ ] VERSION.2 — Ajouter des fragments TOML publics par changement, validés
+- [x] VERSION.2 — Ajouter des fragments TOML publics par changement, validés
       sans dépendance nouvelle, avec description et marqueur de rupture.
       Initialiser ceux du plafond ALTMAX et du système de versionnage.
-- [ ] VERSION.3 — Fournir un outil local : validation, aperçu du prochain numéro,
+- [x] VERSION.3 — Fournir un outil local : validation, aperçu du prochain numéro,
       préparation explicite d'une livraison datée. Synchroniser pyproject.toml,
       __version__, CHANGELOG et fragments traités; défaut sans écriture.
-- [ ] VERSION.4 — Protéger liens, collisions et modifications concurrentes;
+- [x] VERSION.4 — Protéger liens, collisions et modifications concurrentes;
       refuser une préparation sur une copie sale et préserver les fichiers
       existants si validation ou préparation échoue. Ne pas toucher aux archives.
-- [ ] VERSION.5 — Faire contrôler la politique et les fragments par la CI,
+- [x] VERSION.5 — Faire contrôler la politique et les fragments par la CI,
       dont présence d'un fragment pour une PR de code et cohérence d'une PR
       préparant une version; conserver les cinq jobs qualité et les verrous.
-- [ ] VERSION.6 — Tester catégories, priorité, ruptures, refus, préparation et
+- [x] VERSION.6 — Tester catégories, priorité, ruptures, refus, préparation et
       garde CI dans des copies synthétiques hors réseau. Exécuter pytest, Ruff,
       typage progressif, liens, archives et installation.
-- [ ] VERSION.7 — Actualiser contribution, modèles de PR, README, CHANGELOG,
+- [x] VERSION.7 — Actualiser contribution, modèles de PR, README, CHANGELOG,
       RELEASE, validation, roadmap et tutoriel dès 10 ans avec schéma versionné.
-      Publier une PR distincte sur la base ALTMAX et vérifier ses contrôles.
+      Conserver une branche locale distincte sur la base ALTMAX. La consigne
+      actuelle exclut publication, PR et fusion distantes; aucune validation
+      GitHub de ce lot n'est annoncée.
 
 Le numéro du projet ne change pas pendant l'installation de ce mécanisme.
 Une future préparation de livraison doit être demandée explicitement; les
 commits de développement restent regroupés dans « Non publié » jusque-là.
+
+Preuves locales VERSION : plan `b508c05` avant code; 795 tests réussis sur
+Python 3.11.9 et 3.13.6, huit ignorés et 15 avertissements chacun. Couverture
+combinée 90,49 %; outil de versionnage : 93,99 % des lignes et 87,04 % des
+branches. Ruff, typage progressif, liens, recherche ciblée de secrets,
+archives et installation hors réseau réussis. L'archive source permet la
+validation et l'aperçu sans installation du programme. Les 46 tests nouveaux
+utilisent des copies synthétiques; aucun support Seestar réel n'est utilisé.
+La configuration CI est prête mais n'a pas été exécutée sur GitHub pour ce lot.
+La publication initialement envisagée dans le plan est différée selon la
+consigne locale actuelle. Aucun tag, Release ou changement du numéro courant.
 
 ## Lot plafond de hauteur — télescopes intelligents (ALTMAX)
 

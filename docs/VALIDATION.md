@@ -1,5 +1,36 @@
 # Validation
 
+## Versionnage SemVer — validation locale
+
+Plan local enregistré avant code : `b508c05`. Les 46 tests nouveaux couvrent
+les trois catégories, leur priorité, les ruptures, les versions et dates
+invalides, les fragments, les commandes publiques et la cohérence des PR
+simulées dans des dépôts Git synthétiques. Ils vérifient aussi les liens,
+modifications concurrentes, erreurs et interruptions pendant le remplacement
+et la restauration. Les sauvegardes restent présentes si la restauration échoue.
+
+Windows, Python 3.11.9 et 3.13.6 : **795 tests réussis, huit ignorés,
+15 avertissements** chacun; couverture combinée **90,49 %**. L'outil de
+versionnage atteint **93,99 % des lignes et 87,04 % des branches**. Les
+planchers globaux et ceux des chemins critiques passent dans les deux cas.
+Ruff, typage progressif sur les deux modules configurés, liens locaux et
+recherche ciblée de secrets passent. Wheel et archive source contrôlées;
+wheel installée hors réseau dans l'environnement de contrôle, version et
+catalogues vérifiés hors des sources. Le script extrait de l'archive source
+valide la politique et prépare un aperçu sans installation de l'application.
+Le schéma explicatif du tutoriel est inspecté visuellement.
+
+Une première exécution générale sous accès restreint a rencontré des refus
+Windows sur les dossiers temporaires. Les résultats ci-dessus viennent de
+deux exécutions complètes avec l'accès local nécessaire et des fichiers de
+couverture distincts. Aucun résultat en échec n'est présenté comme réussi.
+
+Les tests n'utilisent que des copies synthétiques. Aucun accès au support
+Seestar réel, aucune préparation effective de version dans le projet courant,
+aucun tag ou publication. La version reste 0.11.0; l'aperçu propose 0.12.0.
+Les contrôles CI ajoutés sont testés localement; leur exécution distante reste
+à faire lors d'une future publication autorisée.
+
 ## Plafond de hauteur ALTMAX — validation locale
 
 Plan local enregistré avant code : `3d84a0b`. La nouvelle option a été testée

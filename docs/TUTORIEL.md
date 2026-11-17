@@ -829,3 +829,21 @@ Une fusion réunit deux versions du logiciel. Elle ne change pas tes photos.
 3. Vérifier encore les tests de `main`. C'est la version principale du projet.
 
 Les détails des fusions restent dans le journal technique de la feuille de route.
+
+
+## Comprendre le numéro d'une version
+
+![Schéma explicatif du numéro selon les changements](images/versionnage.svg)
+
+Une version est comme une édition du logiciel. Son numéro aide à savoir
+ce qu'elle contient.
+
+1. Un **bug** est une erreur corrigée : 0.11.0 peut devenir 0.11.1.
+2. Une **amélioration** ou une **nouvelle fonction** compatible peut donner 0.12.0.
+3. Une **rupture** oblige à adapter les anciennes commandes : elle peut donner 1.0.0.
+4. Le programme propose un numéro à partir des changements décrits. Voir cette
+   proposition ne publie rien. La personne responsable vérifie puis prépare la livraison.
+
+Un ticket est un signalement à examiner. Il peut ne pas être un bug : fermer
+ce ticket ne change pas le numéro. Pour les personnes qui développent, les
+commandes sont dans [le guide du versionnage](VERSIONNAGE.md).

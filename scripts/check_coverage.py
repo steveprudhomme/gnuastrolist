@@ -19,7 +19,8 @@ def main():
     args = parser.parse_args()
     with open(args.report, encoding='utf-8') as stream:
         data = json.load(stream)
-    floors = {'validation.py': 90, 'report_files.py': 90, 'weather.py': 90}
+    floors = {'validation.py': (90, 90), 'report_files.py': (90, 90),
+              'weather.py': (90, 90), 'versioning.py': (90, 85)}
     failed = []
     if data.get('meta', {}).get('branch_coverage') is not True:
         failed.append('Mesure des branches absente du rapport')
@@ -29,11 +30,13 @@ def main():
     lines, branches = rates(data['totals'])
     if lines < 90 or branches < 82:
         failed.append('Planchers séparés : lignes 90 %, branches 82 % requis')
-    for module, floor in floors.items():
+    for module, (line_floor, branch_floor) in floors.items():
         matches = [rates(item['summary']) for name, item in data['files'].items()
                    if name.replace('\\', '/').endswith('/' + module)]
-        if len(matches) != 1 or min(matches[0]) < floor:
-            failed.append(f'{module} : plancher {floor} % non atteint ou fichier absent')
+        if (len(matches) != 1 or matches[0][0] < line_floor
+                or matches[0][1] < branch_floor):
+            failed.append(f'{module} : planchers lignes {line_floor} % / branches '
+                          f'{branch_floor} % non atteints ou fichier absent')
     print('\n'.join(failed) if failed else 'Couverture globale et chemins critiques : OK')
     return bool(failed)
 

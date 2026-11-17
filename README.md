@@ -610,3 +610,21 @@ Python 3.11 minimum, quatre verrous audités, aucune archive Seestar réelle uti
 Le parcours d'intégration dans `main` suit les PR nº 9 (ECC-A), nº 10 (ECC-B),
 nº 11 (ECC-C), puis nº 12 (ECC-D à ECC-I). Les contrôles sont vérifiés sur
 chaque nouvelle base et sur main après intégration. Voir [la feuille de route](ROADMAP.md).
+
+
+## Versionnage des livraisons
+
+Le projet utilise SemVer : bug corrigé → correctif; amélioration ou nouvelle
+fonctionnalité compatible → mineure; rupture de compatibilité → majeure.
+Les [fragments de changements](changes/README.md) gardent les catégories et
+alimentent les notes. Le niveau le plus élevé s'applique une fois par livraison.
+
+```powershell
+python -B scripts/versioning.py check
+python -B scripts/versioning.py preview
+```
+
+Ces commandes se lancent depuis les sources. L'aperçu propose actuellement
+0.12.0 pour les changements en attente, sans modifier la version courante 0.11.0.
+La préparation synchronisée est explicite; tag et Release restent distincts.
+Voir le [guide du versionnage](docs/VERSIONNAGE.md).

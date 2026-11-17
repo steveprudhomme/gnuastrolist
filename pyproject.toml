@@ -78,7 +78,7 @@ follow_imports_for_stubs = true
 
 [tool.coverage.run]
 branch = true
-source = ["gnu_astrolist"]
+source = ["gnu_astrolist", "scripts.versioning"]
 
 [tool.coverage.report]
 fail_under = 88

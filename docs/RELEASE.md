@@ -1,5 +1,23 @@
 # Préparer une version
 
+Le [guide du versionnage](VERSIONNAGE.md) définit la politique SemVer et les
+fragments `bug`, `improvement`, `feature`. Examiner d'abord le calcul :
+
+```powershell
+python -B scripts/versioning.py check
+python -B scripts/versioning.py preview
+python -B scripts/versioning.py prepare --date 2026-11-17
+```
+
+La date est un exemple. Sur instruction explicite et depuis une branche de
+livraison propre, ajouter `--apply` à la dernière commande. Relire le diff et
+soumettre une PR de préparation : l'outil ne crée aucun commit, tag, signature
+ou Release. Les étapes ci-dessous restent à vérifier avant publication.
+
+- [ ] Vérifier les fragments en attente, le niveau calculé et les ruptures.
+- [ ] Préparer les numéros, notes datées et marqueurs `released_in` avec l'outil;
+      garder séparée la PR de livraison des changements fonctionnels.
+
 - [ ] Relire les changements, la provenance, les licences et les données publiées.
 - [ ] Vérifier les protections de main et les contrôles requis sur GitHub.
 - [ ] Vérifier tests, Ruff et contrôle du dépôt sous Windows/Linux.

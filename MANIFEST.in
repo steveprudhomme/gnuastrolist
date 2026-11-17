@@ -1,4 +1,6 @@
 include LICENSE *.md .editorconfig .gitattributes
+include versioning.toml
+recursive-include changes *.toml *.md
 recursive-include .github *.yml *.md
 recursive-include docs *.md *.svg *.json
 recursive-include scripts *.py
