@@ -27,9 +27,28 @@ def test_coverage_control_rejects_report_without_branch_measurement(tmp_path, mo
     import sys
 
     report = tmp_path / 'lines-only.json'
+    summary = {'percent_covered': 100, 'covered_lines': 100, 'num_statements': 100,
+               'covered_branches': 2, 'num_branches': 2}
     report.write_text(json.dumps({
-        'meta': {'branch_coverage': False}, 'totals': {'percent_covered': 100},
-        'files': {f'src/gnu_astrolist/{name}.py': {'summary': {'percent_covered': 100}}
+        'meta': {'branch_coverage': False}, 'totals': summary,
+        'files': {f'src/gnu_astrolist/{name}.py': {'summary': summary}
+                  for name in ('validation', 'report_files', 'weather')},
+    }), encoding='utf-8')
+    script = runpy.run_path(str(Path(__file__).resolve().parents[1] / 'scripts/check_coverage.py'))
+    monkeypatch.setattr(sys, 'argv', ['check_coverage.py', str(report)])
+    assert script['main']() is True
+
+
+def test_line_coverage_cannot_hide_uncovered_branches(tmp_path, monkeypatch):
+    import json
+    import sys
+
+    report = tmp_path / 'missing-branches.json'
+    summary = {'percent_covered': 98.04, 'covered_lines': 100, 'num_statements': 100,
+               'covered_branches': 0, 'num_branches': 2}
+    report.write_text(json.dumps({
+        'meta': {'branch_coverage': True}, 'totals': summary,
+        'files': {f'src/gnu_astrolist/{name}.py': {'summary': summary}
                   for name in ('validation', 'report_files', 'weather')},
     }), encoding='utf-8')
     script = runpy.run_path(str(Path(__file__).resolve().parents[1] / 'scripts/check_coverage.py'))

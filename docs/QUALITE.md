@@ -6,7 +6,9 @@ synthétiques et les fichiers temporaires restent dans le projet.
 ## Couverture mesurée
 
 La première mesure isolée Python 3.13 donne 90 % (lignes et branches combinées,
-566 tests). Le plancher global initial est 88 %, avec 90 % sur `validation.py`,
+566 tests). Le seuil combiné initial est 88 %, avec des seuils séparés de
+90 % des lignes et 82 % des branches (mesure initiale : 91,71 % et 84,85 %).
+Les modules critiques exigent 90 % des lignes ET 90 % des branches sur `validation.py`,
 `report_files.py` et `weather.py`. Les générateurs anciens restent inclus :
 aucune exclusion artificielle ne gonfle le résultat. Les seuils ne remplacent
 pas les tests de sécurité et de sorties publiques.

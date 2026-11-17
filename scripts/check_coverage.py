@@ -6,6 +6,13 @@ import argparse
 import json
 
 
+def rates(summary):
+    lines = summary['covered_lines'] / max(1, summary['num_statements']) * 100
+    branches = (summary['covered_branches'] / summary['num_branches'] * 100
+                if summary['num_branches'] else 100)
+    return lines, branches
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('report', help='Rapport JSON de coverage')
@@ -19,10 +26,13 @@ def main():
     total = data['totals']['percent_covered']
     if total < 88:
         failed.append(f'ensemble : {total:.2f} % < 88 %')
+    lines, branches = rates(data['totals'])
+    if lines < 90 or branches < 82:
+        failed.append('Planchers séparés : lignes 90 %, branches 82 % requis')
     for module, floor in floors.items():
-        matches = [item['summary']['percent_covered'] for name, item in data['files'].items()
+        matches = [rates(item['summary']) for name, item in data['files'].items()
                    if name.replace('\\', '/').endswith('/' + module)]
-        if len(matches) != 1 or matches[0] < floor:
+        if len(matches) != 1 or min(matches[0]) < floor:
             failed.append(f'{module} : plancher {floor} % non atteint ou fichier absent')
     print('\n'.join(failed) if failed else 'Couverture globale et chemins critiques : OK')
     return bool(failed)
