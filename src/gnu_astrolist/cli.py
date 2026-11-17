@@ -26,6 +26,13 @@ from .models import FieldOfView, apparent_magnitude
 from .moon import compute_moon_summary
 from .output import render_report
 from .pdf_output import PdfExportError, export_pdf_report
+from .satcat import annotate_space_catalog, load_satcat, load_unoosa_records, select_space_elements
+from .satellites import (
+    MAX_SAMPLES,
+    compute_satellite_visibility,
+    eligible_elements,
+    load_satellite_elements,
+)
 from .seestar import annotate_results, protect_outputs, scan_seestar, validate_root
 from .selection import load_catalog_selection, normalize_catalogs
 from .time_utils import parse_observation_window
@@ -102,6 +109,8 @@ def build_parser() -> argparse.ArgumentParser:
             "flamsteed",
             "asteroids",
             "comets",
+            "satellites",
+            "debris",
         ),
         help="un ou plusieurs catalogues; option répétable (messier_objects : alias de messier)",
     )
@@ -124,6 +133,45 @@ def build_parser() -> argparse.ArgumentParser:
         help="observations CBAT/ICQ datées transcrites dans le format CSV documenté",
     )
     updates = parser.add_argument_group("actualisation des catalogues")
+    artificial = parser.add_argument_group("satellites et débris")
+    artificial.add_argument(
+        "--satellite-elements-file",
+        type=Path,
+        metavar="GP_CSV_JSON",
+        help="éléments GP/OMM locaux; remplace la sélection embarquée",
+    )
+    artificial.add_argument(
+        "--satcat-file", type=Path, metavar="SATCAT_CSV", help="métadonnées SATCAT locales"
+    )
+    artificial.add_argument(
+        "--unoosa-file",
+        type=Path,
+        metavar="REGISTRE_CSV",
+        help="extraits locaux du registre ONU dans le CSV documenté",
+    )
+    artificial.add_argument(
+        "--satellite-step-seconds",
+        type=parse_max_age_hours,
+        default=5.0,
+        help="pas des passages en secondes (défaut : 5)",
+    )
+    artificial.add_argument(
+        "--satellite-max-epoch-hours",
+        type=parse_max_age_hours,
+        default=168.0,
+        help="écart maximal aux éléments GP (défaut : 168 h; aucune garantie de précision)",
+    )
+    artificial.add_argument(
+        "--satellite-optical-only",
+        action="store_true",
+        help="garde simultanément champ, éclairage solaire et ciel suffisamment sombre; pas une garantie de détection",
+    )
+    artificial.add_argument(
+        "--satellite-max-sun-altitude",
+        type=float,
+        default=-6.0,
+        help="hauteur solaire maximale du filtre optique (défaut : -6 degrés)",
+    )
     updates.add_argument(
         "--update-catalogs",
         choices=("never", "if-stale", "force"),
@@ -211,6 +259,15 @@ def build_parser() -> argparse.ArgumentParser:
 
 def _validate_arguments(args: argparse.Namespace) -> None:
     if (
+        args.satellite_elements_file
+        or args.satcat_file
+        or args.unoosa_file
+        or args.satellite_optical_only
+    ) and not {"satellites", "debris"}.intersection(args.objects):
+        raise ValueError("Les options satellitaires exigent --objects satellites ou debris")
+    if not -90 <= args.satellite_max_sun_altitude <= 90:
+        raise ValueError("--satellite-max-sun-altitude doit être entre -90 et 90")
+    if (
         args.comets_file is not None or args.cbat_file is not None
     ) and "comets" not in args.objects:
         raise ValueError("--comets-file et --cbat-file exigent --objects comets")
@@ -242,6 +299,29 @@ def _run(args, parser, update_result, seestar_root) -> int:
         )
         if "comets" in args.objects and not comet_orbits:
             raise ValueError("Aucune orbite MPC à époque exploitable; actualisez --comets-file")
+        has_space = bool({"satellites", "debris"}.intersection(args.objects))
+        space_elements, space_records, registry_records = (), {}, ()
+        space_notes = []
+        if has_space:
+            space_records = load_satcat(args.satcat_file)
+            all_elements = load_satellite_elements(args.satellite_elements_file)
+            chosen, skip_types = select_space_elements(
+                all_elements, space_records, args.objects, window
+            )
+            space_elements, old = eligible_elements(
+                chosen, Time([window.start_local, window.end_local]), args.satellite_max_epoch_hours
+            )
+            if chosen and not space_elements:
+                raise ValueError(
+                    "Aucun élément GP assez récent pour cette plage; actualisez les éléments satellitaires"
+                )
+            registry_records = load_unoosa_records(args.unoosa_file) if args.unoosa_file else ()
+            space_notes = [
+                f"GP/SATCAT : {len(all_elements)} éléments, {len(space_records)} fiches; {len(space_elements)} orbites sélectionnées, {len(old)} exclues pour âge; autres exclusions : {skip_types}.",
+                f"Pas satellite : {args.satellite_step_seconds:g} s; âge maximal GP ±{args.satellite_max_epoch_hours:g} h. Copie partielle, sans garantie d’exhaustivité.",
+                f"Filtre optique satellite : {'activé' if args.satellite_optical_only else 'désactivé'}; plafond Soleil {args.satellite_max_sun_altitude:g}° lorsqu’activé.",
+                f"UNOOSA : {len(registry_records)} extrait(s) local(aux); aucune lecture du registre en ligne.",
+            ]
         cbat = load_cbat_observations(args.cbat_file) if args.cbat_file else ()
         field_of_view = FieldOfView.from_automatic_center(
             azimuth_min_deg=args.az_min,
@@ -288,9 +368,15 @@ def _run(args, parser, update_result, seestar_root) -> int:
         )
     if update_result.notes:
         selection = replace(selection, source_notes=(*selection.source_notes, *update_result.notes))
+    if has_space:
+        selection = replace(selection, source_notes=(*selection.source_notes, *space_notes))
     object_kind = (
         selection.kinds[0]
-        if len(selection.kinds) == 1 and not orbits and not comet_orbits and not update_result.notes
+        if len(selection.kinds) == 1
+        and not orbits
+        and not comet_orbits
+        and not has_space
+        and not update_result.notes
         else selection
     )
     max_magnitude = selection.limits[0] if len(selection.kinds) == 1 else args.max_magnitude
@@ -338,7 +424,27 @@ def _run(args, parser, update_result, seestar_root) -> int:
             )
             if cbat:
                 results = annotate_cbat(results, cbat, window.start_local)
-        if orbits or comet_orbits:
+        if space_elements:
+            for kind in ("satellites", "debris"):
+                if kind not in selection.kinds:
+                    continue
+                chosen, _ = select_space_elements(space_elements, space_records, (kind,), window)
+                results.extend(
+                    compute_satellite_visibility(
+                        chosen,
+                        window,
+                        args.lat,
+                        args.lon,
+                        args.elevation_m,
+                        field_of_view,
+                        args.satellite_step_seconds,
+                        selection.limits[selection.kinds.index(kind)],
+                        args.satellite_optical_only,
+                        args.satellite_max_sun_altitude,
+                    )
+                )
+            results = annotate_space_catalog(results, space_records, registry_records)
+        if orbits or comet_orbits or has_space:
             results.sort(
                 key=lambda result: (
                     apparent_magnitude(result.star)
@@ -436,8 +542,8 @@ def _update_settings(args):
     if not isinstance(directory, (str, Path)):
         raise ValueError("cache_dir doit désigner un dossier local")
     mode = args.update_catalogs or config.get("mode", "never")
-    if not isinstance(mode,str) or mode not in {'never','if-stale','force'}:
-        raise ValueError('Mode de mise à jour inconnu : never, if-stale ou force requis')
+    if not isinstance(mode, str) or mode not in {"never", "if-stale", "force"}:
+        raise ValueError("Mode de mise à jour inconnu : never, if-stale ou force requis")
     return mode, Path(directory), ages
 
 
@@ -453,7 +559,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         root = validate_root(args.seestar_path) if args.seestar_path is not None else None
         if root is not None:
             protect_outputs(root, (args.output_txt, args.output_pdf))
-        parse_observation_window(args.date, args.time_range, args.timezone)
+        checked_window = parse_observation_window(args.date, args.time_range, args.timezone)
+        if {'satellites','debris'}.intersection(args.objects) and checked_window.duration_seconds > args.satellite_step_seconds*(MAX_SAMPLES-1):
+            raise ValueError(f'Fenêtre satellitaire limitée à {MAX_SAMPLES} échantillons; augmentez le pas ou réduisez la plage')
         FieldOfView.from_automatic_center(
             azimuth_min_deg=args.az_min,
             azimuth_max_deg=args.az_max,
@@ -466,6 +574,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             for kind in normalize_catalogs(args.objects)
             if not (kind == "asteroids" and args.asteroids_file is not None)
             and not (kind == "comets" and args.comets_file is not None)
+            and not (
+                kind in ("satellites", "debris")
+                and (args.satellite_elements_file or args.satcat_file)
+            )
         )
         result = refresh_catalogs(
             kinds,

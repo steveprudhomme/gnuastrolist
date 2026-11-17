@@ -36,6 +36,21 @@ observations CBAT/ICQ datées dans un CSV documenté, séparées des prévisions
 Aucune mesure CBAT réelle n'est fournie avec le paquet : voir le
 [guide des comètes](docs/COMETS.md).
 
+Les **satellites artificiels et débris** sont disponibles avec
+`--objects satellites debris`. COSPAR et SATCAT/NORAD relient la description
+aux éléments orbitaux GP propagés par SGP4. La copie partielle contient
+737 jeux GP et 1 873 fiches SATCAT. Le registre administratif UNOOSA peut être
+enrichi par un extrait local; aucune fiche réelle ONU n'est livrée.
+
+```powershell
+gnu-astrolist --date 2026-11-17 --time-range 21:00-21:20 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 10 --objects satellites debris --satellite-step-seconds 5 --offline --limit 5
+```
+
+La magnitude reste inconnue : enlever un seuil `--max-magnitude` pour conserver
+ces objets. `--satellite-optical-only` exige au même instant champ, éclairage
+solaire et ciel suffisamment sombre; il ne garantit pas la détection.
+Voir [le guide des satellites, SATCAT et UNOOSA](docs/SATELLITES.md).
+
 ### Garder les catalogues à jour au démarrage
 
 Tous les catalogues évolutifs ont une politique configurable. Ajouter à sa
@@ -404,9 +419,17 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --min-altitude DEG           Élévation minimale; --fov-v est un alias
 --alt-center DEG             Remplacement avancé facultatif du centre vertical
 --objects CATALOGUE [...]    variable_stars, messier, caldwell, ngc, bayer, flamsteed, asteroids, comets
+                            satellites, debris
 --asteroids-file JSON        Remplace les orbites embarquées par une réponse SBDB locale
 --comets-file FICHIER        Remplace les orbites cométaires par un fichier MPC local
 --cbat-file CSV              Ajoute des observations datées CBAT/ICQ transcrites localement
+--satellite-elements-file F  Éléments GP locaux CSV/JSON, éventuellement gzip
+--satcat-file F              Métadonnées SATCAT locales
+--unoosa-file CSV            Extraits locaux du registre ONU dans le format documenté
+--satellite-step-seconds S   Pas satellitaire en secondes (défaut : 5)
+--satellite-max-epoch-hours H Écart maximal à EPOCH (défaut : 168 heures)
+--satellite-optical-only     Filtre champ + éclairage + hauteur solaire simultanés
+--satellite-max-sun-altitude DEG  Plafond solaire du filtre optique (défaut : -6)
 --update-catalogs MODE       never (défaut), if-stale ou force; --offline reste prioritaire
 --catalog-age SOURCE=HEURES  Délai par catalogue ou fournisseur; répétable
 --catalog-max-age-hours H    Délai commun à tous les catalogues

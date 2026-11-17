@@ -28,6 +28,7 @@ limites scientifiques, indépendamment de la fraîcheur du téléchargement.
 | `bayer`, `flamsteed` | HYG 4.1 (`hyg`) | 720 h |
 | `asteroids` | JPL SBDB (`jpl`), sélection de 1 000 numéros | 24 h |
 | `comets` | Fichier orbital MPC (`mpc`) | 24 h |
+| `satellites`, `debris` | CelesTrak GP et SATCAT, génération partagée (`celestrak`, `gp`, `satcat`) | GP 6 h, SATCAT 24 h |
 | Observations CBAT/ICQ | `--cbat-file`, import local documenté | Pas de connexion automatique validée |
 
 Les délais sont des propositions réglables, pas des fréquences garanties par
@@ -36,9 +37,17 @@ demanderait une évolution du chargeur. Toutes les sources ont une notice dans
 `src/gnu_astrolist/data/`; leurs conditions propres restent applicables.
 
 Seuls les catalogues sélectionnés sont vérifiés. Pour un passage sur tous les
-catalogues, sélectionner les huit noms. Les options `--comets-file` et
+catalogues, sélectionner les dix noms. Les options `--comets-file` et
 `--asteroids-file` sont prioritaires : le fichier local explicite est lu sans
 mise à jour réseau du catalogue orbital correspondant.
+
+Un fichier `--satellite-elements-file` ou `--satcat-file` désactive l'actualisation
+CelesTrak de la commande. Les extraits UNOOSA restent locaux; aucun accès
+automatique à son index n'est validé. Satellites et débris partagent leur copie,
+et des délais minimaux du fournisseur s'appliquent même en mode forcé : GP 2 h,
+SATCAT 24 h. Les délais trop courts sont relevés. Toute erreur HTTP arrête
+le fournisseur, avec état persistant de pause ou blocage; voir le
+[guide spécialisé](SATELLITES.md) avant toute réinitialisation manuelle.
 
 `--catalog-age` est répétable et accepte un catalogue ou un fournisseur. Exemple :
 `--catalog-age comets=12 --catalog-age asteroids=48 --catalog-age openngc=720`.

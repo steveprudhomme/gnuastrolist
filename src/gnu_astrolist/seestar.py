@@ -18,8 +18,10 @@ from .models import (
     CometTarget,
     DeepSkyObject,
     NamedStar,
+    SatelliteTarget,
     VisibilityResult,
 )
+from .satcat import normalize_cospar
 from .stellar_names import normalize_stellar_name
 
 ACQUISITION = re.compile(
@@ -30,6 +32,12 @@ IGNORED_DIRECTORIES = {".git", ".cache", "__pycache__"}
 
 
 def normalize_name(value: str) -> str:
+    number = re.fullmatch(r'(?:NORAD|SATCAT)[ _-]*(\d{1,9})',value.strip().upper())
+    if number and int(number[1])>0:
+        return f'NORAD{int(number[1])}'
+    cospar = normalize_cospar(re.sub(r'^COSPAR[ _-]*','',value.strip(),flags=re.IGNORECASE))
+    if cospar:
+        return cospar
     from .comets import normalize_comet_name
     comet = normalize_comet_name(value)
     if comet:
@@ -152,6 +160,8 @@ def _known_aliases() -> dict[str, frozenset[str]]:
 
 
 def object_keys(obj: CatalogObject) -> set[str]:
+    if isinstance(obj, SatelliteTarget):
+        return {f'NORAD{obj.norad_id}',obj.cospar_id} - {''}
     if isinstance(obj, CometTarget):
         # Nom de famille seul (ATLAS, PANSTARRS...) partagé par de nombreuses comètes.
         return {normalize_name(obj.designation)}

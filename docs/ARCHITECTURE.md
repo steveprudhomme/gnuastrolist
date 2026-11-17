@@ -56,3 +56,14 @@ Seestar avant tout appel d'actualisation. Le mode hors ligne est fixé avant
 les conversions temporelles, la météo ou les téléchargements de catalogues.
 
 Voir la [décision 0004](architecture/decisions/0004-cometes-actualisations.md).
+
+`satellites.py` utilise SGP4 et le repère TEME pour les objets artificiels,
+avec soustraction du site en ITRS avant Alt/Az. Son pas en secondes est distinct
+des catalogues lents. `satcat.py` joint les métadonnées par NORAD et COSPAR,
+puis les extraits administratifs UNOOSA par COSPAR explicite. `SatelliteTarget`
+reste sans magnitude; géométrie solaire et immatriculation ne sont pas de la photométrie.
+
+`satellite_updates.py` maintient une génération GP/SATCAT commune et l'état des
+requêtes du fournisseur. Les règles CelesTrak (délais minimaux, compression,
+arrêt sur statut non 200) s'appliquent avant publication dans le cache protégé.
+La [décision 0005](architecture/decisions/0005-satellites-registres.md) décrit les limites.

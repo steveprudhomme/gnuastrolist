@@ -85,6 +85,66 @@ image rangée ailleurs peut échapper à la recherche. « Fait » ne veut pas di
 que l'image est réussie : il faut encore la regarder. Les exemples détaillés
 ci-dessous sont inventés pour les tests ou clairement signalés comme des essais.
 
+## Ajouter les satellites artificiels et les débris
+
+Un **satellite artificiel** est un objet construit puis envoyé dans l'espace.
+Un **débris** peut être un morceau détaché. Un ancien étage de fusée est aussi
+un objet que l'on peut suivre. Ils bougent vite dans notre ciel.
+
+![Identité, description, registre ONU et trajet calculé](images/satellites-identites.svg)
+
+C'est un schéma pour expliquer. Il ne montre aucune vraie fiche administrative.
+
+### 1. Choisir les objets
+
+Dans le dossier du projet sur l'ordinateur, crée `local` comme au début du guide.
+Copie cet exemple pour Laval :
+
+```powershell
+.venv\Scripts\python -m gnu_astrolist --date 2026-11-17 --time-range 21:00-21:20 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 10 --objects satellites debris --satellite-step-seconds 5 --offline --limit 5 --output-txt local/satellites.txt --output-pdf local/satellites.pdf
+```
+
+`satellites` demande les charges utiles; `debris` ajoute les morceaux et les
+corps de fusées. Le programme contient une première sélection, pas tous les
+objets du monde. Tu peux mélanger ces listes avec Messier ou les comètes.
+
+### 2. Comprendre les noms et les passages
+
+**COSPAR** donne un identifiant international à une pièce lancée.
+**SATCAT/NORAD** lui donne un numéro et une description. Le **registre ONU**
+conserve des informations d'immatriculation. Ce sont des rôles différents.
+
+Pour trouver la place dans le ciel, il faut des nombres orbitaux récents.
+Le programme les utilise avec une méthode appelée **SGP4**. Dans cet exemple,
+il regarde toutes les cinq secondes. Une case avec une heure dit à quel instant
+la position retenue a été calculée. Ce n'est pas la garantie d'un passage continu.
+Si les nombres sont trop vieux, le programme les écarte et le dit.
+
+### 3. Savoir si on pourra le voir
+
+Un objet peut passer dans le champ alors qu'il est dans l'ombre de la Terre !
+Ajoute `--satellite-optical-only` pour garder les instants où il est éclairé et
+où le Soleil est assez bas chez toi. Sa lumière reste inconnue : on ne garantit
+pas que tu le verras. Enlève un éventuel `--max-magnitude` pour garder les objets
+dont la luminosité n'est pas fournie.
+
+Pour chercher une copie plus récente au démarrage, enlève `--offline` et ajoute
+`--update-catalogs if-stale --catalog-age satellites=6`. Le fournisseur limite
+la fréquence des demandes. Une erreur peut imposer une pause; ne relance pas
+en boucle. Les nouvelles listes restent sur l'ordinateur.
+
+### 4. Comprendre le registre et les anciennes photos
+
+Le registre ONU ne donne pas la place du satellite ce soir. Aucun extrait réel
+n'est fourni avec le programme. Une personne qui dispose d'un extrait autorisé
+peut préparer le fichier local décrit dans [le guide](SATELLITES.md).
+Sans donnée, le programme dit que le statut est inconnu. Cela ne veut pas dire
+que l'objet n'est pas immatriculé.
+
+Pour Seestar, un nom comme `NORAD25544` ou `1998-067A` est précis. Un numéro seul
+ou un nom partagé ne suffit pas. Le disque des photos reste en lecture seule;
+les rapports vont dans `local` sur l'ordinateur.
+
 ## Choisir quand rafraîchir les listes
 
 Les listes du ciel changent. Pour les comètes, les nombres qui décrivent leur

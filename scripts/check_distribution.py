@@ -38,6 +38,14 @@ def main() -> None:
         comet_data = [v for k,v in files.items() if k.endswith('/data/comets.txt.gz')]
         assert len(comet_data)==1 and len(gzip.decompress(comet_data[0]).splitlines())==973
         assert any(k.endswith('/data/COMET_SOURCE.md') for k in files), path
+        space=[v for k,v in files.items() if k.endswith('/data/space_objects.json.gz')]
+        assert len(space)==1, path
+        space_payload=json.loads(gzip.decompress(space[0]))
+        assert space_payload['schema_version']==1 and len(space_payload['gp'])==737
+        assert len(space_payload['satcat'])==1873
+        assert any(k.endswith('/data/SPACE_OBJECT_SOURCE.md') for k in files), path
+        for module in ('satellites.py','satcat.py','satellite_updates.py'):
+            assert any(k.endswith('gnu_astrolist/'+module) for k in files), (path,module)
         for module in ('comets.py','moving.py','updates.py','catalog_resources.py',
                        'data_builders/build_catalog.py','data_builders/build_messier_catalog.py',
                        'data_builders/build_caldwell_catalog.py','data_builders/build_ngc_catalog.py',
@@ -57,7 +65,7 @@ def main() -> None:
             for image in ('caldwell-parcours.svg', 'validation-locale.svg', 'ngc-selection.svg',
                           'multiple-catalogues.svg', 'seestar-lecture-seule.svg',
                           'premiers-pas.svg', 'bayer-flamsteed.svg', 'asteroides.svg',
-                          'cometes-sources.svg','catalogues-mise-a-jour.svg'):
+                          'cometes-sources.svg','catalogues-mise-a-jour.svg','satellites-identites.svg'):
                 assert any(k.endswith(f'/docs/images/{image}') for k in files), (path, image)
         print(f"{path.name} : catalogues, notice, licence et exclusions OK")
 

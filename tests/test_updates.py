@@ -56,10 +56,12 @@ def test_no_network_or_cache_creation(tmp_path, mode, offline):
     result = updates.refresh_catalogs(updates.CATALOG_REGISTRY, mode, offline, cache)
     assert not cache.exists()
     assert result.resources == {}
-    assert len(result.notes) == len(updates.CATALOG_REGISTRY)
+    # Les deux sélections satellitaires partagent une seule génération et une note.
+    assert len(result.notes) == len(updates.CATALOG_REGISTRY)-1
 
 
-@pytest.mark.parametrize('kind', updates.CATALOG_REGISTRY)
+@pytest.mark.parametrize('kind', [kind for kind in updates.CATALOG_REGISTRY
+                                 if kind not in {'satellites','debris'}])
 def test_generation_metadata_and_offline_reuse(tmp_path, successful_builder, kind):
     first = updates.refresh_catalogs([kind], 'force', cache_dir=tmp_path)
     filename = updates.CATALOG_REGISTRY[kind].filename

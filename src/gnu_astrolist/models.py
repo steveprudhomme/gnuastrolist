@@ -122,7 +122,16 @@ class CometTarget(DeepSkyObject):
     magnitude_total: float | None = None
 
 
-CatalogObject: TypeAlias = VariableStar | DeepSkyObject | NamedStar | AsteroidTarget | CometTarget
+@dataclass(frozen=True, slots=True)
+class SatelliteTarget(DeepSkyObject):
+    """Objet artificiel calculé avec SGP4; aucune magnitude optique inventée."""
+
+    norad_id: int = 0
+    cospar_id: str = ''
+    epoch_jd_utc: float = 0.0
+
+
+CatalogObject: TypeAlias = VariableStar | DeepSkyObject | NamedStar | AsteroidTarget | CometTarget | SatelliteTarget
 
 
 def apparent_magnitude(obj: CatalogObject) -> float | None:
@@ -330,3 +339,6 @@ class VisibilityResult:
     magnitude_estimated: bool = False
     magnitude_reference_time: datetime | None = None
     comet_observation: str | None = None
+    position_reference_time: datetime | None = None
+    satellite_details: str | None = None
+    space_catalog_details: str | None = None

@@ -4,25 +4,28 @@
 
 - [x] Examiner les sources officielles et distinguer identification, registre
       administratif et éléments orbitaux nécessaires aux passages.
-- [ ] Enregistrer ce plan avant le développement.
-- [ ] Vérifier les formats, les droits et l'accès CelesTrak/SATCAT/UNOOSA;
+- [x] Enregistrer ce plan avant le développement.
+- [x] Vérifier les formats, les droits et l'accès CelesTrak/SATCAT/UNOOSA;
       conserver les réponses locales et leurs empreintes sans copier de contenu protégé.
-- [ ] Ajouter des sélections satellites et débris, avec numéros SATCAT/NORAD
+- [x] Ajouter des sélections satellites et débris, avec numéros SATCAT/NORAD
       étendus et identifiants internationaux COSPAR; conserver les types et objets distincts.
-- [ ] Lire les éléments GP en JSON/OMM, propager avec SGP4 dans le repère TEME,
+- [x] Lire les éléments GP en JSON/OMM, propager avec SGP4 dans le repère TEME,
       calculer Alt/Az topocentriques avec un pas adapté et une limite d'âge explicite.
-- [ ] Distinguer présence géométrique, éclairage solaire et visibilité optique;
+- [x] Distinguer présence géométrique, éclairage solaire et visibilité optique;
       ne pas inventer de magnitude, de date saisonnière ni de calcul de collision.
-- [ ] Relier SATCAT et les informations du registre UNOOSA par identifiants exacts;
+- [x] Relier SATCAT et les informations du registre UNOOSA par identifiants exacts;
       documenter le format d'import local si aucun export officiel exploitable n'est validé.
-- [ ] Intégrer sélections mixtes, rapports écran/TXT/PDF et identités Seestar
+- [x] Intégrer sélections mixtes, rapports écran/TXT/PDF et identités Seestar
       explicites, toujours sans écriture sur les archives sources.
-- [ ] Étendre les actualisations configurables aux éléments satellitaires et
+- [x] Étendre les actualisations configurables aux éléments satellitaires et
       métadonnées disponibles; préserver cache atomique, repli et mode hors ligne.
-- [ ] Tester les parseurs, époques, coniques SGP4 de référence, repères, filtres,
+- [x] Tester les parseurs, époques, coniques SGP4 de référence, repères, filtres,
       identités, données absentes, mises à jour et exports hors réseau.
-- [ ] Mettre à jour les MD, le tutoriel illustré accessible dès 10 ans, les
+- [x] Mettre à jour les MD, le tutoriel illustré accessible dès 10 ans, les
       paquets et les vérifications locales avant le commit final, sans push.
+
+Plan préalable : 764f819. Copie GP/SATCAT partielle et import UNOOSA local réalisés;
+les limites et les sources sont documentées dans docs/SATELLITES.md.
 
 COSPAR est une désignation d'objet; SATCAT décrit les objets suivis; le registre
 ONU est administratif. Aucun de ces deux derniers ne remplace à lui seul une

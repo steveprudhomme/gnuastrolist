@@ -43,7 +43,14 @@ from .output import (
     _reference_label,
 )
 from .seestar import SeestarInventory, protect_outputs
-from .selection import ASTEROID_NOTES, COMET_NOTES, NOTES, CatalogSelection, catalog_label
+from .selection import (
+    ASTEROID_NOTES,
+    COMET_NOTES,
+    NOTES,
+    SATELLITE_NOTES,
+    CatalogSelection,
+    catalog_label,
+)
 
 NAVY = colors.HexColor("#18344A")
 TEAL = colors.HexColor("#2B7282")
@@ -245,8 +252,11 @@ def _metadata_rows(
         (
             "Critère d'inclusion",
             (
+                ("Présent dans le champ à un échantillon; pas satellite distinct, voir notes" if
+                 object_kind in ('satellites','debris') or isinstance(object_kind,CatalogSelection) and any(k in object_kind.kinds for k in ('satellites','debris')) else
                 f"Présent dans le champ à au moins un échantillon de "
                 f"{sample_minutes:g} min"
+                )
             ),
         ),
     )
@@ -459,6 +469,7 @@ def _result_card(
             _paragraph(f"{result.altitude_end_deg:+.1f}°", styles["value"]),
         ],
     ]
+    full_width_rows = []
     if result.seestar_status is not None:
         data.append([
             _paragraph('Seestar', styles['label']),
@@ -470,6 +481,14 @@ def _result_card(
             _paragraph(result.magnitude_reference_time.strftime("%Y-%m-%d %H:%M"), styles["value"]),
             "", "",
         ])
+    if result.position_reference_time is not None:
+        data.append([_paragraph('Instant position (local)',styles['label']),
+                     _paragraph(result.position_reference_time.strftime('%Y-%m-%d %H:%M:%S'),styles['value']),'',''])
+    for label,detail in (('Conditions satellitaires',result.satellite_details),
+                         ('SATCAT / registre ONU',result.space_catalog_details)):
+        if detail is not None:
+            full_width_rows.append(len(data))
+            data.append([_paragraph(label+' : '+detail,styles['small']),'','',''])
     if result.comet_observation is not None:
         data.append([_paragraph('CBAT (observation datée) : '+result.comet_observation, styles['small']), '', '', ''])
     if show_details:
@@ -526,6 +545,8 @@ def _result_card(
     if result.comet_observation is not None:
         observation_row = len(data)-3 if show_details else len(data)-1
         commands.append(('SPAN',(0,observation_row),(3,observation_row)))
+    for row in full_width_rows:
+        commands.extend([('SPAN',(0,row),(3,row)),('BACKGROUND',(0,row),(-1,row),PALE_BLUE)])
     card.setStyle(TableStyle(commands))
     return KeepTogether([card, Spacer(1, 6)])
 
@@ -555,12 +576,18 @@ def _notes(object_kind: str | CatalogSelection) -> tuple[str, ...]:
             "crépuscule."
         ),
     ]
+    kinds = object_kind.kinds if isinstance(object_kind,CatalogSelection) else (object_kind,)
+    if set(kinds).issubset({'satellites','debris'}):
+        # Les deux notes sur les dates saisonnières concernent les objets fixes.
+        notes = notes[:4]
     if isinstance(object_kind, CatalogSelection):
         notes.extend(object_kind.notes)
     elif object_kind == "asteroids":
         notes.extend((NOTES[object_kind], *ASTEROID_NOTES))
     elif object_kind == "comets":
         notes.extend((NOTES[object_kind], *COMET_NOTES))
+    elif object_kind in ('satellites','debris'):
+        notes.extend((NOTES[object_kind], *SATELLITE_NOTES))
     elif object_kind == "variable_stars":
         notes.append(
             "La magnitude des étoiles variables est le maximum d'éclat publié, "

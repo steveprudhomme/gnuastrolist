@@ -8,6 +8,7 @@ Les catalogues ont leurs propres conditions :
 
 | Données | Attribution et conditions |
 | --- | --- |
+| GP et SATCAT CelesTrak | CelesTrak / T. S. Kelso et producteurs des données; conditions d'usage du fournisseur, attribution conservée, aucune licence CC/GPL ajoutée; voir SPACE_OBJECT_SOURCE.md |
 | CometEls MPC | IAU Minor Planet Center; copyright conservé, redistribution du fichier public avec source spécifiée selon la politique CBAT/MPC; voir COMET_SOURCE.md |
 | Orbites SBDB et références Horizons | NASA/JPL Solar System Dynamics; données du domaine public selon la FAQ SSD, attribution et transformations documentées dans ASTEROID_SOURCE.md |
 | GCVS | Auteurs GCVS et VizieR; voir CATALOG_SOURCE.md |
@@ -24,3 +25,7 @@ Ces données ne sont pas relicenciées sous GPL par leur inclusion dans le paque
 Toute nouvelle source ou dépendance doit être examinée avant redistribution.
 Les dépendances Python gardent leurs licences et notices propres; le présent
 document n'est ni un SBOM ni un audit juridique automatisé.
+
+La dépendance SGP4 de Brandon Rhodes et contributeurs est sous MIT. Aucune
+fiche réelle UNOOSA n'est distribuée : l'import local du registre reste soumis
+aux droits des données fournies par l'utilisateur.

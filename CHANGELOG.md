@@ -5,6 +5,21 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté — satellites artificiels et débris
+
+- Sélections `satellites` et `debris`, éléments GP/OMM, propagation SGP4 TEME
+  et géométrie topocentrique; pas en secondes, borne d'époque et filtre optique
+  simultané facultatif, sans magnitude ou visibilité garantie inventée.
+- Identités COSPAR et SATCAT/NORAD jusqu'à neuf chiffres; copie partielle de
+  737 jeux GP et 1 873 fiches SATCAT, avec types PAY/R/B/DEB et provenance.
+- Imports locaux GP/SATCAT et extraits UNOOSA transcrits dans un CSV documenté;
+  statut administratif inconnu sans donnée, sans téléchargement de l'index refusé.
+- Rapports écran/TXT/PDF et identités Seestar explicites en lecture seule.
+- Actualisations CelesTrak partagées entre sélections : CSV/gzip, délais GP/SATCAT,
+  arrêt sur toute réponse non 200, pause/blocage persistants et cache atomique.
+- Cas de référence Vallado, tests de métadonnées/rapports/pannes, protection
+  réseau globale des tests, MD et tutoriel illustré accessibles dès 10 ans.
+
 ### Ajouté — comètes et mises à jour configurables
 
 - Sélection `comets`, copie MPC locale (958 entrées cométaires sur 973 lignes),

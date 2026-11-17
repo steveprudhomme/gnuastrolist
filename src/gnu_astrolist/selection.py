@@ -20,6 +20,8 @@ from .catalog import (
 from .models import CatalogObject, DeepSkyObject, NamedStar
 
 LABELS = {
+    "satellites": "Satellites artificiels (COSPAR / SATCAT / SGP4)",
+    "debris": "Débris et corps de fusées (COSPAR / SATCAT / SGP4)",
     "comets": "Comètes (orbites MPC, observations CBAT facultatives)",
     "asteroids": "Astéroïdes numérotés (JPL SBDB, fichier orbital local)",
     "variable_stars": "Étoiles variables (GCVS)",
@@ -30,6 +32,8 @@ LABELS = {
     "flamsteed": "Étoiles Flamsteed (HYG 4.1)",
 }
 NOTES = {
+    "satellites": "Satellites : charges utiles PAY du SATCAT; aucune magnitude optique fournie.",
+    "debris": "Débris : types SATCAT DEB et R/B, distincts des charges utiles; aucune magnitude optique fournie.",
     "comets": "Comètes : positions MPC et magnitude totale estimée H,k, distincte de la bande V.",
     "asteroids": "Astéroïdes : orbites JPL SBDB, positions recalculées et magnitude V estimée H-G.",
     "variable_stars": "Les magnitudes GCVS sont les maxima d'éclat publiés, pas des prévisions.",
@@ -58,6 +62,17 @@ COMET_NOTES = (
 )
 
 
+SATELLITE_NOTES = (
+    "SGP4 : éléments GP en repère TEME puis positions topocentriques Alt/Az, sans réfraction.",
+    "Un passage géométrique ne garantit pas une détection optique; éclairage et Soleil sont des conditions distinctes.",
+    "Ombre terrestre cylindrique approximative, sans pénombre; luminosité, attitude et éclats non prédits.",
+    "COSPAR est un identifiant, SATCAT une description, UNOOSA un registre administratif; aucun ne remplace les éléments orbitaux.",
+    "Une absence d'extrait local UNOOSA laisse le statut d'immatriculation inconnu; aucune information ONU n'est téléchargée automatiquement.",
+    "Les satellites sans magnitude connue sont exclus par un seuil photométrique explicite; aucune valeur V n'est inventée.",
+    "Pas de dates saisonnières ni d'opposition satellitaires calculées; aucun calcul de risque de collision.",
+)
+
+
 @dataclass(frozen=True)
 class CatalogSelection:
     """Catalogues demandés et limites réellement appliquées, dans le même ordre."""
@@ -75,6 +90,7 @@ class CatalogSelection:
         parts = []
         for kind, limit in zip(self.kinds, self.limits):
             name = (
+                "Débris" if kind == 'debris' else
                 "Astéroïdes (V estimée)"
                 if kind == "asteroids"
                 else "Comètes (totale estimée)"
@@ -95,6 +111,8 @@ class CatalogSelection:
             notes += ASTEROID_NOTES
         if "comets" in self.kinds:
             notes += COMET_NOTES
+        if any(kind in self.kinds for kind in ('satellites','debris')):
+            notes += SATELLITE_NOTES
         if any(kind in self.kinds for kind in ("messier", "caldwell", "ngc")):
             notes += (
                 "Même désignation : une ligne, priorité Messier puis Caldwell puis NGC; alias conservés.",
@@ -154,6 +172,8 @@ def load_catalog_selection(
     )
     selection = CatalogSelection(kinds, limits)
     loaders = {
+        "satellites": lambda: (),
+        "debris": lambda: (),
         "comets": lambda: (),
         "asteroids": lambda: (),
         "messier": load_messier_catalog,

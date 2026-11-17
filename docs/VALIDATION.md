@@ -1,5 +1,45 @@
 # Validation
 
+## Satellites artificiels, SATCAT et registre ONU
+
+Validation Windows/Python 3.13.6 : **338 tests réussis, un ignoré**, avec
+26 avertissements IERS/ERFA déjà liés aux dates des autres catalogues.
+Les 38 tests des actualisations satellitaires passent également avec des
+réponses CSV reconstruites depuis les seules valeurs versionnées : aucun
+dossier `local/` privé n'est nécessaire à leur exécution dans la CI.
+
+Les cas Vallado livrés avec SGP4 vérifient les vecteurs TEME et la propagation.
+Les tests contrôlent le rayon topocentrique, les formats GP/OMM, les conventions
+de temps et repère, les numéros NORAD étendus, les erreurs SGP4 et les critères
+champ/éclairage/hauteur solaire appliqués au même instant. Ils ne représentent
+pas une validation observationnelle de chaque objet réel.
+
+La sélection embarquée est contrôlée : 737 GP, 1 873 SATCAT, jointures
+NORAD/COSPAR cohérentes, types PAY/R/B/DEB préservés. Les époques trop éloignées,
+rentrées et types non choisis sont exclus explicitement. Les tests UNOOSA sont
+synthétiques et couvrent sources, dates, contradictions, pièces distinctes et
+statut inconnu. Les rapports terminal/TXT/PDF sont vérifiés avec un inventaire
+Seestar synthétique, sans modification des fichiers sources.
+
+L'actualisation partagée est testée pour compression HTTP, limites de taille,
+délais GP/SATCAT, blocages 3xx/4xx, pause après panne, cache corrompu, repli,
+publication atomique et protections avant écriture. Une protection globale
+dans `tests/conftest.py` bloque les connexions réelles au niveau socket : elle
+couvre aussi les clients HTTP qui ne passent pas par `urlopen`.
+
+Ruff, liens et structure réussis. Wheel et sdist contiennent moteur, données,
+notices, tests et illustration. La dépendance SGP4 2.25 a été installée depuis
+une wheel locale dans l'environnement isolé, sans modification des dépendances
+existantes. La version installée a exécuté, hors du dépôt, le rapport satellitaire
+TXT/PDF et les dix sélections avec `--offline --update-catalogs force`.
+Le contrôle des dépendances est réussi; aucun cache n'est créé hors ligne.
+Les deux pages du PDF d'exemple et le schéma SVG ont été rendus et inspectés.
+
+Les réponses publiques CelesTrak ont été récupérées dans `local/` et leurs
+empreintes sont documentées. Aucun extrait réel UNOOSA n'a été téléchargé ni
+redistribué : l'index a refusé l'accès automatisé. Aucun accès au disque Seestar
+réel ni publication GitHub n'a été nécessaire.
+
 ## Comètes MPC/CBAT et actualisations au démarrage
 
 Sur Windows, Python 3.13.6 / Astropy 7.2 / ReportLab 4.4 : **202 tests réussis,

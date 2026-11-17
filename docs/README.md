@@ -3,6 +3,9 @@
 - [Installation](../INSTALL.md) et [guide utilisateur](../README.md).
 - [Tutoriel reproductible](TUTORIEL.md).
 - [Architecture](ARCHITECTURE.md).
+- [Satellites, débris, COSPAR, SATCAT et registre UNOOSA](SATELLITES.md).
+- [Sources satellitaires et conditions](../src/gnu_astrolist/data/SPACE_OBJECT_SOURCE.md).
+- [Décision : SGP4 et registres administratifs](architecture/decisions/0005-satellites-registres.md).
 - [Comètes MPC et observations CBAT](COMETS.md).
 - [Mises à jour configurables de tous les catalogues](CATALOG_UPDATES.md).
 - [Provenance et droits MPC/CBAT](../src/gnu_astrolist/data/COMET_SOURCE.md).

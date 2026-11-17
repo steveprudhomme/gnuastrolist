@@ -57,6 +57,11 @@ SOURCE_REGISTRY = {
     'hyg': (HYG_URL,),
     'jpl': (JPL_URL,),
     'mpc': (MPC_URL,),
+    'celestrak': tuple(
+        f'https://celestrak.org/{endpoint}?GROUP={group}&FORMAT=CSV'
+        for group in ('visual', 'cosmos-2251-debris')
+        for endpoint in ('NORAD/elements/gp.php', 'satcat/records.php')
+    ),
 }
 
 
@@ -87,6 +92,8 @@ CATALOG_REGISTRY = {
     'flamsteed': CatalogSpec('flamsteed.csv.gz', ('hyg',), 720),
     'asteroids': CatalogSpec('asteroids.json.gz', ('jpl',), 24),
     'comets': CatalogSpec('comets.txt.gz', ('mpc',), 24),
+    'satellites': CatalogSpec('space_objects.json.gz', ('celestrak',), 6),
+    'debris': CatalogSpec('space_objects.json.gz', ('celestrak',), 6),
 }
 DEFAULT_MAX_AGE_HOURS = {kind: spec.max_age_hours for kind, spec in CATALOG_REGISTRY.items()}
 
@@ -130,6 +137,9 @@ def _validate(kind: str, path: Path | None = None) -> int:
     overrides = {CATALOG_REGISTRY[kind].filename: path} if path is not None else {}
     resource = path or resources.files('gnu_astrolist.data').joinpath(
         CATALOG_REGISTRY[kind].filename)
+    if kind in {'satellites', 'debris'}:
+        from .satellite_updates import validate_bundle
+        return validate_bundle(resource)
     if kind == 'asteroids':
         from .asteroids import parse_sbdb
         return len(parse_sbdb(json.loads(gzip.decompress(resource.read_bytes()))))
@@ -300,7 +310,7 @@ def refresh_catalogs(
         raise ValueError('Catalogue non enregistré')
     ages = dict(max_age_hours or {})
     for key, value in ages.items():
-        if key not in {*CATALOG_REGISTRY, 'gcvs', 'openngc', 'simbad', 'hyg', 'jpl', 'mpc'}:
+        if key not in {*CATALOG_REGISTRY, *SOURCE_REGISTRY, 'satcat', 'gp'}:
             raise ValueError(f'Âge de source inconnu : {key}')
         try:
             ages[key] = parse_max_age_hours(value)
@@ -311,6 +321,18 @@ def refresh_catalogs(
     cache_dir = cache_dir.resolve()
     now = datetime.now(timezone.utc)
     active, notes = {}, []
+    satellite_kinds = tuple(kind for kind in selected if kind in {'satellites', 'debris'})
+    if satellite_kinds:
+        from .satellite_updates import refresh_satellite_catalog
+        satellite_ages = {key: value for key, value in ages.items()
+                          if key in {*satellite_kinds, 'celestrak', 'gp', 'satcat'}}
+        # Une seule génération partagée; un alias absent ne réduit pas le délai.
+        satellite_ages['satellites'] = min(
+            ages.get(kind, CATALOG_REGISTRY[kind].max_age_hours) for kind in satellite_kinds)
+        result = refresh_satellite_catalog(mode, offline, cache_dir, satellite_ages, seestar_root)
+        active.update(result.resources)
+        notes.extend(result.notes)
+        selected = tuple(kind for kind in selected if kind not in satellite_kinds)
     downloads = {}
     failures = {}
     source_metadata = {}

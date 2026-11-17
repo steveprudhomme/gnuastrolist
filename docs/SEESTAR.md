@@ -91,6 +91,11 @@ lever l'ambiguïté. Les noms des autres catalogues gardent leurs règles préc�
 
 ## Vérification et confidentialité
 
+Les objets artificiels utilisent le numéro explicite `NORAD25544` / `SATCAT25544`
+ou la désignation COSPAR complète `1998-067A`. Un numéro seul ou un nom courant
+partagé par plusieurs pièces ne constitue pas une preuve. Les contrôles de
+cache CelesTrak et ses fichiers d'état restent hors de la racine source protégée.
+
 Les comètes utilisent leur désignation complète (`161P`, `C/2023 A3`, `73P-B`).
 Les formes de fichiers `C_2023_A3` sont normalisées explicitement. Un nom partagé
 comme ATLAS seul ne constitue pas une identité, et un fragment n'est pas assimilé

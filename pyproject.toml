@@ -21,6 +21,7 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Astronomy",
 ]
 dependencies = [
+  "sgp4>=2.25,<3",
   "astropy>=6.0,<9",
   "reportlab>=4.0,<5",
   "tzdata>=2024.1; platform_system == 'Windows'",

@@ -17,6 +17,7 @@ from .models import (
     CometTarget,
     FieldOfView,
     ObservationWindow,
+    SatelliteTarget,
     VisibilityResult,
 )
 
@@ -286,7 +287,7 @@ def compute_visibility(
 
     if not stars:
         return []
-    if any(isinstance(star, (AsteroidTarget, CometTarget)) for star in stars):
+    if any(isinstance(star, (AsteroidTarget, CometTarget, SatelliteTarget)) for star in stars):
         raise ValueError("Les corps mobiles exigent le moteur orbital, pas des coordonnées fixes")
     if not -90.0 <= latitude_deg <= 90.0:
         raise ValueError("la latitude doit être comprise entre -90 et 90 degrés")

@@ -115,6 +115,8 @@ def test_offline_force_all_registered_catalogs_never_connects(tmp_path, monkeypa
         "flamsteed",
         "asteroids",
         "comets",
+        "satellites",
+        "debris",
     ]
     cache = tmp_path / "cache"
     assert cli.main(args + ["--update-catalogs", "force", "--catalog-cache-dir", str(cache)]) == 0

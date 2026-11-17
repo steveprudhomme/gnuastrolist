@@ -9,16 +9,26 @@ from .models import (
     FieldOfView,
     MoonSummary,
     ObservationWindow,
+    SatelliteTarget,
     VisibilityResult,
     WeatherPeriodSummary,
     WeatherSummary,
     apparent_magnitude,
 )
 from .seestar import SeestarInventory
-from .selection import ASTEROID_NOTES, COMET_NOTES, NOTES, CatalogSelection, catalog_label
+from .selection import (
+    ASTEROID_NOTES,
+    COMET_NOTES,
+    NOTES,
+    SATELLITE_NOTES,
+    CatalogSelection,
+    catalog_label,
+)
 
 
 def _object_name(result: VisibilityResult) -> str:
+    if isinstance(result.star,SatelliteTarget):
+        return f'{result.star.name} [NORAD {result.star.norad_id}; COSPAR {result.star.cospar_id or "—"}]'
     return ' / '.join((result.star.name, *getattr(result.star, 'aliases', ())))
 
 
@@ -259,6 +269,11 @@ def _format_table(
         )
         for result in results
     ]
+    if any(result.position_reference_time is not None for result in results):
+        headers += ('Instant position (local)',)
+        rows = [(*row,result.position_reference_time.strftime('%Y-%m-%d %H:%M:%S')
+                  if result.position_reference_time is not None else '—')
+                for row,result in zip(rows,results)]
     if any(result.magnitude_estimated for result in results):
         headers += ("Instant estimé (local)" if has_comets else "Instant V estimée (local)",)
         rows = [(*row, result.magnitude_reference_time.strftime("%Y-%m-%d %H:%M")
@@ -305,6 +320,7 @@ def render_report(
     start = window.start_local
     end = window.end_local
     variable_stars = object_kind == "variable_stars"
+    has_space = object_kind in ('satellites','debris') or isinstance(object_kind,CatalogSelection) and any(k in object_kind.kinds for k in ('satellites','debris'))
     has_comets = object_kind == 'comets' or isinstance(object_kind, CatalogSelection) and 'comets' in object_kind.kinds
     catalog_text = catalog_label(object_kind)
     if isinstance(object_kind, CatalogSelection):
@@ -345,6 +361,8 @@ def render_report(
         ),
         f"Filtre photométrique : {'V ou totale cométaire' if has_comets else 'bande V'}; magnitude {magnitude_text}",
         (
+            "Critère d'inclusion : un échantillon dans le champ; pas satellite distinct indiqué dans les notes."
+            if has_space else
             "Critère d'inclusion : présent dans le champ à au moins un échantillon "
             f"de {sample_minutes:g} min"
         ),
@@ -376,6 +394,12 @@ def render_report(
             lines.append(f"\n{matched_count} objet(s) trouvé(s).")
         if show_details:
             lines.extend(["", _format_provenance_details(results)])
+        if any(result.satellite_details is not None for result in results):
+            lines.extend(['','SATELLITES — CONDITIONS ET IDENTITÉS'])
+            for result in results:
+                if result.satellite_details is not None:
+                    lines.extend([f'{_object_name(result)} : {result.satellite_details}',
+                                  result.space_catalog_details or 'SATCAT / ONU : informations non fournies.'])
     else:
         lines.append("Aucun objet du catalogue ne satisfait les critères.")
 
@@ -391,6 +415,8 @@ def render_report(
         lines.extend(f"       {note}" for note in (NOTES[object_kind], *ASTEROID_NOTES))
     elif object_kind == "comets":
         lines.extend(f"       {note}" for note in (NOTES[object_kind], *COMET_NOTES))
+    elif object_kind in ('satellites','debris'):
+        lines.extend(f"       {note}" for note in (NOTES[object_kind], *SATELLITE_NOTES))
     elif variable_stars:
         lines.extend(
             [
