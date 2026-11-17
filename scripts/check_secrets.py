@@ -7,7 +7,7 @@ import subprocess
 from pathlib import Path
 
 RULES = {
-    'cle-privee': re.compile(rb'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----'),
+    'cle-privee': re.compile(rb'-----BEGIN (?:RSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY-----'),
     'jeton-github': re.compile(rb'\b(?:gh[pousr]_[A-Za-z0-9]{36,255}|github_pat_[A-Za-z0-9_]{50,255})\b'),
     'cle-aws': re.compile(rb'\bAKIA[A-Z0-9]{16}\b'),
     'cle-openai': re.compile(rb'\bsk-(?:proj-)?[A-Za-z0-9_-]{40,}\b'),

@@ -14,6 +14,8 @@ def main():
         data = json.load(stream)
     floors = {'validation.py': 90, 'report_files.py': 90, 'weather.py': 90}
     failed = []
+    if data.get('meta', {}).get('branch_coverage') is not True:
+        failed.append('Mesure des branches absente du rapport')
     total = data['totals']['percent_covered']
     if total < 88:
         failed.append(f'ensemble : {total:.2f} % < 88 %')
