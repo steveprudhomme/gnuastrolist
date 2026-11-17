@@ -1,5 +1,97 @@
 # Feuille de route
 
+## Finalisation PR nº 6 — tests Windows et tutoriel accessible
+
+- [x] Identifier le refus d'export Windows : code sur D:, fausses archives
+      pytest sur C:, donc protection correcte de tout le volume C:.
+- [x] Enregistrer ce plan avant le correctif.
+- [x] Placer les fichiers temporaires de la CI dans le dossier de travail
+      pour tester les copies locales sur le même volume, sans affaiblir la protection.
+- [x] Créer explicitement le parent des fichiers temporaires sur une copie neuve
+      avant d'exécuter pytest; vérifier un scénario local sans parent préexistant.
+- [x] Ajouter un test explicite de protection d'un volume Windows distinct.
+- [x] Ajouter un parcours débutant lisible à 10 ans, une image simple et les
+      consignes persistantes de documentation; actualiser les MD concernés.
+- [x] Vérifier les tests locaux : 90 réussis, un ignoré, dix avertissements IERS.
+
+Plan préalable : `de320c5`. Les cinq nouveaux contrôles GitHub doivent réussir
+avant la fusion autorisée. Le résultat et l'état final de fusion sont consultables
+dans la PR nº 6; les résultats de la première CI ne valent pas validation de ce correctif.
+
+## Lot Seestar S50 — présence dans les archives en lecture seule
+
+- [x] Examiner le code et la racine MyWorks autorisée, sans écriture externe.
+- [x] Enregistrer le plan avant le développement.
+- [x] Ajouter `--seestar-path CHEMIN` et un inventaire des acquisitions locales
+      uniquement en lecture; ignorer les liens/jonctions et gérer les erreurs
+      d'accès sans transformer une vérification incomplète en absence certaine.
+- [x] Identifier les objets par noms de catalogue explicites dans les fichiers
+      d'acquisition; utiliser les correspondances Messier/Caldwell/NGC
+      connues, sans rapprochement arbitraire par position ou nom courant.
+- [x] Distinguer archive trouvée, aucune archive trouvée et vérification
+      incomplète. La présence d'un fichier n'atteste pas la qualité ou l'achèvement
+      scientifique d'une photographie; un dossier vide ne suffit pas.
+- [x] Ajouter le statut aux rapports écran, TXT et PDF; préserver les sorties
+      existantes sans cette option. Interdire les rapports/caches sous la racine
+      protégée, y compris via des liens ou le dossier courant.
+- [x] Tester identifiants et alias, faux positifs, dossiers vides, erreurs,
+      liens et absence d'écriture. Utiliser des archives synthétiques locales.
+- [x] Documenter les limites, la confidentialité et la procédure dans les MD
+      et le tutoriel illustré; vérifier les archives et committer localement.
+
+Plan préalable : `a52ad62`. Résultats locaux : 89 tests réussis, un test de lien
+symbolique ignoré par manque de permission Windows, dix avertissements IERS.
+Les jonctions sont vérifiées séparément sur attributs synthétiques. Le scanner
+réel a été essayé uniquement en lecture; les rapports restent dans `local/`.
+Ruff, structure, distributions et installation hors des sources vérifiés.
+Aucune publication distante ni donnée d'acquisition personnelle dans le dépôt.
+
+## Lot multicatalogue — ligne de commande locale
+
+- [x] Définir les conventions et le périmètre, sans publication distante.
+- [x] Enregistrer le plan avant le développement.
+- [x] Accepter plusieurs noms après `--objects` et plusieurs occurrences de
+      cette option, en normalisant les alias et répétitions de catalogues.
+- [x] Combiner les catalogues et dédoublonner les objets du ciel profond par
+      désignation de catalogue explicite, jamais par simple proximité angulaire.
+      Priorité stable : Messier, Caldwell, NGC; conserver les noms secondaires.
+- [x] Préserver le filtre par défaut des variables (V max 8), même en sélection
+      mixte; les catalogues du ciel profond restent sans limite par défaut.
+      Une limite explicite ou `--all-magnitudes` s'applique à tous.
+- [x] Adapter les rapports terminal/TXT/PDF : catalogues, alias, conventions
+      photométriques et provenance par valeur, sans modifier les commandes simples.
+- [x] Tester répétitions, alias, recouvrements réels, composants distincts,
+      filtres mixtes et exports hors ligne; exécuter les contrôles locaux.
+- [x] Mettre à jour les MD et le tutoriel avec un schéma et un exemple réel;
+      vérifier les archives et enregistrer les commits locaux.
+
+Plan préalable : `02b5c55`. Validation locale : 75 tests réussis; huit
+avertissements IERS connus; Ruff, liens et distributions contrôlés. La commande
+installée a été exécutée hors des sources. Aucune publication distante du lot.
+
+## Lot NGC — intégration locale
+
+- [x] Examiner le chargement des catalogues et définir le périmètre.
+- [x] Enregistrer le plan dans un commit avant le développement.
+- [x] Examiner la copie OpenNGC locale déjà utilisée pour Caldwell : empreinte,
+      types, entrées composées, doublons, objets inexistants et valeurs absentes.
+- [x] Construire un catalogue NGC reproductible depuis ce fichier, en excluant
+      IC, doublons et objets inexistants; conserver les composants identifiés
+      distinctement et les coordonnées exploitables, sans inventer de magnitude V.
+- [x] Ajouter `--objects ngc`, le chargement local, les libellés et notes TXT/PDF,
+      sans limite de magnitude par défaut.
+- [x] Tester le générateur, des identifications de référence, les filtres et
+      les exports hors ligne; vérifier le contenu des distributions.
+- [x] Documenter source, licence, conventions et limites; mettre à jour les MD
+      et ajouter un schéma NGC dans le tutoriel.
+- [x] Exécuter les contrôles locaux, reconstruire les archives et enregistrer
+      le lot dans des commits locaux; aucune publication distante dans ce lot.
+
+Plan préalable : `3651c6e`. Résultats : 65 tests réussis, Ruff et contrôles de
+structure/distribution réussis, essai de la wheel hors des sources réussi.
+Les 4 592 magnitudes V absentes restent explicites. La validation CI distante
+du lot NGC reste à effectuer lors d'une publication ultérieure autorisée.
+
 ## Correctif avant fusion — autonomie du test de tri Caldwell
 
 - [x] Identifier l'échec Python 3.10 dans la CI : le test de tri utilise une
@@ -9,7 +101,10 @@
       précédents ni modifier durablement les paramètres astronomiques.
 - [x] Documenter le correctif dans le tutoriel, la validation et le journal.
 - [x] Exécuter le test isolé et les contrôles locaux : 61 tests réussis.
-- [ ] Confirmer la nouvelle CI Windows/Linux et la distribution sur GitHub.
+- [x] Confirmer la nouvelle CI Windows/Linux et la distribution sur GitHub.
+
+Le correctif IERS a passé les cinq contrôles et la PR nº 1 a été fusionnée
+dans main au commit `79724f3`, avant le démarrage du lot NGC.
 
 La fusion de la PR nº 1 est autorisée par l'utilisateur et doit suivre la
 réussite des cinq contrôles. Son état final est consultable dans GitHub.
@@ -187,7 +282,8 @@ les commits de planification décrits dans AGENTS.md.
 ## Évolutions des données
 
 - [ ] Intégrer VSX/AAVSO avec cache, provenance et gestion des pannes réseau.
-- [ ] Ajouter les catalogues complets NGC/IC et d'autres familles d'objets.
+- [x] Ajouter les entrées NGC exploitables d'OpenNGC, composants distincts inclus.
+- [ ] Ajouter le catalogue IC et d'autres familles d'objets.
 - [ ] Prendre en compte la réfraction et un masque d'horizon local.
 - [ ] Exporter des listes vers des télescopes intelligents.
 

@@ -12,6 +12,12 @@ from .models import (
     WeatherPeriodSummary,
     WeatherSummary,
 )
+from .seestar import SeestarInventory
+from .selection import CatalogSelection, catalog_label
+
+
+def _object_name(result: VisibilityResult) -> str:
+    return ' / '.join((result.star.name, *getattr(result.star, 'aliases', ())))
 
 
 def _magnitude_label(result: VisibilityResult) -> str:
@@ -56,7 +62,7 @@ def _format_provenance_details(results: Sequence[VisibilityResult]) -> str:
         star = result.star
         size = _apparent_size_label(result).rsplit(" [", maxsplit=1)[0]
         magnitude = _magnitude_label(result).rsplit(" [", maxsplit=1)[0]
-        lines.append(f"{star.name} :")
+        lines.append(f"{_object_name(result)} :")
         if star.size_source:
             lines.append(
                 "  Taille      : "
@@ -191,13 +197,15 @@ def _format_weather_summary(summary: WeatherSummary) -> list[str]:
 
 def _format_table(
     results: Sequence[VisibilityResult],
-    object_kind: str,
+    object_kind: str | CatalogSelection,
     window: ObservationWindow,
     minimum_altitude_deg: float,
 ) -> str:
     magnitude_header = (
         "Mag. max V" if object_kind == "variable_stars" else "Mag. apparente V"
     )
+    if isinstance(object_kind, CatalogSelection) and 'variable_stars' in object_kind.kinds:
+        magnitude_header = 'Mag. V (max si GCVS)'
     headers = (
         "Objet",
         "Type",
@@ -213,7 +221,7 @@ def _format_table(
     )
     rows = [
         (
-            result.star.name,
+            _object_name(result),
             result.star.object_type or "—",
             result.constellation or "—",
             _apparent_size_label(result),
@@ -243,6 +251,10 @@ def _format_table(
         )
         for result in results
     ]
+    if any(result.seestar_status is not None for result in results):
+        headers += ('Seestar',)
+        rows = [(*row, result.seestar_status or 'Non vérifié')
+                for row, result in zip(rows, results)]
     widths = [
         max(len(headers[index]), *(len(row[index]) for row in rows))
         for index in range(len(headers))
@@ -268,23 +280,19 @@ def render_report(
     moon_summary: MoonSummary,
     results: Sequence[VisibilityResult],
     matched_count: int,
-    object_kind: str,
+    object_kind: str | CatalogSelection,
     show_details: bool = False,
+    seestar_inventory: SeestarInventory | None = None,
 ) -> str:
     """Produit une sortie lisible, déterministe et facile à copier."""
 
     start = window.start_local
     end = window.end_local
     variable_stars = object_kind == "variable_stars"
-    catalog_text = (
-        "Étoiles variables (GCVS)"
-        if variable_stars
-        else (
-            "Objets Caldwell (OpenNGC, complément SIMBAD)" if object_kind == "caldwell"
-            else "Objets Messier (SIMBAD, repli OpenNGC)"
-        )
-    )
-    if max_magnitude is None:
+    catalog_text = catalog_label(object_kind)
+    if isinstance(object_kind, CatalogSelection):
+        magnitude_text = object_kind.filter_label
+    elif max_magnitude is None:
         magnitude_text = "aucune limite"
     elif variable_stars:
         magnitude_text = f"≤ {max_magnitude:g} au maximum d'éclat"
@@ -325,6 +333,13 @@ def render_report(
         ),
         "-" * 78,
     ]
+    if seestar_inventory is not None:
+        lines.extend([
+            seestar_inventory.summary,
+            "Seestar : présence d'acquisitions reconnues, sans validation de qualité des images.",
+            'Non trouvé ne signifie pas jamais photographié; les noms non reconnus sont ignorés.',
+            '-' * 78,
+        ])
     lines.extend(_format_weather_summary(weather_summary))
     lines.append("-" * 78)
     lines.extend(_format_moon_summary(moon_summary, window))
@@ -353,13 +368,17 @@ def render_report(
             "Note : hauteurs du tableau géométriques, sans réfraction atmosphérique.",
         ]
     )
-    if variable_stars:
+    if isinstance(object_kind, CatalogSelection):
+        lines.extend(f'       {note}' for note in object_kind.notes)
+    elif variable_stars:
         lines.extend(
             [
                 "       La magnitude est la magnitude au maximum d'éclat publiée,",
                 "       pas une prévision instantanée.",
             ]
         )
+    elif object_kind == "ngc":
+        lines.append("       Données NGC : OpenNGC; composants distincts inclus, hors doublons.")
     elif object_kind == "caldwell":
         lines.append("       Données OpenNGC; complément de magnitude V SIMBAD si exploitable.")
     else:

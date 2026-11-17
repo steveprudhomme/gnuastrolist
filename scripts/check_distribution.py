@@ -22,16 +22,22 @@ def main() -> None:
         else:
             with tarfile.open(path) as archive:
                 files = {n.name: archive.extractfile(n).read() for n in archive if n.isfile()}
-        for name, count in [("caldwell", 109), ("messier", 110), ("gcvs_visual", 21212)]:
+        for name, count in [("caldwell", 109), ("messier", 110), ("gcvs_visual", 21212),
+                            ("ngc", 8098)]:
             matches = [v for k, v in files.items() if k.endswith(f"/data/{name}.csv.gz")]
             assert len(matches) == 1, (path, name)
             rows = list(csv.DictReader(io.StringIO(gzip.decompress(matches[0]).decode("utf-8"))))
             assert len(rows) == count, (path, name, len(rows))
         assert any(k.endswith("/data/CALDWELL_SOURCE.md") for k in files), path
+        assert any(k.endswith("/data/NGC_SOURCE.md") for k in files), path
+        assert any(k.endswith('gnu_astrolist/selection.py') for k in files), path
+        assert any(k.endswith('gnu_astrolist/seestar.py') for k in files), path
         assert any(k.endswith("/LICENSE") or k == "LICENSE" for k in files), path
         assert not any("/local/" in k or k.endswith(("rapport.pdf", "rapport.txt")) for k in files)
         if path.name.endswith('.tar.gz'):
-            for image in ('caldwell-parcours.svg', 'validation-locale.svg'):
+            for image in ('caldwell-parcours.svg', 'validation-locale.svg', 'ngc-selection.svg',
+                          'multiple-catalogues.svg', 'seestar-lecture-seule.svg',
+                          'premiers-pas.svg'):
                 assert any(k.endswith(f'/docs/images/{image}') for k in files), (path, image)
         print(f"{path.name} : catalogues, notice, licence et exclusions OK")
 

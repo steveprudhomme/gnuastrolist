@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="330" viewBox="0 0 1100 330" role="img" aria-labelledby="title desc">
+<title id="title">Sélection locale NGC</title><desc id="desc">Schéma : 8373 lignes NGC, exclusion de 274 doublons et un objet inexistant, 8098 entrées conservées dont 3506 avec V et 4592 sans V. Les composants distincts restent séparés.</desc>
+<rect width="1100" height="330" rx="18" fill="#f8fafc"/>
+<g font-family="Segoe UI, Arial, sans-serif" fill="#0f172a">
+<text x="30" y="44" font-size="27" font-weight="700">NGC : préserver les identifications et les valeurs absentes</text>
+<text x="30" y="76" font-size="17">Schéma fondé sur le comptage réel de la copie OpenNGC locale épinglée</text>
+<g fill="#e0f2fe" stroke="#0284c7" stroke-width="2"><rect x="30" y="112" width="300" height="108" rx="12"/><rect x="400" y="112" width="300" height="108" rx="12"/><rect x="770" y="112" width="300" height="108" rx="12"/></g>
+<g font-size="21" font-weight="600"><text x="48" y="148">8 373 lignes NGC</text><text x="418" y="148">8 098 entrées retenues</text><text x="788" y="148">Magnitude V</text></g>
+<g font-size="17"><text x="48" y="180">274 doublons exclus</text><text x="48" y="204">1 entrée inexistante exclue</text><text x="418" y="180">Composants distincts inclus</text><text x="418" y="204">Catalogue IC exclu</text><text x="788" y="180">3 506 valeurs disponibles</text><text x="788" y="204">4 592 valeurs absentes</text></g>
+<g font-size="32" fill="#475569"><text x="350" y="180">→</text><text x="720" y="180">→</text></g>
+<text x="30" y="270" font-size="18">Sans filtre V : toutes les entrées restent sélectionnables dans le champ demandé.</text>
+<text x="30" y="302" font-size="17">Avec un filtre V : les valeurs absentes sont exclues. Aucune autre bande n'est substituée.</text>
+</g></svg>

@@ -10,16 +10,12 @@ from pathlib import Path
 from astropy.utils import iers
 
 from . import __version__
-from .catalog import (
-    filter_by_magnitude,
-    load_caldwell_catalog,
-    load_messier_catalog,
-    load_variable_star_catalog,
-)
 from .models import FieldOfView
 from .moon import compute_moon_summary
 from .output import render_report
 from .pdf_output import PdfExportError, export_pdf_report
+from .seestar import annotate_results, protect_outputs, scan_seestar, validate_root
+from .selection import load_catalog_selection
 from .time_utils import parse_observation_window
 from .visibility import compute_visibility
 from .weather import compute_weather_summary
@@ -86,8 +82,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--objects",
         required=True,
-        choices=("variable_stars", "messier", "messier_objects", "caldwell"),
-        help="catalogue : variable_stars, messier ou caldwell (alias : messier_objects)",
+        nargs="+",
+        action="extend",
+        choices=("variable_stars", "messier", "messier_objects", "caldwell", "ngc"),
+        help="un ou plusieurs catalogues; option répétable (messier_objects : alias de messier)",
     )
     magnitudes = parser.add_mutually_exclusive_group()
     magnitudes.add_argument(
@@ -96,13 +94,13 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help=(
             "magnitude V maximale (défaut : 8 pour variable_stars; "
-            "aucune limite pour messier et caldwell)"
+            "aucune limite pour messier, caldwell et ngc)"
         ),
     )
     magnitudes.add_argument(
         "--all-magnitudes",
         action="store_true",
-        help="désactive la limite de magnitude et utilise tout le catalogue choisi",
+        help="désactive les limites de magnitude dans tous les catalogues choisis",
     )
     parser.add_argument(
         "--sample-minutes",
@@ -138,6 +136,10 @@ def build_parser() -> argparse.ArgumentParser:
         help="crée un rapport PDF mis en page au format lettre 8,5 x 11 po",
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
+    parser.add_argument(
+        '--seestar-path', type=Path, metavar='DOSSIER',
+        help='vérifie les archives Seestar en lecture seule, par exemple E:\\MyWorks',
+    )
     return parser
 
 
@@ -157,6 +159,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         _validate_arguments(args)
+        seestar_root = validate_root(args.seestar_path) if args.seestar_path is not None else None
+        if seestar_root is not None:
+            protect_outputs(seestar_root, (args.output_txt, args.output_pdf))
         window = parse_observation_window(args.date, args.time_range, args.timezone)
         field_of_view = FieldOfView.from_automatic_center(
             azimuth_min_deg=args.az_min,
@@ -180,20 +185,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         offline=args.offline,
     )
 
-    object_kind = "messier" if args.objects in {"messier", "messier_objects"} else args.objects
-    if args.all_magnitudes:
-        max_magnitude = None
-    elif args.max_magnitude is not None:
-        max_magnitude = args.max_magnitude
-    else:
-        max_magnitude = 8.0 if object_kind == "variable_stars" else None
-
-    catalog = {
-        "variable_stars": load_variable_star_catalog,
-        "messier": load_messier_catalog,
-        "caldwell": load_caldwell_catalog,
-    }[object_kind]()
-    stars = filter_by_magnitude(catalog, max_magnitude)
+    stars, selection = load_catalog_selection(
+        args.objects, args.max_magnitude, args.all_magnitudes
+    )
+    object_kind = selection.kinds[0] if len(selection.kinds) == 1 else selection
+    max_magnitude = selection.limits[0] if len(selection.kinds) == 1 else args.max_magnitude
     try:
         moon_summary = compute_moon_summary(
             window=window,
@@ -214,6 +210,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         parser.error(str(exc))
     matched_count = len(results)
     displayed_results = results[: args.limit] if args.limit is not None else results
+    try:
+        inventory = scan_seestar(seestar_root) if seestar_root is not None else None
+    except ValueError as exc:
+        parser.error(str(exc))
+    if inventory is not None:
+        displayed_results = annotate_results(displayed_results, inventory)
     report = render_report(
         window=window,
         latitude_deg=args.lat,
@@ -228,11 +230,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         matched_count=matched_count,
         object_kind=object_kind,
         show_details=args.details,
+        seestar_inventory=inventory,
     )
     if args.output_txt is not None:
         try:
+            if seestar_root is not None:
+                protect_outputs(seestar_root, (args.output_txt,))
             args.output_txt.write_text(f"{report}\n", encoding="utf-8")
-        except OSError as exc:
+        except (OSError, ValueError) as exc:
             parser.error(
                 f"impossible d'écrire le rapport dans {args.output_txt}: {exc}"
             )
@@ -253,6 +258,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 matched_count=matched_count,
                 object_kind=object_kind,
                 show_details=args.details,
+                seestar_inventory=inventory,
             )
         except PdfExportError as exc:
             parser.error(str(exc))

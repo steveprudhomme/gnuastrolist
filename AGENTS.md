@@ -14,6 +14,9 @@
   limites et les sorties publiques affectées; exécuter pytest et Ruff.
 - Mettre à jour README, CHANGELOG, ROADMAP et docs concernés avec le code.
 - Documenter chaque lot dans docs/TUTORIEL.md avec des images versionnées.
+  Le parcours débutant doit être compréhensible à 10 ans : phrases courtes,
+  mots expliqués, étapes numérotées et exemples faciles à copier. Séparer le
+  journal technique du guide de démarrage.
   Identifier schémas et exemples synthétiques; ne jamais fabriquer de captures.
 - Travailler uniquement dans les copies locales selon la consigne actuelle :
   aucun push, PR distante, fusion distante ou réglage GitHub. Utiliser les
@@ -21,5 +24,9 @@
 - Ajouter aux nouveaux fichiers Python les avis SPDX GPL-3.0-or-later et le
   titulaire réel. Ne jamais fabriquer une signature DCO ou cryptographique.
 - Respecter PRIVACY.md : exemples publics, aucune donnée privée ni secret.
+- Le disque et les archives Seestar sont strictement sources en lecture seule :
+  aucune écriture, modification d'attributs, création de cache ou sortie sur ces
+  supports. Les rapports et fichiers temporaires restent dans le projet local.
+  Les tests et illustrations utilisent uniquement des archives synthétiques.
 - Les branches, commits et tests locaux ne prouvent ni publication distante,
   ni protection effective de main, ni validation scientifique externe.

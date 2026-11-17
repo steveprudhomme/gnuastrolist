@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="350" viewBox="0 0 1100 350" role="img" aria-labelledby="title desc">
+<title id="title">Trois étapes pour préparer une soirée</title><desc id="desc">Dessin explicatif : choisir les listes du ciel, regarder les noms des photos sans les changer, lire le rapport enregistré sur l'ordinateur.</desc>
+<rect width="1100" height="350" rx="20" fill="#f8fafc"/>
+<g font-family="Segoe UI, Arial, sans-serif" fill="#0f172a">
+<text x="30" y="45" font-size="28" font-weight="700">Préparer sa soirée en trois étapes</text>
+<g stroke-width="2"><rect x="30" y="80" width="300" height="210" rx="15" fill="#e0f2fe" stroke="#0284c7"/><rect x="400" y="80" width="300" height="210" rx="15" fill="#fee2e2" stroke="#dc2626"/><rect x="770" y="80" width="300" height="210" rx="15" fill="#dcfce7" stroke="#16a34a"/></g>
+<g fill="white" stroke="#475569" stroke-width="3"><rect x="140" y="105" width="80" height="65" rx="5"/><rect x="510" y="105" width="80" height="65" rx="5"/><rect x="880" y="105" width="80" height="65" rx="5"/></g>
+<path d="M155 120 H205 M155 136 H205 M155 152 H185 M525 120 H575 M525 136 H575 M525 152 H550" stroke="#0284c7" stroke-width="4"/>
+<path d="M898 137 L912 151 L943 118" fill="none" stroke="#16a34a" stroke-width="5"/>
+<g font-size="23" font-weight="700"><text x="52" y="205">1. Je choisis mes listes</text><text x="422" y="205">2. Je regarde mes photos</text><text x="792" y="205">3. Je lis le résultat</text></g>
+<g font-size="18"><text x="52" y="239">Messier, Caldwell ou NGC</text><text x="52" y="269">On peut en choisir plusieurs.</text><text x="422" y="239">Le Seestar reste protégé.</text><text x="422" y="269">Aucun fichier n'est changé.</text><text x="792" y="239">Déjà fait ? Brutes ? Non trouvé ?</text><text x="792" y="269">Le rapport va sur l'ordinateur.</text></g>
+<g font-size="32" fill="#475569"><text x="350" y="190">→</text><text x="720" y="190">→</text></g>
+<text x="30" y="330" font-size="18">Dessin explicatif : ce ne sont pas des captures de photos personnelles.</text>
+</g></svg>

@@ -1,5 +1,90 @@
 # Validation
 
+## Finalisation de la PR nº 6
+
+La première CI a réussi sur Linux et pour les distributions. Les tests Windows
+Seestar ont révélé que les fichiers temporaires pytest étaient sur C: tandis
+que le logiciel était sur D:. La protection du volume source a correctement
+refusé les exports sur C:, ce qui ne correspondait pas au scénario synthétique
+prévu par ces tests. La CI utilise désormais `--basetemp=.pytest_cache/ci-tmp`
+sur le volume du logiciel. La protection applicative reste inchangée.
+
+Un test Windows supplémentaire vérifie explicitement que les exports sur un
+volume source distinct restent refusés, tandis qu'une copie locale permet un
+rapport hors de son propre dossier. Le tutoriel commence par un guide illustré
+accessible dès 10 ans, distinct du journal technique. Une nouvelle CI est requise
+sur le commit contenant ces corrections avant la fusion autorisée.
+Les contrôles locaux de cette finalisation ont réussi : 90 tests réussis,
+un test de lien symbolique ignoré faute de permission Windows, dix avertissements
+IERS; Ruff et contrôle de structure réussis.
+
+Sur une copie GitHub neuve, le parent `.pytest_cache` n'existe pas encore.
+La préparation de la CI le crée explicitement avant d'utiliser `--basetemp`;
+pytest crée ensuite son dossier de tests. Cette étape ne touche que la copie
+de travail, jamais les archives Seestar. Le test local précédent utilisait un
+cache existant; un nouvel essai local part d'un parent dédié nouvellement créé.
+Le chemin plus long de cet essai a également révélé un retour à la ligne dans
+le texte extrait du PDF. Le test normalise les espaces avant de chercher les
+libellés; la comparaison exacte entre sortie terminal et TXT reste inchangée.
+
+## Lot Seestar S50 en lecture seule
+
+Résultats locaux : **89 tests réussis, un test ignoré**, dix avertissements IERS.
+Le test ignoré nécessite la création d'un lien symbolique, non autorisée dans
+l'environnement Windows courant. Un test indépendant simule les attributs de
+jonction Windows et vérifie qu'aucune descente n'est effectuée.
+
+Les tests Seestar utilisent des acquisitions synthétiques : empilement, brutes,
+fichiers vides, vignettes, motifs non reconnus, alias et composants distincts.
+Ils vérifient les erreurs de lecture, les statuts incomplets, les sorties
+terminal/TXT/PDF et les archives sources inchangées. Un test interdit toute
+ouverture de fichier et les opérations d'écriture du scanner; les protections
+d'export couvrent chemins relatifs, liens physiques et création temporaire PDF.
+
+Ruff et contrôles de structure/distributions réussis. La wheel installée hors
+du dossier source a exécuté l'option sur une archive synthétique locale, sans
+téléchargement. Le contrôle exige `seestar.py` dans les paquets et l'illustration
+dans l'archive source. La CI distante du lot n'a pas été exécutée.
+
+Un essai manuel autorisé a consulté le véritable dossier MyWorks sans ouvrir
+les images ni écrire sur son volume; les rapports personnels TXT/PDF restent
+dans `local/`, ignoré par Git. Les statuts du PDF ont aussi été vérifiés par
+extraction de texte. Ces vérifications ne constituent pas un audit matériel
+du disque ni une validation scientifique des images.
+
+## Lot sélection multiple
+
+Résultats locaux : **75 tests réussis**, huit avertissements IERS, Ruff et
+contrôles de structure/distributions réussis. Les tests couvrent les noms et
+options répétés, l'alias `messier_objects`, l'ordre indépendant de priorité,
+M31/NGC224, C1/NGC188, les composants distincts et les désignations absentes.
+Ils vérifient aussi la priorité avant filtre, la limite GCVS par défaut, les
+limites explicites, `--all-magnitudes` et les sorties terminal/TXT/PDF mixtes.
+
+La wheel et l'archive source incluent `selection.py`; le schéma multicatalogue
+est exigé dans l'archive source. Une installation de la wheel sans téléchargement
+a exécuté la commande Messier/Caldwell/NGC hors du dossier source. Le résultat
+de cette commande de contrôle (UTC, latitude 45°, seuil V=5) est de 10 entrées.
+La CI distante de ce lot n'a pas été exécutée; aucun push n'est effectué.
+
+## Lot NGC
+
+Le générateur local exige l'empreinte de la copie OpenNGC documentée. Les tests
+vérifient 8 098 identifiants uniques, 4 592 magnitudes absentes, NGC224 et
+NGC1976, les composants NGC61A/B, le filtre de magnitude, l'ordre numérique,
+les exclusions, la reproductibilité et le rejet des doublons et sources altérées.
+Les tests d'intégration vérifient les rapports TXT/PDF non vides et vides hors ligne.
+Le contrôle des distributions exige le catalogue, sa notice et le schéma NGC
+dans l'archive source. Les résultats CI du précédent lot Caldwell ne valent pas
+validation distante du nouveau lot NGC.
+
+Résultats locaux NGC : 65 tests réussis, cinq avertissements IERS, Ruff et
+contrôles des liens/structure/distributions réussis. Construction sans isolation
+ni téléchargement avec les outils présents. La wheel installée hors des sources
+charge 8 098 entrées et exécute la commande NGC hors ligne. Le tutoriel consigne
+un essai complet sans filtre V (1 975 entrées sélectionnées pour l'exemple de
+Laval). Aucun nouveau résultat CI distant n'est revendiqué pour ce lot.
+
 ## Correctif de la première CI
 
 Python 3.10 sur Windows et Linux a révélé une dépendance du test de tri Caldwell

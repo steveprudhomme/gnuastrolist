@@ -67,6 +67,12 @@ def load_caldwell_catalog() -> tuple[DeepSkyObject, ...]:
     return _load_deep_sky_catalog("caldwell.csv.gz")
 
 
+@lru_cache(maxsize=1)
+def load_ngc_catalog() -> tuple[DeepSkyObject, ...]:
+    """Charge les entrées NGC exploitables, composants distincts inclus."""
+    return _load_deep_sky_catalog("ngc.csv.gz")
+
+
 def _load_deep_sky_catalog(filename: str) -> tuple[DeepSkyObject, ...]:
     resource = resources.files("gnu_astrolist.data").joinpath(filename)
     with resource.open("rb") as raw, gzip.open(

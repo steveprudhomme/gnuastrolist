@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="350" viewBox="0 0 1100 350" role="img" aria-labelledby="title desc">
+<title id="title">Sélection de plusieurs catalogues</title><desc id="desc">Schéma : Messier, Caldwell et NGC sont réunis par désignation explicite. La priorité est Messier puis Caldwell puis NGC. M31 et NGC224 apparaissent sur une ligne avec les deux noms. Filtre, visibilité et rapports suivent.</desc>
+<rect width="1100" height="350" rx="18" fill="#f8fafc"/>
+<g font-family="Segoe UI, Arial, sans-serif" fill="#0f172a">
+<text x="30" y="44" font-size="27" font-weight="700">Plusieurs catalogues, une liste d'observation</text>
+<text x="30" y="76" font-size="17">Schéma de fonctionnement — exemple réel d'identité explicite : M31 et NGC224</text>
+<g fill="#dcfce7" stroke="#16a34a" stroke-width="2"><rect x="30" y="110" width="280" height="120" rx="12"/><rect x="400" y="110" width="300" height="120" rx="12"/><rect x="790" y="110" width="280" height="120" rx="12"/></g>
+<g font-size="21" font-weight="600"><text x="48" y="148">Catalogues sélectionnés</text><text x="418" y="148">Même désignation</text><text x="808" y="148">Liste commune</text></g>
+<g font-size="17"><text x="48" y="182">Messier + Caldwell + NGC</text><text x="48" y="210">8 317 fiches sources</text><text x="418" y="182">8 115 fiches après regroupement</text><text x="418" y="210">M31 / NGC224 : une ligne</text><text x="808" y="182">Filtres puis visibilité et tri</text><text x="808" y="210">Terminal / TXT / PDF</text></g>
+<g font-size="32" fill="#475569"><text x="345" y="180">→</text><text x="735" y="180">→</text></g>
+<text x="30" y="275" font-size="18">Priorité des fiches : Messier, puis Caldwell, puis NGC; provenance conservée.</text>
+<text x="30" y="307" font-size="17">Composants et groupes distincts préservés. Pas de regroupement par proximité angulaire.</text>
+<text x="30" y="335" font-size="17">GCVS peut être ajouté; ses étoiles ne sont pas assimilées aux objets du ciel profond.</text>
+</g></svg>

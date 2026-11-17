@@ -1,5 +1,8 @@
 # GNU Astrolist
 
+Pour commencer sans connaître le programme, suivre le
+[tutoriel illustré pas à pas](docs/TUTORIEL.md), écrit pour être compris dès 10 ans.
+
 GNU Astrolist est un prototype libre en ligne de commande qui prépare une soirée
 d'observation astronomique. Il calcule la hauteur des objets au début et à la
 fin d'une plage horaire, retient ceux qui traversent le champ de visée et les
@@ -7,7 +10,7 @@ trie par magnitude en bande V.
 
 Le prototype est déjà fonctionnel : il contient 21 212 entrées visuelles du
 General Catalogue of Variable Stars (GCVS), les 110 objets Messier et les
-109 objets Caldwell. Il
+109 objets Caldwell et 8 098 entrées NGC. Il
 calcule les coordonnées Alt/Az avec Astropy et fonctionne hors ligne grâce aux
 catalogues embarqués.
 
@@ -83,6 +86,62 @@ Les tailles et magnitudes Messier privilégient les valeurs valides de SIMBAD et
 utilisent OpenNGC comme repli hors ligne. Le catalogue choisi est indiqué entre
 crochets à côté de chaque valeur. Ajoutez `--details` pour afficher également
 le bibcode ou la référence et la date de récupération.
+
+## Vérifier les acquisitions du Seestar S50
+
+Ajoutez `--seestar-path "E:\MyWorks"` pour voir une colonne **Seestar** à
+l'écran, dans le TXT et dans les fiches PDF. Le chemin peut varier à chaque usage.
+
+```powershell
+gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects messier caldwell ngc --offline --max-magnitude 8 --limit 20 --seestar-path "E:\MyWorks"
+```
+
+Les statuts distinguent un empilement trouvé, des brutes seules, une absence
+d'acquisition reconnue et une vérification incomplète. Le scanner ne lit que les
+noms et métadonnées : aucune écriture, aucun cache ni modification des archives.
+Les exports dans l'espace source protégé sont refusés. Les rapports doivent être
+écrits ailleurs, par exemple dans `local/` sur le disque du projet.
+
+Un dossier vide ne compte pas; « Non trouvé » ne signifie pas « jamais
+photographié ». Voir les [règles de reconnaissance Seestar](docs/SEESTAR.md) et
+le [tutoriel illustré](docs/TUTORIEL.md) pour les statuts et les limites.
+
+## Utiliser plusieurs catalogues
+
+Fournissez plusieurs noms après `--objects`, ou répétez cette option :
+
+```powershell
+gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects messier caldwell ngc --offline --max-magnitude 8 --limit 20
+```
+
+`--objects messier --objects ngc` est également accepté. Les répétitions et
+`messier_objects` n'ajoutent pas de doublons. Les objets du ciel profond de même
+désignation explicite sont réunis : `M31 / NGC224` occupe une ligne. La fiche
+Messier est prioritaire sur Caldwell, puis NGC, indépendamment de l'ordre demandé;
+sa provenance est conservée. Les composants distincts restent séparés.
+
+`variable_stars` peut être ajouté. Par défaut, ses variables gardent la limite
+V maximum publié ≤ 8, tandis que le ciel profond reste sans limite.
+`--max-magnitude` fixe une limite commune et `--all-magnitudes` les supprime toutes.
+Le [tutoriel](docs/TUTORIEL.md) et la [décision de conception](docs/architecture/decisions/0002-selection-multiple.md)
+détaillent les alias, les valeurs absentes et les limites du regroupement.
+
+## Nouveau Catalogue Général (NGC)
+
+L'option `--objects ngc` charge **8 098 entrées NGC** issues de la copie OpenNGC
+locale, dont les composants identifiés séparément. Les doublons et objets
+marqués inexistants sont exclus. IC n'est pas inclus dans cette option.
+
+```powershell
+gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects ngc --offline --max-magnitude 8 --limit 20
+```
+
+Sans `--max-magnitude`, aucune limite n'est appliquée; les 4 592 entrées sans V
+restent disponibles et s'affichent « non disponible ». Une limite numérique les
+exclut. `--limit` tronque l'affichage après la sélection et le tri, sans réduire
+les calculs. Les exports TXT/PDF et `--details` sont pris en charge.
+Voir la [notice NGC](src/gnu_astrolist/data/NGC_SOURCE.md) et le
+[tutoriel illustré](docs/TUTORIEL.md) pour les conventions et limites.
 
 ## Objets Caldwell
 
@@ -285,7 +344,7 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --az-max DEG                 Limite azimutale de fin
 --min-altitude DEG           Élévation minimale; --fov-v est un alias
 --alt-center DEG             Remplacement avancé facultatif du centre vertical
---objects CATALOGUE          variable_stars, messier ou caldwell
+--objects CATALOGUE [...]    un ou plusieurs : variable_stars, messier, caldwell, ngc
 --max-magnitude MAG          Limite V; défaut 8 pour les variables, aucune pour Messier
 --all-magnitudes             Désactive la limite pour le catalogue choisi
 --sample-minutes MIN         Pas de recherche (défaut : 10)
@@ -294,6 +353,7 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --details                    Affiche la provenance complète des tailles et magnitudes
 --output-txt FICHIER         Enregistre le rapport complet en texte UTF-8
 --output-pdf FICHIER         Crée un PDF lettre 8,5 x 11 po mis en page
+--seestar-path DOSSIER       Vérifie les acquisitions Seestar en lecture seule
 ```
 
 La commande `gnu-astrolist --help` donne la liste à jour.

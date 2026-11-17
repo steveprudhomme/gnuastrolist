@@ -5,6 +5,40 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Corrigé — validation Windows
+
+- Fichiers temporaires des tests CI placés sur le volume du logiciel, pour
+  distinguer les copies synthétiques locales d'un disque source externe protégé.
+  Les protections Seestar en lecture seule restent inchangées.
+- Guide de démarrage illustré accessible dès 10 ans, séparé du journal technique.
+
+### Ajouté — archives Seestar
+
+- Option `--seestar-path DOSSIER`, inventaire des noms et métadonnées en lecture
+  seule, correspondances par identifiants et alias connus, sans ouverture d'images.
+- Statuts empilé, brutes seules, non trouvé et indéterminé dans les sorties
+  terminal/TXT/PDF, avec signalement des lectures incomplètes.
+- Protection des destinations d'export, des liens et des jonctions; tests sur
+  archives synthétiques et tutoriel illustré, sans données personnelles publiées.
+
+### Ajouté — sélection multiple
+
+- `--objects` accepte plusieurs catalogues et peut être répété; les commandes
+  à catalogue unique restent compatibles.
+- Regroupement par désignation explicite avec priorité Messier/Caldwell/NGC,
+  conservation de la provenance de la fiche et affichage des alias en TXT/PDF.
+- Filtres cohérents par catalogue, sans confondre maxima GCVS et ciel profond.
+- Tests de recouvrement, filtres et exports, tutoriel illustré et décision de conception.
+
+### Ajouté — NGC
+
+- Catalogue NGC local avec 8 098 entrées OpenNGC : `--objects ngc`, rapports
+  terminal/TXT/PDF, provenance et reconstruction déterministe sans réseau.
+- Conservation des composants identifiés distinctement et des magnitudes V
+  absentes; exclusion des doublons, entrées inexistantes et entrées IC.
+- Tests du générateur, identifications de référence et exports, contrôle des
+  distributions et tutoriel illustré pour le périmètre NGC.
+
 ### Corrigé
 
 - Configuration IERS temporaire et explicite du test de tri Caldwell pour le

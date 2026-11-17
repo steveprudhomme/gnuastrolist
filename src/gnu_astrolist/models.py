@@ -66,6 +66,7 @@ class DeepSkyObject:
     magnitude_retrieved_on: str = ""
     common_name: str = ""
     passband: str = "V"
+    aliases: tuple[str, ...] = ()
 
     @property
     def magnitude_limit(self) -> str:
@@ -273,3 +274,4 @@ class VisibilityResult:
     rises_above_minimum_local: datetime | None = None
     sets_below_minimum_local: datetime | None = None
     always_above_minimum: bool = False
+    seestar_status: str | None = None

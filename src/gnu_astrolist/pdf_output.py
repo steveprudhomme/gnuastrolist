@@ -38,8 +38,11 @@ from .output import (
     _crossing_time_label,
     _magnitude_label,
     _moon_event_label,
+    _object_name,
     _reference_label,
 )
+from .seestar import SeestarInventory, protect_outputs
+from .selection import CatalogSelection, catalog_label
 
 NAVY = colors.HexColor("#18344A")
 TEAL = colors.HexColor("#2B7282")
@@ -191,18 +194,13 @@ def _metadata_rows(
     field_of_view: FieldOfView,
     max_magnitude: float | None,
     sample_minutes: float,
-    object_kind: str,
+    object_kind: str | CatalogSelection,
 ) -> tuple[tuple[str, str], ...]:
     variable_stars = object_kind == "variable_stars"
-    catalog = (
-        "Étoiles variables (GCVS)"
-        if variable_stars
-        else (
-            "Objets Caldwell (OpenNGC, complément SIMBAD)" if object_kind == "caldwell"
-            else "Objets Messier (SIMBAD, repli OpenNGC)"
-        )
-    )
-    if max_magnitude is None:
+    catalog = catalog_label(object_kind)
+    if isinstance(object_kind, CatalogSelection):
+        magnitude = object_kind.filter_label
+    elif max_magnitude is None:
         magnitude = "Aucune limite"
     elif variable_stars:
         magnitude = f"Maximum d'éclat <= {max_magnitude:g}"
@@ -396,7 +394,7 @@ def _result_card(
     available_width: float,
 ) -> KeepTogether:
     star = result.star
-    title = star.name
+    title = _object_name(result)
     common_name = getattr(star, "common_name", "")
     if common_name:
         title = f"{title} - {common_name}"
@@ -459,6 +457,11 @@ def _result_card(
             _paragraph(f"{result.altitude_end_deg:+.1f}°", styles["value"]),
         ],
     ]
+    if result.seestar_status is not None:
+        data.append([
+            _paragraph('Seestar', styles['label']),
+            _paragraph(result.seestar_status, styles['value']), '', '',
+        ])
     if show_details:
         if star.size_source:
             size_detail = (
@@ -514,7 +517,7 @@ def _result_card(
     return KeepTogether([card, Spacer(1, 6)])
 
 
-def _notes(object_kind: str) -> tuple[str, ...]:
+def _notes(object_kind: str | CatalogSelection) -> tuple[str, ...]:
     notes = [
         "Les hauteurs du tableau sont géométriques, sans réfraction atmosphérique.",
         (
@@ -539,11 +542,15 @@ def _notes(object_kind: str) -> tuple[str, ...]:
             "crépuscule."
         ),
     ]
-    if object_kind == "variable_stars":
+    if isinstance(object_kind, CatalogSelection):
+        notes.extend(object_kind.notes)
+    elif object_kind == "variable_stars":
         notes.append(
             "La magnitude des étoiles variables est le maximum d'éclat publié, "
             "et non une prévision instantanée."
         )
+    elif object_kind == "ngc":
+        notes.append("Données NGC : OpenNGC; composants distincts inclus, hors doublons.")
     else:
         notes.append(
             "Données OpenNGC; complément de magnitude V SIMBAD si exploitable."
@@ -582,8 +589,9 @@ def _build_pdf(
     moon_summary: MoonSummary,
     results: Sequence[VisibilityResult],
     matched_count: int,
-    object_kind: str,
+    object_kind: str | CatalogSelection,
     show_details: bool,
+    seestar_inventory: SeestarInventory | None = None,
 ) -> None:
     _register_fonts()
     styles = _styles()
@@ -623,6 +631,12 @@ def _build_pdf(
         ),
         _section("Conditions météo", styles),
     ]
+    if seestar_inventory is not None:
+        story.insert(3, _paragraph(
+            seestar_inventory.summary + " Présence d'acquisitions reconnues; qualité non vérifiée. "
+            "Non trouvé ne signifie pas jamais photographié; les noms non reconnus sont ignorés.",
+            styles['small'],
+        ))
     story.extend(_weather_panel(weather_summary, styles, available_width))
     story.extend(
         [
@@ -682,13 +696,16 @@ def export_pdf_report(
     moon_summary: MoonSummary,
     results: Sequence[VisibilityResult],
     matched_count: int,
-    object_kind: str,
+    object_kind: str | CatalogSelection,
     show_details: bool,
+    seestar_inventory: SeestarInventory | None = None,
 ) -> None:
     """Crée atomiquement un PDF portrait au format lettre 8,5 x 11 pouces."""
 
     temporary_path: Path | None = None
     try:
+        if seestar_inventory is not None:
+            protect_outputs(seestar_inventory.root, (path,))
         with NamedTemporaryFile(
             prefix=f".{path.stem}-",
             suffix=".pdf",
@@ -711,6 +728,7 @@ def export_pdf_report(
             matched_count=matched_count,
             object_kind=object_kind,
             show_details=show_details,
+            seestar_inventory=seestar_inventory,
         )
         temporary_path.replace(path)
     except Exception as exc:
