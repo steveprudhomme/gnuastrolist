@@ -1,5 +1,26 @@
 # Feuille de route
 
+## Lot Seestar S50 — présence dans les archives en lecture seule
+
+- [x] Examiner le code et la racine MyWorks autorisée, sans écriture externe.
+- [ ] Enregistrer le plan avant le développement.
+- [ ] Ajouter `--seestar-path CHEMIN` et un inventaire des acquisitions locales
+      uniquement en lecture; ignorer les liens/jonctions et gérer les erreurs
+      d'accès sans transformer une vérification incomplète en absence certaine.
+- [ ] Identifier les objets par noms de catalogue explicites dans les dossiers
+      et fichiers d'acquisition; utiliser les correspondances Messier/Caldwell/NGC
+      connues, sans rapprochement arbitraire par position ou nom courant.
+- [ ] Distinguer archive trouvée, aucune archive trouvée et vérification
+      incomplète. La présence d'un fichier n'atteste pas la qualité ou l'achèvement
+      scientifique d'une photographie; un dossier vide ne suffit pas.
+- [ ] Ajouter le statut aux rapports écran, TXT et PDF; préserver les sorties
+      existantes sans cette option. Interdire les rapports/caches sous la racine
+      protégée, y compris via des liens ou le dossier courant.
+- [ ] Tester identifiants et alias, faux positifs, dossiers vides, erreurs,
+      liens et absence d'écriture. Utiliser des archives synthétiques locales.
+- [ ] Documenter les limites, la confidentialité et la procédure dans les MD
+      et le tutoriel illustré; vérifier les archives et committer localement.
+
 ## Lot multicatalogue — ligne de commande locale
 
 - [x] Définir les conventions et le périmètre, sans publication distante.
