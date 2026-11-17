@@ -81,6 +81,8 @@ def main() -> None:
             assert any(k.endswith('/docs/images/meteo-fiable-ecc-b.svg') for k in files), path
             assert any(k.endswith('/docs/METEO.md') for k in files), path
             assert any(k.endswith('/docs/PARAMETRES.md') for k in files), path
+            assert any(k.endswith('/docs/images/plafond-hauteur.svg') for k in files), path
+            assert any(k.endswith('/tests/test_max_altitude.py') for k in files), path
             assert any(k.endswith('/docs/images/parametres-ecc-c.svg') for k in files), path
             assert any(k.endswith('/docs/LIVRAISON_REPRODUCTIBLE.md') for k in files), path
             assert any(k.endswith('/docs/images/environnement-ecc-d.svg') for k in files), path

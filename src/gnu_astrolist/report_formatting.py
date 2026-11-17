@@ -5,6 +5,11 @@ from __future__ import annotations
 
 from .models import CometTarget, MoonSummary, SatelliteTarget, VisibilityResult, apparent_magnitude
 
+ALTITUDE_CEILING_NOTE = (
+    "Le plafond limite les positions retenues, pas toute la trajectoire; "
+    "un objet peut dépasser ce plafond à d'autres instants."
+)
+
 
 def object_name(result: VisibilityResult) -> str:
     if isinstance(result.star,SatelliteTarget):

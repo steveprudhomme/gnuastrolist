@@ -167,6 +167,7 @@ Voici les morceaux à connaître :
 | `--max-magnitude 8` | Garder les objets dont la luminosité publiée passe cette limite. Un petit nombre correspond à un objet plus brillant. |
 | `--az-min 15 --az-max 180` | Choisir les directions du ciel à examiner. |
 | `--min-altitude 20` | Éviter les objets trop bas sur l'horizon. |
+| `--max-altitude 80` | Choisir un plafond de 80° pour la recherche. |
 | `--output-pdf local/soiree.pdf` | Ranger le rapport PDF sur l'ordinateur. |
 
 Avec une limite de luminosité, un objet dont la valeur manque dans la liste
@@ -179,6 +180,31 @@ de sortie `local/soiree.pdf` par un chemin sur le disque des photos.
 Si le disque n'est pas branché, le programme affiche une erreur : vérifie le
 câble et le chemin, puis recommence. Pour travailler sans ce disque, enlève
 simplement `--seestar-path "E:\MyWorks"` de la commande.
+
+### Choisir une hauteur maximale
+
+![Schéma explicatif : chercher entre 20 et 80 degrés](images/plafond-hauteur.svg)
+
+Le **zénith** est le point juste au-dessus de ta tête. Sa hauteur est 90°.
+Certains télescopes ont du mal à viser cette zone. Choisis un plafond adapté
+à ton instrument; 80° est ici un exemple.
+
+1. Garde une limite basse, par exemple `--min-altitude 20`.
+2. Ajoute `--max-altitude 80`. La zone va maintenant de 20° à 80°.
+3. Regarde « Champ de vision » dans le résultat. Le TXT et le PDF affichent
+   les mêmes limites. Sans cette option, le plafond reste 90°.
+
+Exemple à copier, sans disque de photos ni demande météo :
+
+```powershell
+.venv\Scripts\python -m gnu_astrolist --date 2026-11-17 --time-range 21:00-22:00 --lat 45 --lon 0 --az-min 0 --az-max 360 --min-altitude 20 --max-altitude 80 --objects messier --offline --limit 20
+```
+
+Change la date et le lieu pour ta soirée. N'ajoute pas `--alt-center` avec ce
+nouveau plafond : ce réglage avancé déplacerait le champ.
+Un objet peut entrer dans la zone puis en sortir. Être dans la liste ne veut
+pas dire rester sous 80° pendant toute la photo. Le programme ne commande
+pas le télescope et ne touche pas à tes photos.
 
 ### 3. Lire le résultat
 

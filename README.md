@@ -401,10 +401,11 @@ calculer ni à préciser son point central. GNU Astrolist le détermine ainsi :
 - largeur horizontale : distance de `--az-min` à `--az-max`, dans le sens du
   nord vers l'est;
 - centre horizontal : milieu exact entre ces deux limites;
-- centre vertical : `(élévation minimale + 90°) ÷ 2`;
-- hauteur verticale du champ : `90° - élévation minimale`.
+- centre vertical : `(élévation minimale + élévation maximale) ÷ 2`;
+- hauteur verticale du champ : `élévation maximale - élévation minimale`.
 
-Le champ vertical commence à `--min-altitude` et se termine au zénith (`90°`).
+Le champ vertical commence à `--min-altitude` et se termine à `--max-altitude`,
+qui vaut **90° par défaut**.
 Ainsi, avec `--az-min 15 --az-max 180 --min-altitude 20`, le centre calculé est
 situé à `97,5°` d'azimut et `55°` de hauteur. Le champ horizontal mesure `165°`
 et le champ vertical mesure `70°`.
@@ -415,12 +416,30 @@ champ de `25°` centré à `2,5°`. Pour demander tout l'horizon, utilisez
 
 Le centre horizontal reste toujours déterminé par les deux limites choisies.
 Un utilisateur qui veut réellement déplacer le centre vertical peut employer
-l'option avancée `--alt-center`. L'ancien nom `--fov-v` reste accepté comme alias
+l'option avancée `--alt-center`, seulement sans `--max-altitude` explicite.
+L'ancien nom `--fov-v` reste accepté comme alias
 de `--min-altitude` afin de préserver la compatibilité avec les premières
 commandes du prototype.
 
+Pour un télescope qui évite le zénith, choisir par exemple une zone de **20° à 80°** :
+
+```powershell
+gnu-astrolist --date 2026-11-17 --time-range 21:00-22:00 --lat 45 --lon 0 --az-min 0 --az-max 360 --min-altitude 20 --max-altitude 80 --objects messier --offline --limit 20
+```
+
+Le centre est alors 50°, sans déplacer la limite basse de 20°. Les deux bornes
+sont incluses et doivent vérifier `0 ≤ minimum ≤ maximum ≤ 90`. Les valeurs
+non finies et l'association explicite `--max-altitude`/`--alt-center` sont refusées
+avant réseau, cache ou export. Sans nouveau plafond, l'ancien centre avancé
+conserve son comportement.
+
 Un objet est retenu s'il se trouve dans le champ Alt/Az à au moins un des
 instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
+Un objet peut donc dépasser le plafond à d'autres instants, y compris aux
+heures de début/fin affichées. Ce filtre ne garantit pas toute la durée d'une
+pose et ne pilote pas le télescope. Le pas satellite reste distinct.
+Voir le [tutoriel illustré du plafond](docs/TUTORIEL.md#choisir-une-hauteur-maximale).
+
 
 ## Principales options
 
@@ -433,6 +452,7 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --az-min DEG                 Limite azimutale de départ
 --az-max DEG                 Limite azimutale de fin
 --min-altitude DEG           Élévation minimale; --fov-v est un alias
+--max-altitude DEG           Élévation maximale (défaut : 90°)
 --alt-center DEG             Remplacement avancé facultatif du centre vertical
 --objects CATALOGUE [...]    variable_stars, messier, caldwell, ngc, bayer, flamsteed, asteroids, comets
                             satellites, debris

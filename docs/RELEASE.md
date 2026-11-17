@@ -37,3 +37,9 @@
       uniquement sur son instruction. Ne jamais inventer de signature.
 
 La présence de cette liste n'indique pas que ses étapes ont été effectuées.
+
+
+Pour ALTMAX, vérifier une commande sans plafond (90°), une zone 20°–80°,
+les bornes refusées avant actualisation et le refus `--alt-center` avec plafond.
+Comparer écran/TXT/PDF et la note d'inclusion partielle depuis la wheel installée.
+Le schéma `plafond-hauteur.svg` et les régressions doivent figurer dans la sdist.

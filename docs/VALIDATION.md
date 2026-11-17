@@ -1,6 +1,33 @@
 # Validation
 
-## État courant — ECC-D à ECC-I réalisés
+## Plafond de hauteur ALTMAX — validation locale
+
+Plan local enregistré avant code : `3d84a0b`. La nouvelle option a été testée
+avant implémentation, puis 33 régressions passent : bornes incluses, intervalles
+extrêmes/ponctuels, types et valeurs invalides, précontrôle sans effets,
+compatibilité de `--fov-v` et de l’ancien centre, service et écran/TXT/PDF.
+Les géométries des nouveaux tests sont explicitement synthétiques.
+
+Windows, environnements isolés Python 3.11.9 et 3.13.6 : **749 tests réussis,
+huit ignorés, 15 avertissements** par environnement; couverture combinée
+**90,38 %**, avec les planchers séparés lignes/branches respectés. Les deux
+avertissements supplémentaires proviennent des lectures cométaires des nouveaux
+cas synthétiques; aucune alerte n’est masquée. Ruff, typage progressif et liens
+réussis. Wheel/sdist contrôlées, y compris le nouveau schéma et les régressions.
+Le schéma du tutoriel et le PDF de la wheel ont été inspectés visuellement.
+La wheel installée hors des sources affiche 20°–80° et produit TXT/PDF avec
+objets. La note d'inclusion partielle figure dès la première page du PDF;
+après cet ajustement de présentation, 38 tests ciblés passent sous chacune
+des deux versions Python. Aucun fichier source du disque Seestar n'est utilisé.
+
+Ce lot reste local : aucune nouvelle CI Linux ou GitHub n’est revendiquée.
+Le plafond porte sur les échantillons retenus, pas toute la trajectoire ni la
+durée d’une pose. Les dates de franchissement existantes concernent la borne
+basse; elles ne donnent pas une fenêtre complète sous le plafond. Aucun
+pilotage matériel ni validation mécanique du télescope n’est ajouté.
+
+
+## Bilan ECC-D à ECC-I — avant le plafond ALTMAX
 
 Windows isolé Python 3.11.9 et 3.13.6 : **716 tests réussis, huit ignorés,
 13 avertissements** chacun; couverture combinée **90,34 %**, seuils séparés

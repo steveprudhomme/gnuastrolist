@@ -6,25 +6,34 @@ Demande du propriétaire : choisir une hauteur maximale, par exemple 80°, pour
 éviter la zone proche du zénith. Plan local enregistré avant tests nouveaux et
 code; aucune publication ni fusion distante incluse dans ce lot.
 
-- [ ] ALTMAX.1 — Ajouter `--max-altitude`, plafond effectif de 90° par défaut;
+- [x] ALTMAX.1 — Ajouter `--max-altitude`, plafond effectif de 90° par défaut;
       conserver les anciennes commandes, l'alias `--fov-v` et les appels Python.
-- [ ] ALTMAX.2 — Construire le champ entre minimum et maximum sans déplacer
+- [x] ALTMAX.2 — Construire le champ entre minimum et maximum sans déplacer
       la limite basse; accepter 0 ≤ minimum ≤ maximum ≤ 90 et refuser NaN,
       infinis et types invalides avant réseau, cache, calcul ou export.
-- [ ] ALTMAX.3 — Préserver le réglage historique `--alt-center` sans nouveau
+- [x] ALTMAX.3 — Préserver le réglage historique `--alt-center` sans nouveau
       plafond; refuser l'association explicite `--alt-center`/`--max-altitude`
       pour éviter un plafond ambigu. Ajouter le champ à la requête du service
       sans casser ses arguments positionnels existants.
-- [ ] ALTMAX.4 — Vérifier les objets fixes, petits corps, satellites et débris
+- [x] ALTMAX.4 — Vérifier les objets fixes, petits corps, satellites et débris
       via le champ partagé. Conserver l'inclusion lorsqu'au moins un instant
       échantillonné est dans le champ : ce lot ne garantit pas une exposition
       entière sous le plafond et ne pilote pas le télescope.
-- [ ] ALTMAX.5 — Tester les bornes, les refus avant effets, la compatibilité,
+- [x] ALTMAX.5 — Tester les bornes, les refus avant effets, la compatibilité,
       le service et les sorties écran/TXT/PDF, avec données synthétiques et
       sans accès au disque Seestar réel. Exécuter pytest, Ruff et contrôles adaptés.
-- [ ] ALTMAX.6 — Mettre à jour README, CHANGELOG, PARAMETRES, validation,
+- [x] ALTMAX.6 — Mettre à jour README, CHANGELOG, PARAMETRES, validation,
       livraison et tutoriel compréhensible dès 10 ans avec un schéma versionné;
       vérifier les archives, committer localement le résultat et ses preuves.
+
+Preuves locales ALTMAX : plan `3d84a0b` avant code; 749 tests réussis sur
+Python 3.11.9 et 3.13.6, huit ignorés et 15 avertissements chacun; couverture
+90,38 %. Après placement de la note en première page du PDF, 38 tests ciblés
+passent sur les deux versions. Ruff, typage progressif, liens et archives
+réussis; schéma et PDF inspectés. Wheel exécutée hors des sources avec écran,
+TXT/PDF et champ 20°–80°. Aucun push, fusion, nouvelle CI distante ni accès
+aux archives Seestar réelles. Le ticket météo nº 13 est distinct de ce lot;
+aucune correction météo n'est incluse.
 
 ## Améliorations approuvées après l'audit ECC — 17 novembre 2026
 

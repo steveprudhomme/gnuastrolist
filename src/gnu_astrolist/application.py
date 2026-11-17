@@ -88,6 +88,7 @@ class ObservationRequest:
     limit: int | None = None
     offline: bool = False
     details: bool = False
+    max_altitude: float | None = None
 
     def validate(self) -> None:
         """Vérifie la requête avant de solliciter un collaborateur."""
@@ -119,6 +120,7 @@ class ObservationRequest:
         FieldOfView.from_automatic_center(
             azimuth_min_deg=self.az_min, azimuth_max_deg=self.az_max,
             minimum_altitude_deg=self.min_altitude, altitude_center_deg=self.alt_center,
+            maximum_altitude_deg=self.max_altitude,
         )
 
 
@@ -208,6 +210,7 @@ def _prepare_report(
         azimuth_max_deg=args.az_max,
         minimum_altitude_deg=args.min_altitude,
         altitude_center_deg=args.alt_center,
+        maximum_altitude_deg=args.max_altitude,
     )
     weather_summary = dependencies.compute_weather_summary(
         window=window,

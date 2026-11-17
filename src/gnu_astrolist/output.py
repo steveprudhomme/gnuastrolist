@@ -16,6 +16,9 @@ from .models import (
     WeatherSummary,
 )
 from .report_formatting import (
+    ALTITUDE_CEILING_NOTE,
+)
+from .report_formatting import (
     apparent_size_label as _apparent_size_label,
 )
 from .report_formatting import (
@@ -322,6 +325,8 @@ def render_report(
         ),
         "-" * 78,
     ]
+    if field_of_view.altitude_upper_deg < 90:
+        lines.append(ALTITUDE_CEILING_NOTE)
     if seestar_inventory is not None:
         lines.extend([
             seestar_inventory.summary,

@@ -100,6 +100,10 @@ def build_parser() -> argparse.ArgumentParser:
             "élévation minimale du champ en degrés (0 à 90); --fov-v reste accepté comme ancien nom"
         ),
     )
+    parser.add_argument(
+        "--max-altitude", type=float, default=None,
+        help="élévation maximale du champ en degrés (0 à 90; défaut : 90); incompatible avec --alt-center",
+    )
     advanced = parser.add_argument_group("réglages avancés du centre de visée")
     advanced.add_argument(
         "--alt-center",
@@ -283,6 +287,7 @@ def _validate_numeric_arguments(args: argparse.Namespace) -> None:
     FieldOfView.from_automatic_center(
         azimuth_min_deg=args.az_min, azimuth_max_deg=args.az_max,
         minimum_altitude_deg=args.min_altitude, altitude_center_deg=args.alt_center,
+        maximum_altitude_deg=args.max_altitude,
     )
     if args.limit is not None and args.limit <= 0:
         raise ValueError('--limit doit être un entier supérieur à zéro')
@@ -432,6 +437,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             azimuth_max_deg=args.az_max,
             minimum_altitude_deg=args.min_altitude,
             altitude_center_deg=args.alt_center,
+            maximum_altitude_deg=args.max_altitude,
         )
         mode, directory, ages = _update_settings(args)
         validate_report_paths((args.output_txt, args.output_pdf),

@@ -13,7 +13,7 @@ Les protections d'entrées et de destinations [ECC-A](EXPORTS.md) restent active
 | Latitude | −90 à 90 degrés |
 | Longitude | −180 à 180 degrés |
 | Azimuts minimal/maximal | 0 à 360 degrés |
-| Élévation minimale et centre vertical du champ | 0 à 90 degrés |
+| Élévations minimale/maximale et centre vertical du champ | 0 à 90 degrés; minimum ≤ maximum |
 | Altitude du site terrestre | −1 000 à 10 000 mètres |
 | Hauteur solaire maximale du filtre satellite | −90 à 90 degrés |
 | Magnitude limite | Tout nombre fini, y compris négatif; absence permise |
@@ -30,6 +30,31 @@ n'est pas une garantie de précision d'une prévision aussi éloignée.
 L'altitude est celle d'un site terrestre : le logiciel ne traite pas un
 observateur embarqué dans un satellite. Les contrôles de saisie ne remplacent
 pas les limites scientifiques documentées des modèles et des catalogues.
+
+## Plafond du champ pour les télescopes intelligents
+
+`--min-altitude 20 --max-altitude 80` définit une zone de 20° à 80°, bornes
+incluses. Le plafond effectif vaut 90° sans nouvelle option. Le centre et la
+hauteur du champ sont calculés depuis les deux limites. Une zone de largeur
+nulle est acceptée, comme l'ancien cas `--min-altitude 90`; elle exige un
+échantillon exactement sur cette hauteur, à la tolérance numérique près.
+
+Les deux limites doivent être finies et respecter `0 ≤ minimum ≤ maximum ≤ 90`.
+Un plafond explicite ne peut pas accompagner `--alt-center`, qui déplace le
+champ. Sans `--max-altitude`, cet ancien réglage conserve son comportement,
+y compris le déplacement de la limite basse. L'alias `--fov-v` reste accepté.
+
+La même validation s'applique à `ObservationRequest.max_altitude` et à
+`FieldOfView.from_automatic_center(maximum_altitude_deg=...)`. `None` signifie
+absence de nouveau plafond : valeur effective 90° et centre avancé historique
+encore permis. Le nouveau champ de requête est ajouté en dernier, sans modifier
+les positions des paramètres Python existants.
+
+Ce plafond règle la recherche, pas la monture. Un objet est proposé lorsqu'au
+moins un échantillon est dans le champ; sa hauteur au début ou à la fin peut
+dépasser le plafond. Les heures « monte/descend » existantes concernent toujours
+la limite basse, pas le début/fin d'un passage complet sous le plafond.
+Le programme ne certifie ni une pose entière ni l'accessibilité mécanique.
 
 ## Pas et budgets : deux limites distinctes
 
