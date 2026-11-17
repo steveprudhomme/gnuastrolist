@@ -834,3 +834,20 @@ Le premier passage distant réussit les quatre jobs de tests; distribution
 échoue à l'audit connu. La branche publiée reste distincte de main.
 La prochaine étape ouverte est **Utiliser ECC pour réaliser ECC-E — terminer
 l'audit des dépendances après décision sur la version minimale de Python**.
+
+
+### ECC-E.6 — Ajustement approuvé : Python 3.11 minimum
+
+Le propriétaire approuve le passage à Python 3.11/3.13 après le constat des
+59 avis connus sur Pillow/filelock sous 3.10. Cet ajustement est commité et
+publié avant sa réalisation.
+
+- [ ] ECC-E.6.1 — Relever la version minimale et la matrice à 3.11/3.13;
+      reconstruire les quatre verrous avec empreintes et retirer les verrous 3.10.
+- [ ] ECC-E.6.2 — Installer un environnement Python 3.11 local isolé, contrôler
+      les dépendances et exécuter tests, couverture et quatre audits actualisés.
+- [ ] ECC-E.6.3 — Actualiser compatibilité, installation, tutoriel et preuves,
+      publier puis vérifier les cinq contrôles distants au dernier commit.
+
+Aucun avis ne sera ignoré; les résultats 3.10 antérieurs restent un historique
+de compatibilité et ne constituent plus une cible de livraison prise en charge.
