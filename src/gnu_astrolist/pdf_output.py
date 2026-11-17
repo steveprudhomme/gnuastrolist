@@ -33,15 +33,15 @@ from .models import (
     WeatherPeriodSummary,
     WeatherSummary,
 )
-from .output import (
-    _apparent_size_label,
-    _crossing_time_label,
-    _magnitude_label,
-    _moon_event_label,
-    _object_name,
-    _reference_label,
-)
 from .report_files import staged_report
+from .report_formatting import (
+    apparent_size_label,
+    crossing_time_label,
+    magnitude_label,
+    moon_event_label,
+    object_name,
+    reference_label,
+)
 from .seestar import SeestarInventory
 from .selection import (
     ASTEROID_NOTES,
@@ -387,11 +387,11 @@ def _moon_rows(
         ),
         (
             f"Lever apparent le {start:%Y-%m-%d}",
-            _moon_event_label(summary.moonrise_local, summary),
+            moon_event_label(summary.moonrise_local, summary),
         ),
         (
             f"Coucher apparent le {start:%Y-%m-%d}",
-            _moon_event_label(summary.moonset_local, summary),
+            moon_event_label(summary.moonset_local, summary),
         ),
     )
 
@@ -406,7 +406,7 @@ def _result_card(
     available_width: float,
 ) -> KeepTogether:
     star = result.star
-    title = _object_name(result)
+    title = object_name(result)
     common_name = getattr(star, "common_name", "")
     if common_name:
         title = f"{title} - {common_name}"
@@ -422,9 +422,9 @@ def _result_card(
         ],
         [
             _paragraph("Taille apparente", styles["label"]),
-            _paragraph(_apparent_size_label(result), styles["value"]),
+            _paragraph(apparent_size_label(result), styles["value"]),
             _paragraph("Magnitude totale" if isinstance(star, CometTarget) else "Magnitude V", styles["label"]),
-            _paragraph(_magnitude_label(result), styles["value"]),
+            _paragraph(magnitude_label(result), styles["value"]),
         ],
         [
             _paragraph("Séparation solaire maximale", styles["label"]),
@@ -445,7 +445,7 @@ def _result_card(
         [
             _paragraph(f"Monte >= {minimum_altitude_deg:g}°", styles["label"]),
             _paragraph(
-                _crossing_time_label(
+                crossing_time_label(
                     result.rises_above_minimum_local,
                     reference_date=window.start_local.date(),
                     always_above=result.always_above_minimum,
@@ -454,7 +454,7 @@ def _result_card(
             ),
             _paragraph(f"Descend < {minimum_altitude_deg:g}°", styles["label"]),
             _paragraph(
-                _crossing_time_label(
+                crossing_time_label(
                     result.sets_below_minimum_local,
                     reference_date=window.start_local.date(),
                     always_above=result.always_above_minimum,
@@ -495,14 +495,14 @@ def _result_card(
         if star.size_source:
             size_detail = (
                 f"Taille : catalogue {star.size_source}; "
-                f"{_reference_label(star.size_reference)}; "
+                f"{reference_label(star.size_reference)}; "
                 f"récupéré le {star.size_retrieved_on}."
             )
         else:
             size_detail = "Taille : provenance non disponible."
         magnitude_detail = (
             f"Magnitude : catalogue {star.magnitude_source or 'inconnu'}; "
-            f"{_reference_label(star.magnitude_reference)}; récupéré le "
+            f"{reference_label(star.magnitude_reference)}; récupéré le "
             f"{star.magnitude_retrieved_on or 'date inconnue'}."
         )
         data.extend(

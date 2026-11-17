@@ -5,6 +5,7 @@ from gnu_astrolist.cli import main
 
 
 def test_cli_prints_header_and_empty_result(capsys) -> None:
+    previous_iers = (iers.conf.auto_download, iers.conf.auto_max_age)
     exit_code = main(
         [
             "--date",
@@ -42,8 +43,7 @@ def test_cli_prints_header_and_empty_result(capsys) -> None:
     assert "Illumination quotidienne" in output
     assert "Lever apparent le 2026-08-15" in output
     assert "Coucher apparent le 2026-08-15" in output
-    assert iers.conf.auto_download is False
-    assert iers.conf.auto_max_age is None
+    assert (iers.conf.auto_download, iers.conf.auto_max_age) == previous_iers
 
 
 def test_cli_accepts_the_messier_catalog(capsys) -> None:

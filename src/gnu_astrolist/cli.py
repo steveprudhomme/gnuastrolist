@@ -6,13 +6,16 @@ import argparse
 import json
 import sys
 from collections.abc import Sequence
-from dataclasses import replace
+from dataclasses import fields, replace
 from pathlib import Path
 
-from astropy.time import Time
-from astropy.utils import iers
-
 from . import __version__
+from .application import (
+    ApplicationDependencies,
+    ObservationApplication,
+    ObservationRequest,
+    astronomical_context,
+)
 from .asteroids import compute_asteroid_visibility, load_asteroid_catalog
 from .catalog_resources import use_catalog_resources
 from .comets import (
@@ -22,7 +25,7 @@ from .comets import (
     load_cbat_observations,
     load_comet_catalog,
 )
-from .models import FieldOfView, apparent_magnitude
+from .models import FieldOfView
 from .moon import compute_moon_summary
 from .output import render_report
 from .pdf_output import PdfExportError, export_pdf_report
@@ -312,199 +315,39 @@ def _export_policy(args, seestar_root, cache_dir=None):
 def _run(args, parser, update_result, seestar_root, cache_dir) -> int:
     try:
         _validate_arguments(args)
-        orbits = load_asteroid_catalog(args.asteroids_file) if "asteroids" in args.objects else ()
         if seestar_root is not None:
             protect_outputs(seestar_root, (args.output_txt, args.output_pdf))
-        window = parse_observation_window(args.date, args.time_range, args.timezone)
-        comet_orbits, excluded = (
-            eligible_orbits(
-                load_comet_catalog(args.comets_file), Time([window.start_local, window.end_local])
-            )
-            if "comets" in args.objects
-            else ((), 0)
-        )
-        if "comets" in args.objects and not comet_orbits:
-            raise ValueError("Aucune orbite MPC à époque exploitable; actualisez --comets-file")
-        has_space = bool({"satellites", "debris"}.intersection(args.objects))
-        space_elements, space_records, registry_records = (), {}, ()
-        space_notes = []
-        if has_space:
-            space_records = load_satcat(args.satcat_file)
-            all_elements = load_satellite_elements(args.satellite_elements_file)
-            chosen, skip_types = select_space_elements(
-                all_elements, space_records, args.objects, window
-            )
-            space_elements, old = eligible_elements(
-                chosen, Time([window.start_local, window.end_local]), args.satellite_max_epoch_hours
-            )
-            if chosen and not space_elements:
-                raise ValueError(
-                    "Aucun élément GP assez récent pour cette plage; actualisez les éléments satellitaires"
-                )
-            registry_records = load_unoosa_records(args.unoosa_file) if args.unoosa_file else ()
-            space_notes = [
-                f"GP/SATCAT : {len(all_elements)} éléments, {len(space_records)} fiches; {len(space_elements)} orbites sélectionnées, {len(old)} exclues pour âge; autres exclusions : {skip_types}.",
-                f"Pas satellite : {args.satellite_step_seconds:g} s; âge maximal GP ±{args.satellite_max_epoch_hours:g} h. Copie partielle, sans garantie d’exhaustivité.",
-                f"Filtre optique satellite : {'activé' if args.satellite_optical_only else 'désactivé'}; plafond Soleil {args.satellite_max_sun_altitude:g}° lorsqu’activé.",
-                f"UNOOSA : {len(registry_records)} extrait(s) local(aux); aucune lecture du registre en ligne.",
-            ]
-        cbat = load_cbat_observations(args.cbat_file) if args.cbat_file else ()
-        field_of_view = FieldOfView.from_automatic_center(
-            azimuth_min_deg=args.az_min,
-            azimuth_max_deg=args.az_max,
-            minimum_altitude_deg=args.min_altitude,
-            altitude_center_deg=args.alt_center,
+        request = ObservationRequest(**{
+            field.name: getattr(args, field.name) for field in fields(ObservationRequest)
+        })
+        application = ObservationApplication(ApplicationDependencies(
+            load_asteroid_catalog=load_asteroid_catalog,
+            eligible_orbits=eligible_orbits,
+            load_comet_catalog=load_comet_catalog,
+            load_satcat=load_satcat,
+            load_satellite_elements=load_satellite_elements,
+            select_space_elements=select_space_elements,
+            eligible_elements=eligible_elements,
+            load_unoosa_records=load_unoosa_records,
+            load_cbat_observations=load_cbat_observations,
+            compute_weather_summary=compute_weather_summary,
+            load_catalog_selection=load_catalog_selection,
+            compute_moon_summary=compute_moon_summary,
+            compute_visibility=compute_visibility,
+            compute_asteroid_visibility=compute_asteroid_visibility,
+            compute_comet_visibility=compute_comet_visibility,
+            annotate_cbat=annotate_cbat,
+            compute_satellite_visibility=compute_satellite_visibility,
+            annotate_space_catalog=annotate_space_catalog,
+            scan_seestar=scan_seestar,
+            annotate_results=annotate_results,
+        ))
+        report_data = application.prepare_report(
+            request, source_notes=update_result.notes, seestar_root=seestar_root,
         )
     except ValueError as exc:
         parser.error(str(exc))
-
-    iers.conf.auto_download = not args.offline
-    # En mode hors ligne, accepter la table prédictive embarquée même si elle
-    # a plus de 30 jours; Astropy émettra au besoin l'avertissement configuré.
-    iers.conf.auto_max_age = None if args.offline else 30.0
-    iers.conf.iers_degraded_accuracy = "warn"
-
-    weather_summary = compute_weather_summary(
-        window=window,
-        latitude_deg=args.lat,
-        longitude_deg=args.lon,
-        offline=args.offline,
-    )
-
-    stars, selection = load_catalog_selection(args.objects, args.max_magnitude, args.all_magnitudes)
-    if orbits:
-        origin = "Fichier orbital fourni" if args.asteroids_file else "Copie orbitale embarquée"
-        selection = replace(
-            selection,
-            source_notes=(
-                f"{origin} : {len(orbits)} astéroïdes; époques JD TDB "
-                f"{min(o.epoch for o in orbits):.6f} à {max(o.epoch for o in orbits):.6f}.",
-            ),
-        )
-    if comet_orbits:
-        selection = replace(
-            selection,
-            source_notes=(
-                *selection.source_notes,
-                f"MPC : {len(comet_orbits)} orbites exploitables; {excluded} exclues (époque absente ou éloignée de plus de 365 jours).",
-                f"CBAT : {len(cbat)} observation(s) locale(s) chargée(s); seules les observations antérieures au début sont affichables."
-                if cbat
-                else "CBAT : aucune observation locale fournie; aucune mesure téléchargée.",
-            ),
-        )
-    if update_result.notes:
-        selection = replace(selection, source_notes=(*selection.source_notes, *update_result.notes))
-    if has_space:
-        selection = replace(selection, source_notes=(*selection.source_notes, *space_notes))
-    object_kind = (
-        selection.kinds[0]
-        if len(selection.kinds) == 1
-        and not orbits
-        and not comet_orbits
-        and not has_space
-        and not update_result.notes
-        else selection
-    )
-    max_magnitude = selection.limits[0] if len(selection.kinds) == 1 else args.max_magnitude
-    try:
-        moon_summary = compute_moon_summary(
-            window=window,
-            latitude_deg=args.lat,
-            longitude_deg=args.lon,
-            elevation_m=args.elevation_m,
-        )
-        results = compute_visibility(
-            stars=stars,
-            window=window,
-            latitude_deg=args.lat,
-            longitude_deg=args.lon,
-            elevation_m=args.elevation_m,
-            field_of_view=field_of_view,
-            sample_minutes=args.sample_minutes,
-        ) if stars else []
-        if orbits:
-            results.extend(
-                compute_asteroid_visibility(
-                    orbits,
-                    window,
-                    args.lat,
-                    args.lon,
-                    args.elevation_m,
-                    field_of_view,
-                    args.sample_minutes,
-                    selection.limits[selection.kinds.index("asteroids")],
-                )
-            )
-        if comet_orbits:
-            results.extend(
-                compute_comet_visibility(
-                    comet_orbits,
-                    window,
-                    args.lat,
-                    args.lon,
-                    args.elevation_m,
-                    field_of_view,
-                    args.sample_minutes,
-                    selection.limits[selection.kinds.index("comets")],
-                )
-            )
-            if cbat:
-                results = annotate_cbat(results, cbat, window.start_local)
-        if space_elements:
-            for kind in ("satellites", "debris"):
-                if kind not in selection.kinds:
-                    continue
-                chosen, _ = select_space_elements(space_elements, space_records, (kind,), window)
-                results.extend(
-                    compute_satellite_visibility(
-                        chosen,
-                        window,
-                        args.lat,
-                        args.lon,
-                        args.elevation_m,
-                        field_of_view,
-                        args.satellite_step_seconds,
-                        selection.limits[selection.kinds.index(kind)],
-                        args.satellite_optical_only,
-                        args.satellite_max_sun_altitude,
-                    )
-                )
-            results = annotate_space_catalog(results, space_records, registry_records)
-        if orbits or comet_orbits or has_space:
-            results.sort(
-                key=lambda result: (
-                    apparent_magnitude(result.star)
-                    if apparent_magnitude(result.star) is not None
-                    else float("inf"),
-                    result.star.name.casefold(),
-                )
-            )
-    except ValueError as exc:
-        parser.error(str(exc))
-    matched_count = len(results)
-    displayed_results = results[: args.limit] if args.limit is not None else results
-    try:
-        inventory = scan_seestar(seestar_root) if seestar_root is not None else None
-    except ValueError as exc:
-        parser.error(str(exc))
-    if inventory is not None:
-        displayed_results = annotate_results(displayed_results, inventory)
-    report = render_report(
-        window=window,
-        latitude_deg=args.lat,
-        longitude_deg=args.lon,
-        elevation_m=args.elevation_m,
-        field_of_view=field_of_view,
-        max_magnitude=max_magnitude,
-        sample_minutes=args.sample_minutes,
-        weather_summary=weather_summary,
-        moon_summary=moon_summary,
-        results=displayed_results,
-        matched_count=matched_count,
-        object_kind=object_kind,
-        show_details=args.details,
-        seestar_inventory=inventory,
-    )
+    report = render_report(**report_data.to_kwargs())
     if args.output_txt is not None:
         try:
             policy = _export_policy(args, seestar_root, cache_dir)
@@ -517,20 +360,7 @@ def _run(args, parser, update_result, seestar_root, cache_dir) -> int:
         try:
             export_pdf_report(
                 args.output_pdf,
-                window=window,
-                latitude_deg=args.lat,
-                longitude_deg=args.lon,
-                elevation_m=args.elevation_m,
-                field_of_view=field_of_view,
-                max_magnitude=max_magnitude,
-                sample_minutes=args.sample_minutes,
-                weather_summary=weather_summary,
-                moon_summary=moon_summary,
-                results=displayed_results,
-                matched_count=matched_count,
-                object_kind=object_kind,
-                show_details=args.details,
-                seestar_inventory=inventory,
+                **report_data.to_kwargs(),
                 overwrite=args.overwrite,
                 input_paths=(*_export_policy(args, seestar_root)["inputs"],
                              *((args.output_txt,) if args.output_txt is not None else ())),
@@ -616,27 +446,25 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
         # Activer la politique réseau seulement après le précontrôle complet,
         # avant toute conversion Astropy ou actualisation susceptible d'en utiliser.
-        iers.conf.auto_download = not args.offline
-        iers.conf.auto_max_age = None if args.offline else 30.0
-        iers.conf.iers_degraded_accuracy = 'warn'
-        result = refresh_catalogs(
-            kinds,
-            mode=mode,
-            offline=args.offline,
-            cache_dir=directory,
-            max_age_hours=ages,
-            seestar_root=root,
-        )
-        configured = (
-            args.catalog_config
-            or args.update_catalogs
-            or args.catalog_age
-            or args.catalog_max_age_hours is not None
-            or args.catalog_cache_dir
-        )
-        if not configured and not result.resources:
-            result = replace(result, notes=())
-        with use_catalog_resources(result.resources):
-            return _run(args, parser, result, root, directory)
+        with astronomical_context(args.offline):
+            result = refresh_catalogs(
+                kinds,
+                mode=mode,
+                offline=args.offline,
+                cache_dir=directory,
+                max_age_hours=ages,
+                seestar_root=root,
+            )
+            configured = (
+                args.catalog_config
+                or args.update_catalogs
+                or args.catalog_age
+                or args.catalog_max_age_hours is not None
+                or args.catalog_cache_dir
+            )
+            if not configured and not result.resources:
+                result = replace(result, notes=())
+            with use_catalog_resources(result.resources):
+                return _run(args, parser, result, root, directory)
     except ValueError as exc:
         parser.error(str(exc))
