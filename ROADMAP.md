@@ -28,9 +28,9 @@ GitHub n'est créé automatiquement par l'outil.
       typage progressif, liens, archives et installation.
 - [x] VERSION.7 — Actualiser contribution, modèles de PR, README, CHANGELOG,
       RELEASE, validation, roadmap et tutoriel dès 10 ans avec schéma versionné.
-      Conserver une branche locale distincte sur la base ALTMAX. La consigne
-      actuelle exclut publication, PR et fusion distantes; aucune validation
-      GitHub de ce lot n'est annoncée.
+      Conserver une branche distincte sur la base ALTMAX. Après la réalisation
+      locale, le propriétaire autorise la publication GitHub de ce lot;
+      la fusion reste une opération distincte.
 
 Le numéro du projet ne change pas pendant l'installation de ce mécanisme.
 Une future préparation de livraison doit être demandée explicitement; les
@@ -44,8 +44,10 @@ archives et installation hors réseau réussis. L'archive source permet la
 validation et l'aperçu sans installation du programme. Les 46 tests nouveaux
 utilisent des copies synthétiques; aucun support Seestar réel n'est utilisé.
 La configuration CI est prête mais n'a pas été exécutée sur GitHub pour ce lot.
-La publication initialement envisagée dans le plan est différée selon la
-consigne locale actuelle. Aucun tag, Release ou changement du numéro courant.
+La publication initialement différée est ensuite autorisée explicitement par
+le propriétaire le 17 novembre 2026. Une PR distincte cible la branche ALTMAX
+tant que la PR nº 14 reste ouverte. Ses contrôles distants sont à vérifier
+après publication. Aucun tag, Release ou changement du numéro courant.
 
 ## Lot plafond de hauteur — télescopes intelligents (ALTMAX)
 
