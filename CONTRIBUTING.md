@@ -1,5 +1,11 @@
 # Contribuer à GNU Astrolist
 
+Les lots approuvés **ECC-A à ECC-I** se réalisent avec ECC et gardent leur
+identifiant dans le plan, les changements et les comptes rendus. Lire la
+[méthode ECC](docs/DEVELOPPEMENT_ECC.md) et sélectionner le premier lot incomplet
+dans ROADMAP.md. Une demande de prochaine étape doit mentionner explicitement
+l'usage d'ECC; elle ne déclenche pas à elle seule l'implémentation.
+
 Merci de contribuer à GNU Astrolist.
 
 La consigne actuelle est de travailler uniquement dans les copies locales.

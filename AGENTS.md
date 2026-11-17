@@ -3,6 +3,16 @@
 - Lire README.md, CONTRIBUTING.md et les documents du domaine modifié.
 - Détailler les nouveaux lots dans ROADMAP.md avant leur implémentation. Pour
   les prochains lots, enregistrer le plan dans un commit local avant de coder.
+- Les améliorations approuvées après l'audit ECC portent les identifiants
+  ECC-A à ECC-I; leurs sous-étapes conservent ce préfixe (exemple : ECC-A.1).
+  Quand l'utilisateur demande la prochaine étape, lire leur état dans ROADMAP.md,
+  donner le premier lot incomplet dans l'ordre ECC-A à ECC-I et dire explicitement
+  « Utiliser ECC pour réaliser ECC-X », avec son objectif. Ne pas recommander
+  une étape déjà terminée ni commencer son implémentation sur une simple demande
+  d'information. Pour réaliser ces lots, utiliser les méthodes ECC pertinentes
+  selon docs/DEVELOPPEMENT_ECC.md. Si ECC n'est pas accessible, le signaler sans
+  prétendre l'avoir utilisé. Son usage n'autorise aucune installation ni
+  activation de service externe sans instruction correspondante.
 - Documentation en français, interfaces et identifiants Python en anglais.
 - Garder les responsabilités distinctes : interface, temps civil, catalogues,
   calcul astronomique, météo et rendu. Préserver les commandes existantes.
