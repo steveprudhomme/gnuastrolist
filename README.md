@@ -283,6 +283,15 @@ fondée sur l'écart minimal entre la température et le point de rosée ainsi q
 sur l'humidité maximale : faible au-delà de 4 °C et sous 80 %, modéré à 4 °C ou
 80 %, élevé à 2 °C ou 90 %, et très élevé à 1 °C ou 95 %.
 
+Depuis ECC-B, ces comparaisons utilisent uniquement les trios température,
+point de rosée et humidité du **même instant**. Les valeurs manquantes ou invalides
+sont signalées, jamais décalées vers une autre heure ni remplacées par zéro.
+Sans trio complet, le risque reste inconnu. Les autres variables valides et la
+liste astronomique restent disponibles lorsqu'une source météo échoue.
+Si les horaires solaires manquent, le rapport annonce ses périodes de repli
+20–23 h et 3–6 h locales. Voir le [guide météo](docs/METEO.md) et le
+[tutoriel illustré](docs/TUTORIEL.md).
+
 Le seeing et la transparence viennent du produit astronomique de
 [7Timer! ASTRO](https://www.7timer.info/doc.php?lang=en), dérivé du modèle GFS.
 Ses catégories 1 à 8 sont converties en un **indice de qualité** de 100 à 0 % :

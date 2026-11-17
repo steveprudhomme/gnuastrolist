@@ -201,12 +201,13 @@ class WeatherSummary:
     @property
     def available(self) -> bool:
         fields = (
-            self.evening.cloud_cover_percent,
-            self.evening.seeing_quality_percent,
-            self.predawn.cloud_cover_percent,
-            self.predawn.seeing_quality_percent,
+            "cloud_cover_percent", "seeing_quality_percent", "transparency_quality_percent",
+            "stability_quality_percent", "temperature_c", "humidity_percent", "wind_kmh",
+            "precipitation_probability_percent",
         )
-        return any(value is not None for value in fields)
+        return any(getattr(period, field) is not None
+                   for period in (self.evening, self.predawn) for field in fields) or any(
+                       period.dew_risk for period in (self.evening, self.predawn))
 
 
 @dataclass(frozen=True, slots=True)

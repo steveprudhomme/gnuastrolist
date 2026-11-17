@@ -70,6 +70,8 @@ def main() -> None:
                 assert any(k.endswith(f'/docs/images/{image}') for k in files), (path, image)
             assert any(k.endswith('/docs/images/exports-proteges-ecc-a.svg') for k in files), path
             assert any(k.endswith('/docs/EXPORTS.md') for k in files), path
+            assert any(k.endswith('/docs/images/meteo-fiable-ecc-b.svg') for k in files), path
+            assert any(k.endswith('/docs/METEO.md') for k in files), path
         print(f"{path.name} : catalogues, notice, licence et exclusions OK")
 
 

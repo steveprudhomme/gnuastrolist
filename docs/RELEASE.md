@@ -10,6 +10,9 @@
 - [ ] Vérifier les exports ECC-A : nouveau TXT/PDF, refus d'un rapport existant,
       remplacement explicite `--overwrite` et préservation des entrées/archives
       avec des fichiers Seestar synthétiques; voir [EXPORTS.md](EXPORTS.md).
+- [ ] Vérifier les états météo ECC-B avec réponses synthétiques : valeurs
+      partielles, panne des fournisseurs et mode hors ligne; vérifier la
+      conservation des objets et des avertissements dans le TXT/PDF.
 - [ ] Établir les empreintes SHA-256 des fichiers réellement distribués.
 - [ ] Vérifier les dépendances distribuées et leurs notices; produire un SBOM
       si la distribution inclut des dépendances ou exécutables embarqués.
