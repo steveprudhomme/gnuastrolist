@@ -28,6 +28,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+  "build>=1.2,<2",
   "pytest>=8.0",
   "pypdf>=5.0,<7",
   "ruff>=0.5",
@@ -40,7 +41,7 @@ gnu-astrolist = "gnu_astrolist.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-gnu_astrolist = ["data/*.csv.gz", "data/*.md"]
+gnu_astrolist = ["data/*.csv.gz", "data/*.csv", "data/*.md"]
 
 [tool.pytest.ini_options]
 addopts = "-q"
@@ -49,3 +50,6 @@ testpaths = ["tests"]
 [tool.ruff]
 line-length = 100
 target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]

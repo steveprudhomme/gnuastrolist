@@ -46,14 +46,14 @@ class VariableStar:
 
 
 @dataclass(frozen=True, slots=True)
-class MessierObject:
-    """Un objet du catalogue Messier embarqué."""
+class DeepSkyObject:
+    """Un objet du ciel profond issu d'un catalogue embarqué."""
 
     name: str
     ra_deg: float
     dec_deg: float
     object_type: str
-    magnitude_v: float
+    magnitude_v: float | None
     catalog_designation: str
     constellation: str
     apparent_major_arcmin: float | None
@@ -72,7 +72,9 @@ class MessierObject:
         return ""
 
 
-CatalogObject: TypeAlias = VariableStar | MessierObject
+MessierObject = DeepSkyObject  # Compatibilité avec les utilisateurs du modèle initial.
+CaldwellObject = DeepSkyObject
+CatalogObject: TypeAlias = VariableStar | DeepSkyObject
 
 
 @dataclass(frozen=True, slots=True)

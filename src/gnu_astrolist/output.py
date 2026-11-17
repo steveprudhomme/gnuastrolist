@@ -15,6 +15,8 @@ from .models import (
 
 
 def _magnitude_label(result: VisibilityResult) -> str:
+    if result.star.magnitude_v is None:
+        return "non disponible"
     prefix = result.star.magnitude_limit or ""
     value = f"{prefix}{result.star.magnitude_v:.3f}".rstrip("0").rstrip(".")
     source = result.star.magnitude_source
@@ -277,7 +279,10 @@ def render_report(
     catalog_text = (
         "Étoiles variables (GCVS)"
         if variable_stars
-        else "Objets Messier (SIMBAD, repli OpenNGC)"
+        else (
+            "Objets Caldwell (OpenNGC, complément SIMBAD)" if object_kind == "caldwell"
+            else "Objets Messier (SIMBAD, repli OpenNGC)"
+        )
     )
     if max_magnitude is None:
         magnitude_text = "aucune limite"
@@ -355,10 +360,10 @@ def render_report(
                 "       pas une prévision instantanée.",
             ]
         )
+    elif object_kind == "caldwell":
+        lines.append("       Données OpenNGC; complément de magnitude V SIMBAD si exploitable.")
     else:
-        lines.append(
-            "       Dimensions et magnitudes : priorité SIMBAD, repli OpenNGC."
-        )
+        lines.append("       Dimensions et magnitudes : priorité SIMBAD, repli OpenNGC.")
     lines.extend(
         [
             "       Les tailles apparentes sont exprimées en minutes d'arc (′).",
