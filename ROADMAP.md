@@ -1,11 +1,17 @@
 # Feuille de route
 
-## Lot suivant — actualisation configurable au démarrage
+## Lot actualisation configurable au démarrage — toutes les sources évolutives
 
-Demande du 2026-11-17, à réaliser après l'intégration des comètes. Le logiciel
+Demande du 2026-11-17, incluse dans le travail en cours. Le logiciel
 ne possède pas encore ces options : noms et délais ci-dessous sont proposés.
 
 - [ ] Enregistrer le plan de ce lot avant son implémentation.
+- [ ] Couvrir GCVS, OpenNGC (Messier/Caldwell/NGC), compléments SIMBAD,
+      HYG (Bayer/Flamsteed), orbites JPL astéroïdes et MPC comètes. Traiter
+      CBAT comme observations locales tant qu'aucun accès structuré n'est validé,
+      et afficher explicitement cette limite plutôt qu'annoncer une mise à jour fictive.
+- [ ] Rendre les générateurs réutilisables depuis le paquet installé, sans
+      dépendre du répertoire scripts du dépôt; préserver les commandes existantes.
 - [ ] Définir une politique par source : âge maximal réglable, proposition
       initiale de 24 h pour les comètes; ne pas confondre date de téléchargement
       et époque orbitale ni imposer la même cadence aux catalogues fixes.
