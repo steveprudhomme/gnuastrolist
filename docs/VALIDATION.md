@@ -41,8 +41,14 @@ Aucun fournisseur météo réel ni disque USB n'a été interrogé pendant ces t
 Les limites d'acceptation et périodes de repli sont dans [METEO.md](METEO.md).
 Ces contrôles ne prouvent ni disponibilité actuelle des services, ni précision
 météorologique sur le terrain. Couverture et typage supplémentaires restent au
-lot ECC-E. Les contrôles GitHub de la PR doivent être vérifiés sur son dernier
-commit avant toute fusion; un succès local ne les remplace pas.
+lot ECC-E.
+
+Le correctif `3a17ac2` est publié dans la
+[PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10). Ses cinq contrôles
+distants ont réussi : Windows/Linux en Python 3.10/3.13, distributions et essais
+installés hors des sources. Voir l'[exécution vérifiée](https://github.com/steveprudhomme/gnuastrolist/actions/runs/44062418859).
+Avant toute fusion, vérifier les contrôles du dernier commit de la PR; le succès
+d'un commit précédent ne remplace pas cette vérification.
 
 ## ECC-A — Entrées protégées et exports atomiques
 

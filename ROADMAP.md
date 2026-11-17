@@ -7,11 +7,12 @@ approuvées par le propriétaire. Leurs identifiants permanents sont **ECC-A à
 ECC-I**. Ce plan est enregistré avant toute implémentation; les cases restent
 ouvertes tant que leurs critères ne sont pas vérifiés.
 
-**Prochaine étape de développement : utiliser ECC pour réaliser ECC-B —
-fiabiliser les données météo.** ECC-A est fusionné dans `main` par la
+**Prochaine étape de développement : utiliser ECC pour réaliser ECC-C —
+valider les paramètres avant traitement.** ECC-A est fusionné dans `main` par la
 [PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9), commit `1d75522`.
-ECC-B est réalisé localement; sa publication et ses contrôles distants sont suivis
-ci-dessous. Choisir le premier lot incomplet
+ECC-B est publié dans la [PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10),
+avec cinq contrôles réussis sur le correctif; sa fusion reste distincte.
+Choisir le premier lot incomplet
 dans l'ordre ECC-A, ECC-B, ECC-C, ECC-D, ECC-E, ECC-F, ECC-G, ECC-H, ECC-I.
 À chaque demande de prochaine étape, préciser explicitement l'usage d'ECC et
 l'identifiant du lot, en tenant compte des cases réellement terminées.
@@ -21,8 +22,8 @@ les contrôles communs et les limites de cet accord. Les lots ECC-D à ECC-I
 prolongent certaines tâches existantes : conserver les renvois et éviter de
 compter deux fois le même travail. Les lots ci-dessous concernent le
 développement local; ils n'autorisent pas, à eux seuls, une publication ou une
-modification GitHub. L'instruction particulière de publication ECC-A est
-consignée ci-dessous; toute fusion reste distincte.
+modification GitHub. Les instructions particulières de publication ECC-A et
+ECC-B sont consignées ci-dessous; toute fusion reste distincte.
 
 ### ECC-A — Préserver les entrées et fiabiliser les exports — priorité haute
 
@@ -80,6 +81,12 @@ du plan et des changements ECC-A, en conservant le développement sur la copie l
 
 ### ECC-B — Fiabiliser les données météo — priorité haute
 
+Suivi : plan `af9a639` publié avant code, correctif `3a17ac2`,
+[PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10).
+Validation locale : 456 tests réussis, trois ignorés, 27 avertissements IERS/ERFA;
+Ruff, liens, archives et essais installés hors des sources réussis. Les cinq
+contrôles GitHub du correctif ont réussi; voir [VALIDATION.md](docs/VALIDATION.md).
+
 Plan détaillé demandé le 17 novembre 2026, à committer et publier avant les
 nouveaux tests et le code. Méthodes ECC : `python-testing`, `python-patterns`,
 `security-review` et `verification-loop`, adaptées à Python/Windows.
@@ -113,7 +120,7 @@ nouveaux tests et le code. Méthodes ECC : `python-testing`, `python-patterns`,
 - [x] ECC-B.3b — Tester terminal/TXT/PDF avec prévisions synthétiques partielles
       et indisponibles, vérifier les catalogues et protections ECC-A, puis exécuter
       suite complète, Ruff, liens, construction et installation hors des sources.
-- [ ] ECC-B.3c — Actualiser README, CHANGELOG, architecture, guides de validation
+- [x] ECC-B.3c — Actualiser README, CHANGELOG, architecture, guides de validation
       et développement ECC. Ajouter un guide météo et un tutoriel illustré dès
       10 ans expliquant mesures manquantes, avertissements et périodes de repli.
       Publier code et MD, ouvrir une PR et vérifier ses cinq contrôles; la fusion
@@ -129,7 +136,7 @@ les nouveaux catalogues et les réglages GitHub restent hors de ce lot.
 - [x] ECC-B.2 — Aligner température, point de rosée et humidité par instant;
       calculer la rosée sur les mesures compatibles et signaler les données
       partielles, sans associer des heures différentes.
-- [ ] ECC-B.3 — Tester au moins quatre cas dégradés : seeing nul, valeurs
+- [x] ECC-B.3 — Tester au moins quatre cas dégradés : seeing nul, valeurs
       manquantes décalées, structure invalide et réponse trop grande; conserver
       la liste astronomique lorsqu'un fournisseur échoue. Documenter les
       avertissements et le tutoriel. L'archive météo reste un lot distinct.

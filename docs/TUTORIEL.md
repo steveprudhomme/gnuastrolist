@@ -12,9 +12,8 @@ Ce dessin est un schéma explicatif, pas une capture de l'application.
 
 1. Demande « Quelle est la prochaine étape ? ».
 2. La réponse indique **utiliser ECC** et la première étiquette encore ouverte.
-3. Le premier groupe, **ECC-A**, protège les fichiers pour qu'un rapport
-   ne remplace pas une entrée. Il est réalisé sur la branche proposée à
-   l'intégration. Le groupe suivant, **ECC-B**, concerne les données météo.
+3. **ECC-A** protège les fichiers. **ECC-B** vérifie les données météo.
+   Le groupe suivant, **ECC-C**, vérifiera les réglages que tu tapes dans la commande.
 4. Après les changements, on vérifie les tests et on explique le résultat.
    On coche une étape seulement quand elle est terminée.
 

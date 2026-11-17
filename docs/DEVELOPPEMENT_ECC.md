@@ -16,9 +16,11 @@ retrouver lors des prochaines étapes. Le plan détaillé est dans
 
 ECC-A est fusionné dans `main` par la
 [PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9), commit `1d75522`.
-ECC-B est réalisé localement; ses étapes de publication et de validation distante
-restent suivies dans le roadmap. Pour la prochaine étape, toujours utiliser
-l'état des cases plutôt qu'un ancien compte rendu.
+ECC-B est réalisé et publié dans la
+[PR nº 10](https://github.com/steveprudhomme/gnuastrolist/pull/10), avec cinq
+contrôles réussis sur le correctif; sa fusion reste distincte. La prochaine étape
+de développement est **utiliser ECC pour réaliser ECC-C — valider les paramètres
+avant traitement**. Toujours lire les cases plutôt qu'un ancien compte rendu.
 Une demande d'information sur la prochaine étape ne déclenche pas sa réalisation.
 
 ## Périmètre des lots
