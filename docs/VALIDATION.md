@@ -1,5 +1,49 @@
 # Validation
 
+## ECC-B — Réponses météo et rosée alignée
+
+Plan commité et publié avant les nouveaux tests et le code : `af9a639`, avec
+vérification de l'empreinte distante. Méthodes ECC utilisées : `python-testing`
+(régressions initialement en échec), `python-patterns`, `security-review` et
+`verification-loop`, adaptées aux contrôles disponibles dans le projet.
+
+Windows/Python 3.13.6 : **456 tests réussis, trois ignorés, 27 avertissements**,
+dont **71 nouveaux tests réussis**. Les trois cas ignorés restent ceux des liens
+symboliques non autorisés localement et de la FIFO POSIX. Les avertissements
+sont de type IERS/ERFA déjà documenté; un avertissement IERS supplémentaire vient
+du nouveau test d'intégration météo qui exécute les calculs hors couverture.
+Aucun avertissement astronomique n'a été masqué pour obtenir ces résultats.
+
+Les régressions couvrent valeurs nulles, booléens, chaînes et nombres non finis,
+domaines, unités, séries incohérentes, dates/chronologies/doublons, décalages UTC,
+heures civiles ambiguës ou inexistantes, seuils de taille, JSON invalide ou à
+clés dupliquées, pannes de transport, et propagation des erreurs inattendues.
+La rosée est vérifiée avec valeurs manquantes décalées et absence de trio complet.
+Les tests de rendu vérifient une vraie désignation Messier dans la liste produite
+malgré une panne météo simulée, ainsi que les valeurs et avertissements partagés
+par terminal, TXT et PDF. Les réponses sont toutes synthétiques et le réseau
+réel reste bloqué par les fixtures globales.
+
+Ruff, liens/structure/versions, XML du schéma et différences sans erreurs
+d'espacement réussis. Wheel/sdist construites sans téléchargement, puis contenu
+vérifié avec le contrôleur du projet dirigé en mémoire vers `local/ecc-b-dist/`.
+La wheel a été installée sans dépendances ni réseau dans `.wheel-check`,
+environnement distinct sans paquets système; `pip check` réussit.
+
+L'installation exécutée hors des sources a produit les rapports partiels et
+indisponibles avec transport HTTP simulé et connexions socket réelles interdites.
+Les deux pages du PDF partiel, la page du PDF indisponible et le schéma SVG ont
+été rendus et inspectés visuellement. Le mode hors ligne et les dix catalogues
+combinés ont aussi été exercés. La lecture PDF utilise les outils de développement
+déjà présents, sans ajout de dépendance à l'application installée.
+
+Aucun fournisseur météo réel ni disque USB n'a été interrogé pendant ces tests.
+Les limites d'acceptation et périodes de repli sont dans [METEO.md](METEO.md).
+Ces contrôles ne prouvent ni disponibilité actuelle des services, ni précision
+météorologique sur le terrain. Couverture et typage supplémentaires restent au
+lot ECC-E. Les contrôles GitHub de la PR doivent être vérifiés sur son dernier
+commit avant toute fusion; un succès local ne les remplace pas.
+
 ## ECC-A — Entrées protégées et exports atomiques
 
 Le plan détaillé a été commité et publié avant les nouveaux tests et le code :

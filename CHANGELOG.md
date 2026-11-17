@@ -5,6 +5,22 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Corrigé — ECC-B, météo partielle et calcul de rosée
+
+- Calcul de rosée sur les trios température/point de rosée/humidité du même
+  instant; valeurs manquantes conservées comme inconnues, sans décalage des listes.
+- Validation des réponses Open-Meteo/7Timer : structures, chronologies, unités,
+  nombres finis et domaines, tailles et longueurs de séries, sans masquer les
+  erreurs de programmation inattendues.
+- Seeing nul et erreurs de fournisseur traités sans interrompre la liste
+  astronomique; conservation des variables et périodes valides, même sans
+  nuages ni seeing, et avertissements partagés par terminal/TXT/PDF.
+- Périodes de repli annoncées lorsque les horaires solaires manquent; décalages
+  UTC respectés et heures civiles ambiguës/inexistantes refusées.
+- Réponses bornées à 2 Mio, séries à 1 000 échantillons, JSON strict et absence
+  de décompression implicite. Tutoriel illustré et tests entièrement synthétiques.
+- Plan ECC-B commité et publié avant les nouveaux tests et le correctif.
+
 ### Corrigé — ECC-A, entrées et exports protégés
 
 - Refus des collisions entre les sept fichiers d'entrée et les sorties TXT/PDF,

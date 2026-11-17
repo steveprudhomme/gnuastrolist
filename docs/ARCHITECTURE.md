@@ -14,6 +14,15 @@ charge les CSV compressés via les ressources Python, puis filtre en magnitude.
 retenus. `moon.py` traite les conventions lunaires. `weather.py` isole les
 appels météo et leurs pannes. Les rendus texte et PDF utilisent les mêmes valeurs.
 
+Depuis ECC-B, `weather.py` valide le transport et normalise les mesures sous
+forme de lignes indexées par instant UTC. Les agrégations par période gardent
+les variables indépendantes; la rosée exige un trio complet au même instant.
+Les erreurs attendues deviennent `WeatherDataError`, les données partielles
+produisent des avertissements et les erreurs de programmation restent visibles.
+`WeatherSummary.available` reconnaît toute grandeur affichable, pas seulement
+nuages/seeing. Les rendus partagent ces états sans nouveau format de rapport.
+Voir les [contrôles, unités et périodes de repli](METEO.md).
+
 Les générateurs de catalogues dans `scripts/` ne sont pas appelés au démarrage.
 `build_ngc_catalog.py` exige un fichier source local et contrôle son empreinte;
 `load_ngc_catalog()` réutilise le modèle du ciel profond et le chargeur commun.

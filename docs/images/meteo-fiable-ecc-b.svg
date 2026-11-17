@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="430" viewBox="0 0 960 430" role="img" aria-labelledby="title desc">
+  <title id="title">ECC-B : comparer les mesures de la même heure</title>
+  <desc id="desc">Exemple inventé : à 21 heures, 5 degrés et un point de rosée manquant ne permettent pas le calcul. À 22 heures, 20 degrés, un point de rosée de 10 degrés et 70 pour cent d'humidité forment un trio complet. On ne mélange jamais les heures.</desc>
+  <rect width="960" height="430" rx="16" fill="#f2f6f8"/>
+  <g font-family="sans-serif" fill="#18344a">
+    <text x="32" y="42" font-size="25" font-weight="bold">ECC-B : comparer les mesures de la même heure</text>
+    <text x="32" y="74" font-size="17">Exemple inventé pour comprendre. Aucune prévision réelle.</text>
+    <rect x="32" y="100" width="896" height="45" fill="#18344a"/>
+    <rect x="32" y="145" width="896" height="60" fill="#fff6df"/>
+    <rect x="32" y="205" width="896" height="60" fill="#e7f1f3"/>
+    <g font-size="17" font-weight="bold" fill="white">
+      <text x="48" y="129">Heure</text><text x="152" y="129">Température</text>
+      <text x="342" y="129">Point de rosée</text><text x="532" y="129">Humidité</text>
+      <text x="722" y="129">Utiliser ?</text>
+    </g>
+    <g font-size="19">
+      <text x="48" y="182">21 h</text><text x="152" y="182">5 °C</text>
+      <text x="342" y="182">Manquant</text><text x="532" y="182">70 %</text>
+      <text x="722" y="182">Non : incomplet</text>
+      <text x="48" y="242">22 h</text><text x="152" y="242">20 °C</text>
+      <text x="342" y="242">10 °C</text><text x="532" y="242">70 %</text>
+      <text x="722" y="242">Oui : trio complet</text>
+    </g>
+    <rect x="32" y="287" width="896" height="88" rx="12" fill="#e7f1f3" stroke="#2b7282"/>
+    <text x="48" y="319" font-size="18">5 °C à 21 h et 10 °C à 22 h : on ne les compare pas.</text>
+    <text x="48" y="349" font-size="18">Sans trio complet, le risque reste inconnu. Le rapport explique ce qui manque.</text>
+    <text x="32" y="406" font-size="16">Une panne météo ne supprime pas la liste astronomique. Schéma explicatif.</text>
+  </g>
+</svg>

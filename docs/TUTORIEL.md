@@ -25,6 +25,29 @@ développent sont dans le [guide ECC](DEVELOPPEMENT_ECC.md).
 
 ## Commencer ici : préparer sa soirée, pas à pas
 
+### Comprendre une météo incomplète avec ECC-B
+
+Parfois, un service météo envoie une case vide ou une mauvaise valeur. Le
+logiciel garde ce qu'il peut lire et affiche un **avertissement** : un message
+qui explique ce qui manque. Un tiret ne veut pas dire zéro.
+
+![Comparer la température, le point de rosée et l'humidité de la même heure](images/meteo-fiable-ecc-b.svg)
+
+Ce dessin utilise des valeurs inventées. Ce n'est pas une vraie prévision.
+
+1. Regarde les valeurs et les avertissements dans le terminal, le TXT ou le PDF.
+2. Pour la rosée, il faut trois mesures à la même heure : la température, le
+   point de rosée et l'humidité. Le **point de rosée** est la température à
+   laquelle l'eau de l'air peut commencer à se déposer en gouttes.
+3. S'il manque une mesure, le logiciel ne la prend pas à une autre heure.
+   Sans trio complet, il ne dit pas que le risque est faible : il le laisse inconnu.
+4. Si les heures du Soleil manquent, un message annonce deux plages de secours :
+   de 20 h à 23 h et de 3 h à 6 h. Ce ne sont pas forcément la vraie nuit et l'aube.
+
+Une panne météo n'empêche pas de préparer la liste du ciel pour les erreurs de
+service reconnues. `--offline` permet toujours de travailler sans demander la
+météo sur Internet. Les [détails du guide météo](METEO.md) expliquent les contrôles.
+
 ### Protéger ses fichiers avec ECC-A
 
 Un **rapport** est le fichier qui contient ta liste du ciel. Une **entrée**

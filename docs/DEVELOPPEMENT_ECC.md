@@ -14,10 +14,11 @@ retrouver lors des prochaines étapes. Le plan détaillé est dans
 4. Si le lot est commencé, nommer sa première sous-étape incomplète,
    par exemple **ECC-A.1**, sans recommencer le travail terminé.
 
-ECC-A est implémenté et publié dans la
-[PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9); sa fusion reste
-distincte. La prochaine étape de développement est **utiliser ECC pour réaliser
-ECC-B — fiabiliser les données météo**, selon les cases du roadmap.
+ECC-A est fusionné dans `main` par la
+[PR nº 9](https://github.com/steveprudhomme/gnuastrolist/pull/9), commit `1d75522`.
+ECC-B est réalisé localement; ses étapes de publication et de validation distante
+restent suivies dans le roadmap. Pour la prochaine étape, toujours utiliser
+l'état des cases plutôt qu'un ancien compte rendu.
 Une demande d'information sur la prochaine étape ne déclenche pas sa réalisation.
 
 ## Périmètre des lots
@@ -69,7 +70,8 @@ seeing nul non géré, séries météo désalignées et pas numérique extrême.
 Ces constats motivent ECC-A, ECC-B et ECC-C. ECC-A apporte maintenant les
 contrôles de fichiers et les exports décrits dans [EXPORTS.md](EXPORTS.md);
 voir les résultats et limites dans [VALIDATION.md](VALIDATION.md). Les défauts
-météo et numériques restent à traiter dans ECC-B et ECC-C.
+météo sont traités par ECC-B, décrit dans [METEO.md](METEO.md); les paramètres
+numériques restent à traiter dans ECC-C.
 
 L'environnement local héritait de paquets système et présentait deux conflits
 extérieurs au projet, ce qui motive ECC-D. Les risques de concurrence des caches
