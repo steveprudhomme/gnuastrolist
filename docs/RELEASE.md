@@ -6,7 +6,15 @@
 - [ ] Mettre à jour ensemble pyproject.toml, __version__ et CHANGELOG.md.
 - [ ] Construire sdist et wheel; contrôler leur contenu et installer la wheel
       dans un environnement neuf, hors du répertoire des sources.
-- [ ] Exécuter les exemples Caldwell hors ligne depuis cette installation.
+- [ ] Exécuter hors ligne les dix sélections (`variable_stars`, `messier`,
+      `caldwell`, `ngc`, `bayer`, `flamsteed`, `asteroids`, `comets`, `satellites`,
+      `debris`), seules et combinées; exporter TXT/PDF hors des sources.
+- [ ] Vérifier le verrou du cache, la simulation de rétention et le refus des
+      archives sources synthétiques; aucun accès au disque Seestar réel.
+- [ ] Exécuter couverture avec branches, typage progressif, contrôle de secrets
+      courant/historique et audit actualisé de chaque verrou.
+- [ ] Comparer les références satellitaires gelées; relire les limites et budgets
+      de performance sans prétendre valider toutes les observations.
 - [ ] Vérifier les exports ECC-A : nouveau TXT/PDF, refus d'un rapport existant,
       remplacement explicite `--overwrite` et préservation des entrées/archives
       avec des fichiers Seestar synthétiques; voir [EXPORTS.md](EXPORTS.md).

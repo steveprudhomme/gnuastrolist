@@ -20,6 +20,8 @@ import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
+from .. import __version__
+
 SOURCE_URL = "https://cdsarc.cds.unistra.fr/ftp/B/gcvs/gcvs_cat.dat.gz"
 FIELDNAMES = (
     "name",
@@ -163,7 +165,7 @@ def obtain_source(source: str) -> bytes:
         return path.read_bytes()
     request = urllib.request.Request(
         source,
-        headers={"User-Agent": "gnu-astrolist-catalog-builder/0.1"},
+        headers={"User-Agent": f"GNU-Astrolist/{__version__} (catalog-builder)"},
     )
     with urllib.request.urlopen(request, timeout=60) as response:
         return response.read()

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Steve Prud'Homme
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Export PDF lettre du rapport d'observation."""
 
 from __future__ import annotations

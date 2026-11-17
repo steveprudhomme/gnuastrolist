@@ -13,8 +13,8 @@ Ce dessin est un schéma explicatif, pas une capture de l'application.
 1. Demande « Quelle est la prochaine étape ? ».
 2. La réponse indique **utiliser ECC** et la première étiquette encore ouverte.
 3. **ECC-A** protège les fichiers, **ECC-B** vérifie la météo et **ECC-C**
-   vérifie les réglages de la commande. Le groupe suivant, **ECC-D**, préparera
-   une installation du logiciel facile à reproduire.
+   vérifie les réglages de la commande. **ECC-D** rend l’installation facile à reproduire.
+   **ECC-E à ECC-I** vérifient les tests, caches, calculs et guides.
 4. Après les changements, on vérifie les tests et on explique le résultat.
    On coche une étape seulement quand elle est terminée.
 
@@ -746,3 +746,16 @@ Un satellite calculé dans le champ peut rester invisible.
 Le guide [des références](SCIENCE_SATELLITE_REFERENCES.md) explique les limites.
 Les [mesures de performance](PERFORMANCES.md) indiquent aussi combien de temps
 prennent des exemples synthétiques, sans parcourir ton disque Seestar.
+
+
+## ECC-I — Partager sans partager ses affaires personnelles
+
+![Schéma explicatif des bonnes pratiques](images/pratiques-ecc-i.svg)
+
+1. Lis le guide de démarrage. Les détails techniques viennent plus tard.
+2. Regarde les sources. Elles expliquent d'où viennent les catalogues.
+3. Garde tes rapports dans `local/`. Ils peuvent contenir ton lieu et tes heures.
+
+Une licence explique comment utiliser le travail des auteurs.
+Un ancien fichier publié peut rester dans l'historique, même si on le retire
+aujourd'hui. Demande de l'aide avant de partager des informations personnelles.

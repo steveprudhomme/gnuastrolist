@@ -403,3 +403,13 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 - Vérification des franchissements d'horizon; mesures temps/mémoire des
   catalogues, satellites, rapports et 10 000 fichiers Seestar synthétiques.
 - SGP4 demeure commun aux deux chaînes; aucune observation réelle revendiquée.
+
+
+### ECC-I — Documentation et pratiques open source
+
+- Confidentialité des fournisseurs et caches, User-Agent issu de la version,
+  19 avis SPDX attribués à l'auteur vérifié et notices des références conservées.
+- Anciens rapports retirés du suivi courant, conservés sur le poste et dans
+  l'historique; exemples synthétiques et audit ciblé sans divulguer de contenu.
+- Checklist des dix sélections et relevé GitHub en lecture seule : `main` non
+  protégée et signalement privé désactivé, sans changement de réglage.

@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Détecteur local ciblé : fichiers suivis, diagnostics sans contenu des secrets."""
 
+import argparse
 import re
 import subprocess
 from pathlib import Path
@@ -19,6 +20,10 @@ def findings(data: bytes) -> list[str]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--history', action='store_true',
+                        help='Vérifier aussi les blobs textuels historiques suivis')
+    args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     names = subprocess.check_output(['git', 'ls-files', '-z'], cwd=root).split(b'\0')
     failed = False
@@ -32,6 +37,22 @@ def main() -> int:
             # Ne jamais afficher la valeur ni la ligne qui contient le secret.
             print(f'{path.relative_to(root)} : {rule}')
             failed = True
+    if args.history:
+        objects = subprocess.check_output(['git', 'rev-list', '--all', '--objects'], cwd=root)
+        seen, scanned = set(), 0
+        for item in objects.decode('utf-8').splitlines():
+            sha, separator, name = item.partition(' ')
+            if not separator or sha in seen or Path(name).suffix.lower() not in {
+                '.py', '.md', '.txt', '.toml', '.yml', '.yaml', '.json', '.csv',
+            }:
+                continue
+            seen.add(sha)
+            data = subprocess.check_output(['git', 'cat-file', 'blob', sha], cwd=root)
+            scanned += 1
+            for rule in findings(data):
+                print(f'Historique {sha[:12]} : {rule}')
+                failed = True
+        print(f'Blobs textuels historiques examinés : {scanned}')
     print('Recherche ciblée de secrets : ' + ('ÉCHEC' if failed else 'OK'))
     return int(failed)
 

@@ -572,3 +572,6 @@ des réglages IERS à la sortie et préservation des commandes existantes.
 
 ECC-H ajoute des [références satellitaires gelées](docs/SCIENCE_SATELLITE_REFERENCES.md)
 et des [mesures temps/mémoire reproductibles](docs/PERFORMANCES.md).
+
+ECC-I précise [la confidentialité](PRIVACY.md), les attributions,
+[la livraison](docs/RELEASE.md) et [la gouvernance observée](docs/GOUVERNANCE_VERIFIEE.md).

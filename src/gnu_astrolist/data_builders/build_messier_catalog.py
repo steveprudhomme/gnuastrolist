@@ -19,6 +19,8 @@ import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
+from .. import __version__
+
 NGC_SOURCE_URL = (
     "https://raw.githubusercontent.com/mattiaverga/OpenNGC/master/database_files/NGC.csv"
 )
@@ -188,7 +190,7 @@ def obtain_source(source: str) -> bytes:
         return path.read_bytes()
     request = urllib.request.Request(
         source,
-        headers={"User-Agent": "gnu-astrolist-messier-builder/0.5"},
+        headers={"User-Agent": f"GNU-Astrolist/{__version__} (messier-builder)"},
     )
     with urllib.request.urlopen(request, timeout=60) as response:
         return response.read()

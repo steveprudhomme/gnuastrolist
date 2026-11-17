@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Steve Prud'Homme
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Modèles de données indépendants de l'interface en ligne de commande."""
 
 from __future__ import annotations

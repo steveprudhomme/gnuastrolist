@@ -15,4 +15,6 @@ venv/
 Thumbs.db
 local/
 .wheel-check/
+/rapport.txt
+/rapport.pdf
 

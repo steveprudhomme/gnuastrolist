@@ -39,3 +39,5 @@ politiques propres aux archives photographiques.
 
 - [Références satellitaires ECC-H](SCIENCE_SATELLITE_REFERENCES.md)
 - [Performances ECC-H](PERFORMANCES.md)
+
+- [Gouvernance vérifiée et historique ECC-I](GOUVERNANCE_VERIFIEE.md)

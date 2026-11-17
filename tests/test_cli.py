@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Steve Prud'Homme
+# SPDX-License-Identifier: GPL-3.0-or-later
 from astropy.utils import iers
 from pypdf import PdfReader
 

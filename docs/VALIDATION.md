@@ -473,3 +473,16 @@ sortie publique près de l'horizon. Les calculs Skyfield ne remplacent pas des
 observations; le propagateur SGP4 reste commun. Les conditions et budgets
 mesurés sont dans [PERFORMANCES.md](PERFORMANCES.md), la provenance dans
 [SCIENCE_SATELLITE_REFERENCES.md](SCIENCE_SATELLITE_REFERENCES.md).
+
+
+## ECC-I — Documentation, confidentialité et métadonnées
+
+Après ECC-D/E/G/H/I : 643 tests réussis, trois ignorés, 12 avertissements ERFA
+sous Python 3.13.6; couverture combinée 90,45 %, seuils séparés vérifiés.
+Les avis SPDX couvrent les 19 fichiers originaux sans avis; auteur vérifié dans
+Git. La requête météo simulée annonce la version réelle. Le détecteur ciblé ne
+trouve aucun format de secret reconnu dans 558 blobs textuels historiques;
+ce résultat ne certifie pas l'absence de secrets ou de données personnelles.
+Les anciens rapports restent sur le poste et dans l'historique, sans contenu
+republié dans les documents. Les réglages GitHub ont été lus, jamais modifiés.
+Ruff, liens et schéma ECC-I vérifiés. L'audit Python 3.10 reste distinct et en échec.

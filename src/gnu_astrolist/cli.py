@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Steve Prud'Homme
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Interface en ligne de commande de GNU Astrolist."""
 
 from __future__ import annotations

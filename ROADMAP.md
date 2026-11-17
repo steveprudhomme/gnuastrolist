@@ -260,10 +260,10 @@ Aucune fusion distante ni modification des protections GitHub n'est incluse.
       combinés, satellites, rapports et inventaires Seestar synthétiques, avec
       budgets raisonnés d'après la mesure et contrôles non instables en CI.
       Les tests ordinaires restent entièrement hors réseau.
-- [ ] ECC-I.6 — Réconcilier les tâches réalisées et leurs renvois ECC; compléter
+- [x] ECC-I.6 — Réconcilier les tâches réalisées et leurs renvois ECC; compléter
       les avis SPDX des fichiers originaux vérifiés sans inventer de titulaires.
       Vérifier les notices des données sans leur attribuer de nouvelle licence.
-- [ ] ECC-I.7 — Actualiser confidentialité (fournisseurs/cache/rapports), User-Agent
+- [x] ECC-I.7 — Actualiser confidentialité (fournisseurs/cache/rapports), User-Agent
       issu de la version, gouvernance et livraison des dix catalogues. Examiner
       les anciens rapports suivis sans publier leur contenu; remplacer leur
       rôle d'exemple par des fichiers synthétiques documentés. Ne pas réécrire
@@ -350,18 +350,18 @@ Changement de compatibilité demandé au propriétaire; aucun avis supprimé.
 
 ### ECC-I — Documentation et pratiques open source — priorité moyenne
 
-- [ ] ECC-I.1 — Réconcilier les tâches déjà réalisées (astéroïdes et mises à
+- [x] ECC-I.1 — Réconcilier les tâches déjà réalisées (astéroïdes et mises à
       jour contrôlées notamment), conserver l'historique et relier les dettes
       de SPDX, dépendances et livraison aux lots ECC correspondants.
-- [ ] ECC-I.2 — Étendre la checklist de livraison aux dix sélections, maintenir
+- [x] ECC-I.2 — Étendre la checklist de livraison aux dix sélections, maintenir
       un parcours débutant court avec images versionnées et séparer le journal
       technique des instructions utilisateur.
-- [ ] ECC-I.3 — Actualiser la confidentialité pour les fournisseurs de
+- [x] ECC-I.3 — Actualiser la confidentialité pour les fournisseurs de
       catalogues et harmoniser le User-Agent avec la version du paquet.
-- [ ] ECC-I.4 — Vérifier les avis SPDX avec titulaires réels, attributions
+- [x] ECC-I.4 — Vérifier les avis SPDX avec titulaires réels, attributions
       et conditions des données; examiner les anciens rapports suivis et la
       portée d'une revue de secrets/historique sans publier de données privées.
-- [ ] ECC-I.5 — Consigner les contrôles de gouvernance et sécurité restant
+- [x] ECC-I.5 — Consigner les contrôles de gouvernance et sécurité restant
       à vérifier sur GitHub; différer les opérations distantes jusqu'à instruction
       explicite et ne jamais fabriquer d'attestation ou de signature.
 
@@ -699,7 +699,7 @@ demande un plan détaillé et un commit de planification préalables.
     introuvables, ainsi que des exemples et des tests d'interopérabilité.
 - [ ] Ajouter un mode « visible au début », « visible à la fin » ou « visible
       pendant toute la plage ».
-- [ ] Ajouter les astéroïdes comme type d'objet, avec des éphémérides adaptées
+- [x] Ajouter les astéroïdes comme type d'objet, avec des éphémérides adaptées
       à leur déplacement et à leur magnitude variable.
 - [x] Ajouter les 109 objets Caldwell comme type d'objet, hors ligne, avec
       provenance et prise en charge des magnitudes V absentes.
@@ -778,15 +778,16 @@ demande un plan détaillé et un commit de planification préalables.
   - risque de rosée;
   - risque de précipitation (%).
 - [ ] Calculer le crépuscule et la séparation avec la Lune.
-- [ ] Permettre la mise à jour contrôlée du catalogue.
+- [x] Permettre la mise à jour contrôlée du catalogue (lot actualisations et ECC-F).
 
 ## Moyen terme
 
 - [ ] Compléter les magnitudes V Caldwell à partir de sources scientifiques
       vérifiables, en distinguant bande, qualité et objet mesuré.
-- [ ] Auditer progressivement les anciens fichiers Python pour leurs avis SPDX.
-- [ ] Vérifier les protections GitHub et la CI distante avant publication.
-- [ ] Définir un verrouillage reproductible des dépendances de livraison et
+- [x] Auditer les anciens fichiers Python pour leurs avis SPDX (ECC-I).
+- [x] Vérifier les protections GitHub : relevé ECC-I, main non protégée;
+      toute modification de réglage exige une instruction distincte.
+- [x] Définir un verrouillage reproductible des dépendances de livraison et
       une production de SBOM si des dépendances sont distribuées.
 
 ## Remise à niveau du cadre de développement
