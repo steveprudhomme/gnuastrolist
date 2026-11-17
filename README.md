@@ -6,13 +6,67 @@ Pour commencer sans connaître le programme, suivre le
 GNU Astrolist est un prototype libre en ligne de commande qui prépare une soirée
 d'observation astronomique. Il calcule la hauteur des objets au début et à la
 fin d'une plage horaire, retient ceux qui traversent le champ de visée et les
-trie par magnitude en bande V.
+trie par magnitude indiquée : V pour les catalogues stellaires et du ciel
+profond, magnitude totale estimée pour les comètes.
 
 Le prototype est déjà fonctionnel : il contient 21 212 entrées visuelles du
 General Catalogue of Variable Stars (GCVS), les 110 objets Messier et les
-109 objets Caldwell et 8 098 entrées NGC. Il
+109 objets Caldwell, 8 098 entrées NGC et les sélections stellaires Bayer/Flamsteed. Il
 calcule les coordonnées Alt/Az avec Astropy et fonctionne hors ligne grâce aux
-catalogues embarqués.
+catalogues embarqués. Il propose aussi les **1 000 premiers astéroïdes numérotés**,
+avec positions recalculées et magnitudes estimées pendant la soirée.
+Voir [le guide astéroïdes](docs/ASTEROIDS.md) pour les limites du modèle et
+l'actualisation des éléments orbitaux avec un fichier local.
+
+```powershell
+gnu-astrolist --date 2026-11-17 --time-range 21:00-22:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 10 --objects asteroids messier --max-magnitude 10 --offline --limit 20
+```
+
+`asteroids` peut être utilisé seul. `--asteroids-file local/orbites-sbdb.json`
+remplace la copie embarquée par une réponse SBDB locale plus récente ou plus
+étendue. La magnitude précédée de `≈` est une estimation H-G, associée à un
+instant dans le champ. Le modèle à deux corps accepte les dates à ±365 jours
+des éléments : cette borne ne garantit pas la précision du pointage.
+
+Les **comètes MPC** sont disponibles avec `--objects comets`, seules ou mélangées
+aux autres catalogues. La copie embarquée contient 958 entrées cométaires;
+les orbites sans époque exploitable sont écartées avec un effectif annoncé.
+`--comets-file` accepte un fichier orbital MPC local; `--cbat-file` ajoute des
+observations CBAT/ICQ datées dans un CSV documenté, séparées des prévisions.
+Aucune mesure CBAT réelle n'est fournie avec le paquet : voir le
+[guide des comètes](docs/COMETS.md).
+
+Les **satellites artificiels et débris** sont disponibles avec
+`--objects satellites debris`. COSPAR et SATCAT/NORAD relient la description
+aux éléments orbitaux GP propagés par SGP4. La copie partielle contient
+737 jeux GP et 1 873 fiches SATCAT. Le registre administratif UNOOSA peut être
+enrichi par un extrait local; aucune fiche réelle ONU n'est livrée.
+
+```powershell
+gnu-astrolist --date 2026-11-17 --time-range 21:00-21:20 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 10 --objects satellites debris --satellite-step-seconds 5 --offline --limit 5
+```
+
+La magnitude reste inconnue : enlever un seuil `--max-magnitude` pour conserver
+ces objets. `--satellite-optical-only` exige au même instant champ, éclairage
+solaire et ciel suffisamment sombre; il ne garantit pas la détection.
+Voir [le guide des satellites, SATCAT et UNOOSA](docs/SATELLITES.md).
+
+### Garder les catalogues à jour au démarrage
+
+Tous les catalogues évolutifs ont une politique configurable. Ajouter à sa
+commande, par exemple :
+
+```text
+--update-catalogs if-stale --catalog-age comets=24 --catalog-age asteroids=48 --catalog-age openngc=720
+```
+
+Cela contrôle uniquement les catalogues sélectionnés, au lancement. Les délais
+sont en heures; un [fichier de configuration local](docs/CATALOG_UPDATES.md)
+peut mémoriser les réglages. Le mode par défaut `never` ne télécharge rien;
+`--offline` interdit toujours les connexions, même avec `force`.
+Le cache reste sur l'ordinateur et garde la dernière copie validée en cas de
+panne. Les observations CBAT restent importées localement tant qu'aucun accès
+automatique fiable n'est validé.
 
 ## Installation
 
@@ -86,6 +140,26 @@ Les tailles et magnitudes Messier privilégient les valeurs valides de SIMBAD et
 utilisent OpenNGC comme repli hors ligne. Le catalogue choisi est indiqué entre
 crochets à côté de chaque valeur. Ajoutez `--details` pour afficher également
 le bibcode ou la référence et la date de récupération.
+
+## Désignations de Bayer et Flamsteed
+
+Utilisez `--objects bayer`, `--objects flamsteed` ou les deux ensemble :
+
+```powershell
+gnu-astrolist --date 2026-11-17 --time-range 21:00-22:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 20 --objects bayer flamsteed --offline --limit 20
+```
+
+Les extraits HYG embarqués contiennent 1 537 fiches Bayer et 2 737 Flamsteed.
+Ensemble, ils donnent 3 321 fiches HYG distinctes, dont certaines à plusieurs noms :
+`α Lyr / 3 Lyr` pour Véga. Les composants qui partagent un nom ne sont pas fusionnés.
+Les deux choix fonctionnent aussi avec `messier`, `caldwell`, `ngc` et `variable_stars`.
+
+Aucune limite de magnitude n'est appliquée à ces sélections par défaut.
+`--max-magnitude` et `--all-magnitudes`, les rapports TXT/PDF et l'option Seestar
+sont pris en charge. Les lettres grecques sont conservées dans les PDF grâce aux
+polices libres incorporées. Voir la [notice des données](src/gnu_astrolist/data/STELLAR_SOURCE.md)
+et le [tutoriel illustré](docs/TUTORIEL.md). Ces extraits ne couvrent pas toutes
+les désignations historiques; les coordonnées restent fixes à leur référence J2000.
 
 ## Vérifier les acquisitions du Seestar S50
 
@@ -344,8 +418,24 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --az-max DEG                 Limite azimutale de fin
 --min-altitude DEG           Élévation minimale; --fov-v est un alias
 --alt-center DEG             Remplacement avancé facultatif du centre vertical
---objects CATALOGUE [...]    un ou plusieurs : variable_stars, messier, caldwell, ngc
---max-magnitude MAG          Limite V; défaut 8 pour les variables, aucune pour Messier
+--objects CATALOGUE [...]    variable_stars, messier, caldwell, ngc, bayer, flamsteed, asteroids, comets
+                            satellites, debris
+--asteroids-file JSON        Remplace les orbites embarquées par une réponse SBDB locale
+--comets-file FICHIER        Remplace les orbites cométaires par un fichier MPC local
+--cbat-file CSV              Ajoute des observations datées CBAT/ICQ transcrites localement
+--satellite-elements-file F  Éléments GP locaux CSV/JSON, éventuellement gzip
+--satcat-file F              Métadonnées SATCAT locales
+--unoosa-file CSV            Extraits locaux du registre ONU dans le format documenté
+--satellite-step-seconds S   Pas satellitaire en secondes (défaut : 5)
+--satellite-max-epoch-hours H Écart maximal à EPOCH (défaut : 168 heures)
+--satellite-optical-only     Filtre champ + éclairage + hauteur solaire simultanés
+--satellite-max-sun-altitude DEG  Plafond solaire du filtre optique (défaut : -6)
+--update-catalogs MODE       never (défaut), if-stale ou force; --offline reste prioritaire
+--catalog-age SOURCE=HEURES  Délai par catalogue ou fournisseur; répétable
+--catalog-max-age-hours H    Délai commun à tous les catalogues
+--catalog-cache-dir DOSSIER  Cache de copies validées sur l'ordinateur
+--catalog-config JSON       Configuration locale facultative des mises à jour
+--max-magnitude MAG          Seuil V ou total cométaire; défaut 8 pour GCVS, aucun sinon
 --all-magnitudes             Désactive la limite pour le catalogue choisi
 --sample-minutes MIN         Pas de recherche (défaut : 10)
 --limit N                    Tronque uniquement l'affichage après le tri
@@ -368,11 +458,14 @@ arguments, gestion du temps civil, chargement des catalogues, calcul astronomiqu
 et rendu. Cette séparation rend chaque partie testable et permettra d'ajouter
 d'autres catalogues ou formats de sortie sans réécrire le moteur.
 
-Les positions partent des coordonnées ICRS/J2000 des catalogues. Astropy réalise la
+Les positions fixes partent des coordonnées ICRS/J2000 des catalogues. Astropy réalise la
 [transformation vers le repère horizontal `AltAz`](https://docs.astropy.org/en/stable/coordinates/index.html)
 pour un lieu et un instant précis. Le calcul est vectorisé : toutes les étoiles
 présélectionnées sont transformées pour tous les instants d'échantillonnage en
 une seule opération.
+
+Les astéroïdes utilisent un moteur orbital séparé, décrit dans le
+[guide astéroïdes](docs/ASTEROIDS.md), puis rejoignent les mêmes rendus.
 
 Le paquet suit une structure `src/`, un fichier `pyproject.toml` et un point
 d'entrée `console_scripts`, conformément au guide de la

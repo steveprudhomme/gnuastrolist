@@ -85,6 +85,250 @@ image rangée ailleurs peut échapper à la recherche. « Fait » ne veut pas di
 que l'image est réussie : il faut encore la regarder. Les exemples détaillés
 ci-dessous sont inventés pour les tests ou clairement signalés comme des essais.
 
+## Ajouter les satellites artificiels et les débris
+
+Un **satellite artificiel** est un objet construit puis envoyé dans l'espace.
+Un **débris** peut être un morceau détaché. Un ancien étage de fusée est aussi
+un objet que l'on peut suivre. Ils bougent vite dans notre ciel.
+
+![Identité, description, registre ONU et trajet calculé](images/satellites-identites.svg)
+
+C'est un schéma pour expliquer. Il ne montre aucune vraie fiche administrative.
+
+### 1. Choisir les objets
+
+Dans le dossier du projet sur l'ordinateur, crée `local` comme au début du guide.
+Copie cet exemple pour Laval :
+
+```powershell
+.venv\Scripts\python -m gnu_astrolist --date 2026-11-17 --time-range 21:00-21:20 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 10 --objects satellites debris --satellite-step-seconds 5 --offline --limit 5 --output-txt local/satellites.txt --output-pdf local/satellites.pdf
+```
+
+`satellites` demande les charges utiles; `debris` ajoute les morceaux et les
+corps de fusées. Le programme contient une première sélection, pas tous les
+objets du monde. Tu peux mélanger ces listes avec Messier ou les comètes.
+
+### 2. Comprendre les noms et les passages
+
+**COSPAR** donne un identifiant international à une pièce lancée.
+**SATCAT/NORAD** lui donne un numéro et une description. Le **registre ONU**
+conserve des informations d'immatriculation. Ce sont des rôles différents.
+
+Pour trouver la place dans le ciel, il faut des nombres orbitaux récents.
+Le programme les utilise avec une méthode appelée **SGP4**. Dans cet exemple,
+il regarde toutes les cinq secondes. Une case avec une heure dit à quel instant
+la position retenue a été calculée. Ce n'est pas la garantie d'un passage continu.
+Si les nombres sont trop vieux, le programme les écarte et le dit.
+
+### 3. Savoir si on pourra le voir
+
+Un objet peut passer dans le champ alors qu'il est dans l'ombre de la Terre !
+Ajoute `--satellite-optical-only` pour garder les instants où il est éclairé et
+où le Soleil est assez bas chez toi. Sa lumière reste inconnue : on ne garantit
+pas que tu le verras. Enlève un éventuel `--max-magnitude` pour garder les objets
+dont la luminosité n'est pas fournie.
+
+Pour chercher une copie plus récente au démarrage, enlève `--offline` et ajoute
+`--update-catalogs if-stale --catalog-age satellites=6`. Le fournisseur limite
+la fréquence des demandes. Une erreur peut imposer une pause; ne relance pas
+en boucle. Les nouvelles listes restent sur l'ordinateur.
+
+### 4. Comprendre le registre et les anciennes photos
+
+Le registre ONU ne donne pas la place du satellite ce soir. Aucun extrait réel
+n'est fourni avec le programme. Une personne qui dispose d'un extrait autorisé
+peut préparer le fichier local décrit dans [le guide](SATELLITES.md).
+Sans donnée, le programme dit que le statut est inconnu. Cela ne veut pas dire
+que l'objet n'est pas immatriculé.
+
+Pour Seestar, un nom comme `NORAD25544` ou `1998-067A` est précis. Un numéro seul
+ou un nom partagé ne suffit pas. Le disque des photos reste en lecture seule;
+les rapports vont dans `local` sur l'ordinateur.
+
+## Choisir quand rafraîchir les listes
+
+Les listes du ciel changent. Pour les comètes, les nombres qui décrivent leur
+trajet sont particulièrement importants. Tu peux demander au programme de
+vérifier leur âge chaque fois que tu le lances.
+
+![Vérifier les listes au démarrage avec ses propres délais](images/catalogues-mise-a-jour.svg)
+
+C'est un schéma pour expliquer le fonctionnement. Il ne montre aucune donnée privée.
+
+1. Dans ta commande habituelle, ajoute `--update-catalogs if-stale`.
+   Cela veut dire : « demande une nouvelle liste seulement si ma copie est trop vieille ».
+2. Pour les comètes, ajoute `--catalog-age comets=24` pour choisir 24 heures.
+   Pour les étoiles Bayer, tu peux ajouter `--catalog-age bayer=720` : 720 heures
+   font 30 jours. Les réglages marchent pour tous les catalogues proposés.
+3. Pour autoriser Internet, enlève `--offline`. Pour rester sans Internet,
+   garde-le : aucune nouvelle liste ne sera téléchargée, même avec `force`.
+4. Lis les notes du rapport : elles disent si une copie récente a été trouvée,
+   si une nouvelle copie a été vérifiée, ou si l'ancienne a dû être conservée.
+
+Le contrôle n'a lieu que pendant le lancement. Il ne continue pas quand le
+programme est fermé. Les nouvelles listes vont dans `local/catalog-cache`
+sur l'ordinateur. Elles ne vont jamais dans le dossier des photos Seestar.
+Une panne Internet ne doit pas remplacer une bonne copie par un fichier cassé.
+
+Avec une personne qui connaît les fichiers de réglages, tu peux préparer un
+fichier pour éviter de tout recopier. Le [guide des mises à jour](CATALOG_UPDATES.md)
+donne un exemple et explique les délais pour chaque source.
+
+## Ajouter les comètes
+
+Une **comète** est un petit monde qui peut libérer du gaz et de la poussière
+près du Soleil. Elle bouge parmi les étoiles et sa lumière peut changer beaucoup.
+
+![Le trajet MPC et les observations datées CBAT restent séparés](images/cometes-sources.svg)
+
+Ce dessin explique les rôles des sources. Il ne montre aucune vraie mesure.
+
+### 1. Demander la liste des comètes
+
+Dans le dossier du projet sur l'ordinateur, crée `local` comme au début du guide.
+Copie cette commande d'exemple pour Laval :
+
+```powershell
+.venv\Scripts\python -m gnu_astrolist --date 2026-11-17 --time-range 21:00-22:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 10 --objects comets --max-magnitude 18 --offline --limit 20 --output-txt local/cometes.txt --output-pdf local/cometes.pdf
+```
+
+Pour mélanger les listes, écris par exemple `--objects comets asteroids messier`.
+Pour demander des orbites plus récentes au démarrage, enlève `--offline` et
+ajoute `--update-catalogs if-stale --catalog-age comets=24`.
+
+### 2. Lire le résultat
+
+Le **MPC** donne les nombres qui décrivent le trajet. Le programme calcule une
+place et une lumière pour chaque petit moment de la soirée. Le signe **≈**
+veut dire « environ ». La lumière **totale** d'une comète n'est pas une mesure
+dans la bande V des étoiles. Le rapport le précise.
+
+Certaines orbites sont trop vieilles ou n'ont pas de date d'époque. Elles ne
+sont pas utilisées et le rapport dit combien ont été écartées. Un téléchargement
+récent ne suffit pas à rendre tous les anciens nombres fiables.
+
+### 3. Comprendre le complément CBAT
+
+Le **CBAT** publie des annonces astronomiques et renvoie vers des observations
+de lumière ICQ. Une observation dit ce qui a été vu **à une date précise**.
+Elle n'est pas automatiquement vraie pour ce soir.
+
+Le site n'a pas pu être lu pendant ce travail. Aucune vraie mesure CBAT n'est
+donc fournie. Une personne qui possède un extrait autorisé peut préparer un
+fichier local et ajouter `--cbat-file local/cbat.csv`. Le
+[guide des comètes](COMETS.md) décrit son format. La mesure apparaît à côté
+de la prévision, avec sa date et sa source. On ne mélange pas les deux.
+
+Pour Seestar, utiliser un identifiant complet comme `161P` ou `C_2023_A3`.
+Le nom `ATLAS` seul ne suffit pas : plusieurs comètes portent ce nom.
+Le disque des photos reste en lecture seule et les rapports restent dans `local`.
+
+## Chercher des astéroïdes : une liste qui bouge
+
+Un **astéroïde** est un petit monde qui tourne autour du Soleil. Il change de
+place parmi les étoiles. On doit donc recalculer sa place pendant la soirée.
+
+![Les astéroïdes bougent dans le champ choisi](images/asteroides.svg)
+
+C'est un dessin pour expliquer, pas une vraie carte du ciel.
+
+### 1. Choisir la liste
+
+Le programme contient les 1 000 premiers astéroïdes numérotés. Par exemple,
+le numéro 1 s'appelle Ceres et le numéro 4 s'appelle Vesta. Ce ne sont pas tous
+les astéroïdes connus. Ouvre le dossier du projet sur l'ordinateur et crée
+`local` comme au début du tutoriel. Copie ensuite :
+
+```powershell
+.venv\Scripts\python -m gnu_astrolist --date 2026-11-17 --time-range 21:00-22:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 10 --objects asteroids --max-magnitude 10 --offline --limit 20 --output-txt local/asteroides.txt --output-pdf local/asteroides.pdf
+```
+
+Cette soirée est un exemple pour Laval. Les directions `0` à `360` veulent dire
+« tout autour de nous ». Pour retrouver ton champ habituel, remets tes directions.
+Pour ajouter les objets Messier, écris `--objects asteroids messier`.
+
+### 2. Lire la lumière et l'heure
+
+La **magnitude** est un nombre qui décrit la lumière. Un petit nombre veut dire
+plus brillant. Le signe **≈** veut dire « environ » : la lumière est estimée.
+La colonne **Instant V estimée (local)** dit à quelle heure cette estimation
+correspond. Le programme garde un objet seulement s'il est assez brillant
+pendant qu'il est dans le morceau de ciel choisi.
+
+Les cases des dates saisonnières restent vides pour ces objets. Ce calcul
+n'est pas encore proposé pour les astéroïdes. Une case vide de lever ou de
+coucher veut dire qu'aucun passage n'a été trouvé dans les heures demandées.
+
+### 3. Garder les éléments à jour
+
+Les éléments orbitaux sont les nombres qui décrivent le trajet. Ils vieillissent.
+Avec la copie fournie, choisis une soirée entre juin 2025 et début juin 2027,
+en évitant les jours limites. Si le programme demande des éléments plus récents,
+une personne qui connaît les catalogues peut préparer un fichier JPL local et
+ajouter `--asteroids-file local/orbites-sbdb.json`. Le
+[guide détaillé](ASTEROIDS.md) explique le format et les dates exactes.
+
+Les calculs restent approximatifs. Pour pointer très précisément le télescope,
+vérifie aussi la position dans JPL Horizons avec une personne qui sait l'utiliser.
+Pour chercher tes anciennes photos, ajoute `--seestar-path "E:\MyWorks"`.
+Un nom comme **MPC4** veut dire Vesta. **M4** est un autre objet, du catalogue
+Messier ! Le disque des photos reste en lecture seule; les rapports restent
+dans `local` sur l'ordinateur.
+
+## Choisir les noms Bayer et Flamsteed
+
+![Véga avec ses deux étiquettes](images/bayer-flamsteed.svg)
+
+Une étoile peut porter plusieurs noms. **Bayer** utilise notamment une lettre
+grecque : `α Lyr` se lit « alpha de la Lyre ». **Flamsteed** utilise un nombre :
+la même étoile porte aussi le nom `3 Lyr`. Son nom courant est Véga.
+`Lyr` est un petit code pour la constellation de la Lyre, une région du ciel.
+Tu n'as pas besoin de taper les lettres grecques : le programme les écrit pour toi.
+HYG est le nom de la liste de référence utilisée pour ces étoiles.
+
+Pour essayer, copie cette commande dans le projet installé sur ton ordinateur :
+
+```powershell
+.venv\Scripts\python -m gnu_astrolist --date 2026-11-17 --time-range 21:00-22:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 0 --az-max 360 --min-altitude 20 --objects bayer flamsteed --offline --limit 3
+```
+
+La date et le lieu sont un exemple pour Laval; change-les pour ta soirée.
+Pour une seule liste, remplace `bayer flamsteed` par `bayer` ou `flamsteed`.
+Tu peux aussi ajouter `messier` ou `ngc` après `--objects`. Les deux étiquettes
+d'une même fiche HYG sont réunies, sans compter cette fiche deux fois.
+
+Lors de cet essai local réel, 1 414 fiches ont traversé le champ choisi :
+
+| Dans le rapport | Nom courant | Luminosité de référence |
+| --- | --- | --- |
+| α Lyr / 3 Lyr | Véga | 0,03 |
+| α Aur / 13 Aur | Capella | 0,08 |
+| α Ori / 58 Ori | Bételgeuse | 0,45 |
+
+Ces nombres viennent d'une liste de référence. Ce n'est pas une mesure du ciel
+prise ce soir et certaines étoiles changent de luminosité. L'image ci-dessus
+est un dessin explicatif, pas une photo du Seestar.
+
+Avec `--seestar-path`, le programme reconnaît des formes comme `Alp Lyr`,
+`alpha Lyr`, `α Lyr`, `3 Lyr` et le nom courant exact fourni par HYG. Pour une
+paire d'étoiles proches partageant une étiquette, une photo avec ce seul
+nom donne « Indéterminé (nom partagé) ». On ne devine pas laquelle est photographiée.
+La protection du disque reste la même : aucune photo n'est changée.
+
+### Détails pour vérifier le travail
+
+Le plan a été commité avant le code (`691f039`), puis complété pour les polices
+grecques (`d5c94af`). La source HYG est conservée localement, avec son empreinte.
+Les deux catalogues sont générés sans réseau depuis cette copie. La police Vera
+ne restituait pas les noms grecs dans le PDF; DejaVu Sans et sa licence sont
+maintenant embarqués. Les tests vérifient ces lettres dans le texte extrait du PDF.
+
+La validation locale compte 102 tests réussis, un test de lien symbolique ignoré
+faute de permission et treize avertissements IERS. Les archives du logiciel et
+une installation hors des sources ont été vérifiées. L'exemple de rapport a été
+généré sans ouvrir le disque Seestar réel. Les avertissements astronomiques ne
+sont pas masqués, et les données de référence ne deviennent pas des observations.
+
 ## Pour aller plus loin : fonctionnement et journal des vérifications
 
 Les sections suivantes gardent les détails utiles pour vérifier le travail et

@@ -6,9 +6,9 @@ import csv
 import gzip
 from collections.abc import Iterable
 from functools import lru_cache
-from importlib import resources
 
-from .models import CatalogObject, DeepSkyObject, MessierObject, VariableStar
+from .catalog_resources import catalog_resource, catalog_retrieved_on
+from .models import CatalogObject, DeepSkyObject, MessierObject, NamedStar, VariableStar
 
 VARIABLE_STAR_CATALOG_RESOURCE = "gcvs_visual.csv.gz"
 MESSIER_CATALOG_RESOURCE = "messier.csv.gz"
@@ -29,9 +29,10 @@ def load_catalog() -> tuple[VariableStar, ...]:
 def load_variable_star_catalog() -> tuple[VariableStar, ...]:
     """Charge le sous-ensemble visuel du GCVS une fois par processus."""
 
-    resource = resources.files("gnu_astrolist.data").joinpath(
+    resource = catalog_resource(
         VARIABLE_STAR_CATALOG_RESOURCE
     )
+    retrieved_on = catalog_retrieved_on(VARIABLE_STAR_CATALOG_RESOURCE, "2026-07-17")
     with resource.open("rb") as raw, gzip.open(
         raw, mode="rt", encoding="utf-8", newline=""
     ) as stream:
@@ -46,6 +47,7 @@ def load_variable_star_catalog() -> tuple[VariableStar, ...]:
                 mag_min=_optional_float(row["mag_min"]),
                 passband=row["passband"],
                 mag_max_limit=row["mag_max_limit"],
+                magnitude_retrieved_on=retrieved_on,
             )
             for row in rows
         )
@@ -74,7 +76,7 @@ def load_ngc_catalog() -> tuple[DeepSkyObject, ...]:
 
 
 def _load_deep_sky_catalog(filename: str) -> tuple[DeepSkyObject, ...]:
-    resource = resources.files("gnu_astrolist.data").joinpath(filename)
+    resource = catalog_resource(filename)
     with resource.open("rb") as raw, gzip.open(
         raw, mode="rt", encoding="utf-8", newline=""
     ) as stream:
@@ -117,3 +119,28 @@ def filter_by_magnitude(
         obj for obj in objects
         if obj.magnitude_v is not None and obj.magnitude_v <= max_magnitude
     ]
+
+
+@lru_cache(maxsize=2)
+def _load_named_stars(kind: str) -> tuple[NamedStar, ...]:
+    resource = catalog_resource(f'{kind}.csv.gz')
+    retrieved_on = catalog_retrieved_on(f'{kind}.csv.gz', '2026-11-17')
+    with resource.open('rb') as raw, gzip.open(raw, 'rt', encoding='utf-8', newline='') as stream:
+        return tuple(NamedStar(
+            name=row['name'], ra_deg=float(row['ra_deg']), dec_deg=float(row['dec_deg']),
+            magnitude_v=_optional_float(row['magnitude_v']), hyg_id=int(row['hyg_id']),
+            constellation=row['constellation'], bayer_name=row['bayer_name'],
+            flamsteed_name=row['flamsteed_name'], common_name=row['common_name'],
+            ambiguous_names=tuple(filter(None, row['ambiguous_names'].split('|'))),
+            magnitude_retrieved_on=retrieved_on,
+        ) for row in csv.DictReader(stream))
+
+
+def load_bayer_catalog() -> tuple[NamedStar, ...]:
+    """Étoiles HYG possédant une désignation Bayer explicite."""
+    return _load_named_stars('bayer')
+
+
+def load_flamsteed_catalog() -> tuple[NamedStar, ...]:
+    """Étoiles HYG possédant un numéro Flamsteed explicite."""
+    return _load_named_stars('flamsteed')

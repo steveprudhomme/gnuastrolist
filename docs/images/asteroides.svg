@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470" role="img" aria-labelledby="title desc">
+  <title id="title">Un astéroïde bouge : on recalcule sa place et sa lumière</title>
+  <desc id="desc">Schéma pédagogique synthétique. Trois positions à trois heures différentes. On garde un objet seulement s'il est dans le champ et assez brillant au même instant. Les photos Seestar restent en lecture seule.</desc>
+  <rect width="1000" height="470" rx="20" fill="#10283f"/>
+  <g font-family="DejaVu Sans, sans-serif" fill="#fff">
+    <text x="40" y="48" font-size="25" font-weight="bold">Astéroïdes : des petits mondes qui bougent</text>
+    <text x="40" y="80" font-size="17">Schéma inventé pour expliquer. Ce n'est pas une carte du ciel.</text>
+    <rect x="300" y="112" width="410" height="178" rx="14" fill="#225e70" stroke="#69d8c4" stroke-width="3"/>
+    <text x="322" y="142" font-size="18">Notre champ : le morceau de ciel choisi</text>
+    <path d="M125 252 Q420 185 790 202" fill="none" stroke="#ffca68" stroke-width="3" stroke-dasharray="9 7"/>
+    <circle cx="150" cy="248" r="11" fill="#ffca68"/>
+    <circle cx="430" cy="209" r="11" fill="#ffca68"/>
+    <circle cx="660" cy="201" r="11" fill="#ffca68"/>
+    <text x="92" y="205" font-size="21">21 h</text>
+    <text x="72" y="282" font-size="16">Hors du champ</text>
+    <text x="395" y="182" font-size="21">22 h</text>
+    <text x="385" y="255" font-size="16">Dans le champ</text>
+    <text x="625" y="175" font-size="21">23 h</text>
+    <text x="615" y="255" font-size="16">Dans le champ</text>
+    <rect x="40" y="318" width="920" height="115" rx="14" fill="#f1f6fa"/>
+    <g fill="#10283f" font-size="18">
+      <text x="62" y="350">1. Choisis « asteroids ». Le programme recalcule sa place à chaque heure.</text>
+      <text x="62" y="383">2. Lis « ≈ » : sa lumière est estimée. Un petit nombre veut dire plus brillant.</text>
+      <text x="62" y="416">3. Vérifie l'heure affichée. Les photos du Seestar restent en lecture seule.</text>
+    </g>
+    <text x="40" y="456" font-size="14">GNU Astrolist • Dessin pédagogique • Positions et heures synthétiques, sans échelle</text>
+  </g>
+</svg>

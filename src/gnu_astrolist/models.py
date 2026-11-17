@@ -75,7 +75,68 @@ class DeepSkyObject:
 
 MessierObject = DeepSkyObject  # Compatibilité avec les utilisateurs du modèle initial.
 CaldwellObject = DeepSkyObject
-CatalogObject: TypeAlias = VariableStar | DeepSkyObject
+
+
+@dataclass(frozen=True, slots=True)
+class NamedStar:
+    """Étoile HYG nommée en Bayer ou Flamsteed; identité liée à la révision HYG."""
+
+    name: str
+    ra_deg: float
+    dec_deg: float
+    magnitude_v: float | None
+    hyg_id: int
+    constellation: str
+    bayer_name: str = ''
+    flamsteed_name: str = ''
+    common_name: str = ''
+    ambiguous_names: tuple[str, ...] = ()
+    aliases: tuple[str, ...] = ()
+    object_type: str = 'Star'
+    passband: str = 'V'
+    magnitude_limit: str = ''
+    magnitude_source: str = 'HYG 4.1'
+    magnitude_reference: str = 'HYG 4.1 / mag'
+    magnitude_retrieved_on: str = '2026-11-17'
+    apparent_major_arcmin: float | None = None
+    apparent_minor_arcmin: float | None = None
+    size_source: str = ''
+    size_reference: str = ''
+    size_retrieved_on: str = ''
+
+
+@dataclass(frozen=True, slots=True)
+class AsteroidTarget(DeepSkyObject):
+    """Fiche d'affichage issue d'une éphéméride, jamais une position fixe à propager."""
+
+    number: int = 0
+    asteroid_name: str = ''
+    epoch_jd_tdb: float = 0.0
+
+
+@dataclass(frozen=True, slots=True)
+class CometTarget(DeepSkyObject):
+    """Fiche cométaire calculée, magnitude totale distincte de V."""
+
+    designation: str = ''
+    magnitude_total: float | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class SatelliteTarget(DeepSkyObject):
+    """Objet artificiel calculé avec SGP4; aucune magnitude optique inventée."""
+
+    norad_id: int = 0
+    cospar_id: str = ''
+    epoch_jd_utc: float = 0.0
+
+
+CatalogObject: TypeAlias = VariableStar | DeepSkyObject | NamedStar | AsteroidTarget | CometTarget | SatelliteTarget
+
+
+def apparent_magnitude(obj: CatalogObject) -> float | None:
+    """Valeur à afficher/trier, sans placer une magnitude totale dans le champ V."""
+    return obj.magnitude_total if isinstance(obj, CometTarget) else obj.magnitude_v
 
 
 @dataclass(frozen=True, slots=True)
@@ -275,3 +336,9 @@ class VisibilityResult:
     sets_below_minimum_local: datetime | None = None
     always_above_minimum: bool = False
     seestar_status: str | None = None
+    magnitude_estimated: bool = False
+    magnitude_reference_time: datetime | None = None
+    comet_observation: str | None = None
+    position_reference_time: datetime | None = None
+    satellite_details: str | None = None
+    space_catalog_details: str | None = None

@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from importlib import resources
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from xml.sax.saxutils import escape
 
-import reportlab
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from reportlab.lib.pagesizes import letter
@@ -26,6 +26,7 @@ from reportlab.platypus import (
 )
 
 from .models import (
+    CometTarget,
     FieldOfView,
     MoonSummary,
     ObservationWindow,
@@ -42,7 +43,14 @@ from .output import (
     _reference_label,
 )
 from .seestar import SeestarInventory, protect_outputs
-from .selection import CatalogSelection, catalog_label
+from .selection import (
+    ASTEROID_NOTES,
+    COMET_NOTES,
+    NOTES,
+    SATELLITE_NOTES,
+    CatalogSelection,
+    catalog_label,
+)
 
 NAVY = colors.HexColor("#18344A")
 TEAL = colors.HexColor("#2B7282")
@@ -58,14 +66,15 @@ class PdfExportError(RuntimeError):
 
 
 def _register_fonts() -> None:
-    fonts_directory = Path(reportlab.__file__).resolve().parent / "fonts"
     fonts = {
-        "AstrolistSans": "Vera.ttf",
-        "AstrolistSansBold": "VeraBd.ttf",
+        "AstrolistSans": "DejaVuSans.ttf",
+        "AstrolistSansBold": "DejaVuSans-Bold.ttf",
     }
     for name, filename in fonts.items():
         if name not in pdfmetrics.getRegisteredFontNames():
-            pdfmetrics.registerFont(TTFont(name, str(fonts_directory / filename)))
+            resource = resources.files('gnu_astrolist.data').joinpath('fonts', filename)
+            with resource.open('rb') as stream:
+                pdfmetrics.registerFont(TTFont(name, stream))
     pdfmetrics.registerFontFamily(
         "AstrolistSans",
         normal="AstrolistSans",
@@ -239,12 +248,15 @@ def _metadata_rows(
                 f"{field_of_view.altitude_upper_deg:g}°"
             ),
         ),
-        ("Filtre photométrique", f"Bande V; {magnitude}"),
+        ("Filtre photométrique", f"{'V ou totale cométaire' if object_kind == 'comets' or isinstance(object_kind, CatalogSelection) and 'comets' in object_kind.kinds else 'Bande V'}; {magnitude}"),
         (
             "Critère d'inclusion",
             (
+                ("Présent dans le champ à un échantillon; pas satellite distinct, voir notes" if
+                 object_kind in ('satellites','debris') or isinstance(object_kind,CatalogSelection) and any(k in object_kind.kinds for k in ('satellites','debris')) else
                 f"Présent dans le champ à au moins un échantillon de "
                 f"{sample_minutes:g} min"
+                )
             ),
         ),
     )
@@ -411,7 +423,7 @@ def _result_card(
         [
             _paragraph("Taille apparente", styles["label"]),
             _paragraph(_apparent_size_label(result), styles["value"]),
-            _paragraph("Magnitude V", styles["label"]),
+            _paragraph("Magnitude totale" if isinstance(star, CometTarget) else "Magnitude V", styles["label"]),
             _paragraph(_magnitude_label(result), styles["value"]),
         ],
         [
@@ -457,11 +469,28 @@ def _result_card(
             _paragraph(f"{result.altitude_end_deg:+.1f}°", styles["value"]),
         ],
     ]
+    full_width_rows = []
     if result.seestar_status is not None:
         data.append([
             _paragraph('Seestar', styles['label']),
             _paragraph(result.seestar_status, styles['value']), '', '',
         ])
+    if result.magnitude_reference_time is not None:
+        data.append([
+            _paragraph("Instant estimé (local)" if isinstance(star, CometTarget) else "Instant V estimée (local)", styles["label"]),
+            _paragraph(result.magnitude_reference_time.strftime("%Y-%m-%d %H:%M"), styles["value"]),
+            "", "",
+        ])
+    if result.position_reference_time is not None:
+        data.append([_paragraph('Instant position (local)',styles['label']),
+                     _paragraph(result.position_reference_time.strftime('%Y-%m-%d %H:%M:%S'),styles['value']),'',''])
+    for label,detail in (('Conditions satellitaires',result.satellite_details),
+                         ('SATCAT / registre ONU',result.space_catalog_details)):
+        if detail is not None:
+            full_width_rows.append(len(data))
+            data.append([_paragraph(label+' : '+detail,styles['small']),'','',''])
+    if result.comet_observation is not None:
+        data.append([_paragraph('CBAT (observation datée) : '+result.comet_observation, styles['small']), '', '', ''])
     if show_details:
         if star.size_source:
             size_detail = (
@@ -513,6 +542,11 @@ def _result_card(
                 ("BACKGROUND", (0, detail_start), (-1, -1), PALE_BLUE),
             ]
         )
+    if result.comet_observation is not None:
+        observation_row = len(data)-3 if show_details else len(data)-1
+        commands.append(('SPAN',(0,observation_row),(3,observation_row)))
+    for row in full_width_rows:
+        commands.extend([('SPAN',(0,row),(3,row)),('BACKGROUND',(0,row),(-1,row),PALE_BLUE)])
     card.setStyle(TableStyle(commands))
     return KeepTogether([card, Spacer(1, 6)])
 
@@ -542,13 +576,25 @@ def _notes(object_kind: str | CatalogSelection) -> tuple[str, ...]:
             "crépuscule."
         ),
     ]
+    kinds = object_kind.kinds if isinstance(object_kind,CatalogSelection) else (object_kind,)
+    if set(kinds).issubset({'satellites','debris'}):
+        # Les deux notes sur les dates saisonnières concernent les objets fixes.
+        notes = notes[:4]
     if isinstance(object_kind, CatalogSelection):
         notes.extend(object_kind.notes)
+    elif object_kind == "asteroids":
+        notes.extend((NOTES[object_kind], *ASTEROID_NOTES))
+    elif object_kind == "comets":
+        notes.extend((NOTES[object_kind], *COMET_NOTES))
+    elif object_kind in ('satellites','debris'):
+        notes.extend((NOTES[object_kind], *SATELLITE_NOTES))
     elif object_kind == "variable_stars":
         notes.append(
             "La magnitude des étoiles variables est le maximum d'éclat publié, "
             "et non une prévision instantanée."
         )
+    elif object_kind in ('bayer', 'flamsteed'):
+        notes.extend([NOTES[object_kind], 'Positions J2000 fixes; mouvements propres non appliqués.'])
     elif object_kind == "ngc":
         notes.append("Données NGC : OpenNGC; composants distincts inclus, hors doublons.")
     else:

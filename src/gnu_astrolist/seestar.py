@@ -12,7 +12,17 @@ from functools import lru_cache
 from pathlib import Path
 
 from .catalog import load_caldwell_catalog, load_messier_catalog
-from .models import CatalogObject, DeepSkyObject, VisibilityResult
+from .models import (
+    AsteroidTarget,
+    CatalogObject,
+    CometTarget,
+    DeepSkyObject,
+    NamedStar,
+    SatelliteTarget,
+    VisibilityResult,
+)
+from .satcat import normalize_cospar
+from .stellar_names import normalize_stellar_name
 
 ACQUISITION = re.compile(
     r"^(?P<kind>Stacked|Light)_(?:\d+_)?(?P<target>.+?)_\d+(?:\.\d+)?s_", re.IGNORECASE
@@ -22,8 +32,21 @@ IGNORED_DIRECTORIES = {".git", ".cache", "__pycache__"}
 
 
 def normalize_name(value: str) -> str:
+    number = re.fullmatch(r'(?:NORAD|SATCAT)[ _-]*(\d{1,9})',value.strip().upper())
+    if number and int(number[1])>0:
+        return f'NORAD{int(number[1])}'
+    cospar = normalize_cospar(re.sub(r'^COSPAR[ _-]*','',value.strip(),flags=re.IGNORECASE))
+    if cospar:
+        return cospar
+    from .comets import normalize_comet_name
+    comet = normalize_comet_name(value)
+    if comet:
+        return comet
+    stellar = normalize_stellar_name(value)
+    if stellar:
+        return stellar
     value = value.strip().upper()
-    match = re.fullmatch(r"(NGC|IC|M|C)[ _-]*(\d+)([A-Z]{0,2}|\s+NED\d+)?", value)
+    match = re.fullmatch(r"(NGC|IC|MPC|M|C|HYG)[ _-]*(\d+)([A-Z]{0,2}|\s+NED\d+)?", value)
     if match:
         return f"{match[1]}{int(match[2])}{(match[3] or '').strip()}"
     return " ".join(value.split())
@@ -137,7 +160,24 @@ def _known_aliases() -> dict[str, frozenset[str]]:
 
 
 def object_keys(obj: CatalogObject) -> set[str]:
+    if isinstance(obj, SatelliteTarget):
+        return {f'NORAD{obj.norad_id}',obj.cospar_id} - {''}
+    if isinstance(obj, CometTarget):
+        # Nom de famille seul (ATLAS, PANSTARRS...) partagé par de nombreuses comètes.
+        return {normalize_name(obj.designation)}
     keys = {normalize_name(obj.name)}
+    if isinstance(obj, AsteroidTarget):
+        keys = {f"MPC{obj.number}"}
+        if obj.asteroid_name.strip():
+            keys.update(normalize_name(name) for name in (
+                obj.name, obj.asteroid_name, f"{obj.number} {obj.asteroid_name}",
+            ))
+        return keys
+    if isinstance(obj, NamedStar):
+        keys.update(normalize_name(name) for name in (
+            obj.bayer_name, obj.flamsteed_name, obj.common_name, f'HYG{obj.hyg_id}', *obj.aliases,
+        ) if name)
+        keys.difference_update(normalize_name(name) for name in obj.ambiguous_names)
     if isinstance(obj, DeepSkyObject):
         keys.add(normalize_name(obj.catalog_designation))
         keys.update(normalize_name(alias) for alias in obj.aliases)
@@ -154,7 +194,12 @@ def annotate_results(
     results: list[VisibilityResult],
     inventory: SeestarInventory,
 ) -> list[VisibilityResult]:
-    return [
-        replace(result, seestar_status=inventory.status(object_keys(result.star)))
-        for result in results
-    ]
+    annotated = []
+    for result in results:
+        status = inventory.status(object_keys(result.star))
+        if isinstance(result.star, NamedStar) and status in ('Non trouvé', 'Indéterminé'):
+            ambiguous = {normalize_name(name) for name in result.star.ambiguous_names}
+            if ambiguous & (inventory.stacked | inventory.light):
+                status = 'Indéterminé (nom partagé)'
+        annotated.append(replace(result, seestar_status=status))
+    return annotated

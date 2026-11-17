@@ -11,7 +11,15 @@ import numpy as np
 from astropy.coordinates import AltAz, EarthLocation, SkyCoord, get_sun
 from astropy.time import Time
 
-from .models import CatalogObject, FieldOfView, ObservationWindow, VisibilityResult
+from .models import (
+    AsteroidTarget,
+    CatalogObject,
+    CometTarget,
+    FieldOfView,
+    ObservationWindow,
+    SatelliteTarget,
+    VisibilityResult,
+)
 
 MAX_TIME_SAMPLES = 2_000
 CATALOG_CHUNK_SIZE = 2_048
@@ -279,6 +287,8 @@ def compute_visibility(
 
     if not stars:
         return []
+    if any(isinstance(star, (AsteroidTarget, CometTarget, SatelliteTarget)) for star in stars):
+        raise ValueError("Les corps mobiles exigent le moteur orbital, pas des coordonnées fixes")
     if not -90.0 <= latitude_deg <= 90.0:
         raise ValueError("la latitude doit être comprise entre -90 et 90 degrés")
     if not -180.0 <= longitude_deg <= 180.0:

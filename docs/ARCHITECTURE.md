@@ -24,5 +24,46 @@ identiques et définit les filtres par catalogue. Les rendus utilisent
 protège l'espace source contre les exports et annote les résultats affichés.
 Les statuts sont partagés par les rendus TXT/PDF. Sans option Seestar, cet
 inventaire n'est pas lancé et les sorties gardent leur format précédent.
+
+`NamedStar` représente les fiches HYG, indépendamment des maxima GCVS et des
+objets du ciel profond. `stellar_names.py` normalise les désignations explicites.
+La sélection multiple réunit Bayer/Flamsteed par clé HYG de la révision embarquée;
+les identités GCVS/NGC ne sont pas inférées. Le moteur astronomique stellaire reste commun.
+
+`asteroids.py` sépare les orbites mobiles des objets fixes. Il lit une réponse
+SBDB locale, propage les positions par échantillon et estime les magnitudes H-G.
+Le filtre V est appliqué simultanément au champ; la fiche `AsteroidTarget` est
+créée après ce calcul, avec l'instant de référence. Les rendus partagent le
+symbole d'estimation et cet instant. Le moteur fixe refuse ces fiches pour éviter
+tout calcul saisonnier erroné. Voir la [décision 0003](architecture/decisions/0003-asteroides.md)
+et les [limites scientifiques](ASTEROIDS.md).
 Les tests ne doivent pas dépendre de leurs services distants. Une nouvelle
 méthode ou source doit avoir une notice, des exemples vérifiables et des tests.
+
+`moving.py` partage la géométrie Terre/Soleil/site, le temps de lumière et la
+sélection simultanée champ/magnitude des astéroïdes et comètes. `comets.py`
+lit les colonnes MPC, propage les trois coniques par variables universelles
+et garde la photométrie totale distincte de V. Les observations CBAT locales
+restent un enrichissement daté du résultat; elles ne servent pas au filtre.
+
+`updates.py` décrit les sources évolutives et construit des générations de cache
+validées avant activation atomique. `data_builders/` contient les générateurs
+installables; les anciens scripts restent des points d'entrée compatibles.
+`catalog_resources.py` active temporairement les copies de la commande et
+vide les caches mémoire à l'entrée et à la sortie. Les ressources distribuées
+ne sont pas écrasées. La CLI valide ses paramètres et protège les destinations
+Seestar avant tout appel d'actualisation. Le mode hors ligne est fixé avant
+les conversions temporelles, la météo ou les téléchargements de catalogues.
+
+Voir la [décision 0004](architecture/decisions/0004-cometes-actualisations.md).
+
+`satellites.py` utilise SGP4 et le repère TEME pour les objets artificiels,
+avec soustraction du site en ITRS avant Alt/Az. Son pas en secondes est distinct
+des catalogues lents. `satcat.py` joint les métadonnées par NORAD et COSPAR,
+puis les extraits administratifs UNOOSA par COSPAR explicite. `SatelliteTarget`
+reste sans magnitude; géométrie solaire et immatriculation ne sont pas de la photométrie.
+
+`satellite_updates.py` maintient une génération GP/SATCAT commune et l'état des
+requêtes du fournisseur. Les règles CelesTrak (délais minimaux, compression,
+arrêt sur statut non 200) s'appliquent avant publication dans le cache protégé.
+La [décision 0005](architecture/decisions/0005-satellites-registres.md) décrit les limites.

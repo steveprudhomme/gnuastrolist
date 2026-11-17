@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470" role="img" aria-labelledby="title desc">
+ <title id="title">Satellites : identité, description, registre et trajet</title>
+ <desc id="desc">Schéma pédagogique synthétique. COSPAR identifie un objet, SATCAT le décrit, le registre ONU conserve des informations administratives. Seuls les éléments orbitaux récents permettent de calculer un passage. Être dans le ciel ne garantit pas d'être visible.</desc>
+ <rect width="1000" height="470" rx="20" fill="#10283f"/>
+ <g font-family="DejaVu Sans, sans-serif" fill="white">
+  <text x="35" y="48" font-size="25" font-weight="bold">Un objet dans l'espace : plusieurs cartes utiles</text>
+  <text x="35" y="81" font-size="17">Dessin pour apprendre. Ce n'est ni une carte du ciel ni une vraie fiche ONU.</text>
+  <g fill="#225e70" stroke="#69d8c4" stroke-width="2">
+   <rect x="35" y="112" width="290" height="140" rx="15"/>
+   <rect x="355" y="112" width="290" height="140" rx="15"/>
+   <rect x="675" y="112" width="290" height="140" rx="15"/>
+  </g>
+  <g font-size="23" font-weight="bold">
+   <text x="57" y="151">COSPAR</text><text x="377" y="151">SATCAT</text><text x="697" y="151">Registre ONU</text>
+  </g>
+  <g font-size="18">
+   <text x="57" y="191">L'identifiant international</text><text x="57" y="224">de la pièce lancée.</text>
+   <text x="377" y="191">Le numéro, le type,</text><text x="377" y="224">les dates et la description.</text>
+   <text x="697" y="191">Les informations</text><text x="697" y="224">d'immatriculation.</text>
+  </g>
+  <rect x="35" y="279" width="930" height="75" rx="14" fill="#53527c"/>
+  <text x="57" y="310" font-size="20" font-weight="bold">Pour calculer sa place : des éléments orbitaux récents et SGP4.</text>
+  <text x="57" y="338" font-size="17">On recalcule toutes les 5 secondes dans l'exemple. Les anciennes photos restent intactes.</text>
+  <rect x="35" y="376" width="930" height="61" rx="14" fill="#f1f6fa"/>
+  <text x="57" y="413" fill="#10283f" font-size="18">Dans le champ ne veut pas dire visible : ombre, Soleil et lumière comptent aussi.</text>
+  <text x="35" y="457" font-size="14">GNU Astrolist • Schéma pédagogique • Aucun numéro ou statut administratif inventé</text>
+ </g>
+</svg>

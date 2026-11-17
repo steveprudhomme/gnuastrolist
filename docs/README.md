@@ -3,6 +3,15 @@
 - [Installation](../INSTALL.md) et [guide utilisateur](../README.md).
 - [Tutoriel reproductible](TUTORIEL.md).
 - [Architecture](ARCHITECTURE.md).
+- [Satellites, débris, COSPAR, SATCAT et registre UNOOSA](SATELLITES.md).
+- [Sources satellitaires et conditions](../src/gnu_astrolist/data/SPACE_OBJECT_SOURCE.md).
+- [Décision : SGP4 et registres administratifs](architecture/decisions/0005-satellites-registres.md).
+- [Comètes MPC et observations CBAT](COMETS.md).
+- [Mises à jour configurables de tous les catalogues](CATALOG_UPDATES.md).
+- [Provenance et droits MPC/CBAT](../src/gnu_astrolist/data/COMET_SOURCE.md).
+- [Astéroïdes : utilisation, modèle, actualisation et limites](ASTEROIDS.md).
+- [Provenance orbitale JPL](../src/gnu_astrolist/data/ASTEROID_SOURCE.md).
+- [Décision : séparer les orbites mobiles](architecture/decisions/0003-asteroides.md).
 - [Validation](VALIDATION.md).
 - [Vérification Seestar en lecture seule](SEESTAR.md).
 - [Préparer une version](RELEASE.md).
@@ -10,6 +19,8 @@
 - [Décision : sélection de plusieurs catalogues](architecture/decisions/0002-selection-multiple.md).
 - [Provenance Caldwell](../src/gnu_astrolist/data/CALDWELL_SOURCE.md).
 - [Provenance NGC](../src/gnu_astrolist/data/NGC_SOURCE.md).
+- [Bayer et Flamsteed](../src/gnu_astrolist/data/STELLAR_SOURCE.md).
+- [Polices PDF et licences](../src/gnu_astrolist/data/FONT_SOURCE.md).
 
 Le cadre de contribution adapte les pratiques consultées dans
 [gnu-astrophotography-recycle](https://github.com/steveprudhomme/gnu-astrophotography-recycle)

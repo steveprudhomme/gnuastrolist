@@ -76,7 +76,37 @@ elle-même liée sont des erreurs explicites avant traitement des rapports.
 son temps d'intégration, son cadrage, son contenu ou sa qualité. « Non trouvé »
 ne signifie pas « jamais photographié ».
 
+## Désignations stellaires HYG
+
+Pour Bayer/Flamsteed, les lettres grecques, leurs abréviations HYG et leur nom
+écrit en toutes lettres sont rapprochés explicitement (`α Lyr`, `Alp Lyr`,
+`alpha Lyr`), avec conservation des indices de composants. Le numéro Flamsteed,
+le nom courant exact et la clé HYG peuvent aussi servir d'identifiant.
+Les noms courants ne sont pas étendus par ressemblance ou par position.
+
+Un nom partagé par plusieurs fiches HYG ne constitue pas une preuve pour chacune.
+Sans autre preuve unique, un fichier portant ce nom produit
+**Indéterminé (nom partagé)**. Un identifiant explicite comme `HYG 36744` peut
+lever l'ambiguïté. Les noms des autres catalogues gardent leurs règles précédentes.
+
 ## Vérification et confidentialité
+
+Les objets artificiels utilisent le numéro explicite `NORAD25544` / `SATCAT25544`
+ou la désignation COSPAR complète `1998-067A`. Un numéro seul ou un nom courant
+partagé par plusieurs pièces ne constitue pas une preuve. Les contrôles de
+cache CelesTrak et ses fichiers d'état restent hors de la racine source protégée.
+
+Les comètes utilisent leur désignation complète (`161P`, `C/2023 A3`, `73P-B`).
+Les formes de fichiers `C_2023_A3` sont normalisées explicitement. Un nom partagé
+comme ATLAS seul ne constitue pas une identité, et un fragment n'est pas assimilé
+à son parent. Les caches d'actualisation des catalogues sont protégés par les
+mêmes limites avant toute écriture lorsque la racine Seestar est indiquée.
+
+Pour les astéroïdes, préférer un nom explicite comme `MPC4`. Le nom source
+exact (`Vesta`), `4 Vesta` ou `(4) Vesta` est aussi reconnu. `M4`, `C4` et le
+numéro seul `4` ne sont jamais assimilés à Vesta. La présence d'une acquisition
+reconnue ne signifie pas que l'astéroïde occupe encore le même champ aujourd'hui.
+Toutes les protections du disque source s'appliquent également à ces objets.
 
 Les tests ordinaires utilisent des archives synthétiques sous les répertoires
 temporaires de tests. Ils n'utilisent pas le disque Seestar de l'utilisateur.

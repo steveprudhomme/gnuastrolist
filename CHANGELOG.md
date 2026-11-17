@@ -5,6 +5,66 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Corrigé — compatibilité Python 3.10
+
+- Validation des époques GP indépendante des restrictions de `datetime` sur
+  les fractions de seconde; Astropy reçoit toujours la chaîne complète.
+
+### Ajouté — satellites artificiels et débris
+
+- Sélections `satellites` et `debris`, éléments GP/OMM, propagation SGP4 TEME
+  et géométrie topocentrique; pas en secondes, borne d'époque et filtre optique
+  simultané facultatif, sans magnitude ou visibilité garantie inventée.
+- Identités COSPAR et SATCAT/NORAD jusqu'à neuf chiffres; copie partielle de
+  737 jeux GP et 1 873 fiches SATCAT, avec types PAY/R/B/DEB et provenance.
+- Imports locaux GP/SATCAT et extraits UNOOSA transcrits dans un CSV documenté;
+  statut administratif inconnu sans donnée, sans téléchargement de l'index refusé.
+- Rapports écran/TXT/PDF et identités Seestar explicites en lecture seule.
+- Actualisations CelesTrak partagées entre sélections : CSV/gzip, délais GP/SATCAT,
+  arrêt sur toute réponse non 200, pause/blocage persistants et cache atomique.
+- Cas de référence Vallado, tests de métadonnées/rapports/pannes, protection
+  réseau globale des tests, MD et tutoriel illustré accessibles dès 10 ans.
+
+### Ajouté — comètes et mises à jour configurables
+
+- Sélection `comets`, copie MPC locale (958 entrées cométaires sur 973 lignes),
+  import `--comets-file`, coniques elliptiques/paraboliques/hyperboliques et
+  magnitude totale estimée distincte de V; exclusions d'époque annoncées.
+- Import `--cbat-file` d'observations datées transcrites dans un CSV documenté,
+  sans substitution à la prévision; aucune observation CBAT réelle téléchargée
+  ni connexion automatique CBAT annoncée, le site étant inaccessible pendant ce lot.
+- Sélections mixtes, rapports TXT/PDF, identifiants Seestar complets et fragments
+  distincts; moteur de géométrie partagé avec les astéroïdes.
+- Actualisations au démarrage configurables pour GCVS, OpenNGC/SIMBAD, HYG,
+  JPL et MPC : modes never/if-stale/force, délais globaux/par source, cache local
+  validé atomiquement et fichier JSON facultatif; priorité absolue de `--offline`.
+- Générateurs réutilisables dans le paquet installé, tests de pannes et de lecture
+  seule, comparaisons JPL figées et tutoriel illustré accessible à 10 ans.
+
+### Ajouté — astéroïdes
+
+- Catalogue orbital JPL local des 1 000 premiers astéroïdes numérotés;
+  `--objects asteroids`, sélection multiple et remplacement par `--asteroids-file`.
+- Positions topocentriques par échantillon, propagation à deux corps et temps de
+  lumière; magnitude H-G estimée, heure de référence et filtre champ/V simultané.
+- Estimations distinguées dans les rapports écran/TXT/PDF, hypothèses documentées,
+  refus au-delà de ±365 jours de l'époque; pas de dates saisonnières fixes appliquées.
+- Identifiants Seestar `MPC` distincts de Messier/Caldwell, toujours en lecture seule.
+- Comparaisons JPL Horizons figées, tests hors réseau, génération reproductible,
+  notices et tutoriel illustré accessible à 10 ans.
+
+### Ajouté — Bayer et Flamsteed
+
+- Sélections `bayer` et `flamsteed` issues de HYG 4.1, utilisables seules ou avec
+  les autres catalogues, avec regroupement par clé HYG et préservation des composants.
+- Génération locale déterministe, notices de provenance/licence et tutoriel illustré.
+- Reconnaissance Seestar des variantes explicites et signalement des noms partagés.
+
+### Corrigé — alphabet grec PDF
+
+- Polices DejaVu Sans régulière et grasse incorporées avec leurs notices pour
+  préserver les lettres grecques et indices de composants Bayer dans les PDF.
+
 ### Corrigé — validation Windows
 
 - Fichiers temporaires des tests CI placés sur le volume du logiciel, pour

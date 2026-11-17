@@ -10,25 +10,67 @@ from dataclasses import dataclass, replace
 
 from .catalog import (
     filter_by_magnitude,
+    load_bayer_catalog,
     load_caldwell_catalog,
+    load_flamsteed_catalog,
     load_messier_catalog,
     load_ngc_catalog,
     load_variable_star_catalog,
 )
-from .models import CatalogObject, DeepSkyObject
+from .models import CatalogObject, DeepSkyObject, NamedStar
 
 LABELS = {
+    "satellites": "Satellites artificiels (COSPAR / SATCAT / SGP4)",
+    "debris": "Débris et corps de fusées (COSPAR / SATCAT / SGP4)",
+    "comets": "Comètes (orbites MPC, observations CBAT facultatives)",
+    "asteroids": "Astéroïdes numérotés (JPL SBDB, fichier orbital local)",
     "variable_stars": "Étoiles variables (GCVS)",
     "messier": "Objets Messier (SIMBAD, repli OpenNGC)",
     "caldwell": "Objets Caldwell (OpenNGC, complément SIMBAD)",
     "ngc": "Objets NGC (OpenNGC)",
+    "bayer": "Étoiles Bayer (HYG 4.1)",
+    "flamsteed": "Étoiles Flamsteed (HYG 4.1)",
 }
 NOTES = {
+    "satellites": "Satellites : charges utiles PAY du SATCAT; aucune magnitude optique fournie.",
+    "debris": "Débris : types SATCAT DEB et R/B, distincts des charges utiles; aucune magnitude optique fournie.",
+    "comets": "Comètes : positions MPC et magnitude totale estimée H,k, distincte de la bande V.",
+    "asteroids": "Astéroïdes : orbites JPL SBDB, positions recalculées et magnitude V estimée H-G.",
     "variable_stars": "Les magnitudes GCVS sont les maxima d'éclat publiés, pas des prévisions.",
     "messier": "Messier : priorité SIMBAD, repli OpenNGC.",
     "caldwell": "Caldwell : données OpenNGC; complément de magnitude V SIMBAD si exploitable.",
     "ngc": "NGC : données OpenNGC; composants distincts inclus, hors doublons.",
+    "bayer": "Bayer : désignations HYG; magnitude visuelle de référence, pas un maximum GCVS.",
+    "flamsteed": "Flamsteed : désignations HYG; magnitude visuelle de référence, pas un maximum GCVS.",
 }
+
+ASTEROID_NOTES = (
+    "Modèle à deux corps sans perturbations planétaires, avec temps de lumière; approximation de planification.",
+    "Éléments utilisés à ±365 jours de leur époque; cette limite ne garantit pas la précision.",
+    "≈ : magnitude H-G estimée; G=0,15 supposé si absent. H n'est pas une magnitude apparente.",
+    "Instant V : échantillon le plus brillant dans le champ; le filtre V s'applique au même instant.",
+    "Astéroïdes : franchissements recherchés seulement dans la plage; dates saisonnières et opposition non calculées.",
+)
+
+COMET_NOTES = (
+    "Comètes : modèle à deux corps, temps de lumière et position topocentrique; perturbations et dégazage ignorés.",
+    "Magnitude totale ≈ H + 5 log10(Δ) + 2,5 k log10(r); aucun H ou k absent n'est inventé.",
+    "Instant estimé : meilleur échantillon dans le champ; filtre de magnitude simultané, valeur totale pour les comètes.",
+    "Époque MPC requise à ±365 jours; borne de fonctionnement sans garantie de précision ni d'activité de la comète.",
+    "Franchissements cométaires dans la plage seulement; dates saisonnières et opposition non calculées.",
+    "CBAT : observation datée séparée, jamais substituée à la magnitude prévue; fragments conservés distincts.",
+)
+
+
+SATELLITE_NOTES = (
+    "SGP4 : éléments GP en repère TEME puis positions topocentriques Alt/Az, sans réfraction.",
+    "Un passage géométrique ne garantit pas une détection optique; éclairage et Soleil sont des conditions distinctes.",
+    "Ombre terrestre cylindrique approximative, sans pénombre; luminosité, attitude et éclats non prédits.",
+    "COSPAR est un identifiant, SATCAT une description, UNOOSA un registre administratif; aucun ne remplace les éléments orbitaux.",
+    "Une absence d'extrait local UNOOSA laisse le statut d'immatriculation inconnu; aucune information ONU n'est téléchargée automatiquement.",
+    "Les satellites sans magnitude connue sont exclus par un seuil photométrique explicite; aucune valeur V n'est inventée.",
+    "Pas de dates saisonnières ni d'opposition satellitaires calculées; aucun calcul de risque de collision.",
+)
 
 
 @dataclass(frozen=True)
@@ -37,6 +79,7 @@ class CatalogSelection:
 
     kinds: tuple[str, ...]
     limits: tuple[float | None, ...]
+    source_notes: tuple[str, ...] = ()
 
     @property
     def label(self) -> str:
@@ -47,7 +90,12 @@ class CatalogSelection:
         parts = []
         for kind, limit in zip(self.kinds, self.limits):
             name = (
-                "GCVS (maximum publié)"
+                "Débris" if kind == 'debris' else
+                "Astéroïdes (V estimée)"
+                if kind == "asteroids"
+                else "Comètes (totale estimée)"
+                if kind == "comets"
+                else "GCVS (maximum publié)"
                 if kind == "variable_stars"
                 else "NGC"
                 if kind == "ngc"
@@ -58,10 +106,25 @@ class CatalogSelection:
 
     @property
     def notes(self) -> tuple[str, ...]:
-        return tuple(NOTES[kind] for kind in self.kinds) + (
-            "Même désignation : une ligne, priorité Messier puis Caldwell puis NGC; alias conservés.",
-            "Les groupes et leurs composants restent distincts; aucun rapprochement par position.",
-        )
+        notes = tuple(NOTES[kind] for kind in self.kinds)
+        if "asteroids" in self.kinds:
+            notes += ASTEROID_NOTES
+        if "comets" in self.kinds:
+            notes += COMET_NOTES
+        if any(kind in self.kinds for kind in ('satellites','debris')):
+            notes += SATELLITE_NOTES
+        if any(kind in self.kinds for kind in ("messier", "caldwell", "ngc")):
+            notes += (
+                "Même désignation : une ligne, priorité Messier puis Caldwell puis NGC; alias conservés.",
+                "Les groupes et leurs composants restent distincts; aucun rapprochement par position.",
+            )
+        if any(kind in self.kinds for kind in ("bayer", "flamsteed")):
+            notes += (
+                "Étoiles HYG réunies par identifiant source; priorité Bayer, alias Flamsteed conservés.",
+                "Les composants de même désignation restent distincts; aucun lien GCVS/NGC déduit.",
+                'Positions stellaires J2000 fixes; mouvements propres non appliqués.',
+            )
+        return notes + self.source_notes
 
 
 def catalog_label(kind: str | CatalogSelection) -> str:
@@ -95,6 +158,7 @@ def load_catalog_selection(
     max_magnitude: float | None = None,
     all_magnitudes: bool = False,
 ) -> tuple[list[CatalogObject], CatalogSelection]:
+    # Les orbites mobiles sont calculées séparément, jamais filtrées sur H.
     kinds = normalize_catalogs(names)
     limits = tuple(
         None
@@ -108,10 +172,16 @@ def load_catalog_selection(
     )
     selection = CatalogSelection(kinds, limits)
     loaders = {
+        "satellites": lambda: (),
+        "debris": lambda: (),
+        "comets": lambda: (),
+        "asteroids": lambda: (),
         "messier": load_messier_catalog,
         "caldwell": load_caldwell_catalog,
         "ngc": load_ngc_catalog,
         "variable_stars": load_variable_star_catalog,
+        "bayer": load_bayer_catalog,
+        "flamsteed": load_flamsteed_catalog,
     }
     if len(kinds) == 1:
         return filter_by_magnitude(loaders[kinds[0]](), limits[0]), selection
@@ -145,4 +215,19 @@ def load_catalog_selection(
         objects.extend(
             filter_by_magnitude(load_variable_star_catalog(), limit_by_kind["variable_stars"])
         )
+    stellar: dict[int, tuple[NamedStar, str]] = {}
+    for kind in ("bayer", "flamsteed"):
+        if kind not in kinds:
+            continue
+        for star in loaders[kind]():
+            if star.hyg_id in stellar:
+                existing, origin = stellar[star.hyg_id]
+                stellar[star.hyg_id] = (
+                    replace(existing, aliases=(*existing.aliases, star.name)),
+                    origin,
+                )
+            else:
+                stellar[star.hyg_id] = (star, kind)
+    for star, kind in stellar.values():
+        objects.extend(filter_by_magnitude((star,), limit_by_kind[kind]))
     return objects, selection

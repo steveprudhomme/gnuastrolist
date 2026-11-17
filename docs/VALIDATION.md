@@ -1,5 +1,156 @@
 # Validation
 
+## Publication GitHub — compatibilité des époques GP
+
+La première CI de la PR nº 7 a détecté trois échecs sous Python 3.10 pour les
+fractions de neuf chiffres, alors que Python 3.13 et les paquets réussissaient.
+Le calendrier est désormais validé sans la fraction dans une copie temporaire;
+la chaîne originale complète reste transmise à Astropy. Les tests couvrent
+également les fractions de 1, 3, 5 et 6 chiffres. Aucune valeur orbitale de la
+source n'est modifiée. Le plan du correctif a été commité avant le code.
+
+Après le correctif `9cc0d57`, **350 tests locaux réussissent, un est ignoré**,
+avec 26 avertissements IERS/ERFA documentés. Les cinq contrôles de la
+[PR nº 7](https://github.com/steveprudhomme/gnuastrolist/pull/7) ont réussi :
+tests Windows/Linux en Python 3.10 et 3.13, puis construction et vérification
+des distributions. Voir l'[exécution GitHub](https://github.com/steveprudhomme/gnuastrolist/actions/runs/44045350000).
+Cette publication et sa fusion dans main ont été explicitement demandées par
+le propriétaire; la consigne de travail local reste le défaut des autres lots.
+
+## Satellites artificiels, SATCAT et registre ONU
+
+Validation Windows/Python 3.13.6 : **338 tests réussis, un ignoré**, avec
+26 avertissements IERS/ERFA déjà liés aux dates des autres catalogues.
+Les 38 tests des actualisations satellitaires passent également avec des
+réponses CSV reconstruites depuis les seules valeurs versionnées : aucun
+dossier `local/` privé n'est nécessaire à leur exécution dans la CI.
+
+Les cas Vallado livrés avec SGP4 vérifient les vecteurs TEME et la propagation.
+Les tests contrôlent le rayon topocentrique, les formats GP/OMM, les conventions
+de temps et repère, les numéros NORAD étendus, les erreurs SGP4 et les critères
+champ/éclairage/hauteur solaire appliqués au même instant. Ils ne représentent
+pas une validation observationnelle de chaque objet réel.
+
+La sélection embarquée est contrôlée : 737 GP, 1 873 SATCAT, jointures
+NORAD/COSPAR cohérentes, types PAY/R/B/DEB préservés. Les époques trop éloignées,
+rentrées et types non choisis sont exclus explicitement. Les tests UNOOSA sont
+synthétiques et couvrent sources, dates, contradictions, pièces distinctes et
+statut inconnu. Les rapports terminal/TXT/PDF sont vérifiés avec un inventaire
+Seestar synthétique, sans modification des fichiers sources.
+
+L'actualisation partagée est testée pour compression HTTP, limites de taille,
+délais GP/SATCAT, blocages 3xx/4xx, pause après panne, cache corrompu, repli,
+publication atomique et protections avant écriture. Une protection globale
+dans `tests/conftest.py` bloque les connexions réelles au niveau socket : elle
+couvre aussi les clients HTTP qui ne passent pas par `urlopen`.
+
+Ruff, liens et structure réussis. Wheel et sdist contiennent moteur, données,
+notices, tests et illustration. La dépendance SGP4 2.25 a été installée depuis
+une wheel locale dans l'environnement isolé, sans modification des dépendances
+existantes. La version installée a exécuté, hors du dépôt, le rapport satellitaire
+TXT/PDF et les dix sélections avec `--offline --update-catalogs force`.
+Le contrôle des dépendances est réussi; aucun cache n'est créé hors ligne.
+Les deux pages du PDF d'exemple et le schéma SVG ont été rendus et inspectés.
+
+Les réponses publiques CelesTrak ont été récupérées dans `local/` et leurs
+empreintes sont documentées. Aucun extrait réel UNOOSA n'a été téléchargé ni
+redistribué : l'index a refusé l'accès automatisé. Aucun accès au disque Seestar
+réel ni publication GitHub n'a été nécessaire.
+
+## Comètes MPC/CBAT et actualisations au démarrage
+
+Sur Windows, Python 3.13.6 / Astropy 7.2 / ReportLab 4.4 : **202 tests réussis,
+un ignoré**, 26 avertissements (tables IERS prédictives et conversions de dates
+historiques volontairement présentes dans les éléments cométaires). Le test
+ignoré exige la création de liens symboliques Windows. Les 55 tests des mises
+à jour et options de démarrage passent aussi après la revue du signalement
+des générations corrompues.
+
+Les coniques sont vérifiées par équation de Barker, hyperbole analytique,
+équivalence avec le moteur elliptique et continuité autour de e=1. Quatre
+positions JPL Horizons indépendantes pour 67P et C/2023 A3 sont figées avec
+paramètres et empreintes : écarts inférieurs à 10″. La photométrie MPC/JPL
+n'est pas forcée à concorder lorsque les paramètres sources diffèrent.
+
+Les tests CBAT sont synthétiques et contrôlent date/fuseau, attribution,
+bande, observations futures, doublons, fragments et séparation de la prévision.
+Aucune mesure CBAT réelle n'a été récupérée : les pages publiques ont échoué
+en TLS/passerelle. Le fichier MPC public a été récupéré localement et son
+empreinte est documentée dans COMET_SOURCE.md.
+
+Les huit catalogues évolutifs sont couverts par le registre de mise à jour,
+avec réseau simulé : modes never/if-stale/force, âges par catalogue/fournisseur,
+configuration et priorité des options, délais invalides, pannes, tailles limites,
+générations tronquées/corrompues, intégrité, publication atomique, repli, dates de
+provenance et isolation des caches mémoire. Les générateurs réels sont exercés
+sur sources synthétiques; les protections Seestar refusent le cache avant écriture.
+`--offline --update-catalogs force` est testé sur les huit catalogues sans connexion.
+
+Un essai supplémentaire reconstruit le cache cométaire avec la copie MPC déjà
+récupérée, sans réseau, puis produit un rapport de trois comètes et le relit hors
+ligne. Les deux pages PDF et les deux schémas SVG du tutoriel sont rendus et
+vérifiés visuellement. Ruff, liens/versions et contenu wheel/sdist réussis.
+Les essais ne prouvent pas la disponibilité future de chaque service réseau.
+Le disque Seestar réel et GitHub n'ont reçu aucune modification de ce lot.
+
+La wheel finale a été installée dans un environnement distinct (Astropy 8,
+ReportLab 4.5) et exécutée hors du dossier source : huit catalogues sélectionnés
+avec mise à jour forcée mais mode hors ligne prioritaire, puis un rapport de
+trois comètes avec exports TXT/PDF. Aucun cache n'a été créé en mode hors ligne;
+l'extraction du PDF confirme la magnitude totale et l'état des actualisations.
+
+## Lot astéroïdes
+
+Validation locale Windows/Python 3.13.6 : **125 tests réussis, un ignoré**.
+Les 15 avertissements comprennent les tables IERS prédictives hors couverture
+et une date volontairement ancienne du test de borne. Le test ignoré concerne
+la création d'un lien symbolique Windows, indisponible dans cet environnement.
+
+Les nouveaux tests vérifient les 1 000 orbites, les schémas et éléments refusés,
+les doublons, une orbite circulaire synthétique et une forte excentricité,
+la magnitude H-G, H absent, G supposé, l'expiration et les filtres simultanés.
+Ils couvrent la sélection mixte, les imports locaux immuables, la génération
+déterministe, les rapports terminal/TXT/PDF et l'identité Seestar sur copie
+synthétique. Aucun disque Seestar réel n'est consulté.
+
+Six positions indépendantes JPL Horizons (Ceres, Vesta, Eros) sont figées avec
+paramètres et empreintes. L'écart angulaire maximal est de 13,12″ sous Astropy 7.2;
+l'écart de magnitude reste inférieur à 0,001. Voir [le protocole](ASTEROIDS.md).
+Ces cas ne garantissent pas la précision de toutes les orbites.
+
+Ruff et contrôle des liens/versions réussis. Construction locale sans
+téléchargement avec `python -m build --no-isolation`; contrôle du contenu wheel/sdist,
+y compris orbites, notice, fixture et illustration. Les deux pages du PDF
+d'exemple et l'illustration SVG ont été rendues et vérifiées visuellement.
+La CI locale est enrichie d'un essai du catalogue installé; son exécution
+distante et toute publication restent différées.
+
+La wheel installée dans un environnement distinct a aussi exécuté, hors du
+dossier source, une sélection astéroïdes/Messier et ses exports TXT/PDF avec
+Astropy 8 et ReportLab 4.5. Les sources du projet n'interviennent pas dans cet essai.
+
+## Lot Bayer et Flamsteed
+
+Validation locale : **102 tests réussis, un ignoré**, treize avertissements IERS.
+Les tests contrôlent les 1 537 fiches Bayer et 2 737 Flamsteed, l'union de 3 321
+clés HYG, les noms/coordonnées de référence, les composants partagés et les filtres.
+Le générateur est testé sur des données synthétiques pour la reproductibilité,
+les valeurs absentes, les noms ambigus et les empreintes incorrectes.
+
+Les rapports terminal/TXT/PDF sont testés dans les trois modes Bayer seul,
+Flamsteed seul et combinés, avec une archive Seestar synthétique. La reconnaissance
+accepte les variantes explicites des lettres et préserve leurs indices. Une
+désignation partagée ne devient pas une acquisition certaine de tous les composants.
+Les 24 lettres grecques et les chiffres en exposant sont exigés dans les deux
+polices PDF; l'extraction doit conserver `α Lyr`.
+
+Ruff, structure et contenu des distributions réussis. La wheel installée hors
+du dossier source a produit un rapport Bayer/Flamsteed et son PDF avec les polices
+embarquées, sans dépendance à Matplotlib. Le disque Seestar réel n'a pas été
+consulté pendant ce lot; les tests de lecture seule précédents restent inclus.
+La source HYG a été téléchargée dans `local/`, puis les générateurs et contrôles
+ont utilisé les copies locales. Aucune publication ou CI distante du lot.
+
 ## Finalisation de la PR nº 6
 
 La première CI a réussi sur Linux et pour les distributions. Les tests Windows

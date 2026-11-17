@@ -1,5 +1,163 @@
 # Feuille de route
 
+## Correctif de publication — dates GP sous Python 3.10, PR nº 7
+
+- [x] Identifier dans la CI l'échec de validation des fractions de seconde longues.
+- [x] Valider le calendrier sans imposer les limites de fractions de `datetime`
+      3.10; transmettre l'époque complète à Astropy sans altérer les données.
+- [x] Vérifier les différentes longueurs de fraction et les quatre plateformes
+      Python/OS avant de fusionner la PR; documenter le résultat de publication.
+
+Correctif `9cc0d57` : 350 tests locaux réussis, un ignoré. Les cinq contrôles
+de la PR nº 7 ont réussi sur GitHub, dont Windows/Linux en Python 3.10 et 3.13
+et la construction des distributions.
+
+## Lot satellites artificiels et débris — COSPAR, SATCAT et registre ONU
+
+- [x] Examiner les sources officielles et distinguer identification, registre
+      administratif et éléments orbitaux nécessaires aux passages.
+- [x] Enregistrer ce plan avant le développement.
+- [x] Vérifier les formats, les droits et l'accès CelesTrak/SATCAT/UNOOSA;
+      conserver les réponses locales et leurs empreintes sans copier de contenu protégé.
+- [x] Ajouter des sélections satellites et débris, avec numéros SATCAT/NORAD
+      étendus et identifiants internationaux COSPAR; conserver les types et objets distincts.
+- [x] Lire les éléments GP en JSON/OMM, propager avec SGP4 dans le repère TEME,
+      calculer Alt/Az topocentriques avec un pas adapté et une limite d'âge explicite.
+- [x] Distinguer présence géométrique, éclairage solaire et visibilité optique;
+      ne pas inventer de magnitude, de date saisonnière ni de calcul de collision.
+- [x] Relier SATCAT et les informations du registre UNOOSA par identifiants exacts;
+      documenter le format d'import local si aucun export officiel exploitable n'est validé.
+- [x] Intégrer sélections mixtes, rapports écran/TXT/PDF et identités Seestar
+      explicites, toujours sans écriture sur les archives sources.
+- [x] Étendre les actualisations configurables aux éléments satellitaires et
+      métadonnées disponibles; préserver cache atomique, repli et mode hors ligne.
+- [x] Tester les parseurs, époques, coniques SGP4 de référence, repères, filtres,
+      identités, données absentes, mises à jour et exports hors réseau.
+- [x] Mettre à jour les MD, le tutoriel illustré accessible dès 10 ans, les
+      paquets et les vérifications locales avant le commit final, sans push.
+
+Plan préalable : 764f819. Copie GP/SATCAT partielle et import UNOOSA local réalisés;
+les limites et les sources sont documentées dans docs/SATELLITES.md.
+
+COSPAR est une désignation d'objet; SATCAT décrit les objets suivis; le registre
+ONU est administratif. Aucun de ces deux derniers ne remplace à lui seul une
+éphéméride à jour. Le périmètre réel des copies et les sources indisponibles
+devront être clairement annoncés.
+
+## Lot actualisation configurable au démarrage — toutes les sources évolutives
+
+Demande du 2026-11-17, implémentée localement. Modes et délais sont décrits
+dans docs/CATALOG_UPDATES.md. Plans préalables : 051be12 puis d35bc21.
+
+- [x] Enregistrer le plan de ce lot avant son implémentation.
+- [x] Couvrir GCVS, OpenNGC (Messier/Caldwell/NGC), compléments SIMBAD,
+      HYG (Bayer/Flamsteed), orbites JPL astéroïdes et MPC comètes. Traiter
+      CBAT comme observations locales tant qu'aucun accès structuré n'est validé,
+      et afficher explicitement cette limite plutôt qu'annoncer une mise à jour fictive.
+- [x] Rendre les générateurs réutilisables depuis le paquet installé, sans
+      dépendre du répertoire scripts du dépôt; préserver les commandes existantes.
+- [x] Définir une politique par source : âge maximal réglable, proposition
+      initiale de 24 h pour les comètes; ne pas confondre date de téléchargement
+      et époque orbitale ni imposer la même cadence aux catalogues fixes.
+- [x] Proposer une option de démarrage « jamais / si périmé / forcé », et des
+      délais par catalogue; documenter leur priorité sur une configuration locale.
+- [x] Faire de `--offline` une interdiction absolue de téléchargement, même en
+      présence d'une demande de mise à jour forcée; expliquer la combinaison.
+- [x] Conserver les ressources embarquées intactes; télécharger seulement dans
+      un cache local au logiciel, hors de tout disque source Seestar protégé.
+- [x] Valider format, unités, effectifs, empreinte et provenance avant remplacement
+      atomique; garder la dernière copie exploitable et un historique minimal.
+- [x] Respecter les limites et les droits propres à MPC, CBAT et JPL; connexions
+      séquentielles, délais d'attente et reprise limitée sans requête par objet.
+- [x] Afficher la copie utilisée, son âge, les mises à jour effectuées et les
+      échecs réseau; refuser une orbite non exploitable plutôt que la masquer.
+- [x] Tester temps simulé, réglages, pannes, cache corrompu, mode hors ligne et
+      protections Seestar; compléter le tutoriel illustré et les MD.
+
+Plans comètes : 75cee35. Catalogue MPC et import local CBAT réalisés;
+l’accès automatique aux observations CBAT reste différé faute d’interface validée.
+
+## Lot comètes — MPC et informations CBAT
+
+- [x] Examiner les moteurs mobiles et les formats officiels disponibles.
+- [x] Enregistrer ce plan localement avant l'implémentation.
+- [x] Vérifier les rôles MPC/CBAT, l'accès aux fichiers, les unités, les dates
+      et les droits; conserver les sources récupérées et leurs empreintes.
+- [x] Ajouter la sélection `comets`, l'import local du format orbital MPC et
+      une copie redistribuable si disponible; annoncer clairement toute source inaccessible.
+- [x] Propager les orbites elliptiques, paraboliques et hyperboliques sans
+      appliquer le modèle H-G des astéroïdes; contrôler époques et convergence.
+- [x] Distinguer la magnitude totale cométaire estimée d'une magnitude V et
+      conserver les observations CBAT datées séparément des prévisions.
+- [x] Associer les données CBAT par désignation explicite, sans inventer de
+      mesure ni fusionner des fragments; prévoir un import local si nécessaire.
+- [x] Réunir comètes et autres catalogues, écran/TXT/PDF et Seestar en lecture
+      seule, avec filtres simultanés et heure de référence.
+- [x] Tester hors réseau les formats, coniques, filtres, sources absentes,
+      identité, rapports et cas de référence indépendants.
+- [x] Actualiser les MD, ajouter un tutoriel illustré accessible dès 10 ans,
+      contrôler distributions et installation puis enregistrer le lot localement.
+
+Contraintes : aucun abonnement CBAT contourné, aucune magnitude d'une autre
+bande étiquetée V, aucun téléchargement implicite à l'exécution ni écriture Seestar.
+
+## Lot astéroïdes — catalogue orbital et positions variables
+
+- [x] Examiner le moteur actuel et identifier les calculs réservés aux objets fixes.
+- [x] Enregistrer ce plan avant le développement.
+- [x] Vérifier les sources orbitales publiques, leurs unités, leurs conditions
+      d'utilisation et leur actualité; versionner une sélection numérotée utile
+      avec empreinte et proposer l'import d'une copie locale pour l'étendre.
+- [x] Ajouter `--objects asteroids` avec propagation orbitale hors ligne,
+      correction du temps de lumière, position topocentrique par instant et
+      magnitude estimée à partir des paramètres H/G disponibles.
+- [x] Définir et afficher la validité du modèle, refuser les dates trop éloignées
+      des éléments et ne jamais présenter des coordonnées fixes ou une magnitude H
+      comme la position ou la luminosité apparente de l'astéroïde observé.
+- [x] Filtrer les échantillons où champ et magnitude sont simultanément satisfaits;
+      trier par luminosité estimée dans le champ, garder la date de référence et
+      ne pas réutiliser les dates saisonnières/oppositions des objets fixes.
+- [x] Permettre les sélections mixtes et les rapports terminal/TXT/PDF, avec
+      identifiants mineurs distincts pour Seestar, toujours en lecture seule.
+- [x] Comparer des positions calculées à une référence indépendante, puis tester
+      orbites synthétiques, filtres, limites temporelles, import et exports hors ligne.
+- [x] Documenter les limites dans les MD et le tutoriel illustré accessible à
+      10 ans, vérifier les paquets et enregistrer les commits locaux sans push.
+
+Plan préalable : `02cd97d`. Première sélection : 1 000 numéros JPL, extensible
+par JSON local. Validation et limites dans [docs/ASTEROIDS.md](docs/ASTEROIDS.md).
+La propagation perturbée, les comètes, les objets non numérotés et la mise à jour
+automatique des orbites restent hors de ce lot.
+
+## Lot Bayer et Flamsteed — sélections stellaires locales
+
+- [x] Examiner les modèles, la sélection multiple et les protections Seestar.
+- [x] Enregistrer le plan dans un commit avant le développement.
+- [x] Choisir une source stellaire attribuable et redistribuable, vérifier ses
+      champs Bayer/Flamsteed, coordonnées, magnitudes et licence; conserver une
+      copie dans le projet local avec révision et empreinte documentées.
+- [x] Générer deux sélections reproductibles, sans inventer de désignation ni
+      substituer une autre bande à V; distinguer ces systèmes de noms d'un
+      inventaire exhaustif de toutes les étoiles.
+- [x] Ajouter `--objects bayer` et `--objects flamsteed`, seuls ou combinés;
+      réunir une même étoile par identifiant source stable, conserver les noms
+      secondaires et ne pas présumer une identité croisée avec GCVS ou NGC.
+- [x] Afficher les désignations et la provenance dans les rapports écran/TXT/PDF;
+      gérer le nom Bayer/Flamsteed et ses variantes explicites dans Seestar,
+      sans modifier les archives ni déduire une correspondance par position.
+- [x] Remplacer les polices PDF sans alphabet grec par DejaVu Sans régulier/gras
+      redistribués sans modification avec leurs notices; vérifier les glyphes,
+      la conservation des lettres grecques et leur présence dans les paquets.
+- [x] Tester données réelles de référence, génération synthétique, doublons,
+      filtres, rapports, lecture seule et distribution hors ligne.
+- [x] Mettre à jour les MD et le tutoriel accessible dès 10 ans avec une image,
+      exécuter les contrôles locaux et enregistrer le lot sans push.
+
+Plans préalables : `691f039`, puis `d5c94af` pour les polices grecques.
+Résultats : 102 tests réussis, un ignoré, treize avertissements IERS; Ruff,
+structure, distributions et installation hors des sources vérifiés. Les données
+et polices gardent leurs licences et empreintes. Aucune publication distante.
+
 ## Finalisation PR nº 6 — tests Windows et tutoriel accessible
 
 - [x] Identifier le refus d'export Windows : code sur D:, fausses archives
