@@ -1,5 +1,44 @@
 # Tutoriel : catalogues astronomiques et validation
 
+## Réunir plusieurs catalogues dans une commande
+
+![Schéma de sélection de plusieurs catalogues](images/multiple-catalogues.svg)
+
+Ce schéma décrit la procédure et les dénombrements des données embarquées;
+ce n'est pas une capture d'écran. Le plan a été enregistré au commit `02b5c55`
+avant le développement du lot.
+
+```powershell
+gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects messier caldwell ngc --offline --max-magnitude 8 --limit 3
+```
+
+Cette exécution locale réelle a trouvé **80 entrées**, avec trois lignes affichées :
+
+| Objet et alias | Magnitude V | Source de la valeur retenue |
+| --- | --- | --- |
+| M45 | 1,2 | OpenNGC |
+| M31 / NGC224 | 3,44 | SIMBAD |
+| NGC869 | 3,7 | OpenNGC |
+
+Avant filtre et sélection géométrique, les 8 317 fiches Messier/Caldwell/NGC
+deviennent 8 115 fiches par regroupement de désignations identiques. Les valeurs
+de la fiche prioritaire sont conservées, sans compléter silencieusement les
+valeurs absentes depuis une autre fiche. Le choix précède le filtre de magnitude.
+Les groupes et leurs composants restent distincts; GCVS n'est pas rapproché
+par position des objets du ciel profond.
+
+Pour utiliser les variables également, ajouter `variable_stars` après `--objects`.
+Sans filtre explicite, seules les variables gardent la limite V maximum 8.
+Pour supprimer cette limite aussi, utiliser `--all-magnitudes`. L'en-tête du
+rapport décrit la limite réellement utilisée pour chaque catalogue.
+La syntaxe répétée `--objects messier --objects ngc` produit la même sélection
+que `--objects messier ngc`. Les exports TXT/PDF affichent les mêmes noms et alias.
+
+Validation du lot : 75 tests réussis, huit avertissements IERS et contrôles
+Ruff/structure/distributions réussis. Le paquet installé a été essayé hors du
+dossier source, sans connexion réseau. Les avertissements de précision
+astronomique restent visibles; ces tests ne valident pas les mesures des sources.
+
 ## Utiliser le Nouveau Catalogue Général
 
 ![Schéma de sélection du catalogue NGC local](images/ngc-selection.svg)

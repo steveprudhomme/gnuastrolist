@@ -30,10 +30,12 @@ def main() -> None:
             assert len(rows) == count, (path, name, len(rows))
         assert any(k.endswith("/data/CALDWELL_SOURCE.md") for k in files), path
         assert any(k.endswith("/data/NGC_SOURCE.md") for k in files), path
+        assert any(k.endswith('gnu_astrolist/selection.py') for k in files), path
         assert any(k.endswith("/LICENSE") or k == "LICENSE" for k in files), path
         assert not any("/local/" in k or k.endswith(("rapport.pdf", "rapport.txt")) for k in files)
         if path.name.endswith('.tar.gz'):
-            for image in ('caldwell-parcours.svg', 'validation-locale.svg', 'ngc-selection.svg'):
+            for image in ('caldwell-parcours.svg', 'validation-locale.svg', 'ngc-selection.svg',
+                          'multiple-catalogues.svg'):
                 assert any(k.endswith(f'/docs/images/{image}') for k in files), (path, image)
         print(f"{path.name} : catalogues, notice, licence et exclusions OK")
 

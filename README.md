@@ -84,6 +84,26 @@ utilisent OpenNGC comme repli hors ligne. Le catalogue choisi est indiqué entre
 crochets à côté de chaque valeur. Ajoutez `--details` pour afficher également
 le bibcode ou la référence et la date de récupération.
 
+## Utiliser plusieurs catalogues
+
+Fournissez plusieurs noms après `--objects`, ou répétez cette option :
+
+```powershell
+gnu-astrolist --date 2026-08-15 --time-range 21:00-02:00 --timezone America/Toronto --lat 45.57 --lon -73.68 --az-min 15 --az-max 180 --min-altitude 20 --objects messier caldwell ngc --offline --max-magnitude 8 --limit 20
+```
+
+`--objects messier --objects ngc` est également accepté. Les répétitions et
+`messier_objects` n'ajoutent pas de doublons. Les objets du ciel profond de même
+désignation explicite sont réunis : `M31 / NGC224` occupe une ligne. La fiche
+Messier est prioritaire sur Caldwell, puis NGC, indépendamment de l'ordre demandé;
+sa provenance est conservée. Les composants distincts restent séparés.
+
+`variable_stars` peut être ajouté. Par défaut, ses variables gardent la limite
+V maximum publié ≤ 8, tandis que le ciel profond reste sans limite.
+`--max-magnitude` fixe une limite commune et `--all-magnitudes` les supprime toutes.
+Le [tutoriel](docs/TUTORIEL.md) et la [décision de conception](docs/architecture/decisions/0002-selection-multiple.md)
+détaillent les alias, les valeurs absentes et les limites du regroupement.
+
 ## Nouveau Catalogue Général (NGC)
 
 L'option `--objects ngc` charge **8 098 entrées NGC** issues de la copie OpenNGC
@@ -302,7 +322,7 @@ instants échantillonnés. Le pas est réglable avec `--sample-minutes`.
 --az-max DEG                 Limite azimutale de fin
 --min-altitude DEG           Élévation minimale; --fov-v est un alias
 --alt-center DEG             Remplacement avancé facultatif du centre vertical
---objects CATALOGUE          variable_stars, messier, caldwell ou ngc
+--objects CATALOGUE [...]    un ou plusieurs : variable_stars, messier, caldwell, ngc
 --max-magnitude MAG          Limite V; défaut 8 pour les variables, aucune pour Messier
 --all-magnitudes             Désactive la limite pour le catalogue choisi
 --sample-minutes MIN         Pas de recherche (défaut : 10)

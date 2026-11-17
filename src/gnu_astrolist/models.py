@@ -66,6 +66,7 @@ class DeepSkyObject:
     magnitude_retrieved_on: str = ""
     common_name: str = ""
     passband: str = "V"
+    aliases: tuple[str, ...] = ()
 
     @property
     def magnitude_limit(self) -> str:

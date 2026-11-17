@@ -12,6 +12,11 @@ from .models import (
     WeatherPeriodSummary,
     WeatherSummary,
 )
+from .selection import CatalogSelection, catalog_label
+
+
+def _object_name(result: VisibilityResult) -> str:
+    return ' / '.join((result.star.name, *getattr(result.star, 'aliases', ())))
 
 
 def _magnitude_label(result: VisibilityResult) -> str:
@@ -56,7 +61,7 @@ def _format_provenance_details(results: Sequence[VisibilityResult]) -> str:
         star = result.star
         size = _apparent_size_label(result).rsplit(" [", maxsplit=1)[0]
         magnitude = _magnitude_label(result).rsplit(" [", maxsplit=1)[0]
-        lines.append(f"{star.name} :")
+        lines.append(f"{_object_name(result)} :")
         if star.size_source:
             lines.append(
                 "  Taille      : "
@@ -191,13 +196,15 @@ def _format_weather_summary(summary: WeatherSummary) -> list[str]:
 
 def _format_table(
     results: Sequence[VisibilityResult],
-    object_kind: str,
+    object_kind: str | CatalogSelection,
     window: ObservationWindow,
     minimum_altitude_deg: float,
 ) -> str:
     magnitude_header = (
         "Mag. max V" if object_kind == "variable_stars" else "Mag. apparente V"
     )
+    if isinstance(object_kind, CatalogSelection) and 'variable_stars' in object_kind.kinds:
+        magnitude_header = 'Mag. V (max si GCVS)'
     headers = (
         "Objet",
         "Type",
@@ -213,7 +220,7 @@ def _format_table(
     )
     rows = [
         (
-            result.star.name,
+            _object_name(result),
             result.star.object_type or "—",
             result.constellation or "—",
             _apparent_size_label(result),
@@ -268,7 +275,7 @@ def render_report(
     moon_summary: MoonSummary,
     results: Sequence[VisibilityResult],
     matched_count: int,
-    object_kind: str,
+    object_kind: str | CatalogSelection,
     show_details: bool = False,
 ) -> str:
     """Produit une sortie lisible, déterministe et facile à copier."""
@@ -276,17 +283,10 @@ def render_report(
     start = window.start_local
     end = window.end_local
     variable_stars = object_kind == "variable_stars"
-    catalog_text = (
-        "Étoiles variables (GCVS)"
-        if variable_stars
-        else (
-            "Objets Caldwell (OpenNGC, complément SIMBAD)" if object_kind == "caldwell"
-            else "Objets Messier (SIMBAD, repli OpenNGC)"
-        )
-    )
-    if object_kind == "ngc":
-        catalog_text = "Objets NGC (OpenNGC)"
-    if max_magnitude is None:
+    catalog_text = catalog_label(object_kind)
+    if isinstance(object_kind, CatalogSelection):
+        magnitude_text = object_kind.filter_label
+    elif max_magnitude is None:
         magnitude_text = "aucune limite"
     elif variable_stars:
         magnitude_text = f"≤ {max_magnitude:g} au maximum d'éclat"
@@ -355,7 +355,9 @@ def render_report(
             "Note : hauteurs du tableau géométriques, sans réfraction atmosphérique.",
         ]
     )
-    if variable_stars:
+    if isinstance(object_kind, CatalogSelection):
+        lines.extend(f'       {note}' for note in object_kind.notes)
+    elif variable_stars:
         lines.extend(
             [
                 "       La magnitude est la magnitude au maximum d'éclat publiée,",

@@ -1,0 +1,148 @@
+# SPDX-FileCopyrightText: 2026 Contributeurs de GNU Astrolist
+# SPDX-License-Identifier: GPL-3.0-or-later
+"""Sélection de catalogues, identité explicite et politique photométrique."""
+
+from __future__ import annotations
+
+import re
+from collections.abc import Sequence
+from dataclasses import dataclass, replace
+
+from .catalog import (
+    filter_by_magnitude,
+    load_caldwell_catalog,
+    load_messier_catalog,
+    load_ngc_catalog,
+    load_variable_star_catalog,
+)
+from .models import CatalogObject, DeepSkyObject
+
+LABELS = {
+    "variable_stars": "Étoiles variables (GCVS)",
+    "messier": "Objets Messier (SIMBAD, repli OpenNGC)",
+    "caldwell": "Objets Caldwell (OpenNGC, complément SIMBAD)",
+    "ngc": "Objets NGC (OpenNGC)",
+}
+NOTES = {
+    "variable_stars": "Les magnitudes GCVS sont les maxima d'éclat publiés, pas des prévisions.",
+    "messier": "Messier : priorité SIMBAD, repli OpenNGC.",
+    "caldwell": "Caldwell : données OpenNGC; complément de magnitude V SIMBAD si exploitable.",
+    "ngc": "NGC : données OpenNGC; composants distincts inclus, hors doublons.",
+}
+
+
+@dataclass(frozen=True)
+class CatalogSelection:
+    """Catalogues demandés et limites réellement appliquées, dans le même ordre."""
+
+    kinds: tuple[str, ...]
+    limits: tuple[float | None, ...]
+
+    @property
+    def label(self) -> str:
+        return " + ".join(LABELS[kind] for kind in self.kinds)
+
+    @property
+    def filter_label(self) -> str:
+        parts = []
+        for kind, limit in zip(self.kinds, self.limits):
+            name = (
+                "GCVS (maximum publié)"
+                if kind == "variable_stars"
+                else "NGC"
+                if kind == "ngc"
+                else kind.capitalize()
+            )
+            parts.append(f"{name} : " + ("aucune limite" if limit is None else f"≤ {limit:g}"))
+        return "; ".join(parts)
+
+    @property
+    def notes(self) -> tuple[str, ...]:
+        return tuple(NOTES[kind] for kind in self.kinds) + (
+            "Même désignation : une ligne, priorité Messier puis Caldwell puis NGC; alias conservés.",
+            "Les groupes et leurs composants restent distincts; aucun rapprochement par position.",
+        )
+
+
+def catalog_label(kind: str | CatalogSelection) -> str:
+    return kind.label if isinstance(kind, CatalogSelection) else LABELS[kind]
+
+
+def normalize_catalogs(names: Sequence[str]) -> tuple[str, ...]:
+    result = []
+    for name in names:
+        name = "messier" if name == "messier_objects" else name
+        if name not in LABELS:
+            raise ValueError(f"Catalogue inconnu : {name}")
+        if name not in result:
+            result.append(name)
+    if not result:
+        raise ValueError("Au moins un catalogue est requis")
+    return tuple(result)
+
+
+def _identity(obj: DeepSkyObject) -> str | None:
+    identifier = obj.catalog_designation.strip().upper()
+    match = re.fullmatch(r"(NGC|IC|C)\s*(\d+)(.*)", identifier)
+    if match:
+        return f"{match[1]}{int(match[2])}{match[3].strip()}"
+    # Les désignations vides ne constituent jamais une preuve d'identité.
+    return identifier or None
+
+
+def load_catalog_selection(
+    names: Sequence[str],
+    max_magnitude: float | None = None,
+    all_magnitudes: bool = False,
+) -> tuple[list[CatalogObject], CatalogSelection]:
+    kinds = normalize_catalogs(names)
+    limits = tuple(
+        None
+        if all_magnitudes
+        else max_magnitude
+        if max_magnitude is not None
+        else 8.0
+        if kind == "variable_stars"
+        else None
+        for kind in kinds
+    )
+    selection = CatalogSelection(kinds, limits)
+    loaders = {
+        "messier": load_messier_catalog,
+        "caldwell": load_caldwell_catalog,
+        "ngc": load_ngc_catalog,
+        "variable_stars": load_variable_star_catalog,
+    }
+    if len(kinds) == 1:
+        return filter_by_magnitude(loaders[kinds[0]](), limits[0]), selection
+
+    # Le choix de la fiche précède le filtre : ne pas remplacer ses valeurs
+    # par celles d'un autre catalogue uniquement pour franchir un seuil V.
+    deep_sky: dict[str, tuple[DeepSkyObject, str]] = {}
+    for kind in ("messier", "caldwell", "ngc"):
+        if kind not in kinds:
+            continue
+        for obj in loaders[kind]():
+            key = _identity(obj) or f"{kind}:{obj.name}"
+            if key in deep_sky:
+                existing, origin = deep_sky[key]
+                if obj.name != existing.name and obj.name not in existing.aliases:
+                    deep_sky[key] = (
+                        replace(existing, aliases=(*existing.aliases, obj.name)),
+                        origin,
+                    )
+            else:
+                deep_sky[key] = (obj, kind)
+    limit_by_kind = dict(zip(kinds, limits))
+    objects: list[CatalogObject] = [
+        obj
+        for obj, kind in deep_sky.values()
+        if limit_by_kind[kind] is None
+        or (obj.magnitude_v is not None and obj.magnitude_v <= limit_by_kind[kind])
+    ]
+    if "variable_stars" in kinds:
+        # Aucune identité croisée GCVS/ciel profond n'est présumée.
+        objects.extend(
+            filter_by_magnitude(load_variable_star_catalog(), limit_by_kind["variable_stars"])
+        )
+    return objects, selection

@@ -6,6 +6,7 @@
 - [Validation](VALIDATION.md).
 - [Préparer une version](RELEASE.md).
 - [Décision : catalogues du ciel profond](architecture/decisions/0001-catalogues.md).
+- [Décision : sélection de plusieurs catalogues](architecture/decisions/0002-selection-multiple.md).
 - [Provenance Caldwell](../src/gnu_astrolist/data/CALDWELL_SOURCE.md).
 - [Provenance NGC](../src/gnu_astrolist/data/NGC_SOURCE.md).
 

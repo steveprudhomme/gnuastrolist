@@ -1,5 +1,20 @@
 # Validation
 
+## Lot sélection multiple
+
+Résultats locaux : **75 tests réussis**, huit avertissements IERS, Ruff et
+contrôles de structure/distributions réussis. Les tests couvrent les noms et
+options répétés, l'alias `messier_objects`, l'ordre indépendant de priorité,
+M31/NGC224, C1/NGC188, les composants distincts et les désignations absentes.
+Ils vérifient aussi la priorité avant filtre, la limite GCVS par défaut, les
+limites explicites, `--all-magnitudes` et les sorties terminal/TXT/PDF mixtes.
+
+La wheel et l'archive source incluent `selection.py`; le schéma multicatalogue
+est exigé dans l'archive source. Une installation de la wheel sans téléchargement
+a exécuté la commande Messier/Caldwell/NGC hors du dossier source. Le résultat
+de cette commande de contrôle (UTC, latitude 45°, seuil V=5) est de 10 entrées.
+La CI distante de ce lot n'a pas été exécutée; aucun push n'est effectué.
+
 ## Lot NGC
 
 Le générateur local exige l'empreinte de la copie OpenNGC documentée. Les tests

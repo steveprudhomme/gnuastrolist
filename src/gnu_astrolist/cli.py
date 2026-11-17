@@ -10,17 +10,11 @@ from pathlib import Path
 from astropy.utils import iers
 
 from . import __version__
-from .catalog import (
-    filter_by_magnitude,
-    load_caldwell_catalog,
-    load_messier_catalog,
-    load_ngc_catalog,
-    load_variable_star_catalog,
-)
 from .models import FieldOfView
 from .moon import compute_moon_summary
 from .output import render_report
 from .pdf_output import PdfExportError, export_pdf_report
+from .selection import load_catalog_selection
 from .time_utils import parse_observation_window
 from .visibility import compute_visibility
 from .weather import compute_weather_summary
@@ -87,8 +81,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--objects",
         required=True,
+        nargs="+",
+        action="extend",
         choices=("variable_stars", "messier", "messier_objects", "caldwell", "ngc"),
-        help="catalogue : variable_stars, messier, caldwell ou ngc (alias : messier_objects)",
+        help="un ou plusieurs catalogues; option répétable (messier_objects : alias de messier)",
     )
     magnitudes = parser.add_mutually_exclusive_group()
     magnitudes.add_argument(
@@ -103,7 +99,7 @@ def build_parser() -> argparse.ArgumentParser:
     magnitudes.add_argument(
         "--all-magnitudes",
         action="store_true",
-        help="désactive la limite de magnitude et utilise tout le catalogue choisi",
+        help="désactive les limites de magnitude dans tous les catalogues choisis",
     )
     parser.add_argument(
         "--sample-minutes",
@@ -181,21 +177,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         offline=args.offline,
     )
 
-    object_kind = "messier" if args.objects in {"messier", "messier_objects"} else args.objects
-    if args.all_magnitudes:
-        max_magnitude = None
-    elif args.max_magnitude is not None:
-        max_magnitude = args.max_magnitude
-    else:
-        max_magnitude = 8.0 if object_kind == "variable_stars" else None
-
-    catalog = {
-        "variable_stars": load_variable_star_catalog,
-        "messier": load_messier_catalog,
-        "caldwell": load_caldwell_catalog,
-        "ngc": load_ngc_catalog,
-    }[object_kind]()
-    stars = filter_by_magnitude(catalog, max_magnitude)
+    stars, selection = load_catalog_selection(
+        args.objects, args.max_magnitude, args.all_magnitudes
+    )
+    object_kind = selection.kinds[0] if len(selection.kinds) == 1 else selection
+    max_magnitude = selection.limits[0] if len(selection.kinds) == 1 else args.max_magnitude
     try:
         moon_summary = compute_moon_summary(
             window=window,

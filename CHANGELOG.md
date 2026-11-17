@@ -5,6 +5,15 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté — sélection multiple
+
+- `--objects` accepte plusieurs catalogues et peut être répété; les commandes
+  à catalogue unique restent compatibles.
+- Regroupement par désignation explicite avec priorité Messier/Caldwell/NGC,
+  conservation de la provenance de la fiche et affichage des alias en TXT/PDF.
+- Filtres cohérents par catalogue, sans confondre maxima GCVS et ciel profond.
+- Tests de recouvrement, filtres et exports, tutoriel illustré et décision de conception.
+
 ### Ajouté — NGC
 
 - Catalogue NGC local avec 8 098 entrées OpenNGC : `--objects ngc`, rapports

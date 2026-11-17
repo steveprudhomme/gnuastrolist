@@ -38,8 +38,10 @@ from .output import (
     _crossing_time_label,
     _magnitude_label,
     _moon_event_label,
+    _object_name,
     _reference_label,
 )
+from .selection import CatalogSelection, catalog_label
 
 NAVY = colors.HexColor("#18344A")
 TEAL = colors.HexColor("#2B7282")
@@ -191,20 +193,13 @@ def _metadata_rows(
     field_of_view: FieldOfView,
     max_magnitude: float | None,
     sample_minutes: float,
-    object_kind: str,
+    object_kind: str | CatalogSelection,
 ) -> tuple[tuple[str, str], ...]:
     variable_stars = object_kind == "variable_stars"
-    catalog = (
-        "Étoiles variables (GCVS)"
-        if variable_stars
-        else (
-            "Objets Caldwell (OpenNGC, complément SIMBAD)" if object_kind == "caldwell"
-            else "Objets Messier (SIMBAD, repli OpenNGC)"
-        )
-    )
-    if object_kind == "ngc":
-        catalog = "Objets NGC (OpenNGC)"
-    if max_magnitude is None:
+    catalog = catalog_label(object_kind)
+    if isinstance(object_kind, CatalogSelection):
+        magnitude = object_kind.filter_label
+    elif max_magnitude is None:
         magnitude = "Aucune limite"
     elif variable_stars:
         magnitude = f"Maximum d'éclat <= {max_magnitude:g}"
@@ -398,7 +393,7 @@ def _result_card(
     available_width: float,
 ) -> KeepTogether:
     star = result.star
-    title = star.name
+    title = _object_name(result)
     common_name = getattr(star, "common_name", "")
     if common_name:
         title = f"{title} - {common_name}"
@@ -516,7 +511,7 @@ def _result_card(
     return KeepTogether([card, Spacer(1, 6)])
 
 
-def _notes(object_kind: str) -> tuple[str, ...]:
+def _notes(object_kind: str | CatalogSelection) -> tuple[str, ...]:
     notes = [
         "Les hauteurs du tableau sont géométriques, sans réfraction atmosphérique.",
         (
@@ -541,7 +536,9 @@ def _notes(object_kind: str) -> tuple[str, ...]:
             "crépuscule."
         ),
     ]
-    if object_kind == "variable_stars":
+    if isinstance(object_kind, CatalogSelection):
+        notes.extend(object_kind.notes)
+    elif object_kind == "variable_stars":
         notes.append(
             "La magnitude des étoiles variables est le maximum d'éclat publié, "
             "et non une prévision instantanée."
@@ -586,7 +583,7 @@ def _build_pdf(
     moon_summary: MoonSummary,
     results: Sequence[VisibilityResult],
     matched_count: int,
-    object_kind: str,
+    object_kind: str | CatalogSelection,
     show_details: bool,
 ) -> None:
     _register_fonts()
@@ -686,7 +683,7 @@ def export_pdf_report(
     moon_summary: MoonSummary,
     results: Sequence[VisibilityResult],
     matched_count: int,
-    object_kind: str,
+    object_kind: str | CatalogSelection,
     show_details: bool,
 ) -> None:
     """Crée atomiquement un PDF portrait au format lettre 8,5 x 11 pouces."""
