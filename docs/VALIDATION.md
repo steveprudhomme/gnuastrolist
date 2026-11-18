@@ -23,7 +23,10 @@ visuellement : libellés et coordonnées lisibles, sans chevauchement.
 
 Cette validation est locale, sans accès aux archives Seestar réelles. Aucun
 nouveau jeu de données astronomiques, aucune validation observationnelle,
-aucune publication GitHub ni préparation effective de livraison pour ce lot.
+aucune préparation effective de livraison pour ce lot. Après ces contrôles
+locaux, le propriétaire autorise la publication GitHub. Les cinq contrôles
+distants seront vérifiés sur le commit de la PR avant d'annoncer leur réussite;
+la publication ne constitue pas une fusion dans main.
 
 ## Versionnage SemVer — validation locale
 

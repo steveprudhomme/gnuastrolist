@@ -4,7 +4,8 @@
 
 Demande du propriétaire : faciliter le repérage photographique en affichant
 les coordonnées du satellite à l'« Instant position (local) ». Plan local
-enregistré avant implémentation; aucune publication ni fusion de ce nouveau lot.
+enregistré avant implémentation. Après réalisation locale, le propriétaire
+autorise la publication GitHub du lot; la fusion reste une opération distincte.
 
 - [x] SATPOS.1 — Conserver l'azimut et la hauteur topocentriques déjà calculés
       au même échantillon que le maximum retenu, après les filtres de champ et
@@ -23,8 +24,10 @@ Python 3.11.9 et 3.13.6, huit ignorés et 15 avertissements chacun; couverture
 90,51 %, planchers globaux et critiques respectés. Ruff, typage progressif,
 liens et recherche ciblée de secrets réussis. Archives contrôlées, wheel
 installée hors réseau, PDF et schéma synthétiques inspectés. Les coordonnées
-ne changent ni la sélection ni la source orbitale. Aucun accès Seestar réel,
-push, PR ou fusion de ce lot. La version reste 0.11.0, l'aperçu propose 0.12.0.
+ne changent ni la sélection ni la source orbitale. Aucun accès Seestar réel.
+Le propriétaire autorise ensuite la publication de la branche et d'une PR;
+les cinq contrôles distants doivent être vérifiés sur le commit publié.
+La version reste 0.11.0, l'aperçu propose 0.12.0; aucune fusion ni Release.
 
 ## Lot versionnage par type de changement — VERSION
 
