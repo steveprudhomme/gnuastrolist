@@ -321,5 +321,7 @@ def compute_satellite_visibility(
             altitude_end_deg=float(altitude[-1]), azimuth_start_deg=float(azimuth[0]),
             azimuth_end_deg=float(azimuth[-1]), position_reference_time=reference,
             satellite_details=details,
+            position_azimuth_deg=float(azimuth[best]),
+            position_altitude_deg=float(altitude[best]),
         ))
     return results

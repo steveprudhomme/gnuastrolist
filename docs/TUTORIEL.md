@@ -261,6 +261,24 @@ Si les nombres sont trop vieux, le programme les écarte et le dit.
 
 ### 3. Savoir si on pourra le voir
 
+#### Lire sa direction à l'heure indiquée
+
+![Schéma explicatif, exemple synthétique de coordonnées](images/satellite-position.svg)
+
+1. Lis **Instant position (local)**. C'est l'heure chez toi selon le fuseau choisi.
+2. Lis **Azimut à cet instant**. C'est la direction : 0° au nord, 90° à l'est,
+   180° au sud et 270° à l'ouest.
+3. Lis **Hauteur à cet instant**. 0° est l'horizon. 90° est juste au-dessus de toi.
+4. Dans l'exemple inventé du schéma, à **18:33:10**, regarde vers le sud-ouest
+   (azimut **231,46°**), à **62,72°** au-dessus de l'horizon.
+5. Utilise ces nombres pour préparer ton cadrage. Le satellite bouge vite :
+   le programme ne fait pas suivre ton télescope et ne garantit pas une photo.
+
+Ces coordonnées se lisent à l'écran et dans les fichiers texte et PDF.
+Le point affiché est le plus haut point calculé qui respecte tes réglages.
+Si tu limites la hauteur à 80°, un point plus haut ne sera pas choisi.
+Un tiret signifie que la coordonnée n'est pas disponible.
+
 Un objet peut passer dans le champ alors qu'il est dans l'ombre de la Terre !
 Ajoute `--satellite-optical-only` pour garder les instants où il est éclairé et
 où le Soleil est assez bas chez toi. Sa lumière reste inconnue : on ne garantit

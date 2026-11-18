@@ -57,6 +57,35 @@ d'un passage continu. Les dates saisonnières/oppositions ne sont pas calculées
 
 ## Présence géométrique et observation optique
 
+### Coordonnées à l'instant retenu
+
+Après « Instant position (local) », les sorties écran, TXT et PDF affichent :
+
+- **Azimut à cet instant** : direction depuis le nord vers l'est,
+  0° = nord, 90° = est, 180° = sud, 270° = ouest.
+- **Hauteur à cet instant** : angle au-dessus de l'horizon, 0° = horizon,
+  90° = zénith (juste au-dessus de vous).
+
+Les deux valeurs proviennent directement des coordonnées topocentriques Alt/Az
+calculées par la chaîne SGP4/Astropy décrite ci-dessus, au même échantillon
+que le maximum retenu. Ce sont des hauteurs géométriques sans réfraction,
+affichées avec deux décimales; cet affichage ne garantit pas cette précision.
+Aucun nouveau catalogue ou jeu de mesures n'est ajouté. Les sources, dates de
+récupération, licences et reconstruction des données orbitales restent celles
+de la [notice existante](../src/gnu_astrolist/data/SPACE_OBJECT_SOURCE.md).
+
+Le point retenu respecte le champ et, si demandé, le filtre optique. Il peut
+donc différer du sommet complet du passage. Ce n'est ni la position du début
+ni celle de la fin de la plage. Les coordonnées absentes restent des tirets;
+les objets fixes d'une sélection mixte ne reçoivent pas de valeur inventée.
+
+Ces coordonnées aident à choisir une direction pour la photographie à l'heure
+indiquée. Le satellite se déplace : un point de passage ne fournit pas une
+trajectoire de suivi, une durée de pose ou une commande pour le Seestar.
+Pour une séance réelle, utiliser des éléments récents et vérifier les capacités
+de suivi de son matériel. Les premiers/derniers échantillons dans le champ
+peuvent encadrer plusieurs passages et ne garantissent pas une fenêtre continue.
+
 Par défaut, être dans le champ suffit. Un satellite peut être dans l'ombre et
 ne pas être visible. Ajouter `--satellite-optical-only` pour exiger au même
 échantillon : champ, éclairage solaire et Soleil sous −6° au site.

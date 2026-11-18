@@ -195,3 +195,5 @@ def test_satellites_and_debris_use_ceiling_at_reference_time(monkeypatch, height
     assert len(results) == expected
     if results:
         assert results[0].position_reference_time == window.end_local
+        assert results[0].position_azimuth_deg == 180
+        assert results[0].position_altitude_deg == 75

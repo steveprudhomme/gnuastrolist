@@ -357,3 +357,6 @@ class VisibilityResult:
     position_reference_time: datetime | None = None
     satellite_details: str | None = None
     space_catalog_details: str | None = None
+    # Coordonnées horizontales au même instant que position_reference_time.
+    position_azimuth_deg: float | None = None
+    position_altitude_deg: float | None = None

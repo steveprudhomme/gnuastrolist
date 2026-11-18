@@ -64,6 +64,7 @@ COMET_NOTES = (
 
 SATELLITE_NOTES = (
     "SGP4 : éléments GP en repère TEME puis positions topocentriques Alt/Az, sans réfraction.",
+    "Coordonnées à l'instant retenu : azimut depuis le nord vers l'est (0° nord, 90° est); hauteur au-dessus de l'horizon. Ce point ne commande aucun suivi.",
     "Un passage géométrique ne garantit pas une détection optique; éclairage et Soleil sont des conditions distinctes.",
     "Ombre terrestre cylindrique approximative, sans pénombre; luminosité, attitude et éclats non prédits.",
     "COSPAR est un identifiant, SATCAT une description, UNOOSA un registre administratif; aucun ne remplace les éléments orbitaux.",

@@ -1,0 +1,3 @@
+type = "feature"
+summary = "Afficher l'azimut et la hauteur du satellite à l'instant du maximum retenu dans les résultats écran, texte et PDF."
+breaking = false
