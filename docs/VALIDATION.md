@@ -1,5 +1,30 @@
 # Validation
 
+## Coordonnées satellitaires SATPOS — validation locale
+
+Plan commité avant code : `4b1e6e9`. Les tests géométriques synthétiques
+vérifient que l'azimut et la hauteur sont ceux du même échantillon accepté :
+maximum hors champ azimutal écarté, filtre solaire et plafond appliqués avant
+sélection. Les azimuts diffèrent entre les instants afin de détecter une
+confusion avec la position initiale. Aucun nouveau modèle orbital n'est ajouté.
+
+Cinq nouveaux cas testent les sorties publiques écran/TXT/PDF et le formatage :
+deux décimales, zéro distinct d'une absence, coordonnée partielle ou totalement
+absente, heure locale avec secondes et sélection mixte avec un objet fixe.
+Le TXT est identique à l'écran et le PDF contient les mêmes coordonnées.
+Les vérifications géométriques et du plafond existantes sont enrichies.
+
+Windows, Python 3.11.9 et 3.13.6 : **800 tests réussis, huit ignorés et
+15 avertissements** chacun, couverture combinée **90,51 %**, planchers globaux
+et critiques respectés. Ruff, typage progressif sur les deux modules configurés,
+liens et recherche ciblée de secrets passent. Archives contrôlées et wheel
+installée hors réseau. Le PDF synthétique et le schéma explicatif sont inspectés
+visuellement : libellés et coordonnées lisibles, sans chevauchement.
+
+Cette validation est locale, sans accès aux archives Seestar réelles. Aucun
+nouveau jeu de données astronomiques, aucune validation observationnelle,
+aucune publication GitHub ni préparation effective de livraison pour ce lot.
+
 ## Versionnage SemVer — validation locale
 
 Plan local enregistré avant code : `b508c05`. Les 46 tests nouveaux couvrent

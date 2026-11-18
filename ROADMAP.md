@@ -6,17 +6,25 @@ Demande du propriétaire : faciliter le repérage photographique en affichant
 les coordonnées du satellite à l'« Instant position (local) ». Plan local
 enregistré avant implémentation; aucune publication ni fusion de ce nouveau lot.
 
-- [ ] SATPOS.1 — Conserver l'azimut et la hauteur topocentriques déjà calculés
+- [x] SATPOS.1 — Conserver l'azimut et la hauteur topocentriques déjà calculés
       au même échantillon que le maximum retenu, après les filtres de champ et
       d'éclairage. Champs facultatifs pour préserver les appels existants.
-- [ ] SATPOS.2 — Afficher ces coordonnées avec deux décimales et des libellés
+- [x] SATPOS.2 — Afficher ces coordonnées avec deux décimales et des libellés
       explicites dans les sorties écran, TXT et PDF; ne pas inventer de valeurs
       manquantes ni utiliser les positions du début/de la fin.
-- [ ] SATPOS.3 — Tester géométries synthétiques, plafond, filtre optique,
+- [x] SATPOS.3 — Tester géométries synthétiques, plafond, filtre optique,
       valeurs absentes, rapports mixtes et PDF; exécuter pytest et Ruff.
-- [ ] SATPOS.4 — Ajouter un fragment SemVer, actualiser README, CHANGELOG,
+- [x] SATPOS.4 — Ajouter un fragment SemVer, actualiser README, CHANGELOG,
       guide satellite, validation et tutoriel dès 10 ans avec schéma versionné.
       Expliquer les axes et l'instant, sans promettre suivi ni photo réussie.
+
+Preuves locales SATPOS : plan `4b1e6e9` avant code; 800 tests réussis sous
+Python 3.11.9 et 3.13.6, huit ignorés et 15 avertissements chacun; couverture
+90,51 %, planchers globaux et critiques respectés. Ruff, typage progressif,
+liens et recherche ciblée de secrets réussis. Archives contrôlées, wheel
+installée hors réseau, PDF et schéma synthétiques inspectés. Les coordonnées
+ne changent ni la sélection ni la source orbitale. Aucun accès Seestar réel,
+push, PR ou fusion de ce lot. La version reste 0.11.0, l'aperçu propose 0.12.0.
 
 ## Lot versionnage par type de changement — VERSION
 

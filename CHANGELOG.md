@@ -5,6 +5,15 @@ Ce projet suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 
 ## [Non publié]
 
+### Ajouté — Coordonnées du maximum satellitaire retenu (SATPOS)
+
+- Azimut et hauteur à l'« Instant position (local) » dans les sorties écran,
+  TXT et PDF, avec deux décimales et sans inventer les valeurs absentes.
+- Coordonnées topocentriques du même échantillon que le maximum accepté après
+  filtres de champ et optiques; positions au début/à la fin conservées.
+- Guide et tutoriel illustré, tests synthétiques hors réseau. Aucun pilotage
+  ni suivi automatique du télescope ajouté.
+
 ### Ajouté — Versionnage par type de changement
 
 - Politique SemVer approuvée : bugs en PATCH, améliorations/fonctionnalités

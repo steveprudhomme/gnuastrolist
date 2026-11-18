@@ -17,6 +17,7 @@ from .models import (
 )
 from .report_formatting import (
     ALTITUDE_CEILING_NOTE,
+    position_angle_label,
 )
 from .report_formatting import (
     apparent_size_label as _apparent_size_label,
@@ -231,6 +232,12 @@ def _format_table(
         rows = [(*row,result.position_reference_time.strftime('%Y-%m-%d %H:%M:%S')
                   if result.position_reference_time is not None else '—')
                 for row,result in zip(rows,results)]
+    if any(result.position_azimuth_deg is not None or result.position_altitude_deg is not None
+           for result in results):
+        headers += ('Azimut à cet instant', 'Hauteur à cet instant')
+        rows = [(*row, position_angle_label(result.position_azimuth_deg),
+                 position_angle_label(result.position_altitude_deg))
+                for row, result in zip(rows, results)]
     if any(result.magnitude_estimated for result in results):
         headers += ("Instant estimé (local)" if has_comets else "Instant V estimée (local)",)
         rows = [(*row, result.magnitude_reference_time.strftime("%Y-%m-%d %H:%M")

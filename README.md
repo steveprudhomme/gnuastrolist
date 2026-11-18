@@ -51,6 +51,11 @@ ces objets. `--satellite-optical-only` exige au même instant champ, éclairage
 solaire et ciel suffisamment sombre; il ne garantit pas la détection.
 Voir [le guide des satellites, SATCAT et UNOOSA](docs/SATELLITES.md).
 
+Les rapports écran, TXT et PDF affichent l'**azimut** et la **hauteur** du satellite
+à l'« Instant position (local) », le maximum échantillonné retenu après les filtres.
+Ces coordonnées servent à repérer la direction à cette heure, sans commander
+le suivi du télescope. Voir [comment les lire](docs/SATELLITES.md#coordonnées-à-linstant-retenu).
+
 ### Garder les catalogues à jour au démarrage
 
 Tous les catalogues évolutifs ont une politique configurable. Ajouter à sa

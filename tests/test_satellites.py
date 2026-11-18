@@ -258,7 +258,7 @@ def synthetic_geometry(record, monkeypatch):
 
     def horizontal(item, times, location):
         seen.append(times)
-        altaz = AltAz(az=np.array([100, 100, 200, 100, 100]) * u.deg,
+        altaz = AltAz(az=np.array([95, 102, 200, 108, 100]) * u.deg,
                      alt=np.array([20, 40, 80, 30, 10]) * u.deg,
                      distance=np.array([1000, 900, 800, 700, 600]) * u.km,
                      obstime=times, location=location, pressure=0 * u.hPa)
@@ -274,6 +274,8 @@ def test_infield_maximum_unknown_magnitude_and_no_season(synthetic_geometry):
     element, window, fov, _ = synthetic_geometry
     result, = compute_satellite_visibility((element,), window, 45, -73, 0, fov)
     assert result.position_reference_time == window.start_local + timedelta(seconds=5)
+    assert result.position_azimuth_deg == 102
+    assert result.position_altitude_deg == 40  # Le point à 80° est hors du champ azimutal.
     assert result.star.norad_id == 5
     assert result.star.object_type == 'Satellite'
     assert result.star.magnitude_v is None
@@ -297,6 +299,8 @@ def test_optical_criteria_must_coincide(synthetic_geometry):
     element, window, fov, _ = synthetic_geometry
     result, = compute_satellite_visibility((element,), window, 45, -73, 0, fov, optical_only=True)
     assert result.position_reference_time == window.start_local + timedelta(seconds=15)
+    assert result.position_azimuth_deg == 108
+    assert result.position_altitude_deg == 30  # Le point à 40° est exclu par le Soleil.
     assert '700.0 km' in result.satellite_details
     assert 'Soleil -10.00°' in result.satellite_details
     assert 'éclairé' in result.satellite_details

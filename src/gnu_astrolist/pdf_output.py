@@ -43,6 +43,7 @@ from .report_formatting import (
     magnitude_label,
     moon_event_label,
     object_name,
+    position_angle_label,
     reference_label,
 )
 from .seestar import SeestarInventory
@@ -487,6 +488,13 @@ def _result_card(
     if result.position_reference_time is not None:
         data.append([_paragraph('Instant position (local)',styles['label']),
                      _paragraph(result.position_reference_time.strftime('%Y-%m-%d %H:%M:%S'),styles['value']),'',''])
+    if result.position_azimuth_deg is not None or result.position_altitude_deg is not None:
+        data.append([
+            _paragraph('Azimut à cet instant', styles['label']),
+            _paragraph(position_angle_label(result.position_azimuth_deg), styles['value']),
+            _paragraph('Hauteur à cet instant', styles['label']),
+            _paragraph(position_angle_label(result.position_altitude_deg), styles['value']),
+        ])
     for label,detail in (('Conditions satellitaires',result.satellite_details),
                          ('SATCAT / registre ONU',result.space_catalog_details)):
         if detail is not None:

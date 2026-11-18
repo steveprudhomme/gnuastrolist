@@ -33,6 +33,11 @@ def number(value: float) -> str:
     return f"{value:.2f}".rstrip("0").rstrip(".")
 
 
+def position_angle_label(value: float | None) -> str:
+    """Deux décimales pour les coordonnées calculées, sans remplacer une absence."""
+    return '—' if value is None else f'{value:.2f}°'
+
+
 def apparent_size_label(result: VisibilityResult) -> str:
     major = result.star.apparent_major_arcmin
     minor = result.star.apparent_minor_arcmin
